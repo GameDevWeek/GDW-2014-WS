@@ -6,7 +6,6 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 
 /**
  * Handles contacts between player and other entities
@@ -29,8 +28,14 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 // Damage system has to reduce the players health by the amount
                 // specified in the damage component here.
             }
-            player.getComponent(HealthComponent.class);
         }
+
+        // If the contact was with lava then the player dies and the level is
+        // reset.
+
+        // If the contact was with a tile then nothing happens to the player but
+        // the tile's health
+        // is reduced by 1.
     }
 
 }
