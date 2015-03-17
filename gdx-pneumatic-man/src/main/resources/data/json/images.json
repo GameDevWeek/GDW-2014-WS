@@ -4,6 +4,6 @@
     "background_menu": "data/images/background_menu.png",
     "beenden_button": "data/images/beenden_button.png",
     "credits_button": "data/images/credits_button.png",
-    "optionen_button": "data/images/credits_button.png",
+    "optionen_button": "data/images/optionen_button.png",
     "start_button": "data/images/start_button.png"
 }
