@@ -39,13 +39,13 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     
     @Override
     public void processEntity(Entity entity, float deltaTime) {
-    	super.processEntity(entity, deltaTime);
-    	
     	LayerComponent layerComponent = ComponentMappers.layer.get(entity);
     	if (layerComponent != currentLayer) {
     		onLayerChanged(currentLayer, layerComponent);
     		currentLayer = layerComponent;
     	}
+    	
+    	super.processEntity(entity, deltaTime);
     }
     
     private void onLayerChanged(LayerComponent oldLayer, LayerComponent newLayer) {
@@ -58,4 +58,13 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     public LimitedSmoothCamera getCamera() {
     	return cameraSystem.getCamera();
     }
+    
+    @Override
+	public void update (float deltaTime) {
+    	super.update(deltaTime);
+    	
+    	cameraSystem.update(deltaTime);
+	}
+    
+    
 }

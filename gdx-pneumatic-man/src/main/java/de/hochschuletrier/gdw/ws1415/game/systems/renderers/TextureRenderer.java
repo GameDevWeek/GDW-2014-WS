@@ -31,6 +31,6 @@ public class TextureRenderer extends SortedFamilyRenderSystem.Renderer {
         int w = tex.getWidth();
         int h = tex.getHeight();
         
-    	DrawUtil.batch.draw(tex, x, y, w*0.5f, h*0.5f, w, h, 1f, 1f, rotation, (int)x, (int)y, (int)w, (int)h, false, true);
+    	DrawUtil.batch.draw(tex, x, y, w*0.5f, h*0.5f, w, h, 1f, 1f, rotation, (int)0, (int)0, (int)w, (int)h, false, true);
     }
 }

@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal;
 
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * A smooth camera controller that stays within the set bounds.
@@ -61,5 +62,9 @@ public class LimitedSmoothCamera extends SmoothCamera {
 
     public OrthographicCamera getOrthographicCamera() {
         return camera;
+    }
+    
+    public Vector3 getDestination() {
+    	return destination;
     }
 }
