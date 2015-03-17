@@ -16,8 +16,8 @@ public class MainMenu extends MenuPage{
     
     public MainMenu(Skin skin, MenuManager menuManager, Type type)
     {
-        super(skin,"background_menu.png" );
-        addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "beenden_button.png", () -> System.exit(-1));
+        super(skin,"logo" );
+        addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "logo", () -> System.exit(-1));
         
     }
     
