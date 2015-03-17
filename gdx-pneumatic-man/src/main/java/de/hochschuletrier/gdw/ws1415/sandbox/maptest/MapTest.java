@@ -200,8 +200,7 @@ public class MapTest extends SandboxGame {
         try {
             return new TiledMap(filename, LayerObject.PolyMode.ABSOLUTE);
         } catch (Exception ex) {
-            throw new IllegalArgumentException(
-                    "Map konnte nicht geladen werden: " + filename);
+            throw new IllegalArgumentException("Map konnte nicht geladen werden: " + filename);
         }
     }
 
