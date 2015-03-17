@@ -47,7 +47,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.PhysixUtil;
-
+import de.hochschuletrier.gdw.ws1415.states.DirectionEnum;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -68,12 +68,12 @@ public class Game {
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final RenderSystem renderSystem = new RenderSystem(GameConstants.PRIORITY_ANIMATIONS);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
-    private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX+2);
+    private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
     private final AISystem aisystems = new AISystem(
             GameConstants.PRIORITY_PHYSIX + 1,
             physixSystem
-            );
+    );
 
     private Sound impactSound;
     private AnimationExtended ballAnimation;
@@ -113,12 +113,9 @@ public class Game {
 
         addSystems();
         addContactListeners();
-        
-    
-        Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
-        
 
-        
+        Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
+
     }
 
     private void generateWorldFromTileMap() {
@@ -149,12 +146,47 @@ public class Game {
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight());
+                            if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
+                                EntityCreator.createAndAddSpike(engine,
+                                        physixSystem,
+                                        i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                        j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                        map.getTileWidth(),
+                                        map.getTileHeight(),
+                                        DirectionEnum.Left);
+                            }
+                            if (tiles[i][j].getProperty("Type", "").equals("SpikeTop")) {
+                                EntityCreator.createAndAddSpike(engine,
+                                        physixSystem,
+                                        i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                        j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                        map.getTileWidth(),
+                                        map.getTileHeight(),
+                                        DirectionEnum.Top);
+                            }
+                            if (tiles[i][j].getProperty("Type", "").equals("SpikeRight")) {
+                                EntityCreator.createAndAddSpike(engine,
+                                        physixSystem,
+                                        i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                        j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                        map.getTileWidth(),
+                                        map.getTileHeight(),
+                                        DirectionEnum.Right);
+                            }
+                            if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
+                                EntityCreator.createAndAddSpike(engine,
+                                        physixSystem,
+                                        i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                        j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                        map.getTileWidth(),
+                                        map.getTileHeight(),
+                                        DirectionEnum.Down);
+                            }
                         }
                     }
                 }
             }
         }
-
     }
 
     public TiledMap loadMap(String filename) {
@@ -180,7 +212,8 @@ public class Game {
     private void addContactListeners() {
         PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
         physixSystem.getWorld().setContactListener(contactListener);
-        contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
+        contactListener
+                .addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
     }
