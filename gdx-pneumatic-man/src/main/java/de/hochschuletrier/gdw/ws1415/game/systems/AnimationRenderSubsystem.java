@@ -15,10 +15,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
  */
 public class AnimationRenderSubsystem {
 
-    AnimationRenderSubsystem() {
-    }
-
-
     void render(Entity entity, float deltaTime) {
         AnimationComponent animation = ComponentMappers.animation.get(entity);
         PositionComponent position = ComponentMappers.position.get(entity);
@@ -27,6 +23,7 @@ public class AnimationRenderSubsystem {
         TextureRegion keyFrame = animation.animation.getKeyFrame(animation.stateTime);
         int w = keyFrame.getRegionWidth();
         int h = keyFrame.getRegionHeight();
-        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h, 1, 1, position.rotation);
+        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h
+                * 0.5f, w * 0.5f, h * 0.5f, w, h, 1, 1, position.rotation);
     }
 }
