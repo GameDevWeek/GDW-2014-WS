@@ -1,10 +1,8 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector3;
 
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
-import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 
 
@@ -16,16 +14,7 @@ public class CameraSystem {
 		return camera;
 	}
 	
-	/**
-	 * 
-	 * Applies parallax by adjusting the camera position. 
-	 * Doesn't do anything if the entity has no LayerComponent.
-	 */
-	void preParallax(Entity entity) {
-		LayerComponent layer = ComponentMappers.layer.get(entity);
-		if(layer == null)
-			return;
-		
+	void preParallax(LayerComponent layer) {
 		cameraPos = camera.getPosition();	
 		
 		camera.setDestination(cameraPos.x*layer.parallax, cameraPos.y*layer.parallax);

@@ -15,7 +15,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
@@ -79,7 +79,7 @@ public class EntityCreator {
         
         entity.add(bodyComponent);
 
-        BlockComponent blockComp = new BlockComponent();
+        DestructableBlockComponent blockComp = new DestructableBlockComponent();
         entity.add(blockComp);
         
         engine.addEntity(entity);
@@ -97,7 +97,7 @@ public class EntityCreator {
         fixture.setUserData(entity);
         entity.add(bodyComponent);
 
-        BlockComponent blockComp = new BlockComponent();
+        DestructableBlockComponent blockComp = new DestructableBlockComponent();
         entity.add(blockComp);
         
         engine.addEntity(entity);
