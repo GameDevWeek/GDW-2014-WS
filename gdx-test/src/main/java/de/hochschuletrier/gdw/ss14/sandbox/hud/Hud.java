@@ -55,7 +55,6 @@ public class Hud extends SandboxGame
           initTimeDisplay();
           initScoreDisplay();
           
-          
       }
       
       private void initTimeDisplay()
@@ -92,8 +91,8 @@ public class Hud extends SandboxGame
           MinerFoundListe = new ArrayList<>();
           
           //besser: file aus json datei nehmen
-          textureMinerLeft = new Texture(Gdx.files.internal("data/menuImages/dummyMiner.png"));
-          textureMinerFound = new Texture(Gdx.files.internal("data/menuImages/dummyMinerRescued.png"));
+          textureMinerLeft = new Texture(Gdx.files.internal("data/menuImages/KollegeIconNichtGefunden.png"));
+          textureMinerFound = new Texture(Gdx.files.internal("data/menuImages/KollegeIconGefunden.png"));
           
           
           sprite = new Sprite(textureMinerFound);
@@ -115,7 +114,7 @@ public class Hud extends SandboxGame
     @Override
         public void update(float delta)
       {
-          Gdx.gl.glClearColor(1, 1, 1, 1);
+          Gdx.gl.glClearColor(0.5f, 1, 0.5f, 1);
           Gdx.gl.glClear(GL11.GL_COLOR_BUFFER_BIT);
    
           batch.begin();
@@ -168,6 +167,12 @@ public class Hud extends SandboxGame
         
       }
       
+      
+      
+      public void addScore(int scored)
+      {
+          score += scored;
+      }
       
       public void minerFound()
       {
