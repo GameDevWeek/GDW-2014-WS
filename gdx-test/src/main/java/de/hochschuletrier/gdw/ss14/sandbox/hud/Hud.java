@@ -2,9 +2,12 @@ package de.hochschuletrier.gdw.ss14.sandbox.hud;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.ss14.sandbox.SandboxGame;
 
 
-public class Hud extends Group
+
+public class Hud extends SandboxGame
 {
     
     private int allMiners;
@@ -12,7 +15,7 @@ public class Hud extends Group
     public Hud()
     {
 //        allMiners = getMinersLeft();
-        allMiners = 6;
+        allMiners = 5;
         
         
     }
@@ -28,6 +31,35 @@ public class Hud extends Group
             
         }
         
+        
+        
+        
+    }
+
+
+
+    @Override
+    public void dispose()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
+    @Override
+    public void init(AssetManagerX assetManager)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
+    @Override
+    public void update(float delta)
+    {
+        // TODO Auto-generated method stub
         
     }
 
