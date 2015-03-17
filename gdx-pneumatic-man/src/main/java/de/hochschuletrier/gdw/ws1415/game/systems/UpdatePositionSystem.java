@@ -38,12 +38,12 @@ public class UpdatePositionSystem extends IteratingSystem {
 
     private void checkHealth(Entity entity, HealthComponent health, PositionComponent position, float deltaTime)
     {
-        if(health.Value == HealthComponent.HealthState.DYING)
+        if(health.health == HealthComponent.HealthState.DYING)
         {
             if(position.y > Gdx.graphics.getHeight()) // + Entity-height, so it doesnt disappear, while still half on screen)
                 position.y = position.y + 1;
             else
-                entity.getComponent(HealthComponent.class).Value = HealthComponent.HealthState.DEAD;
+                entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DEAD;
         }
         return;
     }
