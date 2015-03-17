@@ -152,7 +152,7 @@ public class EntityTest extends SandboxGame {
         // DrawRect(ArrowPosition.x, ArrowPosition.y, 10, 10, Color.RED);
 
         DestructableBlockRender.update(delta);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)
+        if (HealthOfBlock != null && Gdx.input.isKeyJustPressed(Input.Keys.SPACE)
                 && HealthOfBlock.Value > 0) {
             HealthOfBlock.Value -= 1;
         }
