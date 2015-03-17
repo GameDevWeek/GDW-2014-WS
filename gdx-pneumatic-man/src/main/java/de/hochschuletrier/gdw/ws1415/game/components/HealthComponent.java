@@ -10,11 +10,11 @@ public class HealthComponent extends Component implements Poolable {
         DEAD, DYING, ALIVE1, ALIVE2 ;
     }
     
-    public HealthState health = HealthState.ALIVE2;
+    public HealthState Value = HealthState.ALIVE2;
 
     @Override
     public void reset() {
-        health = HealthState.DEAD;
+        Value = HealthState.DEAD;
     }
 
 }
