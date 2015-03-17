@@ -160,6 +160,10 @@ public class Main extends StateBasedGame {
     public AssetManagerX  getAssetManager(){
         return assetManager;
     }
+    
+    public Skin getSkin() {
+        return skin;
+    }
 
     @Override
     protected void preUpdate(float delta) {

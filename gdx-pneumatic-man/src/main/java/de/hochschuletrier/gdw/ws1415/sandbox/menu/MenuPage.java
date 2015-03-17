@@ -17,7 +17,7 @@ public class MenuPage extends Group {
     protected Main main = Main.getInstance();
     protected AssetManagerX assetManager=main.getAssetManager();
     protected final Skin skin;
-    
+
     public MenuPage(Skin skin, String background){
         super();
         this.skin=skin;
