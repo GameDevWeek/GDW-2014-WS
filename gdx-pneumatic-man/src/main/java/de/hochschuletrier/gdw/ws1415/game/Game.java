@@ -247,17 +247,30 @@ public class Game {
         animComponent.animation = ballAnimation;
         entity.add(animComponent);
         entity.add(engine.createComponent(LayerComponent.class));
-
+        
+        MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
+        moveComponent.speed = 10000.0f;
+        entity.add(moveComponent);
+        
+        JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
+        jumpComponent.jumpImpulse = 1000.0f;
+        jumpComponent.restingTime = 0.02f;
+        entity.add(jumpComponent);
+        
+        InputComponent inputComponent = engine.createComponent(InputComponent.class);
+        entity.add(inputComponent);
+        
+        
+        
         modifyComponent.schedule(() -> {
             PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
             PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem)
                     .position(x, y).fixedRotation(false);
             bodyComponent.init(bodyDef, physixSystem, entity);
             PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                    .density(5).friction(0.2f).restitution(0.4f).shapeCircle(radius);
+                    .density(1).friction(0).restitution(0.1f).shapeBox(58, 90);
             bodyComponent.createFixture(fixtureDef);
             entity.add(bodyComponent);
-            bodyComponent.applyImpulse(0, 50000);
         });
         engine.addEntity(entity);
     }
