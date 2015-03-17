@@ -5,13 +5,14 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class HealthComponent extends Component implements Poolable {
 
-    public enum HealthState
+    public int Value;
     public int DecrementByValueNextFrame = 0;
-    {
-        DEAD, DYING, ALIVE1, ALIVE2 ;
+
+    public enum HealthState {
+        DEAD, DYING, ALIVE;
     }
-    
-    public HealthState health = HealthState.ALIVE2;
+
+    public HealthState health = HealthState.ALIVE;
 
     @Override
     public void reset() {
