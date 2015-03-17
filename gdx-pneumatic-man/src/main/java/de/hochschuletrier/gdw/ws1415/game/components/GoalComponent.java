@@ -10,11 +10,15 @@ public class GoalComponent extends Component implements Pool.Poolable {
     // wird die Variable um 1 reduziert. Wenn keine Kollegen mehr gerettet
     // werden müssen (die Variable also 0 erreicht)
     // hat man das Level geschafft.
-    public int unsaved_mineworkers;
+    public int mineworkers_saved;
+    public int number_of_mineworkers_total;
+    public boolean end_of_level;
 
     @Override
     public void reset() {
-        unsaved_mineworkers = 0;
+        mineworkers_saved = 0;
+        number_of_mineworkers_total = 0;
+        end_of_level = false;
     }
 
 }
