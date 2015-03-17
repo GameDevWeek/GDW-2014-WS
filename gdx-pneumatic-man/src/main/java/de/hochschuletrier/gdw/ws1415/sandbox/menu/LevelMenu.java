@@ -9,5 +9,7 @@ public class LevelMenu extends MenuPage
 	public LevelMenu(Skin skin, MenuManager menuManager)
 	{
 		super(skin, "menu_background");
+		
+		addCenteredButton(menuManager.getWidth() - 150, 50, 150, 50, "RETURN", () -> menuManager.popPage());
 	}
 }
