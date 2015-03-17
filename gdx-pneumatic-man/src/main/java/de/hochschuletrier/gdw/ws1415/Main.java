@@ -156,6 +156,10 @@ public class Main extends StateBasedGame {
             consoleView.render();
         }
     }
+    
+    public AssetManagerX  getAssetManager(){
+        return assetManager;
+    }
 
     @Override
     protected void preUpdate(float delta) {
