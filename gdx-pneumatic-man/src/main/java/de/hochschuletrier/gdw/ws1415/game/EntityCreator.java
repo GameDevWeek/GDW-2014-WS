@@ -87,7 +87,7 @@ public class EntityCreator {
 
         entity.add(bodyComponent);
 
-        BlockComponent blockComp = engine.createComponent(BlockComponent.class);
+        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
         entity.add(blockComp);
 
         engine.addEntity(entity);
@@ -109,7 +109,7 @@ public class EntityCreator {
         fixture.setUserData(entity);
         entity.add(bodyComponent);
 
-        BlockComponent blockComp = engine.createComponent(BlockComponent.class);
+        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
         entity.add(blockComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
@@ -136,7 +136,7 @@ public class EntityCreator {
         fixture.setUserData(entity);
         entity.add(bodyComponent);
 
-        BlockComponent blockComp = engine.createComponent(BlockComponent.class);
+        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
         entity.add(blockComp);
 
         PlatformComponent pl = new PlatformComponent();
