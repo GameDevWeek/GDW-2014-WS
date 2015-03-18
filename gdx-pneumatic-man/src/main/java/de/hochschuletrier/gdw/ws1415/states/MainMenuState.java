@@ -73,7 +73,7 @@ public class MainMenuState extends BaseGameState {
     @Override
     public void update(float delta) {
         menuManager.update(delta);
-        hand.setPosition(MouseInfo.getPointerInfo().getLocation().x-(hand.getWidth()/2),MouseInfo.getPointerInfo().getLocation().y*(-1)); 
+        hand.setPosition(MouseInfo.getPointerInfo().getLocation().x-((hand.getWidth()/3)),(MouseInfo.getPointerInfo().getLocation().y*(-1))-(hand.getHeight()/3)); 
         render();
     }
 
