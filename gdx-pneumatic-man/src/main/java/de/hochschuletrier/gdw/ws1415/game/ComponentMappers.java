@@ -1,7 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
 import com.badlogic.ashley.core.ComponentMapper;
-
 import de.hochschuletrier.gdw.commons.gdx.physix.components.*;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 
@@ -22,4 +21,5 @@ public class ComponentMappers {
     public static final ComponentMapper<TextureComponent> texture = ComponentMapper.getFor(TextureComponent.class);
     public static final ComponentMapper<JumpComponent> jump = ComponentMapper.getFor(JumpComponent.class);
     public static final ComponentMapper<InputComponent> input = ComponentMapper.getFor(InputComponent.class);
+    public static final ComponentMapper<ParticleComponent> particle = ComponentMapper.getFor(ParticleComponent.class);
 }

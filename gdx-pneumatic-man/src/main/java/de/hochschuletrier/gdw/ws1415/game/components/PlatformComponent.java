@@ -18,7 +18,7 @@ public class PlatformComponent extends Component implements Pool.Poolable {
     @Override
     public void reset() {
         travelDistance = 64;
-        mode = PlatformMode.Patrouling;
+        mode = PlatformMode.ALWAYS;
         startPos.set(0, 0);
         platformSpeed = 0;
     }

@@ -5,12 +5,12 @@ import com.badlogic.ashley.core.Family;
 
 import java.util.Comparator;
 
-import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.DestructableBlockRenderer;
+import de.hochschuletrier.gdw.ws1415.game.systems.renderers.ParticleRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.TextureRenderer;
 
 /**
@@ -22,7 +22,6 @@ import de.hochschuletrier.gdw.ws1415.game.systems.renderers.TextureRenderer;
 public class SortedRenderSystem extends SortedFamilyRenderSystem {
 	private LayerComponent currentLayer = null;
 	private CameraSystem cameraSystem;
-	private boolean appliedParallax = false;
 	
     @SuppressWarnings("unchecked")
 	public SortedRenderSystem(CameraSystem cameraSystem) {
@@ -42,6 +41,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         addRenderer(new AnimationRenderer());
         addRenderer(new DestructableBlockRenderer());
         addRenderer(new TextureRenderer());
+        addRenderer(new ParticleRenderer());
         
         this.cameraSystem = cameraSystem;
     }
@@ -51,14 +51,8 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     	LayerComponent layerComponent = ComponentMappers.layer.get(entity);
     	
     	if (currentLayer == null || layerComponent.layer != currentLayer.layer) {
-        	if(appliedParallax) {
-//        		cameraSystem.postParallax();
-        		appliedParallax = false;
-        	}
-        	
     		onLayerChanged(currentLayer, layerComponent);
     		currentLayer = layerComponent;
-    		appliedParallax = true;
     	}
     	
     	super.processEntity(entity, deltaTime);
@@ -72,8 +66,6 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
 	public void update (float deltaTime) {	
     	cameraSystem.update(deltaTime);
     	super.update(deltaTime);	
-//    	cameraSystem.postParallax();
-    	
 	}
     
     

@@ -33,20 +33,23 @@ import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-
+import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ws1415.game.utils.PhysixUtil;
+import de.hochschuletrier.gdw.ws1415.states.DirectionEnum;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 
+
+
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
-import java.util.function.Consumer;
 
 public class Game {
 
@@ -62,14 +65,15 @@ public class Game {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final RenderSystem renderSystem = new RenderSystem(GameConstants.PRIORITY_ANIMATIONS);
+    private final CameraSystem cameraSystem = new CameraSystem();
+    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
-    private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX+2);
+    private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
     private final AISystem aisystems = new AISystem(
             GameConstants.PRIORITY_PHYSIX + 1,
             physixSystem
-            );
+    );
 
     private Sound impactSound;
     private AnimationExtended ballAnimation;
@@ -107,17 +111,15 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-        //dummy
-        createBall(500, 250, 50);
+
+        cameraSystem.follow(EntityCreator.createAndAddPlayer(500, 250, 0));
+
 
         addSystems();
         addContactListeners();
-        
-    
-        Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
-        
 
-        
+        Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
+
     }
 
     private void generateWorldFromTileMap() {
@@ -134,15 +136,29 @@ public class Game {
                             && info.getProperty("Type", "").equals("Floor");
                 },
                 EntityCreator::createAndAddInvulnerableFloor);
+        
+        generator.generate(map,
+                (Layer layer, TileInfo info) -> {
+                    return info.getBooleanProperty("Invulnerable", false)
+                            && info.getProperty("Type", "").equals("Lava");
+                },
+                EntityCreator::createAndAddLava);
+        
+        
 
         for (Layer layer : map.getLayers()) {
             if(layer.isObjectLayer()){
                 for(LayerObject obj : layer.getObjects()){
                     if(obj.getName().equals("Platform")){
-                        PlatformMode mode = PlatformMode.valueOf(obj.getProperty("mode", PlatformMode.Patrouling.name()));
-                        Direction dir = Direction.RIGHT;
-                        int distance = obj.getIntProperty("distance", 0);
-                        EntityCreator.createPlatformBlock(obj.getX(), obj.getY(), distance, dir, mode);
+                        PlatformMode mode = PlatformMode.valueOf(obj.getProperty("Mode", PlatformMode.ALWAYS.name()).toUpperCase());
+                        Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.UP.name()).toUpperCase()); // "Direction"
+                        int distance = obj.getIntProperty("Distance", 0);
+                        int hitpoints = obj.getIntProperty("Hitpoints", 0);
+                        float speed = obj.getFloatProperty("Speed", 0);
+                        if(hitpoints == 0)
+                            EntityCreator.IndestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode);
+                        else
+                            EntityCreator.DestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode, hitpoints);
                     }
                     if(obj.getName().equals("Rock")){
 
@@ -164,11 +180,46 @@ public class Game {
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight());
                         }
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
+                            EntityCreator.createAndAddSpike(engine,
+                                    physixSystem,
+                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                    map.getTileWidth(),
+                                    map.getTileHeight(),
+                                    Direction.LEFT);
+                        }
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeTop")) {
+                            EntityCreator.createAndAddSpike(engine,
+                                    physixSystem,
+                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                    map.getTileWidth(),
+                                    map.getTileHeight(),
+                                    Direction.UP);
+                        }
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeRight")) {
+                            EntityCreator.createAndAddSpike(engine,
+                                    physixSystem,
+                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                    map.getTileWidth(),
+                                    map.getTileHeight(),
+                                    Direction.RIGHT);
+                        }
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
+                            EntityCreator.createAndAddSpike(engine,
+                                    physixSystem,
+                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                    map.getTileWidth(),
+                                    map.getTileHeight(),
+                                    Direction.DOWN);
+                        }
                     }
                 }
             }
         }
-
     }
 
     public TiledMap loadMap(String filename) {
@@ -194,7 +245,8 @@ public class Game {
     private void addContactListeners() {
         PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
         physixSystem.getWorld().setContactListener(contactListener);
-        contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
+        contactListener
+                .addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
     }
@@ -204,7 +256,7 @@ public class Game {
     }
 
     public void update(float delta) {
-        Main.getInstance().screenCamera.bind();
+        //Main.getInstance().screenCamera.bind();
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
@@ -212,44 +264,5 @@ public class Game {
         mapRenderer.update(delta);
 
         engine.update(delta);
-    }
-
-    public void createBall(float x, float y, float radius) {
-        Entity entity = engine.createEntity();
-        entity.add(engine.createComponent(PositionComponent.class));
-        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
-        entity.add(modifyComponent);
-
-        ImpactSoundComponent soundComponent = engine.createComponent(ImpactSoundComponent.class);
-        soundComponent.init(impactSound, 20, 20, 100);
-        entity.add(soundComponent);
-
-        AnimationComponent animComponent = engine.createComponent(AnimationComponent.class);
-        animComponent.animation = ballAnimation;
-        entity.add(animComponent);
-        entity.add(engine.createComponent(LayerComponent.class));
-        
-        MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
-        moveComponent.speed = 10000.0f;
-        entity.add(moveComponent);
-        
-        JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpImpulse = 20000.0f;
-        jumpComponent.restingTime = 0.02f;
-        entity.add(jumpComponent);
-        
-        entity.add(engine.createComponent(InputComponent.class));
-
-        modifyComponent.schedule(() -> {
-            PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem)
-                    .position(x, y).fixedRotation(false);
-            bodyComponent.init(bodyDef, physixSystem, entity);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                    .density(1).friction(0).restitution(0.1f).shapeBox(58, 90);
-            bodyComponent.createFixture(fixtureDef);
-            entity.add(bodyComponent);
-        });
-        engine.addEntity(entity);
     }
 }
