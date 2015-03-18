@@ -59,21 +59,23 @@ public class EntityCreator {
         jumpComponent.restingTime = 0.02f;
         entity.add(jumpComponent);
 
-        engine.addEntity(player);
-        return player;
-    }
-    
-    public static Entity createAndAddDyingCharacter(Entity entity,
-    PooledEngine engine) {
-        Entity player = engine.createEntity();
-        
-        AnimationComponent animation = entity.getComponent(AnimationComponent.class);
-        animation.IsActive = false;
-        player.add(animation);
-
-
         engine.addEntity(entity);
         return entity;
+    }
+    
+    public static Entity createAndAddDyingCharacter(Entity entityToDie) {
+        Entity dyingEntity = engine.createEntity();
+        
+        //TODO
+        //Loading new Dying-Animation - waiting for Assets
+        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
+        animation.IsActive = false;
+        dyingEntity.add(animation);
+        
+        PositionComponent position = entityToDie.getComponent(PositionComponent.class);
+
+        engine.addEntity(dyingEntity);
+        return dyingEntity;
     }
 
     /**

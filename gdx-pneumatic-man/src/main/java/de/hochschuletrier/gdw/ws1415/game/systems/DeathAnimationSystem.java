@@ -26,7 +26,6 @@ public class DeathAnimationSystem extends EntitySystem implements EntityListener
     }
 
     PooledEngine CurrentEngine;
-
     public void addedToEngine(PooledEngine engine) {
         CurrentEngine = engine;
         Family family = Family.all(DeathComponent.class).get();
