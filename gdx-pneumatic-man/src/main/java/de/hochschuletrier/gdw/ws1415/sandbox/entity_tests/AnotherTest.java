@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
+import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -22,6 +23,7 @@ import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
+import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.ws1415.Main;
@@ -84,41 +86,6 @@ public class AnotherTest extends SandboxGame {
             tileset.setAttachment(tex);
             tilesetImages.put(tileset, tex);
         }
-        
-        for(Layer layer : map.getLayers()) {
-        	TileInfo[][] tiles = layer.getTiles();
-        	
-            for (int x = 0; x < map.getWidth(); x++) 
-                for (int y = 0; y < map.getHeight(); y++)  {
-                	TileInfo info = tiles[x][y];
-                	
-                	if(info == null)
-                		continue;
-
-                    TileSet tileset = map.findTileSet(info.globalId);
-                    Texture image = (Texture) tileset.getAttachment();
-                    
-                    int sheetX = tileset.getTileX(tiles[x][y].localId);
-                    int sheetY = tileset.getTileY(tiles[x][y].localId);
-
-                    int mapTileWidth = map.getTileWidth();
-                    int mapTileHeight = map.getTileHeight();
-                    
-                    int tileOffsetY = tileset.getTileHeight() - mapTileHeight;
-
-                    float px = (x * mapTileWidth);
-                    float py = (y * mapTileHeight) - tileOffsetY;
-                    
-                    int coordX = (int) (sheetX * tileset.getTileWidth()); 
-                    coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
-                    int coordY = ((int) sheetY * tileset.getTileHeight());
-                    coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();                
-
-                    TextureRegion region = new TextureRegion(image);
-                    region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
-                    createTileEntity(px, py, 0, 0.2f, image, region);
-                }
-        }
 
         //Create a SpawnPoint
         Entity spawn = engine.createEntity();
@@ -168,11 +135,125 @@ public class AnotherTest extends SandboxGame {
         
         addBackgroundEntity(100.f, 100.f, 1, 0.5f, assetManager);
         
+        createTileEntitiesFromMap();
+        
         // Setup camera
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
         cameraSystem.adjustToMap(map);
         
         cameraSystem.follow(player);
+    }
+    
+    // Go through the map and create the entities based on tile info
+    private void createTileEntitiesFromMap() {
+        for(Layer layer : map.getLayers()) {
+        	TileInfo[][] tiles = layer.getTiles();
+        	
+            for (int x = 0; x < map.getWidth(); x++) 
+                for (int y = 0; y < map.getHeight(); y++)  {
+                	TileInfo info = tiles[x][y];
+                	
+                	if(info == null)
+                		continue;
+
+                	TileSet tileset = map.findTileSet(info.globalId);
+                	
+                    int frames = tileset.getIntProperty("animationFrames", 0);
+                    
+                    if (frames > 1) {
+                    	createAnimatedTileEntity(info, x, y, frames);
+                    } else {
+                    	createTileEntity(info, x, y);
+                    }
+                }
+        }
+    }
+    
+    private void createTileEntity(TileInfo info, int tileX, int tileY) {
+    	TileSet tileset = map.findTileSet(info.globalId);
+    	Texture image = (Texture) tileset.getAttachment();
+    	
+        int sheetX = tileset.getTileX(info.localId);
+        int sheetY = tileset.getTileY(info.localId);
+
+        int mapTileWidth = map.getTileWidth();
+        int mapTileHeight = map.getTileHeight();
+        
+        int tileOffsetY = tileset.getTileHeight() - mapTileHeight;
+
+        float px = (tileX * mapTileWidth);
+        float py = (tileY * mapTileHeight) - tileOffsetY;
+        
+        int coordX = (int) (sheetX * tileset.getTileWidth()); 
+        coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
+        int coordY = ((int) sheetY * tileset.getTileHeight());
+        coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();                
+        
+        TextureRegion region = new TextureRegion(image);
+        region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
+        createTileEntity(px, py, 0, 0.2f, image, region);
+    }
+    
+    private void createAnimatedTileEntity(TileInfo info, int tileX, int tileY, int frames) {
+    	assert(frames > 1);
+    	
+    	TileSet tileset = map.findTileSet(info.globalId);
+    	Texture image = (Texture) tileset.getAttachment();
+    	
+    	TileSetAnimation animation = new TileSetAnimation(
+                frames,
+                tileset.getFloatProperty("animationDuration", 0),
+                tileset.getIntProperty("animationTileOffset", 0));
+    	
+    	TextureRegion[] regions = new TextureRegion[frames];
+    	float[] frameDurations = new float[frames];
+    	
+    	int tileOffsetY = tileset.getTileHeight() - map.getTileHeight();
+    	
+        float px = (tileX * map.getTileWidth());
+        float py = (tileY * map.getTileHeight()) - tileOffsetY;
+        
+    	for(int i=0; i<frames; i++) {
+            tileset.updateAnimation(animation.frameDuration*i);
+            
+            int sheetX = tileset.getTileX(info.localId);
+            int sheetY = tileset.getTileY(info.localId);
+            
+            int coordX = (int) (sheetX * tileset.getTileWidth()); 
+            coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
+            int coordY = ((int) sheetY * tileset.getTileHeight());
+            coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();  
+            
+            regions[i] = new TextureRegion(image);
+            regions[i].setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
+            frameDurations[i] = animation.frameDuration;
+    	}
+
+    	tileset.updateAnimation(0f);
+    	AnimationExtended anim = new AnimationExtended(PlayMode.LOOP, frameDurations, regions);
+    	createAnimatedTileEntity(px, py, 0, 0.2f, anim);
+    }
+    
+    private void createAnimatedTileEntity(float x, float y, int layer, float parallax, AnimationExtended animation) {
+    	Entity tileEntity = engine.createEntity();
+    	
+        LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
+        entityLayer.layer = layer;
+        entityLayer.parallax = parallax;
+        
+        AnimationComponent anim = engine.createComponent(AnimationComponent.class);
+        anim.animation = animation;
+        
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.x = x;
+        pos.y = y;
+        pos.rotation = 0;
+        
+        tileEntity.add(pos);
+        tileEntity.add(entityLayer);
+        tileEntity.add(anim);
+        
+        engine.addEntity(tileEntity);
     }
     
     private void createTileEntity(float x, float y, int layer, float parallax, Texture texture, TextureRegion region) {
