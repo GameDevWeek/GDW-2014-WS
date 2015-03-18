@@ -39,8 +39,8 @@ public class LoadGameState extends BaseGameState {
     	DrawUtil.draw(loadScreen, x, y);
     	
     	Color color = new Color(Color.rgb888(209, 190, 103));
-    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/5, drawWidth, 300, Color.DARK_GRAY);
-    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/5, (int) (drawWidth * assetManager.getProgress()), 300, color);
+    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, drawWidth, 200, Color.DARK_GRAY);
+    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, (int) (drawWidth * assetManager.getProgress()), 200, color);
     	DrawUtil.draw(overlay, v, w);
     	
     	
