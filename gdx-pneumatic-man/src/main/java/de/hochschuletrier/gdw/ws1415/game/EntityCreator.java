@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
@@ -10,6 +11,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
+
 import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
@@ -20,7 +22,11 @@ import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactCompone
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+
 import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
+import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
 
@@ -153,5 +159,37 @@ public class EntityCreator {
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(entity);
         return bodyComponent;
+    }
+    public static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, PlatformMode mode) {
+        Entity entity = engine.createEntity();
+
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
+                .restitution(0.1f);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
+        entity.add(bodyComponent);
+
+        BlockComponent blockComp = engine.createComponent(BlockComponent.class);
+        entity.add(blockComp);
+
+        PlatformComponent pl = new PlatformComponent();
+        pl.travelDistance = travelDistance * GameConstants.getTileSizeX();
+        pl.mode = mode;
+        pl.startPos = new Vector2(x, y);
+
+        DirectionComponent d = new DirectionComponent();
+        d.facingDirection = dir;
+
+        entity.add(pl);
+        entity.add(d);
+
+        engine.addEntity(entity);
+        return entity;
     }
 }
