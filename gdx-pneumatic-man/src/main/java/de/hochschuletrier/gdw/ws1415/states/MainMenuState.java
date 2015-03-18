@@ -43,6 +43,8 @@ public class MainMenuState extends BaseGameState {
         hand = new DecoImage(assetManager.getTexture("zeigefinger"));
         menuManager.addLayer(mainMenu);
         mainMenu.addActor(hand);
+        menuManager.addLayer(new DecoImage(assetManager.getTexture("background_overlay")));
+        
         menuManager.pushPage(mainMenu);
         
 //        menuManager.getStage().setDebugAll(true);
