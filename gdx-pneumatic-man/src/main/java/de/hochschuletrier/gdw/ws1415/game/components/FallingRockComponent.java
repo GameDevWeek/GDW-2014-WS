@@ -9,11 +9,12 @@ import com.badlogic.gdx.utils.Pool;
 public class FallingRockComponent extends Component implements Pool.Poolable{
     public boolean falling;
     public int id;
-
+    public int damage;
 
     @Override
     public void reset() {
         falling = false;
         id = 0;
+        damage = 0;
     }
 }
