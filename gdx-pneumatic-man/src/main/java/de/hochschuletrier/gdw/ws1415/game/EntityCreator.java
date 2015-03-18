@@ -124,22 +124,49 @@ public class EntityCreator {
     /**
      * This is the Block who'll fall down onto the player
      */
-    public static Entity createTrapBlock(float x, float y) {
+    public static Entity createTrapBlock(float x, float y, int trapId) {
 
         Entity entity = engine.createEntity();
 
-        PhysixBodyComponent bodyComponent = engine
-                .createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody,
-                physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(entity);
-
         entity.add(bodyComponent);
+
+        FallingRockComponent rockComponent = new FallingRockComponent();
+        rockComponent.falling = false;
+        rockComponent.id = trapId;
+
+        engine.addEntity(entity);
+        return entity;
+    }
+
+    /**
+     * This is a Sensor to trigger a falling block
+     */
+    public static Entity createTrapSensor(float x, float y, float dx, float dy, Entity rock) {
+
+        Entity entity = engine.createEntity();
+
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody, physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f)
+                .shapeBox(dx, dy)
+                .restitution(0.1f)
+                .sensor(true);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
+        entity.add(bodyComponent);
+
+        FallingRockTriggerComponent rockComponent = new FallingRockTriggerComponent();
+        rockComponent.rockEntity = rock;
 
         engine.addEntity(entity);
         return entity;
