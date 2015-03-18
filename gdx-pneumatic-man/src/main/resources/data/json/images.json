@@ -7,5 +7,6 @@
     "optionen_button": "data/images/optionen_button.png",
     "start_button": "data/images/start_button.png",
     "miner_found": "data/images/KollegeIconGefunden.png",
-    "miner_notfound": "data/images/KollegeIconNichtGefunden.png"
+    "miner_notfound": "data/images/KollegeIconNichtGefunden.png",
+    "zeigefinger": "data/images/zeigefinger.png"
 }

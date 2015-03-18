@@ -1,11 +1,15 @@
 package de.hochschuletrier.gdw.ws1415.states;
 
+import java.awt.MouseInfo;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
@@ -24,6 +28,7 @@ public class MainMenuState extends BaseGameState {
     private final Music music;
 
     private final MenuManager menuManager = new MenuManager(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, null);
+    private final  DecoImage hand;
     private final InputForwarder inputForwarder;
     
     public MainMenuState(AssetManagerX assetManager) {
@@ -31,8 +36,9 @@ public class MainMenuState extends BaseGameState {
 
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
+        hand=new DecoImage(assetManager.getTexture("zeigefinger"));
         menuManager.addLayer(mainMenu);
-        
+        mainMenu.addActor(hand);
         menuManager.pushPage(mainMenu);
         
 //        menuManager.getStage().setDebugAll(true);
@@ -63,6 +69,7 @@ public class MainMenuState extends BaseGameState {
     @Override
     public void update(float delta) {
         menuManager.update(delta);
+        hand.setPosition(MouseInfo.getPointerInfo().getLocation().x-(hand.getWidth()/2),MouseInfo.getPointerInfo().getLocation().y*(-1)); 
         render();
     }
 
