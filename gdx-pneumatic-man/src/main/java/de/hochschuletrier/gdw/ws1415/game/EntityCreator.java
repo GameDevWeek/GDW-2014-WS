@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ws1415.game;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
@@ -24,7 +25,7 @@ public class EntityCreator {
     public static PooledEngine engine;
     public static PhysixSystem physixSystem;
 
-    public static Entity createAndAddPlayer(float x, float y) {
+    public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
 
         entity.add(engine.createComponent(AnimationComponent.class));
@@ -61,6 +62,9 @@ public class EntityCreator {
         return entity;
     }
 
+    /**
+     *  Enemy FIXME: there are more different types of enemies, implement them
+     */
     public static Entity createAndAddEnemy(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
 
@@ -85,8 +89,7 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddEventBox(EventBoxType type, float x,
-            float y) {
+    public static Entity createAndAddEventBox(EventBoxType type, float x, float y) {
         Entity box = engine.createEntity();
 
         box.add(engine.createComponent(TriggerComponent.class));
@@ -96,6 +99,10 @@ public class EntityCreator {
         return box;
     }
 
+
+    /**
+     *  Indestructable Block
+     */
     public static Entity createAndAddInvulnerableFloor(Rectangle rect) {
         float width = rect.width * GameConstants.getTileSizeX();
         float height = rect.height * GameConstants.getTileSizeY();
@@ -114,8 +121,33 @@ public class EntityCreator {
         return entity;
     }
 
-    
+    /**
+     * This is the Block who'll fall down onto the player
+     */
+    public static Entity createTrapBlock(float x, float y) {
 
+        Entity entity = engine.createEntity();
+
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody,
+                physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
+                .restitution(0.1f);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
+
+        entity.add(bodyComponent);
+
+        engine.addEntity(entity);
+        return entity;
+    }
+
+    /**
+     *  Destructable Block
+     */
     public static Entity createAndAddVulnerableFloor(float x, float y) {
         Entity entity = engine.createEntity();
 
@@ -175,12 +207,17 @@ public class EntityCreator {
         fixture.setUserData(entity);
         return bodyComponent;
     }
-    public static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, PlatformMode mode) {
+    
+    
+    /**
+     *  Moveable Platform
+     */
+    private static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, PlatformMode mode) {
         Entity entity = engine.createEntity();
 
         PhysixBodyComponent bodyComponent = engine
                 .createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody,
                 physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
@@ -206,5 +243,63 @@ public class EntityCreator {
 
         engine.addEntity(entity);
         return entity;
+    }
+
+    public static Entity DestructablePlattformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode, int hitpoints) {
+        Entity e = createPlatformBlock(x,y, travelDistance, dir, mode);
+        HealthComponent h = new HealthComponent();
+        h.Value = hitpoints;
+        e.add(h);
+        return e;
+    }
+
+    public static Entity IndestructablePlattformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode) {
+        return createPlatformBlock(x,y, travelDistance, dir, mode);
+    }
+
+    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Direction direction) {
+        Entity entity = engine.createEntity();
+
+
+        float angle;
+        if (direction == Direction.RIGHT) {
+            angle = (float) Math.PI/2;
+        } else if (direction == Direction.UP) {
+            angle = (float) Math.PI;
+        } else if (direction == Direction.DOWN) {
+            angle = 0;
+        } else {
+            angle = (float) Math.PI*3/2;
+        }
+
+        PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        bodyComponent.getBody().setUserData(bodyComponent);
+
+        PhysixFixtureDef fixtureDefSpikeGround = new PhysixFixtureDef(physixSystem)
+                .density(1)
+                .friction(1f)
+                .shapeBox(width, height * 0.8f, new Vector2(0, -height*0.2f), angle)
+                .restitution(0.1f);
+        Fixture fixtureSpikeGround = bodyComponent.createFixture(fixtureDefSpikeGround);
+        fixtureSpikeGround.setUserData(bodyComponent);
+
+        PhysixFixtureDef fixtureDefBottomSpike = new PhysixFixtureDef(physixSystem)
+                .density(1)
+                .friction(1f)
+                .shapeBox(width, height * 0.2f, new Vector2(0, height*0.8f), angle)
+                .restitution(0.1f);
+        Fixture fixtureBottomSpike = bodyComponent.createFixture(fixtureDefBottomSpike);
+        fixtureBottomSpike.setUserData(bodyComponent);
+
+        entity.add(bodyComponent);
+
+        DestructableBlockComponent blockComp = new DestructableBlockComponent();
+        entity.add(blockComp);
+
+        engine.addEntity(entity);
+        return entity;
+
     }
 }
