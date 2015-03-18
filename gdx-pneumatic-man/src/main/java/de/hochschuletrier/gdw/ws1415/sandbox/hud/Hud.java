@@ -50,7 +50,7 @@ public class Hud extends SandboxGame
       {
           batch = DrawUtil.batch;
           stage = new Stage();
-          font = assetManager.getFont("verdana_24");
+          font = assetManager.getFont("orbitron_32");
           timer = new Timer();
           
           
@@ -115,9 +115,9 @@ public class Hud extends SandboxGame
           
 //          font.draw(batch, "Score: " + score, 0, 20);
           
-          font.draw(batch, "Time: " + time, stage.getWidth()/2-40, stage.getHeight()-30);
+          font.draw(batch, "Time: " + time, Gdx.graphics.getWidth()/2-40, Gdx.graphics.getHeight()-25);
           
-          font.draw(batch, "Zerstörte Blöcke: " + blocks, 10, stage.getHeight()-30);
+          font.draw(batch, "Zerstörte Blöcke: " + blocks, 10, Gdx.graphics.getHeight()-25);
           
 //          sprite.draw(batch);
 //          batch.draw(sprite, 200, 200);
