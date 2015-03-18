@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -56,6 +57,13 @@ public class MenuPage extends Group {
     protected final void addCenteredImage(int x, int y, int width, int height, DecoImage image, Runnable runnable)
     {
         image.setPosition(x+width,y-height/2);
+        image.setTouchable(Touchable.enabled);
+        image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                runnable.run();
+            }
+        });
         addActor(image);
     }
     protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable, String style) {
