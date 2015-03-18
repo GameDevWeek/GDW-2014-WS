@@ -52,6 +52,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         addRenderer(new LightRenderer());
         
         this.rayHandler = rayHandler;
+        this.rayHandler.setAmbientLight(0.5f);
         this.cameraSystem = cameraSystem;
     }
     

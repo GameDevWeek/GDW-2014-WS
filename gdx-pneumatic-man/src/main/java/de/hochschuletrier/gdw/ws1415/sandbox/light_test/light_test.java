@@ -87,7 +87,7 @@ public class light_test extends SandboxGame {
        move = pos;
        player.add(pos);
        
-       /* ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+       ParticleComponent pe = engine.createComponent(ParticleComponent.class);
        
        pe.particleEffect = new ParticleEffect();
        
@@ -97,7 +97,7 @@ public class light_test extends SandboxGame {
        pe.particleEffect.start();
        
        player.add(pe);
-      */ 
+      
        PointLightComponent pl = engine.createComponent(PointLightComponent.class);
        pl.pointLight = new PointLight(this.sortedRenderSystem.getRayHandler(),360,new Color(1f,0f,0f,1f),50f,20f,20f);
        player.add(pl);
