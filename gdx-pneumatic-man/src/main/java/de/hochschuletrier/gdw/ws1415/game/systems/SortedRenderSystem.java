@@ -22,6 +22,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.renderers.TextureRenderer;
 public class SortedRenderSystem extends SortedFamilyRenderSystem {
 	private LayerComponent currentLayer = null;
 	private CameraSystem cameraSystem;
+	private boolean appliedParallax = false;
 	
     @SuppressWarnings("unchecked")
 	public SortedRenderSystem(CameraSystem cameraSystem) {
@@ -48,17 +49,19 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     @Override
     public void processEntity(Entity entity, float deltaTime) {
     	LayerComponent layerComponent = ComponentMappers.layer.get(entity);
-    	boolean appliedParallax = false;
-    	if (layerComponent != currentLayer) {
+    	
+    	if (currentLayer == null || layerComponent.layer != currentLayer.layer) {
+        	if(appliedParallax) {
+        		cameraSystem.postParallax();
+        		appliedParallax = false;
+        	}
+        	
     		onLayerChanged(currentLayer, layerComponent);
     		currentLayer = layerComponent;
     		appliedParallax = true;
     	}
     	
     	super.processEntity(entity, deltaTime);
-    	
-    	if(appliedParallax)
-    		cameraSystem.postParallax();
     }
     
     private void onLayerChanged(LayerComponent oldLayer, LayerComponent newLayer) {
@@ -67,8 +70,8 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     
     @Override
 	public void update (float deltaTime) {	
+    	cameraSystem.postParallax();
     	cameraSystem.update(deltaTime);
-    	
     	super.update(deltaTime);	
 	}
     

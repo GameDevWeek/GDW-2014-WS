@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
+import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
@@ -39,8 +40,8 @@ public class CameraSystem {
 
         camera.setDestination(dummyVector.x, dummyVector.y);
         camera.updateForced();
-        
-		camera.bind();
+
+        camera.bind();
 	}
 	
 	/**
@@ -51,6 +52,7 @@ public class CameraSystem {
 		camera.updateForced();
 		
 		camera.setDestination(cameraDestination.x, cameraDestination.y);
+		camera.bind();
 	}
 	
     void update(float deltaTime) {

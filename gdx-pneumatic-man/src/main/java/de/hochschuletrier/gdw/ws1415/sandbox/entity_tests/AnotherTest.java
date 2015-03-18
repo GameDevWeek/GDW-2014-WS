@@ -125,7 +125,7 @@ public class AnotherTest extends SandboxGame {
 
                     TextureRegion region = new TextureRegion(image);
                     region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
-                    createTileEntity(px, py, layer.getIndex(), 0.9f, image, region);
+                    createTileEntity(px, py, layer.getIndex(), 0.5f, image, region);
                 }
         }
 
