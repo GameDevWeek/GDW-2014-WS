@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ws1415.game.systems;
+package de.hochschuletrier.gdw.ws1415.game.systems.renderers;
 
 import java.util.HashMap;
 

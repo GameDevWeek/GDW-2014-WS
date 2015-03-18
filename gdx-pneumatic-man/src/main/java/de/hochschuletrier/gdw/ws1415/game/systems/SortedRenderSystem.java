@@ -1,13 +1,18 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
+import box2dLight.RayHandler;
+
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.Comparator;
 
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ws1415.game.entitylisteners.LightAtEntityListener;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.DestructableBlockRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.ParticleRenderer;
@@ -20,13 +25,21 @@ import de.hochschuletrier.gdw.ws1415.game.systems.renderers.TextureRenderer;
  *
  */
 public class SortedRenderSystem extends SortedFamilyRenderSystem {
+    
+    public RayHandler rayHandler;
 	private LayerComponent currentLayer = null;
 	private CameraSystem cameraSystem;
 	
-    @SuppressWarnings("unchecked")
-	public SortedRenderSystem(CameraSystem cameraSystem) {
-        super(Family.all(PositionComponent.class, LayerComponent.class).get(), new Comparator<Entity>() {
+    @Override
+    public void addedToEngine(Engine engine)
+    {
+        super.addedToEngine(engine);
+        engine.addEntityListener(new LightAtEntityListener(rayHandler));
+    }
 
+    @SuppressWarnings("unchecked")
+	public SortedRenderSystem(CameraSystem cameraSystem, World world) {
+        super(Family.all(PositionComponent.class, LayerComponent.class).get(), new Comparator<Entity>() { 
             @Override
             public int compare(Entity e1, Entity e2) {
                 LayerComponent ac = ComponentMappers.layer.get(e1);
@@ -43,6 +56,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         addRenderer(new TextureRenderer());
         addRenderer(new ParticleRenderer());
         
+        this.rayHandler = new RayHandler(world);
         this.cameraSystem = cameraSystem;
     }
     
@@ -65,6 +79,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     @Override
 	public void update (float deltaTime) {	
     	cameraSystem.update(deltaTime);
+    	rayHandler.updateAndRender();
     	super.update(deltaTime);	
 	}
     

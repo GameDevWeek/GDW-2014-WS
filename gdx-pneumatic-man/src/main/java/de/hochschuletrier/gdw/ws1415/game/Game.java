@@ -1,6 +1,9 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import box2dLight.PointLight;
+
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -30,7 +33,6 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
@@ -42,6 +44,10 @@ import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
+
+
+
+
 
 
 
@@ -82,6 +88,13 @@ public class Game {
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
 
     public Game() {
+        
+        Entity player = engine.createEntity();
+        PointLightComponent pe = engine.createComponent(PointLightComponent.class);
+        pe.pointLight = new PointLight(rayHandler, rays);
+        player.add(pe);
+        
+        engine.addEntity(player);
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
             togglePhysixDebug.register();
