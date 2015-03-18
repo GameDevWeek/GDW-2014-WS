@@ -35,11 +35,12 @@ import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 
@@ -109,10 +110,6 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-
-        cameraSystem.follow(EntityCreator.createAndAddPlayer(500, 250, 0));
-
-
         addSystems();
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
@@ -179,7 +176,23 @@ public class Game {
                     if(obj.getName().equalsIgnoreCase("RockTrigger")){
                         int RockId = obj.getIntProperty("RockId", 0);
                         Entity e = rocks.get(RockId);
-                        EntityCreator.createTrapSensor(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight(), e);
+                        EntityCreator.createTrapSensor(
+                                obj.getX() - obj.getWidth()/2, obj.getY() - obj.getHeight()/2,
+                                obj.getWidth(), obj.getHeight(), e);
+                    }
+                    if(obj.getName().equalsIgnoreCase("Player")){
+                        cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
+                    }
+                    if(obj.getName().equalsIgnoreCase("PlayerSpawn")){
+                        //TODO: spawn point entity ?!
+                    }
+                    if(obj.getName().equalsIgnoreCase("LevelEnd")){
+                        EntityCreator.createAndAddEventBox(EventBoxType.EVENT, obj.getX(), obj.getY());
+                    }
+                    if(obj.getName().equalsIgnoreCase("Enemy")){
+                        Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.LEFT.name()).toUpperCase());
+                        AIType type = AIType.valueOf(obj.getProperty("Type", AIType.CHAMELEON.name()).toUpperCase());
+                        EntityCreator.createAndAddEnemy(obj.getX(), obj.getY(), dir, type);
                     }
                 }
                 continue; // because it was a object layer
