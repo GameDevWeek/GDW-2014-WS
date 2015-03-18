@@ -36,10 +36,10 @@ public class PlayerContactListener extends PhysixContactAdapter {
                         .getComponent(DamageComponent.class).damage;
             }
         }
+    }
 
         // If the contact was with a tile then nothing happens to the player but
         // the tile's health
         // is reduced by 1.
-    }
 
 }

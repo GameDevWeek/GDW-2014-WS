@@ -10,6 +10,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.DestructableBlockRenderer;
+import de.hochschuletrier.gdw.ws1415.game.systems.renderers.ParticleRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.TextureRenderer;
 
 /**
@@ -40,6 +41,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         addRenderer(new AnimationRenderer());
         addRenderer(new DestructableBlockRenderer());
         addRenderer(new TextureRenderer());
+        addRenderer(new ParticleRenderer());
         
         this.cameraSystem = cameraSystem;
     }
