@@ -11,7 +11,7 @@ import de.hochschuletrier.gdw.commons.gdx.state.ScreenListener;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.gdx.viewport.ExtendScreenViewport;
 import java.util.LinkedList;
-
+import java.awt.Cursor;
 /**
  *
  * @author Santo Pfingsten

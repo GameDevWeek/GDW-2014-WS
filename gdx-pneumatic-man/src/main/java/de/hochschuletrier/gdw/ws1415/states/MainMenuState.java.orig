@@ -1,4 +1,4 @@
-    package de.hochschuletrier.gdw.ws1415.states;
+package de.hochschuletrier.gdw.ws1415.states;
 
 import java.awt.MouseInfo;
 
@@ -37,14 +37,16 @@ public class MainMenuState extends BaseGameState {
 
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
+<<<<<<< HEAD
+        hand=new DecoImage(assetManager.getTexture("zeigefinger"));
+=======
         
         //test IngameMenu:
 //        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
-        hand = new DecoImage(assetManager.getTexture("zeigefinger"));
+        
+>>>>>>> 386d870d3cac29e23f94b3245acec0a34166e484
         menuManager.addLayer(mainMenu);
         mainMenu.addActor(hand);
-        menuManager.addLayer(new DecoImage(assetManager.getTexture("background_overlay")));
-        
         menuManager.pushPage(mainMenu);
         
 //        menuManager.getStage().setDebugAll(true);
