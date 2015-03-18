@@ -169,10 +169,112 @@ public class AnotherTest extends SandboxGame {
         }
     }
     
-    private void createTileEntity(TileInfo info, int tileX, int tileY) {
+    private void addRenderComponents(Entity entity, TileInfo info, int tileX, int tileY) {
+    	TileSet tileset = map.findTileSet(info.globalId);
+    	Texture image = (Texture) tileset.getAttachment();
+
+        int sheetX = tileset.getTileX(info.localId);
+        int sheetY = tileset.getTileY(info.localId);
+
+        int mapTileWidth = map.getTileWidth();
+        int mapTileHeight = map.getTileHeight();
+        
+        int tileOffsetY = tileset.getTileHeight() - mapTileHeight;
+
+        float px = (tileX * mapTileWidth);
+        float py = (tileY * mapTileHeight) - tileOffsetY;
+        
+        int coordX = (int) (sheetX * tileset.getTileWidth()); 
+        coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
+        int coordY = ((int) sheetY * tileset.getTileHeight());
+        coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();                
+        
+        TextureRegion region = new TextureRegion(image);
+        region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
+        addRenderComponents(entity, px, py, 0, 0.2f, image, region);
+    }
+    
+    private void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, AnimationExtended animation) {
+        LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
+        entityLayer.layer = layer;
+        entityLayer.parallax = parallax;
+        
+        AnimationComponent anim = engine.createComponent(AnimationComponent.class);
+        anim.animation = animation;
+        
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.x = x;
+        pos.y = y;
+        pos.rotation = 0;
+        
+        entity.add(pos);
+        entity.add(entityLayer);
+        entity.add(anim);
+    }
+    
+    private void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, Texture texture, TextureRegion region) {
+        LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
+        entityLayer.layer = layer;
+        entityLayer.parallax = parallax;
+        
+        TextureComponent tex = engine.createComponent(TextureComponent.class);
+        tex.texture = texture;
+        tex.region = region;
+        
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.x = x;
+        pos.y = y;
+        pos.rotation = 0;
+        
+        entity.add(pos);
+        entity.add(entityLayer);
+        entity.add(tex);
+    }
+    
+    private void addRenderComponents(Entity entity, TileInfo info, int tileX, int tileY, int frames) {
+    	assert(frames > 1);
+    	
     	TileSet tileset = map.findTileSet(info.globalId);
     	Texture image = (Texture) tileset.getAttachment();
     	
+    	TileSetAnimation animation = new TileSetAnimation(
+                frames,
+                tileset.getFloatProperty("animationDuration", 0),
+                tileset.getIntProperty("animationTileOffset", 0));
+    	
+    	TextureRegion[] regions = new TextureRegion[frames];
+    	float[] frameDurations = new float[frames];
+    	
+    	int tileOffsetY = tileset.getTileHeight() - map.getTileHeight();
+    	
+        float px = (tileX * map.getTileWidth());
+        float py = (tileY * map.getTileHeight()) - tileOffsetY;
+        
+    	for(int i=0; i<frames; i++) {
+            tileset.updateAnimation(animation.frameDuration*i);
+            
+            int sheetX = tileset.getTileX(info.localId);
+            int sheetY = tileset.getTileY(info.localId);
+            
+            int coordX = (int) (sheetX * tileset.getTileWidth()); 
+            coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
+            int coordY = ((int) sheetY * tileset.getTileHeight());
+            coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();  
+            
+            regions[i] = new TextureRegion(image);
+            regions[i].setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
+            frameDurations[i] = animation.frameDuration;
+    	}
+
+    	tileset.updateAnimation(0f);
+    	AnimationExtended anim = new AnimationExtended(PlayMode.LOOP, frameDurations, regions);
+    	addRenderComponents(entity, px, py, 0, 0.2f, anim);
+    }
+    
+    private void createTileEntity(TileInfo info, int tileX, int tileY) {
+    	TileSet tileset = map.findTileSet(info.globalId);
+    	Texture image = (Texture) tileset.getAttachment();
+
         int sheetX = tileset.getTileX(info.localId);
         int sheetY = tileset.getTileY(info.localId);
 
