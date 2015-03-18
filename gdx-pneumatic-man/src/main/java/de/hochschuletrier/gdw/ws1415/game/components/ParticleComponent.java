@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Pool;
 
 public class ParticleComponent extends Component implements Pool.Poolable
-{
+{ 
+    public ParticleEffect particleEffect;
+    public boolean loop = false; 
     
-    ParticleEffect pe;
-
     @Override
     public void reset()
     {
-        pe = null;
+        this.particleEffect = null;
+        this.loop = false;
     }
-
 }
