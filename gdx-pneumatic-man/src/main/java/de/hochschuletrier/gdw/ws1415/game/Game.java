@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -38,15 +39,16 @@ import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-
+import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-
 import de.hochschuletrier.gdw.ws1415.game.systems.AnimationRenderSubsystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.PhysixUtil;
+
+
 
 
 import java.util.HashMap;
@@ -70,6 +72,7 @@ public class Game {
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX+2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
+    private final InputGamepadSystem inputGamepadSystem = new InputGamepadSystem();
     private final AISystem aisystems = new AISystem(
             GameConstants.PRIORITY_PHYSIX + 1,
             physixSystem
@@ -116,7 +119,9 @@ public class Game {
         
     
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
-        
+        Controllers.getControllers().first().addListener(inputGamepadSystem);
+        Entity entity = EntityCreator.createAndAddPlayer(0, 0, 0, engine);
+        engine.addEntity(entity);
 
         
     }
@@ -172,8 +177,8 @@ public class Game {
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
-        engine.addSystem(inputKeyboardSystem);
-
+       // engine.addSystem(inputKeyboardSystem);
+        engine.addSystem(inputGamepadSystem);
         engine.addSystem(aisystems);
     }
 

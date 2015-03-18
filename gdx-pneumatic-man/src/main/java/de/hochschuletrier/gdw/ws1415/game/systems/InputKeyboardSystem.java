@@ -28,6 +28,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
     protected void processEntity(Entity entity, float deltaTime)
     {
         InputComponent inputComponent = entity.getComponent(InputComponent.class);
+       
         inputComponent.reset();
         if(jump)
         {
