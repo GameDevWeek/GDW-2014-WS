@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ws1415.states;
+    package de.hochschuletrier.gdw.ws1415.states;
 
 import java.awt.MouseInfo;
 
@@ -16,6 +16,7 @@ import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.sandbox.menu.IngameMenu;
 import de.hochschuletrier.gdw.ws1415.sandbox.menu.MainMenu;
 
 /**
@@ -36,7 +37,10 @@ public class MainMenuState extends BaseGameState {
 
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
-        hand=new DecoImage(assetManager.getTexture("zeigefinger"));
+        
+        //test IngameMenu:
+//        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
+        
         menuManager.addLayer(mainMenu);
         mainMenu.addActor(hand);
         menuManager.pushPage(mainMenu);
