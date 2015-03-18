@@ -16,6 +16,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
@@ -121,5 +122,32 @@ public class EntityCreator {
         engine.addEntity(entity);
         return entity;
 
+    }
+    
+    public static Entity createAndAddLava(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height ){
+        Entity entity = engine.createEntity();
+        
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        bodyComponent.getBody().setUserData(bodyComponent);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f).shapeBox(width, height)
+                .restitution(0.1f);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        entity.add(bodyComponent);
+        
+        KillsPlayerOnContactComponent killComponent = engine.createComponent(
+                KillsPlayerOnContactComponent.class);
+        entity.add(killComponent);
+        
+        PositionComponent positionComponent = engine.createComponent(PositionComponent.class);
+        entity.add(positionComponent);
+        
+        engine.addEntity(entity);
+        return entity;
     }
 }
