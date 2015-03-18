@@ -17,6 +17,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
@@ -24,13 +25,11 @@ import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 
 public class EntityCreator {
 
-    public static Entity createAndAddPlayer(float x, float y, float rotation,
-            PooledEngine engine) {
+    public static Entity createAndAddPlayer(float x, float y, float rotation, PooledEngine engine) {
         Entity player = engine.createEntity();
 
         player.add(engine.createComponent(AnimationComponent.class));
         player.add(engine.createComponent(HealthComponent.class));
-        player.add(engine.createComponent(SpawnComponent.class));
         player.add(engine.createComponent(DamageComponent.class));
         
         player.add(engine.createComponent(PositionComponent.class));
@@ -40,6 +39,7 @@ public class EntityCreator {
 
         
         player.add(engine.createComponent(PlayerComponent.class));
+        player.add(engine.createComponent(InputComponent.class));
 
         engine.addEntity(player);
         return player;
@@ -50,7 +50,6 @@ public class EntityCreator {
         Entity player = engine.createEntity();
         
         player.add(engine.createComponent(PositionComponent.class));
-        player.add(engine.createComponent(SpawnComponent.class));
         
         player.add(entity.getComponent(AnimationComponent.class));
         player.getComponent(AnimationComponent.class).animation
@@ -59,27 +58,32 @@ public class EntityCreator {
         position.rotation += 90;
         player.add(position);
 
-        
         engine.addEntity(player);
         return player;
     }
 
-    public static Entity createAndAddEnemy(float x, float y, float rotation,
-            PooledEngine engine) {
-        Entity enemy = engine.createEntity();
+    public static Entity createAndAddEnemy(PhysixSystem physixSystem, float x, float y, float rotation, PooledEngine engine) {
+        Entity entity = engine.createEntity();
 
-        enemy.add(engine.createComponent(DamageComponent.class));
-        enemy.add(engine.createComponent(AIComponent.class));
-        enemy.add(engine.createComponent(AnimationComponent.class));
-        enemy.add(engine.createComponent(PositionComponent.class));
-        enemy.add(engine.createComponent(SpawnComponent.class));
+        entity.add(engine.createComponent(DamageComponent.class));
+        entity.add(engine.createComponent(AIComponent.class));
+        entity.add(engine.createComponent(AnimationComponent.class));
+        entity.add(engine.createComponent(PositionComponent.class));
+        entity.add(engine.createComponent(SpawnComponent.class));
 
-        engine.addEntity(enemy);
-        return enemy;
+        PhysixBodyComponent pbc = new PhysixBodyComponent();
+        PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem).position(x, y).fixedRotation(true);
+        PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem).density(1).friction(1f).shapeBox(10, 10).restitution(0.1f);
+        Fixture fixture = pbc.createFixture(pfx);
+        fixture.setUserData(pbdy);
+        pbc.init(pbdy, physixSystem, entity);
+
+
+        engine.addEntity(entity);
+        return entity;
     }
 
-    public static Entity createAndAddEventBox(EventBoxType type, float x,
-            float y, PooledEngine engine) {
+    public static Entity createAndAddEventBox(EventBoxType type, float x, float y, PooledEngine engine) {
         Entity box = engine.createEntity();
 
         box.add(engine.createComponent(TriggerComponent.class));
@@ -89,9 +93,7 @@ public class EntityCreator {
         return box;
     }
 
-    public static Entity createAndAddInvulnerableFloor(PooledEngine engine,
-            PhysixSystem physixSystem, Rectangle rect, int tileWidth,
-            int tileHeight) {
+    public static Entity createAndAddInvulnerableFloor(PooledEngine engine, PhysixSystem physixSystem, Rectangle rect, int tileWidth, int tileHeight) {
         float width = rect.width * tileWidth;
         float height = rect.height * tileHeight;
         float x = rect.x * tileWidth + width / 2;
@@ -119,9 +121,7 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddVulnerableFloor(PooledEngine engine,
-            PhysixSystem physixSystem, float x, float y, float width,
-            float height) {
+    public static Entity createAndAddVulnerableFloor(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height) {
         Entity entity = engine.createEntity();
 
         PhysixBodyComponent bodyComponent = engine
