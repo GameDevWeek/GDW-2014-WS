@@ -22,4 +22,6 @@ public class ComponentMappers {
     public static final ComponentMapper<JumpComponent> jump = ComponentMapper.getFor(JumpComponent.class);
     public static final ComponentMapper<InputComponent> input = ComponentMapper.getFor(InputComponent.class);
     public static final ComponentMapper<ParticleComponent> particle = ComponentMapper.getFor(ParticleComponent.class);
+    public static final ComponentMapper<LavaFountainComponent> lavaFountain = ComponentMapper.getFor(LavaFountainComponent.class);
+
 }
