@@ -25,19 +25,20 @@ public class MainMenuState extends BaseGameState {
 
     private final MenuManager menuManager = new MenuManager(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, null);
     private final InputForwarder inputForwarder;
-
+    
     public MainMenuState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
-        music.play();
 
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
         menuManager.addLayer(mainMenu);
-
+        
         menuManager.pushPage(mainMenu);
+        menuManager.
 //        menuManager.getStage().setDebugAll(true);
 
         Main.getInstance().addScreenListener(menuManager);
+        
 
         inputForwarder = new InputForwarder() {
             @Override
