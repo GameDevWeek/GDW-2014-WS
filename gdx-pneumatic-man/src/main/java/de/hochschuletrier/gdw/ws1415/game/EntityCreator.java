@@ -115,7 +115,7 @@ public class EntityCreator {
         entity.add(blockComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 0;
+        Health.Value = 1;
         entity.add(Health);
 
         engine.addEntity(entity);

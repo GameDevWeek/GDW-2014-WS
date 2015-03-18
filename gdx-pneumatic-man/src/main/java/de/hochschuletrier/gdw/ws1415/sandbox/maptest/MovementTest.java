@@ -1,11 +1,17 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.maptest;
 
+import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -32,17 +38,14 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.BouncingComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
-
-import java.util.HashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -65,6 +68,8 @@ public class MovementTest extends SandboxGame {
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
+
+    private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
     private float totalMapWidth, totalMapHeight;
@@ -83,6 +88,7 @@ public class MovementTest extends SandboxGame {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(movementSystem);
+        engine.addSystem(_HealthSystem);
     }
 
     @Override
@@ -199,7 +205,7 @@ public class MovementTest extends SandboxGame {
             for (int i = 0; i < map.getWidth(); i++) {
                 for (int j = 0; j < map.getHeight(); j++) {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
-                        if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0
+                        if (tiles[i][j].getIntProperty("Hitpoints", 1) != 0
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
                             EntityCreator.createAndAddVulnerableFloor(engine,
                                     physixSystem,
@@ -218,9 +224,11 @@ public class MovementTest extends SandboxGame {
     @Override
     public void update(float delta) {
         camera.bind();
+        /*
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
+        */
         engine.update(delta);
         
         if(movementComponent.movingLeft){
@@ -236,6 +244,32 @@ public class MovementTest extends SandboxGame {
 
         if(playerBody != null) {
            
+            float MovementX = 0.0f;
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                MovementX -= 300.0f;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                MovementX += 300.0f;
+            }
+            playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
+            
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+                jumpComponent.jump();
+            }
+            
+            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            {
+                Family.Builder FB = new Family.Builder();
+                Family HealthFamily = FB.one(HealthComponent.class).get();
+                ImmutableArray<Entity> HealthEntities = engine.getEntitiesFor(HealthFamily);
+                logger.info(""+HealthEntities.size());
+                for(Entity e : HealthEntities)
+                {
+                    HealthComponent Health = e.getComponent(HealthComponent.class);
+                    Health.Value -= 1;
+                }
+            }
+            /*
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 movementComponent.moveLeft();
             }
@@ -245,6 +279,7 @@ public class MovementTest extends SandboxGame {
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
                 jumpComponent.jump();
             }
+            */
             
             camera.setDestination(playerBody.getPosition());
         }
