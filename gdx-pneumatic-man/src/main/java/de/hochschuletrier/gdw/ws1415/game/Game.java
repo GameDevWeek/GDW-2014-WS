@@ -2,6 +2,8 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
+import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
@@ -29,22 +31,31 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.ws1415.Main;
-import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
+
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
+
+
+
+
+import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
 
 
 
@@ -199,7 +210,7 @@ public class Game {
                         //TODO: spawn point entity ?!
                     }
                     if(obj.getName().equalsIgnoreCase("LevelEnd")){
-                        EntityCreator.createAndAddEventBox(EventBoxType.EVENT, obj.getX(), obj.getY());
+                        EntityCreator.createAndAddEventBox(obj.getX(), obj.getY());
                     }
                     if(obj.getName().equalsIgnoreCase("Enemy")){
                         Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.LEFT.name()).toUpperCase());

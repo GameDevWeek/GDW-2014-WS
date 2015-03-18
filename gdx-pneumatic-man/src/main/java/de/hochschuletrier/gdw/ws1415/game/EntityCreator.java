@@ -24,15 +24,26 @@ import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-
-
-import de.hochschuletrier.gdw.ws1415.game.components.*;
-import de.hochschuletrier.gdw.ws1415.game.components.*;
-import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DeathComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockTriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
@@ -46,7 +57,6 @@ public class EntityCreator {
         entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(DamageComponent.class));
-        entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
 
         float width = GameConstants.getTileSizeX() * 0.9f;
@@ -70,15 +80,37 @@ public class EntityCreator {
         jumpComponent.restingTime = 0.02f;
         entity.add(jumpComponent);
 
-        MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
-        moveComponent.speed = 10000.0f;
-        entity.add(moveComponent);
-
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
-
         engine.addEntity(entity);
         return entity;
+    }
+    
+    public static Entity createAndAddDyingCharacter(Entity entityToDie) {
+        Entity dyingEntity = engine.createEntity();
+        
+        //TODO
+        //Loading new Dying-Animation - waiting for Assets
+        
+        
+        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
+        
+        
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("src/main/resources/images/Cowboy small.jpg")));
+        deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
+        
+//        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
+//        animation.IsActive = false;
+//        dyingEntity.add(animation);
+        
+        PositionComponent position = entityToDie.getComponent(PositionComponent.class);
+
+        dyingEntity.add(deathAnimation);
+        dyingEntity.add(position);
+        dyingEntity.add(deathComponent);
+
+        
+        engine.addEntity(dyingEntity);
+        return dyingEntity;
     }
 
     /**
@@ -118,7 +150,7 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddEventBox(EventBoxType type, float x, float y) {
+    public static Entity createAndAddEventBox(float x, float y) {
         Entity box = engine.createEntity();
 
         box.add(engine.createComponent(TriggerComponent.class));
@@ -217,7 +249,7 @@ public class EntityCreator {
         entity.add(blockComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 0;
+        Health.Value = 1;
         entity.add(Health);
 
         engine.addEntity(entity);

@@ -1,11 +1,18 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.maptest;
 
+import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -32,21 +39,16 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.BouncingComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  *
  * @author Santo Pfingsten
@@ -68,6 +70,8 @@ public class MovementTest extends SandboxGame {
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
+
+    private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
     private float totalMapWidth, totalMapHeight;
@@ -83,18 +87,19 @@ public class MovementTest extends SandboxGame {
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
 
     public MovementTest() {
+        EntityCreator.engine = this.engine;
+        EntityCreator.physixSystem = this.physixSystem;
+
+        engine.addSystem(_HealthSystem);
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(movementSystem);
         engine.addSystem(new InputKeyboardSystem());
-
-        EntityCreator.engine = this.engine;
-        EntityCreator.physixSystem = this.physixSystem;
     }
 
     @Override
     public void init(AssetManagerX assetManager) {
-        map = loadMap("data/maps/Test_Physics.tmx");
+        map = loadMap("data/maps/Testkarte_17.03.tmx");
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
@@ -203,13 +208,12 @@ public class MovementTest extends SandboxGame {
             e.printStackTrace();
         }
 
+        int tileWidth = map.getTileWidth();
+        int tileHeight = map.getTileHeight();
         RectangleGenerator generator = new RectangleGenerator();
-        generator.generate(map,
-                (Layer layer, TileInfo info) -> {
-                    return info.getBooleanProperty("Invulnerable", false)
-                    && info.getProperty("Type", "").equals("Floor");
-                },
-                EntityCreator::createAndAddInvulnerableFloor);
+        generator.generate(map, (Layer layer, TileInfo info) -> info
+                .getBooleanProperty("Invulnerable", false),
+                (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         for (Layer layer : map.getLayers()) {
             TileInfo[][] tiles = layer.getTiles();
@@ -217,7 +221,7 @@ public class MovementTest extends SandboxGame {
             for (int i = 0; i < map.getWidth(); i++) {
                 for (int j = 0; j < map.getHeight(); j++) {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
-                        if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0
+                        if (tiles[i][j].getIntProperty("Hitpoints", 1) != 0
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
                         	TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddVulnerableFloor(
@@ -241,12 +245,37 @@ public class MovementTest extends SandboxGame {
         engine.update(delta);
         
         
+        _HealthSystem.update(delta);
         mapRenderer.update(delta);
         camera.update(delta);
         
         
         if(playerBody != null) {
-           /*
+            /*
+            float MovementX = 0.0f;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                MovementX += 300.0f;
+            }
+            playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
+            
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+                playerBody.applyImpulse(0, 1000);
+            }
+            */
+            
+            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            {
+                Family.Builder FB = new Family.Builder();
+                Family HealthFamily = FB.one(HealthComponent.class).get();
+                ImmutableArray<Entity> HealthEntities = engine.getEntitiesFor(HealthFamily);
+                for(Entity e : HealthEntities)
+                {
+                    HealthComponent Health = e.getComponent(HealthComponent.class);
+                    Health.Value -= 1;
+                }
+            }
+            /*
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 movementComponent.moveLeft();
             }
