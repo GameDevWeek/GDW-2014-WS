@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.light_test;
 
+import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
@@ -19,6 +20,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
@@ -84,7 +86,7 @@ public class light_test extends SandboxGame {
        move = pos;
        player.add(pos);
        
-       ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+       /* ParticleComponent pe = engine.createComponent(ParticleComponent.class);
        
        pe.particleEffect = new ParticleEffect();
        
@@ -94,6 +96,10 @@ public class light_test extends SandboxGame {
        pe.particleEffect.start();
        
        player.add(pe);
+      */ 
+       PointLightComponent pl = engine.createComponent(PointLightComponent.class);
+       pl.pointLight = new PointLight(null, 360);
+       player.add(pl);
        
        
        

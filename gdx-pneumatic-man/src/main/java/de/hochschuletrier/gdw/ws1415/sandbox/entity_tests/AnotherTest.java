@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.entity_tests;
 
+import box2dLight.RayHandler;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
@@ -62,7 +64,8 @@ public class AnotherTest extends SandboxGame {
     private TiledMap map;
     private PhysixBodyComponent playerBody;
     private final CameraSystem cameraSystem = new CameraSystem();
-    private final SortedRenderSystem  renderSystem = new SortedRenderSystem(cameraSystem);
+    private final RayHandler rayHandler = new RayHandler(physixSystem.getWorld());
+    private final SortedRenderSystem  renderSystem = new SortedRenderSystem(cameraSystem,rayHandler);
     
     private Entity player;
     
