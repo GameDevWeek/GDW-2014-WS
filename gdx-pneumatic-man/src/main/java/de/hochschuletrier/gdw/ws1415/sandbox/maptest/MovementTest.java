@@ -93,7 +93,7 @@ public class MovementTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
-        map = loadMap("data/maps/Test_Physics.tmx");
+        map = loadMap("data/maps/Testkarte_17.03.tmx");
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
@@ -205,7 +205,7 @@ public class MovementTest extends SandboxGame {
             for (int i = 0; i < map.getWidth(); i++) {
                 for (int j = 0; j < map.getHeight(); j++) {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
-                        if (tiles[i][j].getIntProperty("Hitpoints", 1) != 0
+                        if (tiles[i][j].getIntProperty("Hitpoints", 0) != 0
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
                             EntityCreator.createAndAddVulnerableFloor(engine,
                                     physixSystem,
@@ -224,11 +224,9 @@ public class MovementTest extends SandboxGame {
     @Override
     public void update(float delta) {
         camera.bind();
-        /*
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
-        */
         engine.update(delta);
         
         if(movementComponent.movingLeft){
@@ -254,7 +252,7 @@ public class MovementTest extends SandboxGame {
             playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
             
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-                jumpComponent.jump();
+                playerBody.applyImpulse(0, 1000);
             }
             
             if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
@@ -262,7 +260,6 @@ public class MovementTest extends SandboxGame {
                 Family.Builder FB = new Family.Builder();
                 Family HealthFamily = FB.one(HealthComponent.class).get();
                 ImmutableArray<Entity> HealthEntities = engine.getEntitiesFor(HealthFamily);
-                logger.info(""+HealthEntities.size());
                 for(Entity e : HealthEntities)
                 {
                     HealthComponent Health = e.getComponent(HealthComponent.class);
