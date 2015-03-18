@@ -27,6 +27,8 @@ public class PlayerContactListener extends PhysixContactAdapter {
         // Player collides with lava.
         if (otherEntity.getComponent(KillsPlayerOnContactComponent.class) != null) {
             // Player dies and level resets.
+            HealthComponent Health = player.getComponent(HealthComponent.class);
+            Health.DecrementByValueNextFrame = Health.Value;
         }
 
         if (otherEntity.getComponent(FallingRockTriggerComponent.class) != null){
@@ -42,6 +44,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
+        
     }
 
         // If the contact was with a tile then nothing happens to the player but

@@ -20,6 +20,7 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
@@ -38,6 +39,7 @@ import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
@@ -99,7 +101,7 @@ public class Gamelogic_Game extends SandboxGame {
         EntityCreator.physixSystem = physixSystem;
     }
 
-    Family PlayerFamily = Family.all(PlayerComponent.class).get();
+    Family PlayerFamily = Family.all(InputComponent.class, PhysixBodyComponent.class).get();
     
     
     @Override
@@ -116,7 +118,7 @@ public class Gamelogic_Game extends SandboxGame {
         //MapLoader mapLoader = new MapLoader(engine, physixSystem, "data/maps/Testkarte_17.03.tmx");
         //Map = mapLoader.getTiledMap();
 
-        Map = Game.loadMap("data/maps/Testkarte_18.03.tmx");
+        Map = Game.loadMap("data/maps/Testkarte_17.03.tmx");
         for (TileSet tileset : Map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
@@ -152,19 +154,23 @@ public class Gamelogic_Game extends SandboxGame {
 
         ImmutableArray<Entity> PlayerMembers = engine.getEntitiesFor(PlayerFamily);
 
-        logger.info(PlayerMembers.size()+"");
-        /*
-        float MovementX = 0.0f;
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            MovementX += 300.0f;
+        if(PlayerMembers.size()>0)
+        {
+            Entity Player = PlayerMembers.first();
+            PhysixBodyComponent playerBody = Player.getComponent(PhysixBodyComponent.class);
+            
+
+            float MovementX = 0.0f;
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                MovementX -= 300.0f;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                MovementX += 300.0f;
+            }
+            playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
+            
         }
-        playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
-        
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            playerBody.applyImpulse(0, 1000);
-        }
-        */
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F2))
         {
             Family.Builder FB = new Family.Builder();
             Family HealthFamily = FB.one(HealthComponent.class).get();
