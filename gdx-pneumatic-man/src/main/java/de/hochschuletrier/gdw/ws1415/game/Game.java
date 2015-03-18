@@ -107,8 +107,7 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-        //dummy
-        createBall(500, 250, 50);
+        EntityCreator.createAndAddPlayer(500, 250);
 
         addSystems();
         addContactListeners();
@@ -214,42 +213,4 @@ public class Game {
         engine.update(delta);
     }
 
-    public void createBall(float x, float y, float radius) {
-        Entity entity = engine.createEntity();
-        entity.add(engine.createComponent(PositionComponent.class));
-        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
-        entity.add(modifyComponent);
-
-        ImpactSoundComponent soundComponent = engine.createComponent(ImpactSoundComponent.class);
-        soundComponent.init(impactSound, 20, 20, 100);
-        entity.add(soundComponent);
-
-        AnimationComponent animComponent = engine.createComponent(AnimationComponent.class);
-        animComponent.animation = ballAnimation;
-        entity.add(animComponent);
-        entity.add(engine.createComponent(LayerComponent.class));
-        
-        MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
-        moveComponent.speed = 10000.0f;
-        entity.add(moveComponent);
-        
-        JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpImpulse = 20000.0f;
-        jumpComponent.restingTime = 0.02f;
-        entity.add(jumpComponent);
-        
-        entity.add(engine.createComponent(InputComponent.class));
-
-        modifyComponent.schedule(() -> {
-            PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem)
-                    .position(x, y).fixedRotation(false);
-            bodyComponent.init(bodyDef, physixSystem, entity);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                    .density(1).friction(0).restitution(0.1f).shapeBox(58, 90);
-            bodyComponent.createFixture(fixtureDef);
-            entity.add(bodyComponent);
-        });
-        engine.addEntity(entity);
-    }
 }
