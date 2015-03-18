@@ -1,6 +1,8 @@
 Soundliste v0.12
 
 [Pneumatik Man]
+*Level Startet
+	letsgo
 
 Presslufthammergeräusch
 	pneu1
@@ -48,20 +50,20 @@ Lava schießt hervor
 	burst1
 	burst2
 
-Block3 nimmt Schaden -> wird zu Block2
-	3Cracks1
-	3Cracks2
-	3Cracks3
-
-Block2 nimmt Schaden -> wird zu Block1
-	2Cracks1
-	2Cracks2
-	2Cracks3
+*Block3 nimmt Schaden -> wird zu Block2
+*Block2 nimmt Schaden -> wird zu Block1
+	cracks1
+	cracks2
+	cracks3
+	cracks4
+	cracks5
+	cracks6
 
 Block1 nimmt Schaden -> zerbricht
-	1Cracks1
-	1Cracks2
-	1Cracks3
+	*debris1
+	*debris2
+	*debris3
+	*debris4
 
 Felsen fällt herunter
 	stoneDrop1
@@ -76,11 +78,11 @@ Felsen schlägt auf etwas auf
 ..
 [Gegner]
 
-Wächter läuft
+Wächterchameleon läuft
 	guardWalk1
 	guardWalk2
 
-Wächter gibt Laute von sich
+Wächterchameleon gibt Laute von sich
 	guardGrunt1
 	guardGrunt2
 	guardGrunt3
