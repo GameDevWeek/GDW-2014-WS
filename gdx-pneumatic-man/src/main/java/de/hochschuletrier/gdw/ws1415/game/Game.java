@@ -119,8 +119,7 @@ public class Game {
     
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         Controllers.getControllers().first().addListener(inputGamepadSystem);
-        Entity entity = EntityCreator.createAndAddPlayer(0, 0, 0, engine);
-        engine.addEntity(entity);
+    
 
         
     }
@@ -200,7 +199,7 @@ public class Game {
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
-       // engine.addSystem(inputKeyboardSystem);
+        engine.addSystem(inputKeyboardSystem);
         engine.addSystem(inputGamepadSystem);
         engine.addSystem(aisystems);
     }
