@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
@@ -43,6 +44,13 @@ public class PlayerContactListener extends PhysixContactAdapter {
             if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
+        }
+        
+        Family VulnerableBlockFamily = Family.all(DestructableBlockComponent.class, HealthComponent.class).get();
+        if(VulnerableBlockFamily.matches(otherEntity))
+        {
+            HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
+            OtherHealth.Value -= 1;
         }
         
     }
