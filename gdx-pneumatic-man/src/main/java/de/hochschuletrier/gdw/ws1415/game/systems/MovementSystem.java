@@ -75,14 +75,13 @@ public class MovementSystem extends IteratingSystem {
                     jump.doJump = false;
                 }
                 // if entity is on the ground, add deltaTime to timeToNextBounce
-                else if (physix.getLinearVelocity().y == 0) {
+                else if (physix.getLinearVelocity().y < EPSILON
+                        && physix.getLinearVelocity().y > -EPSILON) {
                     jump.timeToNextJump += deltaTime;
                 }else{
                     jump.timeToNextJump = 0;
                 }
-            } else {
-                jump.timeToNextJump = 0;
-            }
+            } 
         }
     }
 }
