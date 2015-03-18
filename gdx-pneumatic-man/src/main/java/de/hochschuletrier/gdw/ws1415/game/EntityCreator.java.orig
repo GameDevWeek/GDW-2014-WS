@@ -19,9 +19,7 @@ import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-
-
-import de.hochschuletrier.gdw.ws1415.game.components.*;
+<<<<<<< HEAD
 import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
@@ -38,11 +36,13 @@ import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
+=======
 
 
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
+>>>>>>> develop
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;

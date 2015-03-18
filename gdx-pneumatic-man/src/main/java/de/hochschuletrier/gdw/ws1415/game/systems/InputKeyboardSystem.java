@@ -28,6 +28,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
     protected void processEntity(Entity entity, float deltaTime)
     {
         InputComponent inputComponent = entity.getComponent(InputComponent.class);
+       
         inputComponent.reset();
         if(jump)
         {
@@ -54,13 +55,14 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         switch(keycode)
         {
             case Input.Keys.UP:
+            case Input.Keys.SPACE:
             case Input.Keys.W: jump = true; break;
             case Input.Keys.LEFT:
             case Input.Keys.A: left = true; break;
             case Input.Keys.RIGHT:
             case Input.Keys.D: right = true; break;
             case Input.Keys.ESCAPE:
-            case Input.Keys.P: pause = true; break;
+            case Input.Keys.P: pause = !pause; break;
         }
         return true;
     }
@@ -70,13 +72,12 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         switch(keycode)
         {
             case Input.Keys.UP:
+            case Input.Keys.SPACE:
             case Input.Keys.W: jump = false; break;
             case Input.Keys.LEFT:
             case Input.Keys.A: left = false; break;
             case Input.Keys.RIGHT:
             case Input.Keys.D: right = false; break;
-            case Input.Keys.ESCAPE:
-            case Input.Keys.P: pause = false; break;
         }
         return false;
     }
