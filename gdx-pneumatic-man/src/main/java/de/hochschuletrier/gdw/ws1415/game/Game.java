@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
 import box2dLight.PointLight;
+import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
@@ -52,6 +53,7 @@ import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 
 
+
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
@@ -70,7 +72,8 @@ public class Game {
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
-    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
+    private final RayHandler rayHandler = new RayHandler(physixSystem.getWorld());
+    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
@@ -88,13 +91,6 @@ public class Game {
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
 
     public Game() {
-        
-        Entity player = engine.createEntity();
-        PointLightComponent pe = engine.createComponent(PointLightComponent.class);
-        pe.pointLight = new PointLight(rayHandler, rays);
-        player.add(pe);
-        
-        engine.addEntity(player);
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
             togglePhysixDebug.register();

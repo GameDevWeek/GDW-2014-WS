@@ -5,7 +5,6 @@ import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.Comparator;
 
@@ -38,7 +37,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     }
 
     @SuppressWarnings("unchecked")
-	public SortedRenderSystem(CameraSystem cameraSystem, World world) {
+	public SortedRenderSystem(CameraSystem cameraSystem, RayHandler rayHandler) {
         super(Family.all(PositionComponent.class, LayerComponent.class).get(), new Comparator<Entity>() { 
             @Override
             public int compare(Entity e1, Entity e2) {
@@ -56,7 +55,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         addRenderer(new TextureRenderer());
         addRenderer(new ParticleRenderer());
         
-        this.rayHandler = new RayHandler(world);
+        this.rayHandler = rayHandler;
         this.cameraSystem = cameraSystem;
     }
     

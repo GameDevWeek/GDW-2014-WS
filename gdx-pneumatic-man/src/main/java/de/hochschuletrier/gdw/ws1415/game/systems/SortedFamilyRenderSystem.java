@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
-import box2dLight.RayHandler;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;

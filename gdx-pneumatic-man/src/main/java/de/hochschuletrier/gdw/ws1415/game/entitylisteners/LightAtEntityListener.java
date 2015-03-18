@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ws1415.game.entitylisteners;
 
-import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
@@ -20,10 +19,8 @@ public class LightAtEntityListener implements EntityListener
     public void entityAdded(Entity entity)
     {
         if(ComponentMappers.pointLight.has(entity)){
-            
-            PointLight pointLight = new PointLight(null, 15f, new Color(), 100f, 0, 0);
+            ComponentMappers.pointLight.get(entity).pointLight.add(rayHandler);
         } 
-        
     }
 
     @Override
