@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
@@ -98,7 +99,7 @@ public class light_test extends SandboxGame {
        player.add(pe);
       */ 
        PointLightComponent pl = engine.createComponent(PointLightComponent.class);
-       pl.pointLight = new PointLight(null, 360);
+       pl.pointLight = new PointLight(this.sortedRenderSystem.getRayHandler(),360,new Color(1f,0f,0f,1f),50f,20f,20f);
        player.add(pl);
        
        
@@ -122,13 +123,25 @@ public class light_test extends SandboxGame {
  
     @Override
     public void update(float delta) {
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            move.x -= 2f;
+        float speed = 10000.0f;
+        float velX = 0, velY = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            velX -= delta * speed;
         }
-        
-        if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            move.x += 2f;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            velX += delta * speed;
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            velY -= delta * speed;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            velY += delta * speed;
+        }
+
+        playerBody.setLinearVelocity(velX, velY);
+
+        move.x = playerBody.getPosition().x;
+        move.y = playerBody.getPosition().y;
         
         engine.update(delta);
     }
