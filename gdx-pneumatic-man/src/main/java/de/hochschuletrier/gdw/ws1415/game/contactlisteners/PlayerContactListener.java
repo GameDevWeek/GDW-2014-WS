@@ -46,11 +46,15 @@ public class PlayerContactListener extends PhysixContactAdapter {
             }
         }
         
+        /* Temporäre Lösung - bis Raycast und Stuff fertig */
         Family VulnerableBlockFamily = Family.all(DestructableBlockComponent.class, HealthComponent.class).get();
         if(VulnerableBlockFamily.matches(otherEntity))
         {
-            HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
-            OtherHealth.Value -= 1;
+            if(contact.getWorldManifold().getNormal().y > 0)
+            {
+                HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
+                OtherHealth.Value -= 1;
+            }
         }
         
     }
