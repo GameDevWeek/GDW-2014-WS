@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
@@ -12,6 +13,7 @@ import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.sandbox.menu.IngameMenu;
 import de.hochschuletrier.gdw.ws1415.sandbox.menu.MainMenu;
 
 /**
@@ -25,18 +27,24 @@ public class MainMenuState extends BaseGameState {
 
     private final MenuManager menuManager = new MenuManager(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, null);
     private final InputForwarder inputForwarder;
-
+    
     public MainMenuState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
 
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
+        
+        //test IngameMenu:
+//        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
+        
         menuManager.addLayer(mainMenu);
-
+        
         menuManager.pushPage(mainMenu);
+        
 //        menuManager.getStage().setDebugAll(true);
 
         Main.getInstance().addScreenListener(menuManager);
+        
 
         inputForwarder = new InputForwarder() {
             @Override
