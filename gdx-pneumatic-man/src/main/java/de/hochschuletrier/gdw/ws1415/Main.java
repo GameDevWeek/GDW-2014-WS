@@ -52,10 +52,6 @@ public class Main extends StateBasedGame {
 
     public static final int WINDOW_HEIGHT = 1080;
     public static final int WINDOW_WIDTH = 1920;
-<<<<<<< HEAD
-
-=======
->>>>>>> 79dc524bf5ccf0da3db7ab4be7d915a42aef2e7c
 
     private final AssetManagerX assetManager = new AssetManagerX();
     private static Main instance;
