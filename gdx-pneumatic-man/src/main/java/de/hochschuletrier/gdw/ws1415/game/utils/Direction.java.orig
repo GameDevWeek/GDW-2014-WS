@@ -47,8 +47,16 @@ public enum Direction{
             if(i > 0) return RIGHT;
             else return LEFT;
         else
+<<<<<<< HEAD
+            if(j > 0) return UP;
+            else return DOWN;
+    };
+
+}
+=======
         if(j > 0) return UP;
         else return DOWN;
     };
 
 }
+>>>>>>> 9ad6919a45cecee3487ceaafc8c78f1a4cdff896
