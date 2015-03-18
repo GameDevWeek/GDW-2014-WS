@@ -4,6 +4,10 @@
     "verdana_24": "data/fonts/verdana_24.fnt",
     "verdana_32": "data/fonts/verdana_32.fnt",
     "verdana_46": "data/fonts/verdana_46.fnt",
+<<<<<<< HEAD
     "verdana_90": "data/fonts/verdana_90.fnt",
-    "orbitron" : "data/fonts/OrbitronBlack_Size32.fnt"
+    "orbitron": "data/fonts/Orbitron0.fnt"
+=======
+    "verdana_90": "data/fonts/verdana_90.fnt"
+>>>>>>> e013130df31420d0cb90940ea44f4d00a3fc8912
 }
