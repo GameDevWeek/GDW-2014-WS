@@ -118,8 +118,18 @@ public class Game {
         
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
 
+        Controllers.addListener(inputGamepadSystem);
+        
         if(Controllers.getControllers().size > 0)
-            Controllers.getControllers().first().addListener(inputGamepadSystem);
+        {
+            inputKeyboardSystem.setProcessing(false);
+            inputGamepadSystem.setProcessing(true);
+        }
+        else
+        {
+            inputGamepadSystem.setProcessing(false);
+            inputKeyboardSystem.setProcessing(true);
+        }
     }
 
     private void generateWorldFromTileMap() {
