@@ -108,7 +108,7 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-        EntityCreator.createAndAddPlayer(500, 250);
+        EntityCreator.createAndAddPlayer(500, 250, 0);
 
         addSystems();
         addContactListeners();
