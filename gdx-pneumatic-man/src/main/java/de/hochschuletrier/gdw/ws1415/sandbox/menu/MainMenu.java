@@ -8,6 +8,11 @@ import de.hochschuletrier.gdw.commons.gdx.menu.widgets.RotatingDecoImage;
 
 
 public class MainMenu extends MenuPage{
+    
+    DecoImage start=new DecoImage(assetManager.getTexture("start_button"));
+    DecoImage optionen=new DecoImage(assetManager.getTexture("optionen_button"));
+    DecoImage credits=new DecoImage(assetManager.getTexture("credits_button"));
+    DecoImage ende=new DecoImage(assetManager.getTexture("beenden_button"));
 
     public enum Type {
         MAINMENU,
@@ -16,14 +21,26 @@ public class MainMenu extends MenuPage{
     
     public MainMenu(Skin skin, MenuManager menuManager, Type type)
     {
-        super(skin,"logo" );
-        addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "lkjfljsföljd", () -> System.exit(-1));
+        super(skin,"background_menu" );
+        int x=100;
+        int i=0;
+        int y=370;
+        int yStep=100;
+        
+            addPageEntry(menuManager,x,y-yStep*(i++),"start_button", new OptionMenu(skin, menuManager));
+            addPageEntry(menuManager,x,y-yStep*(i++),"optionen_button", new OptionMenu(skin, menuManager));
+            addPageEntry(menuManager,x,y-yStep*(i++),"credits_button", new OptionMenu(skin, menuManager));
+            addPageEntry(menuManager,x,y-yStep*(i++),"beenden_button", new OptionMenu(skin, menuManager));
+        
+        //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
         
     }
     
-    /*protected final void addPageEntry(MenuManager menuManager, int x, int y, String text, MenuPage page) {
+    protected final void addPageEntry(MenuManager menuManager, int x, int y, String button, MenuPage page) {
         menuManager.addLayer(page);
-        addLeftAlignedButton(x, y, 300, 40, text, () -> menuManager.pushPage(page));
-    }*/
+        
+        //addLeftAlignedButton(x, y, 300, 40, button, () -> menuManager.pushPage(page));
+        addCenteredImage(x,y,860, 40, button, ()-> menuManager.pushPage(page));
+    }
     
 }

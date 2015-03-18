@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ws1415.sandbox.menu;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -48,6 +49,13 @@ public class MenuPage extends Group {
         button.getLabel().setAlignment(Align.center);
     }
     
+    protected final void addCenteredImage(int x, int y, int width, int height, String bild, Runnable runnable){
+       DecoImage image=addImage(x,y,width,height,bild,runnable);
+        
+         
+       
+    }
+    
     protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable, String style) {
         TextButton button = new TextButton(text, skin, style);
         button.setBounds(x, y, width, height);
@@ -59,5 +67,27 @@ public class MenuPage extends Group {
         });
         addActor(button);
         return button;
+    }
+    
+    protected final DecoImage addImage(int x, int y, int width, int height,String bild,  Runnable runnable){
+    DecoImage image=new DecoImage(assetManager.getTexture(bild));
+    image.addListener(new ClickListener() {
+        @Override
+        public void clicked(InputEvent event,float x, float y) {
+            System.out.println("TEST");
+            System.exit(-1);
+            //runnable.run();
+        }
+    });
+    addActor(image);
+    return image;
+    
+    }
+    
+    protected final void addLeftAlignedButton(int x, int y, int width, int height, DecoImage button, Runnable runnable) {
+        //TextButton button = addButton(x, y, width, height, text, runnable, "mainMenu");
+        //button.getLabel().setAlignment(Align.left);
+        button.setPosition(x,y);
+        addActor(button);
     }
 }
