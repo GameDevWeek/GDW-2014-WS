@@ -8,9 +8,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 
-import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.components.DeathComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 
 public class DeathAnimationSystem extends EntitySystem implements EntityListener
@@ -47,8 +45,7 @@ public class DeathAnimationSystem extends EntitySystem implements EntityListener
         for (Entity entity : entities) {
             DeathComponent death = entity.getComponent(DeathComponent.class);
             PositionComponent position = entity.getComponent(PositionComponent.class);
-
-            if (death.duration > 0) 
+            if (death.dyingDuration > 0) 
             {
                 
             }

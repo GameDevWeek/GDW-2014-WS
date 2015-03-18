@@ -91,6 +91,7 @@ public class MovementTest extends SandboxGame {
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(movementSystem);
         engine.addSystem(new InputKeyboardSystem());
+        engine.addSystem(new HealthSystem());
 
         EntityCreator.engine = this.engine;
         EntityCreator.physixSystem = this.physixSystem;
