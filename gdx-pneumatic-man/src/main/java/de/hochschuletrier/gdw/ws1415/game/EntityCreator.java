@@ -49,6 +49,7 @@ public class EntityCreator {
         Entity player = engine.createEntity();
         
         AnimationComponent animation = entity.getComponent(AnimationComponent.class);
+        animation.IsActive = false;
         player.add(animation);
 
         PositionComponent position = entity.getComponent(PositionComponent.class);
