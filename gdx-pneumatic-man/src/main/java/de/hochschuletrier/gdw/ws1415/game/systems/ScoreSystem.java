@@ -24,6 +24,8 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine(Engine engine) {
+        Family Fam = Family.one(MinerComponent.class, GoalComponent.class).get();
+        engine.addEntityListener(Fam, this);
     }
 
     public void removedfromEngine(Entity entity) {
@@ -38,6 +40,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityAdded(Entity entity) {
+        System.out.println("Entity added "+entity.getId());
         if(GoalFamily.matches(entity))
         {
             goal = entity;

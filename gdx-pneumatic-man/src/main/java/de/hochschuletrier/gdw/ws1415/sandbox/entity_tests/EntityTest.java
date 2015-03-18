@@ -14,6 +14,7 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
@@ -47,6 +48,8 @@ public class EntityTest extends SandboxGame {
         engine.addSystem(Health);
         engine.addSystem(DestructableBlockRender);
         engine.addSystem(score);
+        
+        EntityCreator.engine = engine;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class EntityTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
-
+        
         Goal = engine.createEntity();
         Miner_1 = engine.createEntity();
         MinerComponent mc_1 = engine.createComponent(MinerComponent.class);
@@ -197,6 +200,8 @@ public class EntityTest extends SandboxGame {
         DrawRect(Miner_2.getComponent(PositionComponent.class).x,
                 Miner_2.getComponent(PositionComponent.class).y, 20, 20,
                 Color.GRAY);
+        
+        logger.info("Score: " + score.goal.getComponent(GoalComponent.class).miners_saved);
 
         /*
          * DrawRect(BlockEntity.getComponent(PositionComponent.class).x,
