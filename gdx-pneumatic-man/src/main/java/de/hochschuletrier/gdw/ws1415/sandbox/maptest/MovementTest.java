@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.maptest;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -46,8 +47,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
-
-import java.nio.file.AccessDeniedException;
 /**
  *
  * @author Santo Pfingsten
@@ -196,17 +195,12 @@ public class MovementTest extends SandboxGame {
             e.printStackTrace();
         }
 
+        int tileWidth = map.getTileWidth();
+        int tileHeight = map.getTileHeight();
         RectangleGenerator generator = new RectangleGenerator();
-        generator.generate(map,
-                (Layer layer, TileInfo info) -> {
-                    return info.getBooleanProperty("Invulnerable", false)
-                    && info.getProperty("Type", "").equals("Floor");
-                },
-                (Rectangle rect) -> {
-                    EntityCreator.createAndAddInvulnerableFloor(engine,
-                            physixSystem, rect, tileWidth, tileHeight);
-                });
-                EntityCreator::createAndAddInvulnerableFloor);
+        generator.generate(map, (Layer layer, TileInfo info) -> info
+                .getBooleanProperty("Invulnerable", false),
+                (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         for (Layer layer : map.getLayers()) {
             TileInfo[][] tiles = layer.getTiles();
