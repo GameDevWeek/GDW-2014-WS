@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Texture;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
@@ -30,18 +31,21 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
 
+import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 
+
+
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Game {
@@ -58,10 +62,12 @@ public class Game {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final RenderSystem renderSystem = new RenderSystem(GameConstants.PRIORITY_ANIMATIONS);
+    private final CameraSystem cameraSystem = new CameraSystem();
+    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
+    private final InputGamepadSystem inputGamepadSystem = new InputGamepadSystem();
     private final AISystem aisystems = new AISystem(
             GameConstants.PRIORITY_PHYSIX + 1,
             physixSystem
@@ -103,13 +109,26 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-        EntityCreator.createAndAddPlayer(500, 250, 0);
+
+        cameraSystem.follow(EntityCreator.createAndAddPlayer(500, 250, 0));
+
 
         addSystems();
         addContactListeners();
-
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
 
+        Controllers.addListener(inputGamepadSystem);
+        
+        if(Controllers.getControllers().size > 0)
+        {
+            inputKeyboardSystem.setProcessing(false);
+            inputGamepadSystem.setProcessing(true);
+        }
+        else
+        {
+            inputGamepadSystem.setProcessing(false);
+            inputKeyboardSystem.setProcessing(true);
+        }
     }
 
     private void generateWorldFromTileMap() {
@@ -234,7 +253,7 @@ public class Game {
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
         engine.addSystem(inputKeyboardSystem);
-
+        engine.addSystem(inputGamepadSystem);
         engine.addSystem(aisystems);
     }
 
@@ -253,7 +272,7 @@ public class Game {
     }
 
     public void update(float delta) {
-        Main.getInstance().screenCamera.bind();
+        //Main.getInstance().screenCamera.bind();
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
