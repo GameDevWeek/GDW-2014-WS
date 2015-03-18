@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -15,6 +16,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
@@ -27,10 +29,37 @@ public class EntityCreator {
         Entity player = engine.createEntity();
 
         player.add(engine.createComponent(AnimationComponent.class));
-        player.add(engine.createComponent(PositionComponent.class));
-        player.add(engine.createComponent(DamageComponent.class));
+        player.add(engine.createComponent(HealthComponent.class));
         player.add(engine.createComponent(SpawnComponent.class));
+        player.add(engine.createComponent(DamageComponent.class));
+        
+        player.add(engine.createComponent(PositionComponent.class));
+        player.getComponent(PositionComponent.class).x = x;
+        player.getComponent(PositionComponent.class).y = y;
+        player.getComponent(PositionComponent.class).rotation = rotation;
 
+        
+        player.add(engine.createComponent(PlayerComponent.class));
+
+        engine.addEntity(player);
+        return player;
+    }
+    
+    public static Entity createAndAddDyingCharacter(Entity entity,
+    PooledEngine engine) {
+        Entity player = engine.createEntity();
+        
+        player.add(engine.createComponent(PositionComponent.class));
+        player.add(engine.createComponent(SpawnComponent.class));
+        
+        player.add(entity.getComponent(AnimationComponent.class));
+        player.getComponent(AnimationComponent.class).animation
+        
+        PositionComponent position = entity.getComponent(PositionComponent.class);
+        position.rotation += 90;
+        player.add(position);
+
+        
         engine.addEntity(player);
         return player;
     }
