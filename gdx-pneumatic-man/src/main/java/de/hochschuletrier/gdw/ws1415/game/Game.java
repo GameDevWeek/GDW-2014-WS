@@ -36,11 +36,6 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-<<<<<<< HEAD
-import de.hochschuletrier.gdw.ws1415.game.systems.AnimationRenderSubsystem;
-=======
-
->>>>>>> develop
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
@@ -49,12 +44,10 @@ import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 
-<<<<<<< HEAD
 
 
-=======
 import java.nio.file.AccessDeniedException;
->>>>>>> develop
+
 import java.util.HashMap;
 import java.util.function.Consumer;
 
