@@ -119,7 +119,6 @@ public class Game {
         
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
 
-        
         Controllers.addListener(inputGamepadSystem);
         
         if(Controllers.getControllers().size > 0)
