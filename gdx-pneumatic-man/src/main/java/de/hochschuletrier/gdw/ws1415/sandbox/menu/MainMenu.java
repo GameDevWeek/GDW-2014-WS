@@ -22,23 +22,25 @@ public class MainMenu extends MenuPage{
     public MainMenu(Skin skin, MenuManager menuManager, Type type)
     {
         super(skin,"background_menu" );
-        int x=100;
+        int x=960;
         int i=0;
-        int y=370;
+        int y=800;
         int yStep=100;
         
             addPageEntry(menuManager,x,y-yStep*(i++),start, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
-        
+            //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
+            addCenteredImage((int)(x-(ende.getWidth()/2)),y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2,ende,()->System.exit(-1));
         //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
         
     }
     
     protected final void addPageEntry(MenuManager menuManager, int x, int y, DecoImage image, MenuPage page) {
         menuManager.addLayer(page);
-        addCenteredImage(x, y, 300, 40, image, () -> menuManager.pushPage(page));
+        
+        addCenteredImage((int)(x-(image.getWidth()/2)), y, (int)image.getWidth(), (int)image.getHeight(), image, () -> menuManager.pushPage(page));
+        
     }
     
 }
