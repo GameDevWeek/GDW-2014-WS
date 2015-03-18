@@ -133,6 +133,15 @@ public class Game {
                             && info.getProperty("Type", "").equals("Floor");
                 },
                 EntityCreator::createAndAddInvulnerableFloor);
+        
+        generator.generate(map,
+                (Layer layer, TileInfo info) -> {
+                    return info.getBooleanProperty("Invulnerable", false)
+                            && info.getProperty("Type", "").equals("Lava");
+                },
+                EntityCreator::createAndAddLava);
+        
+        
 
         for (Layer layer : map.getLayers()) {
             if(layer.isObjectLayer()){
@@ -212,5 +221,4 @@ public class Game {
 
         engine.update(delta);
     }
-
 }
