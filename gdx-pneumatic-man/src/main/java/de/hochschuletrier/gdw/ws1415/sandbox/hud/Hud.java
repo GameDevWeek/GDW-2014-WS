@@ -2,7 +2,6 @@ package de.hochschuletrier.gdw.ws1415.sandbox.hud;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -38,6 +37,7 @@ public class Hud extends SandboxGame
     private Sprite sprite;
     private Stage stage;
     private BitmapFont font;
+    private int bloecke;
     
     private int time = 0;
     
@@ -55,7 +55,7 @@ public class Hud extends SandboxGame
           
           initMinerDisplay(assetManager);
           initTimeDisplay();
-//          initScoreDisplay();
+          initBlockDisplay();
           
       }
       
@@ -173,6 +173,11 @@ public class Hud extends SandboxGame
               MinerLeftListe.remove(MinerLeftListe.size()-1);
           }
           MinerFoundListe.add(new Sprite(textureMinerFound));
+      }
+      
+      private void initBlockDisplay()
+      {
+          
       }
       
     
