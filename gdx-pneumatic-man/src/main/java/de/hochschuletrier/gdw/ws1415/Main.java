@@ -49,13 +49,9 @@ public class Main extends StateBasedGame {
 
     public static final boolean IS_RELEASE = ClassUtils.getClassUrl(Main.class).getProtocol().equals("jar");
 
-<<<<<<< HEAD
-    public static final int WINDOW_HEIGHT = 600;
-    public static final int WINDOW_WIDTH = 1024;
-=======
-    public static final int WINDOW_HEIGHT = 1020;
+
+    public static final int WINDOW_HEIGHT = 1080;
     public static final int WINDOW_WIDTH = 1920;
->>>>>>> e0076bab164a08b0b1b78bb97a41fa39e4b9ab3d
 
     private final AssetManagerX assetManager = new AssetManagerX();
     private static Main instance;
