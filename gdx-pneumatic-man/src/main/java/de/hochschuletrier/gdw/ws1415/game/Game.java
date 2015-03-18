@@ -252,7 +252,7 @@ public class Game {
         modifyComponent.schedule(() -> {
             PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
             PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem)
-                    .position(x, y).fixedRotation(false);
+                    .position(x, y).fixedRotation(true);
             bodyComponent.init(bodyDef, physixSystem, entity);
             PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                     .density(1).friction(0).restitution(0.1f).shapeBox(58, 90);
