@@ -38,7 +38,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
             EntityCreator.engine.removeEntity(otherEntity);
         }
 
-        if (ComponentMappers.enemy.has(otherEntity)) {
+        if (otherEntity.getComponent(DamageComponent.class) != null) {
             // player touched an enemy
             if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;

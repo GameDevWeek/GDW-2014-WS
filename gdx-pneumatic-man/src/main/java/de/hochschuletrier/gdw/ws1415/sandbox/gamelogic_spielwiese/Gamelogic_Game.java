@@ -77,7 +77,6 @@ public class Gamelogic_Game extends SandboxGame {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     
-
     private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
@@ -150,8 +149,6 @@ public class Gamelogic_Game extends SandboxGame {
 
     @Override
     public void update(float delta) {
-        engine.update(delta);
-
         ImmutableArray<Entity> PlayerMembers = engine.getEntitiesFor(PlayerFamily);
 
         if(PlayerMembers.size()>0)
@@ -181,6 +178,7 @@ public class Gamelogic_Game extends SandboxGame {
                 Health.Value -= 1;
             }
         }
+        engine.update(delta);
     }
 
     @Override
@@ -280,14 +278,16 @@ public class Gamelogic_Game extends SandboxGame {
                 for (int j = 0; j < Map.getHeight(); j++) {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
                         if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0
-                                && tiles[i][j].getProperty("Type", "").equals("Floor")) {
+                            && tiles[i][j].getProperty("Type", "").equals("Floor")) 
+                        {
                             TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map, info, i, j);
                         }
-                        if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) 
+                        {
                             TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
