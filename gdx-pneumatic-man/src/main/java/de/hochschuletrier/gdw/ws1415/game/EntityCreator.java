@@ -92,7 +92,7 @@ public class EntityCreator {
         entity.add(defineBoxPhysixBodyComponent(entity, x, y, width, height,
                 true, 1f, 1f, 0.1f));
 
-        BlockComponent blockComp = engine.createComponent(BlockComponent.class);
+        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
         entity.add(blockComp);
 
         engine.addEntity(entity);
@@ -108,7 +108,7 @@ public class EntityCreator {
                 GameConstants.getTileSizeX(), GameConstants.getTileSizeY(),
                 true, 1f, 1f, 0.1f));
 
-        BlockComponent blockComp = engine.createComponent(BlockComponent.class);
+        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
         entity.add(blockComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
@@ -175,7 +175,7 @@ public class EntityCreator {
         fixture.setUserData(entity);
         entity.add(bodyComponent);
 
-        BlockComponent blockComp = engine.createComponent(BlockComponent.class);
+        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
         entity.add(blockComp);
 
         PlatformComponent pl = new PlatformComponent();
