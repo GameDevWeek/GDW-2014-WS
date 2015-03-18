@@ -90,6 +90,10 @@ public class AISystem extends IteratingSystem {
         }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
             // move forward
             
+
+        }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
+            // move forward
+            
         }
 
     }
