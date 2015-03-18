@@ -87,6 +87,13 @@ public class AISystem extends IteratingSystem {
 
         if(checkInFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
             direction.facingDirection = Direction.fromVector2(dir.scl(-1));
+        }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
+            // move forward
+            
+
+        }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
+            // move forward
+            
         }
 
     }
