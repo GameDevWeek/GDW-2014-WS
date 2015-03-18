@@ -15,7 +15,10 @@ import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 
 public class EntityCreator {
 
-    public static Entity createAndAddPlayer(float x, float y, float rotation, PooledEngine engine) {
+    public static PooledEngine engine;
+    public static PhysixSystem physixSystem;
+
+    public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity player = engine.createEntity();
 
         player.add(engine.createComponent(AnimationComponent.class));
@@ -28,7 +31,7 @@ public class EntityCreator {
         return player;
     }
 
-    public static Entity createAndAddEnemy(PhysixSystem physixSystem, float x, float y, float rotation, PooledEngine engine) {
+    public static Entity createAndAddEnemy(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
 
         entity.add(engine.createComponent(DamageComponent.class));
@@ -50,7 +53,7 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddEventBox(EventBoxType type, float x, float y, PooledEngine engine) {
+    public static Entity createAndAddEventBox(EventBoxType type, float x, float y) {
         Entity box = engine.createEntity();
 
         box.add(engine.createComponent(TriggerComponent.class));
@@ -60,11 +63,11 @@ public class EntityCreator {
         return box;
     }
 
-    public static Entity createAndAddInvulnerableFloor(PooledEngine engine, PhysixSystem physixSystem, Rectangle rect, int tileWidth, int tileHeight) {
-        float width = rect.width * tileWidth;
-        float height = rect.height * tileHeight;
-        float x = rect.x * tileWidth + width / 2;
-        float y = rect.y * tileHeight + height / 2;
+    public static Entity createAndAddInvulnerableFloor(Rectangle rect) {
+        float width = rect.width * GameConstants.getTileSizeX();
+        float height = rect.height * GameConstants.getTileSizeY();
+        float x = rect.x * GameConstants.getTileSizeX() + width / 2;
+        float y = rect.y * GameConstants.getTileSizeY() + height / 2;
 
         Entity entity = engine.createEntity();
 
@@ -88,7 +91,7 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddVulnerableFloor(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height) {
+    public static Entity createAndAddVulnerableFloor(float x, float y) {
         Entity entity = engine.createEntity();
 
         PhysixBodyComponent bodyComponent = engine
@@ -97,7 +100,7 @@ public class EntityCreator {
                 physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(width, height)
+                .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(entity);
