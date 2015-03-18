@@ -1,13 +1,13 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
-import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 
 /**
  * Handles contacts between player and other entities
@@ -27,6 +27,13 @@ public class PlayerContactListener extends PhysixContactAdapter {
         // Player collides with lava.
         if (otherEntity.getComponent(KillsPlayerOnContactComponent.class) != null) {
             // Player dies and level resets.
+        }
+
+        if (otherEntity.getComponent(FallingRockTriggerComponent.class) != null){
+            FallingRockTriggerComponent rockTriggerComponent = otherEntity.getComponent(FallingRockTriggerComponent.class);
+            FallingRockComponent rockComponent = ComponentMappers.rockTraps.get(rockTriggerComponent.rockEntity);
+            rockComponent.falling = true;
+            EntityCreator.engine.removeEntity(otherEntity);
         }
 
         if (ComponentMappers.enemy.has(otherEntity)) {

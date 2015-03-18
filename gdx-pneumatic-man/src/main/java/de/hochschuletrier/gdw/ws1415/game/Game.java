@@ -6,18 +6,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
@@ -33,26 +28,25 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
+import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
 
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
-import de.hochschuletrier.gdw.ws1415.game.utils.PhysixUtil;
-import de.hochschuletrier.gdw.ws1415.states.DirectionEnum;
+import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 
 
 
 import java.nio.file.AccessDeniedException;
-
 import java.util.HashMap;
 
 public class Game {
@@ -116,10 +110,6 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-
-        cameraSystem.follow(EntityCreator.createAndAddPlayer(500, 250, 0));
-
-
         addSystems();
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
@@ -161,11 +151,18 @@ public class Game {
                 EntityCreator::createAndAddLava);
         
         
-
+        HashMap<Integer, Entity> rocks = new HashMap<>();
         for (Layer layer : map.getLayers()) {
             if(layer.isObjectLayer()){
+                /// pre filtering important objects
                 for(LayerObject obj : layer.getObjects()){
-                    if(obj.getName().equals("Platform")){
+                    if(obj.getName().equalsIgnoreCase("Rock")){
+                        int RockId = obj.getIntProperty("Id", 0);
+                        rocks.put(RockId, EntityCreator.createTrapBlock(obj.getX(), obj.getY(), RockId));
+                    }
+                }
+                for(LayerObject obj : layer.getObjects()){
+                    if(obj.getName().equalsIgnoreCase("Platform")){
                         PlatformMode mode = PlatformMode.valueOf(obj.getProperty("Mode", PlatformMode.ALWAYS.name()).toUpperCase());
                         Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.UP.name()).toUpperCase()); // "Direction"
                         int distance = obj.getIntProperty("Distance", 0);
@@ -176,14 +173,29 @@ public class Game {
                         else
                             EntityCreator.DestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode, hitpoints);
                     }
-                    if(obj.getName().equals("Rock")){
-
+                    if(obj.getName().equalsIgnoreCase("RockTrigger")){
+                        int RockId = obj.getIntProperty("RockId", 0);
+                        Entity e = rocks.get(RockId);
+                        EntityCreator.createTrapSensor(
+                                obj.getX() - obj.getWidth()/2, obj.getY() - obj.getHeight()/2,
+                                obj.getWidth(), obj.getHeight(), e);
                     }
-                    if(obj.getName().equals("RockTrigger")){
-
+                    if(obj.getName().equalsIgnoreCase("Player")){
+                        cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
+                    }
+                    if(obj.getName().equalsIgnoreCase("PlayerSpawn")){
+                        //TODO: spawn point entity ?!
+                    }
+                    if(obj.getName().equalsIgnoreCase("LevelEnd")){
+                        EntityCreator.createAndAddEventBox(EventBoxType.EVENT, obj.getX(), obj.getY());
+                    }
+                    if(obj.getName().equalsIgnoreCase("Enemy")){
+                        Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.LEFT.name()).toUpperCase());
+                        AIType type = AIType.valueOf(obj.getProperty("Type", AIType.CHAMELEON.name()).toUpperCase());
+                        EntityCreator.createAndAddEnemy(obj.getX(), obj.getY(), dir, type);
                     }
                 }
-                continue;
+                continue; // because it was a object layer
             }
             // is tile layer:
             TileInfo[][] tiles = layer.getTiles();
@@ -265,10 +277,11 @@ public class Game {
                 .addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
+        contactListener.addListener(FallingRockComponent.class, new RockContactListener());
     }
 
     private void setupPhysixWorld() {
-        physixSystem.setGravity(0, 24);
+        physixSystem.setGravity(0, GameConstants.GRAVITY_CONSTANT);
     }
 
     public void update(float delta) {

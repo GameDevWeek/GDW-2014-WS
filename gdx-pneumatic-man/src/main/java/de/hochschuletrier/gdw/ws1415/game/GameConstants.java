@@ -20,6 +20,7 @@ public class GameConstants {
 
     // Physix parameters
     public static final int POSITION_ITERATIONS = 3;
+    public static final int GRAVITY_CONSTANT = 30;
     public static final int VELOCITY_ITERATIONS = 8;
     public static final int BOX2D_SCALE = 40;
 

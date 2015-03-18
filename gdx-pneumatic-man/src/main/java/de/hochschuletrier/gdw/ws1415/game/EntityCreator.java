@@ -14,8 +14,8 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
+import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
@@ -41,14 +41,18 @@ public class EntityCreator {
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
 
+        float width = GameConstants.getTileSizeX() * 0.9f;
+        float height = GameConstants.getTileSizeY() * 1.5f;
+
         PhysixBodyComponent bodyComponent = engine
                 .createComponent(PhysixBodyComponent.class);
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
-                physixSystem).position(x, y).fixedRotation(true);
+                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.getBody().setUserData(bodyComponent);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(0).restitution(0.1f).shapeBox(GameConstants.getTileSizeX() * 0.9f, GameConstants.getTileSizeY() * 1.5f);
+                .density(1).friction(0).restitution(0.1f)
+                .shapeBox(width, height);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
         entity.add(bodyComponent);
@@ -80,8 +84,11 @@ public class EntityCreator {
     /**
      *  Enemy FIXME: there are more different types of enemies, implement them
      */
-    public static Entity createAndAddEnemy(float x, float y, float rotation) {
+    public static Entity createAndAddEnemy(float x, float y, Direction direction, AIType type) {
         Entity entity = engine.createEntity();
+
+        float width = GameConstants.getTileSizeX();
+        float height = GameConstants.getTileSizeY();
 
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(AIComponent.class));
@@ -91,14 +98,21 @@ public class EntityCreator {
 
         PhysixBodyComponent pbc = new PhysixBodyComponent();
         PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
-                physixSystem).position(x, y).fixedRotation(true);
+                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem).density(1)
-                .friction(1f).shapeBox(10, 10).restitution(0.1f);
+                .friction(1f).shapeBox(width, height).restitution(0.1f);
         Fixture fixture = pbc.createFixture(pfx);
         fixture.setUserData(pbdy);
         pbc.init(pbdy, physixSystem, entity);
-
         entity.add(pbc);
+
+        AIComponent ai = new AIComponent();
+        ai.type = type;
+        entity.add(ai);
+
+        DirectionComponent d = new DirectionComponent();
+        d.facingDirection = direction;
+        entity.add(d);
 
         engine.addEntity(entity);
         return entity;
@@ -139,22 +153,49 @@ public class EntityCreator {
     /**
      * This is the Block who'll fall down onto the player
      */
-    public static Entity createTrapBlock(float x, float y) {
+    public static Entity createTrapBlock(float x, float y, int trapId) {
 
         Entity entity = engine.createEntity();
 
-        PhysixBodyComponent bodyComponent = engine
-                .createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody,
-                physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(entity);
-
         entity.add(bodyComponent);
+
+        FallingRockComponent rockComponent = new FallingRockComponent();
+        rockComponent.falling = false;
+        rockComponent.id = trapId;
+
+        engine.addEntity(entity);
+        return entity;
+    }
+
+    /**
+     * This is a Sensor to trigger a falling block
+     */
+    public static Entity createTrapSensor(float x, float y, float dx, float dy, Entity rock) {
+
+        Entity entity = engine.createEntity();
+
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody, physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f)
+                .shapeBox(dx, dy)
+                .restitution(0.1f)
+                .sensor(true);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
+        entity.add(bodyComponent);
+
+        FallingRockTriggerComponent rockComponent = new FallingRockTriggerComponent();
+        rockComponent.rockEntity = rock;
 
         engine.addEntity(entity);
         return entity;
@@ -265,6 +306,8 @@ public class EntityCreator {
         HealthComponent h = new HealthComponent();
         h.Value = hitpoints;
         e.add(h);
+        DestructableBlockComponent b = new DestructableBlockComponent();
+        e.add(b);
         return e;
     }
 
