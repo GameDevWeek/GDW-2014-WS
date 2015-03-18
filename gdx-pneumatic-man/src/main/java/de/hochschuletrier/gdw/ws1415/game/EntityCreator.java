@@ -2,10 +2,14 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
+import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -14,6 +18,7 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DeathComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
@@ -28,7 +33,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
@@ -74,12 +78,26 @@ public class EntityCreator {
         
         //TODO
         //Loading new Dying-Animation - waiting for Assets
-        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
-        animation.IsActive = false;
-        dyingEntity.add(animation);
+        
+        
+        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
+        
+        
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("src/main/resources/images/Cowboy small.jpg")));
+        deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
+        
+//        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
+//        animation.IsActive = false;
+//        dyingEntity.add(animation);
         
         PositionComponent position = entityToDie.getComponent(PositionComponent.class);
 
+        dyingEntity.add(deathAnimation);
+        dyingEntity.add(position);
+        dyingEntity.add(deathComponent);
+
+        
         engine.addEntity(dyingEntity);
         return dyingEntity;
     }
@@ -121,7 +139,7 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddEventBox(EventBoxType type, float x, float y) {
+    public static Entity createAndAddEventBox(float x, float y) {
         Entity box = engine.createEntity();
 
         box.add(engine.createComponent(TriggerComponent.class));
