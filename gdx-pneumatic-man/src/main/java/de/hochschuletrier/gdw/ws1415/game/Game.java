@@ -2,13 +2,9 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
@@ -32,7 +28,6 @@ import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
-import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
@@ -41,14 +36,15 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
 
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 
-import de.hochschuletrier.gdw.ws1415.game.systems.AnimationRenderSubsystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
-import de.hochschuletrier.gdw.ws1415.game.utils.PhysixUtil;
+import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
@@ -80,13 +76,16 @@ public class Game {
 
     private TiledMap map;
     private TiledMapRendererGdx mapRenderer;
-    private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
+    private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
 
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
             togglePhysixDebug.register();
         }
+
+        EntityCreator.engine = this.engine;
+        EntityCreator.physixSystem = this.physixSystem;
     }
 
     public void dispose() {
@@ -108,7 +107,7 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-        EntityCreator.createAndAddPlayer(500, 250, engine, physixSystem, map.getTileWidth()*0.9f, map.getTileHeight()*1.5f);
+        EntityCreator.createAndAddPlayer(500, 250);
 
         addSystems();
         addContactListeners();
@@ -121,33 +120,48 @@ public class Game {
     }
 
     private void generateWorldFromTileMap() {
-        int tileWidth = map.getTileWidth();
-        int tileHeight = map.getTileHeight();
+        try {
+            GameConstants.setTileSizeX(map.getTileWidth());
+            GameConstants.setTileSizeY(map.getTileHeight());
+        }catch (AccessDeniedException e){
+            e.printStackTrace();
+        }
         RectangleGenerator generator = new RectangleGenerator();
         generator.generate(map,
                 (Layer layer, TileInfo info) -> {
                     return info.getBooleanProperty("Invulnerable", false)
-                    && info.getProperty("Type", "").equals("Floor");
+                            && info.getProperty("Type", "").equals("Floor");
                 },
-                (Rectangle rect) -> {
-                    EntityCreator.createAndAddInvulnerableFloor(engine,
-                            physixSystem, rect, tileWidth, tileHeight);
-                });
+                EntityCreator::createAndAddInvulnerableFloor);
 
         for (Layer layer : map.getLayers()) {
-            TileInfo[][] tiles = layer.getTiles();
+            if(layer.isObjectLayer()){
+                for(LayerObject obj : layer.getObjects()){
+                    if(obj.getName().equals("Platform")){
+                        PlatformMode mode = PlatformMode.valueOf(obj.getProperty("mode", PlatformMode.Patrouling.name()));
+                        Direction dir = Direction.RIGHT;
+                        int distance = obj.getIntProperty("distance", 0);
+                        EntityCreator.createPlatformBlock(obj.getX(), obj.getY(), distance, dir, mode);
+                    }
+                    if(obj.getName().equals("Rock")){
 
+                    }
+                    if(obj.getName().equals("RockTrigger")){
+
+                    }
+                }
+                continue;
+            }
+            // is tile layer:
+            TileInfo[][] tiles = layer.getTiles();
             for (int i = 0; i < map.getWidth(); i++) {
                 for (int j = 0; j < map.getHeight(); j++) {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
                         if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
-                            EntityCreator.createAndAddVulnerableFloor(engine,
-                                    physixSystem,
+                            EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map.getTileWidth(),
-                                    map.getTileHeight());
+                                    j * map.getTileHeight() + 0.5f * map.getTileHeight());
                         }
                     }
                 }

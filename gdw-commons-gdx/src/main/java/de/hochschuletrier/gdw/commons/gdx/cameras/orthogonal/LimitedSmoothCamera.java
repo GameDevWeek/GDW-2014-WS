@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal;
 
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * A smooth camera controller that stays within the set bounds.
@@ -28,6 +29,15 @@ public class LimitedSmoothCamera extends SmoothCamera {
             destination.x = x;
             destination.y = y;
         }
+    }
+    
+    /**
+     * 
+     * Sets the destination without checking the bounds.
+     */
+    public void forceDestination(float x, float y) {
+        destination.x = x;
+        destination.y = y;
     }
 
     private float clamp(float in, float min, float max, float viewportSize) {
@@ -61,5 +71,9 @@ public class LimitedSmoothCamera extends SmoothCamera {
 
     public OrthographicCamera getOrthographicCamera() {
         return camera;
+    }
+    
+    public Vector3 getDestination() {
+    	return destination;
     }
 }
