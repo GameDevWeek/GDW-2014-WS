@@ -16,6 +16,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
@@ -121,5 +122,26 @@ public class EntityCreator {
         engine.addEntity(entity);
         return entity;
 
+    }
+
+    public static Entity createAndAddMiner(float x, float y, float rotation, float width, float height, PooledEngine engine, PhysixSystem physixSystem) {
+        Entity miner = engine.createEntity();
+
+        miner.add(engine.createComponent(AnimationComponent.class));
+        miner.add(engine.createComponent(PositionComponent.class));
+        miner.add(engine.createComponent(SpawnComponent.class));
+        miner.add(engine.createComponent(MinerComponent.class));
+
+        // nicht sicher wie das hier funktioniert
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, miner);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(1).friction(1f).shapeBox(width, height).restitution(0.1f);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(miner);
+        miner.add(bodyComponent);
+
+        engine.addEntity(miner);
+        return miner;
     }
 }
