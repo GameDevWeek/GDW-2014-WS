@@ -39,11 +39,13 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.BouncingComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
@@ -246,8 +248,8 @@ public class MovementTest extends SandboxGame {
         
         
         if(playerBody != null) {
-           /*
-                MovementX -= 300.0f;
+            /*
+            float MovementX = 0.0f;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 MovementX += 300.0f;
@@ -257,6 +259,7 @@ public class MovementTest extends SandboxGame {
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
                 playerBody.applyImpulse(0, 1000);
             }
+            */
             
             if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
             {

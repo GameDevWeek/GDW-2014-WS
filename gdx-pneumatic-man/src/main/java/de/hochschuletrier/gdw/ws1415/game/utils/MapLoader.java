@@ -93,9 +93,9 @@ public class MapLoader {
                             case "Player": {
                                 if (spawn != null) {
                                     EntityCreator.createAndAddPlayer(spawn.getComponent(PositionComponent.class).x,
-                                            spawn.getComponent(PositionComponent.class).y, 0, engine);
+                                            spawn.getComponent(PositionComponent.class).y, 0.0f);
                                 } else {
-                                    spawn = EntityCreator.createAndAddPlayer(o.getX(), o.getY(), 0, engine);
+                                    spawn = EntityCreator.createAndAddPlayer((float)o.getX(), (float)o.getY(), 0.0f);
                                 }
 
                             }
@@ -199,12 +199,10 @@ public class MapLoader {
                                         // frage ob der Block Unverwundbar ist
                                         if (tiles[i][j].getProperty("Invulnerable", "None").equals("true")) {
                                             // Unverwundbare Einheit erstellen
-                                            ent = EntityCreator.createAndAddInvulnerableFloor(engine, phySys, new Rectangle(i, j, 1, 1),
-                                                    ts.getTileWidth(), ts.getTileHeight());
+                                            ent = EntityCreator.createAndAddInvulnerableFloor(new Rectangle(i, j, 1, 1));
                                         } else {
                                             // Verwundbare einheit erstellen
-                                            ent = EntityCreator.createAndAddVulnerableFloor(engine, phySys, i * ts.getTileWidth(),
-                                                    j * ts.getTileHeight(), ts.getTileWidth(), ts.getTileHeight());
+                                            ent = EntityCreator.createAndAddVulnerableFloor(i * (float)ts.getTileWidth(), j * (float)ts.getTileHeight());
                                             // Lebenspunkte-Komponente anfügen
                                             HealthComponent hp = engine.createComponent(HealthComponent.class);
                                             hp.reset();
