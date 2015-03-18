@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss14.sandbox.hud;
+package de.hochschuletrier.gdw.ws1415.sandbox.hud;
 
 import java.util.ArrayList;
 
@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
-import de.hochschuletrier.gdw.ss14.Main;
-import de.hochschuletrier.gdw.ss14.sandbox.SandboxGame;
+import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
 
 
