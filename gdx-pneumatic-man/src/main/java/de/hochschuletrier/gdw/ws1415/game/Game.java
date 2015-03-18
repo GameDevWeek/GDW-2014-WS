@@ -99,7 +99,7 @@ public class Game {
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
 
-        map = loadMap("data/maps/Test_Physics.tmx");
+        map = loadMap("data/maps/Testkarte_17.03.tmx");
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
