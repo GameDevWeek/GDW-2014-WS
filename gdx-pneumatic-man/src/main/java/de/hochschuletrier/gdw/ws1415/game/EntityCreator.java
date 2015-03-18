@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -17,6 +18,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 
 import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
+import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
 
@@ -207,16 +209,16 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, DirectionEnum direction) {
+    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Direction direction) {
         Entity entity = engine.createEntity();
 
 
         float angle;
-        if (direction == DirectionEnum.Right) {
+        if (direction == Direction.RIGHT) {
             angle = (float) Math.PI/2;
-        } else if (direction == DirectionEnum.Top) {
+        } else if (direction == Direction.UP) {
             angle = (float) Math.PI;
-        } else if (direction == DirectionEnum.Down) {
+        } else if (direction == Direction.DOWN) {
             angle = 0;
         } else {
             angle = (float) Math.PI*3/2;
@@ -245,7 +247,7 @@ public class EntityCreator {
 
         entity.add(bodyComponent);
 
-        BlockComponent blockComp = new BlockComponent();
+        DestructableBlockComponent blockComp = new DestructableBlockComponent();
         entity.add(blockComp);
 
         engine.addEntity(entity);
