@@ -15,6 +15,22 @@ public enum Direction{
 
     int value;
 
+
+    /**
+     * @return direcction for 90 degrees counter clock wise
+     */
+    public Direction rotate90CCL(){
+        return fromInt((this.value + 1) % 4);
+    }
+
+    public Direction rotate90CL(){
+        return fromInt((4 + this.value - 1) % 4);
+    }
+
+    public Direction rotate180(){
+        return fromInt((this.value + 2) % 4);
+    }
+
     public int toInt(){
         return value;
     }
@@ -47,8 +63,8 @@ public enum Direction{
             if(i > 0) return RIGHT;
             else return LEFT;
         else
-        if(j > 0) return UP;
-        else return DOWN;
+            if(j > 0) return UP;
+            else return DOWN;
     };
 
 }
