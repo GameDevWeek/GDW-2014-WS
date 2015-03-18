@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -26,13 +25,11 @@ import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
