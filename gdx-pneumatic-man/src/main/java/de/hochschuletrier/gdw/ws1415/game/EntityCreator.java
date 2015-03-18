@@ -50,8 +50,10 @@ public class EntityCreator {
         entity.add(engine.createComponent(SpawnComponent.class));
 
         PhysixBodyComponent pbc = new PhysixBodyComponent();
-        PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem).position(x, y).fixedRotation(true);
-        PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem).density(1).friction(1f).shapeBox(10, 10).restitution(0.1f);
+        PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                physixSystem).position(x, y).fixedRotation(true);
+        PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem).density(1)
+                .friction(1f).shapeBox(10, 10).restitution(0.1f);
         Fixture fixture = pbc.createFixture(pfx);
         fixture.setUserData(pbdy);
         pbc.init(pbdy, physixSystem, entity);
@@ -62,7 +64,8 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddEventBox(EventBoxType type, float x, float y) {
+    public static Entity createAndAddEventBox(EventBoxType type, float x,
+            float y) {
         Entity box = engine.createEntity();
 
         box.add(engine.createComponent(TriggerComponent.class));
@@ -80,18 +83,8 @@ public class EntityCreator {
 
         Entity entity = engine.createEntity();
 
-        PhysixBodyComponent bodyComponent = engine
-                .createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x, y).fixedRotation(true);
-        bodyComponent.init(bodyDef, physixSystem, entity);
-        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(width, height)
-                .restitution(0.1f);
-        Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(entity);
-
-        entity.add(bodyComponent);
+        entity.add(defineBoxPhysixBodyComponent(entity, x, y, width, height,
+                true, 1f, 1f, 0.1f));
 
         BlockComponent blockComp = engine.createComponent(BlockComponent.class);
         entity.add(blockComp);
@@ -100,20 +93,14 @@ public class EntityCreator {
         return entity;
     }
 
+    
+
     public static Entity createAndAddVulnerableFloor(float x, float y) {
         Entity entity = engine.createEntity();
 
-        PhysixBodyComponent bodyComponent = engine
-                .createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x, y).fixedRotation(true);
-        bodyComponent.init(bodyDef, physixSystem, entity);
-        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
-                .restitution(0.1f);
-        Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(entity);
-        entity.add(bodyComponent);
+        entity.add(defineBoxPhysixBodyComponent(entity, x, y,
+                GameConstants.getTileSizeX(), GameConstants.getTileSizeY(),
+                true, 1f, 1f, 0.1f));
 
         BlockComponent blockComp = engine.createComponent(BlockComponent.class);
         entity.add(blockComp);
@@ -126,31 +113,45 @@ public class EntityCreator {
         return entity;
 
     }
-    
-    public static Entity createAndAddLava(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height ){
+
+    public static Entity createAndAddLava(Rectangle rect) {
         Entity entity = engine.createEntity();
-        
+
+        float width = rect.width * GameConstants.getTileSizeX();
+        float height = rect.height * GameConstants.getTileSizeY();
+        float x = rect.x * GameConstants.getTileSizeX() + width / 2;
+        float y = rect.y * GameConstants.getTileSizeY() + height / 2;
+
+        entity.add(defineBoxPhysixBodyComponent(entity, x, y,
+               width, height,
+                true, 1f, 1f, 0.1f));
+
+        KillsPlayerOnContactComponent killComponent = engine
+                .createComponent(KillsPlayerOnContactComponent.class);
+        entity.add(killComponent);
+
+        PositionComponent positionComponent = engine
+                .createComponent(PositionComponent.class);
+        entity.add(positionComponent);
+
+        engine.addEntity(entity);
+        return entity;
+    }
+    
+    private static PhysixBodyComponent defineBoxPhysixBodyComponent(
+            Entity entity, float x, float y, float width, float height,
+            boolean fixedRotation, float density, float friction,
+            float restitution) {
         PhysixBodyComponent bodyComponent = engine
                 .createComponent(PhysixBodyComponent.class);
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x, y).fixedRotation(true);
+                physixSystem).position(x, y).fixedRotation(fixedRotation);
         bodyComponent.init(bodyDef, physixSystem, entity);
-        bodyComponent.getBody().setUserData(bodyComponent);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(width, height)
-                .restitution(0.1f);
+                .density(density).friction(friction).shapeBox(width, height)
+                .restitution(restitution);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
-        entity.add(bodyComponent);
-        
-        KillsPlayerOnContactComponent killComponent = engine.createComponent(
-                KillsPlayerOnContactComponent.class);
-        entity.add(killComponent);
-        
-        PositionComponent positionComponent = engine.createComponent(PositionComponent.class);
-        entity.add(positionComponent);
-        
-        engine.addEntity(entity);
-        return entity;
+        fixture.setUserData(entity);
+        return bodyComponent;
     }
 }
