@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
@@ -27,6 +28,8 @@ public class PlayerContactListener extends PhysixContactAdapter {
         // Player collides with lava.
         if (otherEntity.getComponent(KillsPlayerOnContactComponent.class) != null) {
             // Player dies and level resets.
+            HealthComponent Health = player.getComponent(HealthComponent.class);
+            Health.DecrementByValueNextFrame = Health.Value;
         }
 
         if (otherEntity.getComponent(FallingRockTriggerComponent.class) != null){
@@ -36,12 +39,24 @@ public class PlayerContactListener extends PhysixContactAdapter {
             EntityCreator.engine.removeEntity(otherEntity);
         }
 
-        if (ComponentMappers.enemy.has(otherEntity)) {
+        if (otherEntity.getComponent(DamageComponent.class) != null) {
             // player touched an enemy
             if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
+        
+        /* Temporäre Lösung - bis Raycast und Stuff fertig */
+        Family VulnerableBlockFamily = Family.all(DestructableBlockComponent.class, HealthComponent.class).get();
+        if(VulnerableBlockFamily.matches(otherEntity))
+        {
+            if(contact.getWorldManifold().getNormal().y > 0)
+            {
+                HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
+                OtherHealth.Value -= 1;
+            }
+        }
+        
     }
 
         // If the contact was with a tile then nothing happens to the player but

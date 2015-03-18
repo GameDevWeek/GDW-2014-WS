@@ -1,24 +1,26 @@
-package de.hochschuletrier.gdw.ws1415.game;
+package de.hochschuletrier.gdw.ws1415.sandbox.gamelogic_spielwiese;
 
-import box2dLight.PointLight;
-import box2dLight.RayHandler;
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntityListener;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Texture;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
-import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
@@ -31,17 +33,22 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
+import de.hochschuletrier.gdw.ws1415.game.Game;
+import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
@@ -49,26 +56,14 @@ import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
+import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
+public class Gamelogic_Game extends SandboxGame {
 
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-
-
-
-
-
-
-
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-
-public class Game {
+    private static final Logger logger = LoggerFactory
+            .getLogger(Gamelogic_Game.class);
 
     private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
@@ -81,10 +76,11 @@ public class Game {
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
+    
+    private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
-    private final RayHandler rayHandler = new RayHandler(physixSystem.getWorld());
-    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
+    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
@@ -94,50 +90,50 @@ public class Game {
             physixSystem
     );
 
-    private Sound impactSound;
-    private AnimationExtended ballAnimation;
-
-    private TiledMap map;
+    TiledMap Map;
     private TiledMapRendererGdx mapRenderer;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
 
-    public Game() {
-        // If this is a build jar file, disable hotkeys
-        if (!Main.IS_RELEASE) {
-            togglePhysixDebug.register();
-        }
-
-        EntityCreator.engine = this.engine;
-        EntityCreator.physixSystem = this.physixSystem;
+    public Gamelogic_Game()
+    {
+        EntityCreator.engine = engine;
+        EntityCreator.physixSystem = physixSystem;
     }
 
-    public void dispose() {
-        togglePhysixDebug.unregister();
-    }
-
+    Family PlayerFamily = Family.all(InputComponent.class, PhysixBodyComponent.class).get();
+    
+    
+    @Override
     public void init(AssetManagerX assetManager) {
-    	Main.getInstance().addScreenListener(cameraSystem.getCamera());
-    	
+        Main.getInstance().addScreenListener(cameraSystem.getCamera());
+        
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
+        
+        addSystems();
 
-        map = loadMap("data/maps/Testkarte_17.03.tmx");
-        for (TileSet tileset : map.getTileSets()) {
+        // MapLoader erstelt etwas ungültiges
+        // Wirft cpp exception/assert
+        //MapLoader mapLoader = new MapLoader(engine, physixSystem, "data/maps/Testkarte_17.03.tmx");
+        //Map = mapLoader.getTiledMap();
+
+        Map = Game.loadMap("data/maps/Testkarte_17.03.tmx");
+        for (TileSet tileset : Map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
             tilesetImages.put(tileset, new Texture(filename));
         }
-        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
+        /*
+        */
+        mapRenderer = new TiledMapRendererGdx(Map, tilesetImages);
 
-        setupPhysixWorld();
+        physixSystem.setGravity(0, GameConstants.GRAVITY_CONSTANT);
+        generateWorldFromTileMap();
 
-        addSystems();
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
 
         Controllers.addListener(inputGamepadSystem);
-        
-        generateWorldFromTileMap();
         
         if(Controllers.getControllers().size > 0)
         {
@@ -151,22 +147,76 @@ public class Game {
         }
     }
 
-    private void generateWorldFromTileMap() {
+    @Override
+    public void update(float delta) {
+        ImmutableArray<Entity> PlayerMembers = engine.getEntitiesFor(PlayerFamily);
+
+        if(PlayerMembers.size()>0)
+        {
+            Entity Player = PlayerMembers.first();
+            PhysixBodyComponent playerBody = Player.getComponent(PhysixBodyComponent.class);
+            
+
+            float MovementX = 0.0f;
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                MovementX -= 300.0f;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                MovementX += 300.0f;
+            }
+            playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
+            
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F2))
+        {
+            Family.Builder FB = new Family.Builder();
+            Family HealthFamily = FB.one(HealthComponent.class).get();
+            ImmutableArray<Entity> HealthEntities = engine.getEntitiesFor(HealthFamily);
+            for(Entity e : HealthEntities)
+            {
+                HealthComponent Health = e.getComponent(HealthComponent.class);
+                Health.Value -= 1;
+            }
+        }
+        engine.update(delta);
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+
+    private void addSystems() {
+        engine.addSystem(physixSystem);
+        engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(renderSystem);
+        engine.addSystem(updatePositionSystem);
+        engine.addSystem(movementSystem);
+        engine.addSystem(inputKeyboardSystem);
+        engine.addSystem(inputGamepadSystem);
+        engine.addSystem(aisystems);
+        engine.addSystem(_HealthSystem);
+    }
+
+    // TODO: replace by MapLoader class
+    void generateWorldFromTileMap()
+    {
         try {
-            GameConstants.setTileSizeX(map.getTileWidth());
-            GameConstants.setTileSizeY(map.getTileHeight());
+            GameConstants.setTileSizeX(Map.getTileWidth());
+            GameConstants.setTileSizeY(Map.getTileHeight());
         }catch (AccessDeniedException e){
             e.printStackTrace();
         }
         RectangleGenerator generator = new RectangleGenerator();
-        generator.generate(map,
+        generator.generate(Map,
                 (Layer layer, TileInfo info) -> {
                     return info.getBooleanProperty("Invulnerable", false)
                             && info.getProperty("Type", "").equals("Floor");
                 },
                 EntityCreator::createAndAddInvulnerableFloor);
         
-        generator.generate(map,
+        generator.generate(Map,
                 (Layer layer, TileInfo info) -> {
                     return info.getBooleanProperty("Invulnerable", false)
                             && info.getProperty("Type", "").equals("Lava");
@@ -175,7 +225,7 @@ public class Game {
         
         
         HashMap<Integer, Entity> rocks = new HashMap<>();
-        for (Layer layer : map.getLayers()) {
+        for (Layer layer : Map.getLayers()) {
             if(layer.isObjectLayer()){
                 /// pre filtering important objects
                 for(LayerObject obj : layer.getObjects()){
@@ -224,131 +274,100 @@ public class Game {
             // TODO: Move this code to another class: EntityMapCreator maybe? 
             // is tile layer:
             TileInfo[][] tiles = layer.getTiles();
-            for (int i = 0; i < map.getWidth(); i++) {
-                for (int j = 0; j < map.getHeight(); j++) {
+            for (int i = 0; i < Map.getWidth(); i++) {
+                for (int j = 0; j < Map.getHeight(); j++) {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
                         if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0
-                                && tiles[i][j].getProperty("Type", "").equals("Floor")) {
-                        	TileInfo info = tiles[i][j];
+                            && tiles[i][j].getProperty("Type", "").equals("Floor")) 
+                        {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddVulnerableFloor(
-                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map, info, i, j);
+                                    i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
+                                    j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
+                                    Map, info, i, j);
                         }
-                        if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
-                        	TileInfo info = tiles[i][j];
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) 
+                        {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
-                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map.getTileWidth(),
-                                    map.getTileHeight(),
+                                    i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
+                                    j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
+                                    Map.getTileWidth(),
+                                    Map.getTileHeight(),
                                     Direction.LEFT,
-                                    map, info, i, j);
+                                    Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeTop")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
-                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map.getTileWidth(),
-                                    map.getTileHeight(),
+                                    i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
+                                    j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
+                                    Map.getTileWidth(),
+                                    Map.getTileHeight(),
                                     Direction.UP,
-                                    map, info, i, j);
+                                    Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeRight")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
-                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map.getTileWidth(),
-                                    map.getTileHeight(),
+                                    i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
+                                    j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
+                                    Map.getTileWidth(),
+                                    Map.getTileHeight(),
                                     Direction.RIGHT,
-                                    map, info, i, j);
+                                    Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
-                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map.getTileWidth(),
-                                    map.getTileHeight(),
+                                    i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
+                                    j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
+                                    Map.getTileWidth(),
+                                    Map.getTileHeight(),
                                     Direction.DOWN,
-                                    map, info, i, j);
+                                    Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
-                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map.getTileWidth(),
-                                    map.getTileHeight(),
+                                    i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
+                                    j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
+                                    Map.getTileWidth(),
+                                    Map.getTileHeight(),
                                     Direction.DOWN,
-                                    map, info, i, j);
+                                    Map, info, i, j);
                         }
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
-                        	TileInfo info = tiles[i][j];
-                        	EntityCreator.createAndAddVisualEntity(map, info, i, j);
+                            TileInfo info = tiles[i][j];
+                            EntityCreator.createAndAddVisualEntity(Map, info, i, j);
                         }
                         
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
                                 && tiles[i][j].getProperty("Type", "").equals("Lava")) {
-                        	TileInfo info = tiles[i][j];
-                        	EntityCreator.createAndAddVisualEntity(map, info, i, j);
+                            TileInfo info = tiles[i][j];
+                            EntityCreator.createAndAddVisualEntity(Map, info, i, j);
                         }
                     }
                 }
             }
         }
-    }
-
-    public static TiledMap loadMap(String filename) {
-        try {
-            return new TiledMap(filename, LayerObject.PolyMode.ABSOLUTE);
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(
-                    "Map konnte nicht geladen werden: " + filename);
-        }
-    }
-
-    private void addSystems() {
-        engine.addSystem(physixSystem);
-        engine.addSystem(physixDebugRenderSystem);
-        engine.addSystem(renderSystem);
-        engine.addSystem(updatePositionSystem);
-        engine.addSystem(movementSystem);
-        engine.addSystem(inputKeyboardSystem);
-        engine.addSystem(inputGamepadSystem);
-        engine.addSystem(aisystems);
+    
     }
 
     private void addContactListeners() {
         PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
-        physixSystem.getWorld().setContactListener(contactListener);
         contactListener
                 .addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
         contactListener.addListener(FallingRockComponent.class, new RockContactListener());
-    }
 
-    private void setupPhysixWorld() {
-        physixSystem.setGravity(0, GameConstants.GRAVITY_CONSTANT);
-    }
-
-    public void update(float delta) {
-        //Main.getInstance().screenCamera.bind();
-//        for (Layer layer : map.getLayers()) {
-//            mapRenderer.render(0, 0, layer);
-//        }
-//
-//        mapRenderer.update(delta);
-
-        engine.update(delta);
+        physixSystem.getWorld().setContactListener(contactListener);
     }
 }
