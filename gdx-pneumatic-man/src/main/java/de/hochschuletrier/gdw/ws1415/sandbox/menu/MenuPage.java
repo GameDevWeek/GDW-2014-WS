@@ -29,8 +29,7 @@ public class MenuPage extends Group {
 
     @Override
     public void act(float delta) {
-        if(isVisible())
-        {
+        if(isVisible()){
         	super.act(delta);
         }
     }
