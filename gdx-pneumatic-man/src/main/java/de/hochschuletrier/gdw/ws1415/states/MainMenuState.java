@@ -34,7 +34,6 @@ public class MainMenuState extends BaseGameState {
         menuManager.addLayer(mainMenu);
         
         menuManager.pushPage(mainMenu);
-        menuManager.
 //        menuManager.getStage().setDebugAll(true);
 
         Main.getInstance().addScreenListener(menuManager);
