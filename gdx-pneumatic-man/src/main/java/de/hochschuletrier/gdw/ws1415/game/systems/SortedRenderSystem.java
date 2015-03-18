@@ -9,6 +9,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 
+import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
@@ -30,7 +31,8 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     public RayHandler rayHandler;
 	private LayerComponent currentLayer = null;
 	private CameraSystem cameraSystem;
-
+	private Matrix4 scaleMatrix = new Matrix4();
+	
     @SuppressWarnings("unchecked")
 	public SortedRenderSystem(CameraSystem cameraSystem, RayHandler rayHandler) {
         super(Family.all(PositionComponent.class, LayerComponent.class).get(), new Comparator<Entity>() { 
@@ -72,15 +74,19 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     }
     
     @Override
-	public void update (float deltaTime) {	
+	public void update (float deltaTime) {
     	cameraSystem.update(deltaTime);
-    	super.update(deltaTime);	
+    	super.update(deltaTime);
+    	
+    	// rayHandler.updateAndRender() not allowed between begin() and end()
+    	DrawUtil.batch.end();
     	updateRayHandler();
+    	DrawUtil.batch.begin();
 	}
     
     private void updateRayHandler(){
         OrthographicCamera camera = cameraSystem.getCamera().getOrthographicCamera();
-        Matrix4 scaleMatrix = new Matrix4(camera.combined).scl(GameConstants.BOX2D_SCALE);
+        scaleMatrix.set(camera.combined).scl(GameConstants.BOX2D_SCALE);
         rayHandler.setCombinedMatrix(scaleMatrix);
         rayHandler.updateAndRender(); 
     }
