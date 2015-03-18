@@ -35,6 +35,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactCompone
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
@@ -55,6 +56,11 @@ public class EntityCreator {
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
+        entity.add(engine.createComponent(PlayerComponent.class));
+
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        entity.add(Health);
 
         float width = GameConstants.getTileSizeX() * 0.9f;
         float height = GameConstants.getTileSizeY() * 1.5f;
@@ -88,7 +94,7 @@ public class EntityCreator {
         return entity;
     }
     
-    public static Entity createAndAddDyingCharacter(Entity entityToDie) {
+    public static Entity createDyingCharacter(Entity entityToDie) {
         Entity dyingEntity = engine.createEntity();
         
         //TODO
@@ -99,7 +105,7 @@ public class EntityCreator {
         
         
         AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
-        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("src/main/resources/images/Cowboy small.jpg")));
+        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("data/images/Cowboy small.jpg")));
         deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
         
 //        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
@@ -112,8 +118,6 @@ public class EntityCreator {
         dyingEntity.add(position);
         dyingEntity.add(deathComponent);
 
-        
-        engine.addEntity(dyingEntity);
         return dyingEntity;
     }
 
