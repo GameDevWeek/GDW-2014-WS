@@ -16,7 +16,7 @@ public class GamepadController implements ControllerListener
     public void connected(Controller controller)
     {
         // TODO Auto-generated method stub
-        controller.addListener(this);
+//        controller.addListener(this);
         System.out.println("Controller angeschlossen: " + controller.getName());
     }
 
