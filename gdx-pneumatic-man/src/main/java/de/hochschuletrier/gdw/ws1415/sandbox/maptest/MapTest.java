@@ -37,6 +37,7 @@ import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
+import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
 /**
@@ -53,19 +54,14 @@ public class MapTest extends SandboxGame {
     public static final int GRAVITY = 0;
     public static final int BOX2D_SCALE = 40;
 
-    private final PooledEngine engine = new PooledEngine(
-            GameConstants.ENTITY_POOL_INITIAL_SIZE,
-            GameConstants.ENTITY_POOL_MAX_SIZE,
-            GameConstants.COMPONENT_POOL_INITIAL_SIZE,
-            GameConstants.COMPONENT_POOL_MAX_SIZE);
-    private final PhysixSystem physixSystem = new PhysixSystem(
-            GameConstants.BOX2D_SCALE, GameConstants.VELOCITY_ITERATIONS,
+    private final PooledEngine engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
+            GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE);
+    private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE, GameConstants.VELOCITY_ITERATIONS,
             GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX);
 
     private final HealthSystem _HealthSystem = new HealthSystem();
 
-    private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(
-            GameConstants.PRIORITY_DEBUG_WORLD);
+    private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
     private float totalMapWidth, totalMapHeight;
 
@@ -82,11 +78,13 @@ public class MapTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
-        map = loadMap("data/maps/demo.tmx");
+
+        // map = loadMap("data/maps/demo.tmx");
+        MapLoader ml = new MapLoader(engine, physixSystem, "data/maps/Testkarte_17.03.tmx");
+        map = ml.getTiledMap();
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
-            String filename = CurrentResourceLocator.combinePaths(
-                    tileset.getFilename(), img.getSource());
+            String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
@@ -95,8 +93,7 @@ public class MapTest extends SandboxGame {
         int tileWidth = map.getTileWidth();
         int tileHeight = map.getTileHeight();
         RectangleGenerator generator = new RectangleGenerator();
-        generator.generate(map, (Layer layer, TileInfo info) -> info
-                .getBooleanProperty("Invulnerable", false),
+        generator.generate(map, (Layer layer, TileInfo info) -> info.getBooleanProperty("Invulnerable", false),
                 (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         // create destroyable world
@@ -111,12 +108,8 @@ public class MapTest extends SandboxGame {
                             if (tiles[i][j] != null) {
                                 if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0) {
 
-                                    addShape(i * map.getTileWidth() + 0.5f
-                                            * map.getTileWidth(),
-                                            j * map.getTileHeight() + 0.5f
-                                                    * map.getTileHeight(),
-                                            map.getTileWidth(),
-                                            map.getTileHeight());
+                                    addShape(i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                            j * map.getTileHeight() + 0.5f * map.getTileHeight(), map.getTileWidth(), map.getTileHeight());
                                 }
                             }
                         }
@@ -127,8 +120,7 @@ public class MapTest extends SandboxGame {
 
         // Create a SpawnPoint
         Entity spawn = engine.createEntity();
-        PositionComponent spawnPoint = engine
-                .createComponent(PositionComponent.class);
+        PositionComponent spawnPoint = engine.createComponent(PositionComponent.class);
         spawnPoint.x = 200;
         spawnPoint.y = 100;
         SpawnComponent spawnflag = engine.createComponent(SpawnComponent.class);
@@ -140,21 +132,15 @@ public class MapTest extends SandboxGame {
 
         // create a simple player ball
         Entity player = engine.createEntity();
-        PhysixModifierComponent modifyComponent = engine
-                .createComponent(PhysixModifierComponent.class);
+        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         player.add(modifyComponent);
 
         modifyComponent.schedule(() -> {
             playerBody = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody,
-                    physixSystem).position(
-                    spawn.getComponent(PositionComponent.class).x,
-                    spawn.getComponent(PositionComponent.class).y)
-                    .fixedRotation(true);
+            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(spawn.getComponent(PositionComponent.class).x,
+                    spawn.getComponent(PositionComponent.class).y).fixedRotation(true);
             playerBody.init(bodyDef, physixSystem, player);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                    .density(5).friction(0.2f).restitution(0.4f)
-                    .shapeCircle(30);
+            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(5).friction(0.2f).restitution(0.4f).shapeCircle(30);
             playerBody.createFixture(fixtureDef);
             player.add(playerBody);
         });
@@ -175,19 +161,15 @@ public class MapTest extends SandboxGame {
         float x = rect.x * tileWidth + width / 2;
         float y = rect.y * tileHeight + height / 2;
 
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x, y).fixedRotation(false);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(false);
         Body body = physixSystem.getWorld().createBody(bodyDef);
-        body.createFixture(new PhysixFixtureDef(physixSystem).density(1)
-                .friction(0.5f).shapeBox(width, height));
+        body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(width, height));
     }
 
     private void addShape(float x, float y, int width, int height) {
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x, y).fixedRotation(false);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(false);
         Body body = physixSystem.getWorld().createBody(bodyDef);
-        body.createFixture(new PhysixFixtureDef(physixSystem).density(1)
-                .friction(0.5f).shapeBox(width, height));
+        body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(width, height));
     }
 
     @Override
