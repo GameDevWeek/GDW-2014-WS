@@ -27,20 +27,18 @@ public class MainMenu extends MenuPage{
         int y=370;
         int yStep=100;
         
-            addPageEntry(menuManager,x,y-yStep*(i++),"start_button", new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager,x,y-yStep*(i++),"optionen_button", new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager,x,y-yStep*(i++),"credits_button", new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager,x,y-yStep*(i++),"beenden_button", new OptionMenu(skin, menuManager));
+            addPageEntry(menuManager,x,y-yStep*(i++),start, new OptionMenu(skin, menuManager));
+            addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
+            addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
+            addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
         
         //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
         
     }
     
-    protected final void addPageEntry(MenuManager menuManager, int x, int y, String button, MenuPage page) {
+    protected final void addPageEntry(MenuManager menuManager, int x, int y, DecoImage image, MenuPage page) {
         menuManager.addLayer(page);
-        
-        //addLeftAlignedButton(x, y, 300, 40, button, () -> menuManager.pushPage(page));
-        addCenteredImage(x,y,860, 40, button, ()-> menuManager.pushPage(page));
+        addCenteredImage(x, y, 300, 40, image, () -> menuManager.pushPage(page));
     }
     
 }
