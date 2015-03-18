@@ -16,7 +16,7 @@ import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
@@ -80,7 +80,7 @@ public class EntityTest extends SandboxGame {
         logger.info("Health Value: " + Health.Value);
         BlockEntity.add(Health);
 
-        BlockEntity.add(engine.createComponent(BlockComponent.class));
+        BlockEntity.add(engine.createComponent(DestructableBlockComponent.class));
 
         AnimationComponent ac = engine
                 .createComponent(AnimationComponent.class);
