@@ -105,6 +105,11 @@ public class MyEntityTest extends SandboxGame {
         
         arrow.add(arrowLayer);
         
+        animComp = engine.createComponent(AnimationComponent.class);
+        animComp.reset();
+        assetManager.loadAssetListWithParam("data/json/animations.json", AnimationExtended.class,
+        AnimationExtendedLoader.AnimationExtendedParameter.class);        
+        animComp.animation = assetManager.getAnimation("walking");
         arrow.add(animComp);
         
         engine.addEntity(arrow);
@@ -165,16 +170,26 @@ public class MyEntityTest extends SandboxGame {
         	healthOfBlock.Value -= 1; 
         }
         
-        float X = blockEntity.getComponent(PositionComponent.class).x;
-         
-	    if (arrow.getComponent(PositionComponent.class).x > X - 50
-	            && arrow.getComponent(PositionComponent.class).x < X + 50) {
-	        DamageComponent arrowDamage = arrow
-	                .getComponent(DamageComponent.class);
-	        if (arrowDamage.damageToTile) {
-	            healthOfBlock.Value -= arrowDamage.damage;
-	        }
-	    }
+
+        if(blockEntity != null && blockEntity.isScheduledForRemoval())
+        {
+            PositionComponent Position = blockEntity.getComponent(PositionComponent.class);
+            if(Position!=null)
+            {
+                float X = Position.x;
+                
+                if (arrow.getComponent(PositionComponent.class).x > X - 50
+                        && arrow.getComponent(PositionComponent.class).x < X + 50) {
+                    DamageComponent arrowDamage = arrow
+                            .getComponent(DamageComponent.class);
+                    if (arrowDamage.damageToTile) {
+                        healthOfBlock.Value -= arrowDamage.damage;
+                    }
+                }
+                
+            }
+            
+        }
     }
 }
 
