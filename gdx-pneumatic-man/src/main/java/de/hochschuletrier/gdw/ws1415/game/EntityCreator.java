@@ -1,8 +1,13 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import box2dLight.PointLight;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -22,26 +27,9 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 
 
 import de.hochschuletrier.gdw.ws1415.game.components.*;
-import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
-
-
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
@@ -161,15 +149,6 @@ public class EntityCreator {
         engine.addEntity(entity);
         return entity;
     }
-    
-    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
-    	Entity entity = engine.createEntity();
-
-    	addRenderComponents(entity, map, info, tileX, tileY);
-    	
-    	engine.addEntity(entity);
-    	return entity;
-    }
 
     /**
      * This is the Block who'll fall down onto the player
@@ -248,7 +227,7 @@ public class EntityCreator {
 
     public static Entity createAndAddLava(Rectangle rect) {
         Entity entity = engine.createEntity();
-
+        
         float width = rect.width * GameConstants.getTileSizeX();
         float height = rect.height * GameConstants.getTileSizeY();
         float x = rect.x * GameConstants.getTileSizeX() + width / 2;
@@ -341,7 +320,8 @@ public class EntityCreator {
     public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Direction direction,
     		TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity entity = engine.createEntity();
-
+        
+        addTestParticleAndLightComponent(entity);
         addRenderComponents(entity, map, info, tileX, tileY); 
 
         float angle;
@@ -389,6 +369,33 @@ public class EntityCreator {
     
     // ********** Rendering section BEGIN **********
     
+    public static void addTestParticleAndLightComponent(Entity entity) {
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        
+        pe.particleEffect = new ParticleEffect();
+        
+        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/test.p"),Gdx.files.internal("src/main/resources/data/particle/"));
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        
+        PointLightComponent pl = engine.createComponent(PointLightComponent.class);
+        pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),360,new Color(1f,0f,0f,1f),15f,20f,20f);
+        
+        entity.add(pe);
+        entity.add(pl);
+    }
+    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
+    	Entity entity = engine.createEntity();
+
+    	if (info.getBooleanProperty("Invulnerable", false) && info.getProperty("Type", "").equals("Lava"))
+    		addTestParticleAndLightComponent(entity);
+    	addRenderComponents(entity, map, info, tileX, tileY);
+    	
+    	engine.addEntity(entity);
+    	return entity;
+    }
+    
     private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, AnimationExtended animation) {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
@@ -424,6 +431,7 @@ public class EntityCreator {
         entity.add(pos);
         entity.add(entityLayer);
         entity.add(tex);
+
     }
     
     /**

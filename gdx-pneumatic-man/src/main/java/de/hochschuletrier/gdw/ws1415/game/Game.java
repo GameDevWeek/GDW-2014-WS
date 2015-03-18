@@ -119,13 +119,14 @@ public class Game {
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
 
         setupPhysixWorld();
-        generateWorldFromTileMap();
 
         addSystems();
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
 
         Controllers.addListener(inputGamepadSystem);
+        
+        generateWorldFromTileMap();
         
         if(Controllers.getControllers().size > 0)
         {
