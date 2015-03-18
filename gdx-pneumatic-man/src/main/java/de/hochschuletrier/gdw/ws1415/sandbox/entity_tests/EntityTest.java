@@ -18,8 +18,10 @@ import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
@@ -52,9 +54,17 @@ public class EntityTest extends SandboxGame {
     Entity BlockEntity;
     Entity Arrow;
     Entity Unit;
+    Entity Miner;
 
     @Override
     public void init(AssetManagerX assetManager) {
+
+        Miner = engine.createEntity();
+        MinerComponent mc = engine.createComponent(MinerComponent.class);
+        GoalComponent goal = engine.createComponent(GoalComponent.class);
+        Miner.add(mc);
+        Miner.add(goal);
+        engine.addEntity(Miner);
 
         BlockEntity = engine.createEntity();
 
@@ -152,7 +162,8 @@ public class EntityTest extends SandboxGame {
         // DrawRect(ArrowPosition.x, ArrowPosition.y, 10, 10, Color.RED);
 
         DestructableBlockRender.update(delta);
-        if (HealthOfBlock != null && Gdx.input.isKeyJustPressed(Input.Keys.SPACE)
+        if (HealthOfBlock != null
+                && Gdx.input.isKeyJustPressed(Input.Keys.SPACE)
                 && HealthOfBlock.Value > 0) {
             HealthOfBlock.Value -= 1;
         }
