@@ -6,8 +6,9 @@ import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 public class CreditsMenu extends MenuPage 
 {
 
-	public CreditsMenu(Skin skin, MenuManager menuManager) {
-		super(skin, "logo");
+	public CreditsMenu(Skin skin, MenuManager menuManager) 
+	{
+		super(skin, "background_menu");
 	}
 
 }
