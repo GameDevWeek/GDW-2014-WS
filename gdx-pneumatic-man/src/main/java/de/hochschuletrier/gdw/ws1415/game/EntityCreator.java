@@ -2,24 +2,44 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
+import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
+import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.commons.tiled.TileInfo;
+import de.hochschuletrier.gdw.commons.tiled.TileSet;
+import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
+import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-
-
-import de.hochschuletrier.gdw.ws1415.game.components.*;
-import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DeathComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockTriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-
-import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
@@ -33,7 +53,6 @@ public class EntityCreator {
         entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(DamageComponent.class));
-        entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
 
         float width = GameConstants.getTileSizeX() * 0.9f;
@@ -57,15 +76,37 @@ public class EntityCreator {
         jumpComponent.restingTime = 0.02f;
         entity.add(jumpComponent);
 
-        MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
-        moveComponent.speed = 10000.0f;
-        entity.add(moveComponent);
-
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
-
         engine.addEntity(entity);
         return entity;
+    }
+    
+    public static Entity createAndAddDyingCharacter(Entity entityToDie) {
+        Entity dyingEntity = engine.createEntity();
+        
+        //TODO
+        //Loading new Dying-Animation - waiting for Assets
+        
+        
+        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
+        
+        
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("src/main/resources/images/Cowboy small.jpg")));
+        deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
+        
+//        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
+//        animation.IsActive = false;
+//        dyingEntity.add(animation);
+        
+        PositionComponent position = entityToDie.getComponent(PositionComponent.class);
+
+        dyingEntity.add(deathAnimation);
+        dyingEntity.add(position);
+        dyingEntity.add(deathComponent);
+
+        
+        engine.addEntity(dyingEntity);
+        return dyingEntity;
     }
 
     /**
@@ -105,7 +146,7 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddEventBox(EventBoxType type, float x, float y) {
+    public static Entity createAndAddEventBox(float x, float y) {
         Entity box = engine.createEntity();
 
         box.add(engine.createComponent(TriggerComponent.class));
@@ -135,6 +176,15 @@ public class EntityCreator {
 
         engine.addEntity(entity);
         return entity;
+    }
+    
+    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
+    	Entity entity = engine.createEntity();
+
+    	addRenderComponents(entity, map, info, tileX, tileY);
+    	
+    	engine.addEntity(entity);
+    	return entity;
     }
 
     /**
@@ -191,9 +241,11 @@ public class EntityCreator {
     /**
      *  Destructable Block
      */
-    public static Entity createAndAddVulnerableFloor(float x, float y) {
+    public static Entity createAndAddVulnerableFloor(float x, float y, TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity entity = engine.createEntity();
-
+        
+        addRenderComponents(entity, map, info, tileX, tileY); // TODO: Change as soon as design team added the animation properties.
+        
         entity.add(defineBoxPhysixBodyComponent(entity, x, y,
                 GameConstants.getTileSizeX(), GameConstants.getTileSizeY(),
                 true, 1f, 1f, 0.1f));
@@ -202,7 +254,7 @@ public class EntityCreator {
         entity.add(blockComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 0;
+        Health.Value = 1;
         entity.add(Health);
 
         engine.addEntity(entity);
@@ -257,7 +309,7 @@ public class EntityCreator {
      */
     private static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, PlatformMode mode) {
         Entity entity = engine.createEntity();
-
+        
         PhysixBodyComponent bodyComponent = engine
                 .createComponent(PhysixBodyComponent.class);
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody,
@@ -302,9 +354,11 @@ public class EntityCreator {
         return createPlatformBlock(x,y, travelDistance, dir, mode);
     }
 
-    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Direction direction) {
+    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Direction direction,
+    		TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity entity = engine.createEntity();
 
+        addRenderComponents(entity, map, info, tileX, tileY); 
 
         float angle;
         if (direction == Direction.RIGHT) {
@@ -347,4 +401,117 @@ public class EntityCreator {
         return entity;
 
     }
+    
+    
+    // ********** Rendering section BEGIN **********
+    
+    private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, AnimationExtended animation) {
+        LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
+        entityLayer.layer = layer;
+        entityLayer.parallax = parallax;
+        
+        AnimationComponent anim = engine.createComponent(AnimationComponent.class);
+        anim.animation = animation;
+        
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.x = x;
+        pos.y = y;
+        pos.rotation = 0;
+        
+        entity.add(pos);
+        entity.add(entityLayer);
+        entity.add(anim);
+    }
+    
+    private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, Texture texture, TextureRegion region) {
+        LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
+        entityLayer.layer = layer;
+        entityLayer.parallax = parallax;
+        
+        TextureComponent tex = engine.createComponent(TextureComponent.class);
+        tex.texture = texture;
+        tex.region = region;
+        
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.x = x;
+        pos.y = y;
+        pos.rotation = 0;
+        
+        entity.add(pos);
+        entity.add(entityLayer);
+        entity.add(tex);
+    }
+    
+    /**
+     * Extracts information from the map and tile info to add components to the the given entity.
+     */
+    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY) {
+    	TileSet tileset = map.findTileSet(info.globalId);
+    	Texture image = (Texture) tileset.getAttachment();
+
+        int sheetX = tileset.getTileX(info.localId);
+        int sheetY = tileset.getTileY(info.localId);
+
+        int mapTileWidth = map.getTileWidth();
+        int mapTileHeight = map.getTileHeight();
+        
+        int tileOffsetY = tileset.getTileHeight() - mapTileHeight;
+
+        float px = (tileX * mapTileWidth) + mapTileWidth*0.5f;
+        float py = (tileY * mapTileHeight) - tileOffsetY + mapTileHeight*0.5f;
+        
+        int coordX = (int) (sheetX * tileset.getTileWidth()); 
+        coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
+        int coordY = ((int) sheetY * tileset.getTileHeight());
+        coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();                
+        
+        TextureRegion region = new TextureRegion(image);
+        region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
+        addRenderComponents(entity, px, py, 0, 0.2f, image, region);
+    }
+    
+    /**
+     * Extracts information from the map and tile info to add components to the the given entity.
+     * The frame number (param frames) should be greater than 1.
+     */
+    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, int frames) {
+    	assert(frames > 1);
+    	
+    	TileSet tileset = map.findTileSet(info.globalId);
+    	Texture image = (Texture) tileset.getAttachment();
+    	
+    	TileSetAnimation animation = new TileSetAnimation(
+                frames,
+                tileset.getFloatProperty("animationDuration", 0),
+                tileset.getIntProperty("animationTileOffset", 0));
+    	
+    	TextureRegion[] regions = new TextureRegion[frames];
+    	float[] frameDurations = new float[frames];
+    	
+    	int tileOffsetY = tileset.getTileHeight() - map.getTileHeight();
+    	
+        float px = (tileX * map.getTileWidth());
+        float py = (tileY * map.getTileHeight()) - tileOffsetY;
+        
+    	for(int i=0; i<frames; i++) {
+            tileset.updateAnimation(animation.frameDuration*i);
+            
+            int sheetX = tileset.getTileX(info.localId);
+            int sheetY = tileset.getTileY(info.localId);
+            
+            int coordX = (int) (sheetX * tileset.getTileWidth()); 
+            coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
+            int coordY = ((int) sheetY * tileset.getTileHeight());
+            coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();  
+            
+            regions[i] = new TextureRegion(image);
+            regions[i].setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
+            frameDurations[i] = animation.frameDuration;
+    	}
+
+    	tileset.updateAnimation(0f);
+    	AnimationExtended anim = new AnimationExtended(PlayMode.LOOP, frameDurations, regions);
+    	addRenderComponents(entity, px, py, 0, 0.2f, anim);
+    }
+    // ********** Rendering section END **********
 }

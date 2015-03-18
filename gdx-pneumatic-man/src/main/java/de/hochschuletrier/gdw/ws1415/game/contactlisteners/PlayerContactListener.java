@@ -39,8 +39,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
         if (ComponentMappers.enemy.has(otherEntity)) {
             // player touched an enemy
             if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
-                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity
-                        .getComponent(DamageComponent.class).damage;
+                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
     }
