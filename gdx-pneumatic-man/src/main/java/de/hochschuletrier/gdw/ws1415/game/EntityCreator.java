@@ -41,7 +41,6 @@ public class EntityCreator {
         player.getComponent(PositionComponent.class).y = y;
         player.getComponent(PositionComponent.class).rotation = rotation;
 
-        
         player.add(engine.createComponent(PlayerComponent.class));
         player.add(engine.createComponent(InputComponent.class));
 
@@ -140,7 +139,8 @@ public class EntityCreator {
 
     }
 
-    public void createTrigger(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Consumer<Entity> consumer) {
+    public static Entity createTrigger(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height,
+            Consumer<Entity> consumer) {
         Entity entity = engine.createEntity();
         PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         entity.add(modifyComponent);
@@ -158,6 +158,7 @@ public class EntityCreator {
             entity.add(bodyComponent);
         });
         engine.addEntity(entity);
+        return entity;
     }
 
     public static Entity createAndAddMiner(float x, float y, float rotation, float width, float height, PooledEngine engine, PhysixSystem physixSystem) {
