@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415.game.systems;
 
 import java.util.ArrayList;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
@@ -25,9 +26,9 @@ public class HealthSystem extends EntitySystem implements EntityListener {
         super(Priority);
     }
 
-    PooledEngine CurrentEngine;
+    Engine CurrentEngine;
 
-    public void addedToEngine(PooledEngine engine) {
+    public void addedToEngine(Engine engine) {
         CurrentEngine = engine;
         Family family = Family.all(HealthComponent.class).get();
         engine.addEntityListener(family, this);
