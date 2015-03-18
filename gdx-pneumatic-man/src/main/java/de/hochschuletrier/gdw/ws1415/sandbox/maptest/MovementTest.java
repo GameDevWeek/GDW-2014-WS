@@ -84,6 +84,9 @@ public class MovementTest extends SandboxGame {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(movementSystem);
+
+        EntityCreator.engine = this.engine;
+        EntityCreator.physixSystem = this.physixSystem;
     }
 
     @Override
