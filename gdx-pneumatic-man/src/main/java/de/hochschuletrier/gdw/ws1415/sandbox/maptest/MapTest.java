@@ -80,7 +80,7 @@ public class MapTest extends SandboxGame {
     public void init(AssetManagerX assetManager) {
 
         // map = loadMap("data/maps/demo.tmx");
-        MapLoader ml = new MapLoader(engine, physixSystem, "data/maps/Testkarte_17.03.tmx");
+        MapLoader ml = new MapLoader(engine, physixSystem, "data/maps/demo.tmx");
         map = ml.getTiledMap();
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
