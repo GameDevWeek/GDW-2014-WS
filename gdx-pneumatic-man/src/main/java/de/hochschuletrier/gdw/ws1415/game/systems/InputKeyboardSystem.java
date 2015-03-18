@@ -71,6 +71,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         switch(keycode)
         {
             case Input.Keys.UP:
+            case Input.Keys.SPACE:
             case Input.Keys.W: jump = false; break;
             case Input.Keys.LEFT:
             case Input.Keys.A: left = false; break;
