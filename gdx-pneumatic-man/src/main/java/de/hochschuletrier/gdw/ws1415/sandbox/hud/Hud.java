@@ -40,6 +40,7 @@ public class Hud extends SandboxGame
     private BitmapFont font;
     
     private int time = 0;
+    private int blocks = 0;
     
     private Timer timer;
   
@@ -49,13 +50,12 @@ public class Hud extends SandboxGame
       {
           batch = DrawUtil.batch;
           stage = new Stage();
-          font = assetManager.getFont("orbitron");
+          font = assetManager.getFont("verdana_24");
           timer = new Timer();
           
           
           initMinerDisplay(assetManager);
           initTimeDisplay();
-//          initScoreDisplay();
           
       }
       
@@ -115,7 +115,9 @@ public class Hud extends SandboxGame
           
 //          font.draw(batch, "Score: " + score, 0, 20);
           
-          font.draw(batch, "Time: " + time, 300, 200);
+          font.draw(batch, "Time: " + time, stage.getWidth()/2-40, stage.getHeight()-30);
+          
+          font.draw(batch, "Zerstörte Blöcke: " + blocks, 10, stage.getHeight()-30);
           
 //          sprite.draw(batch);
 //          batch.draw(sprite, 200, 200);
@@ -135,23 +137,28 @@ public class Hud extends SandboxGame
           if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
           {
               timer.start();
-              
+          }
+          if(Gdx.input.isKeyJustPressed(Keys.B))
+          {
+              addDestroyedBlock();
           }
           
           
           
           int x = 5;
+          for (Sprite s : MinerFoundListe)
+          {
+              batch.draw(s, x, 0);
+              x += 70;
+          }
+          
           for (Sprite s : MinerLeftListe)
           {
               batch.draw(s, x, 0);
               x += 70;
           }
 
-          for (Sprite s : MinerFoundListe)
-          {
-              batch.draw(s, x, 0);
-              x += 70;
-          }
+
         
       }
     
@@ -173,6 +180,12 @@ public class Hud extends SandboxGame
               MinerLeftListe.remove(MinerLeftListe.size()-1);
           }
           MinerFoundListe.add(new Sprite(textureMinerFound));
+      }
+
+      
+      public void addDestroyedBlock()
+      {
+          blocks++;
       }
       
     
