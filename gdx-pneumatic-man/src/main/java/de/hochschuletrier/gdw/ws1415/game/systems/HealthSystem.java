@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.core.PooledEngine;
 
-import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
@@ -29,10 +29,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
         super(Priority);
     }
 
-    PooledEngine CurrentEngine;
+    Engine CurrentEngine;
 
-    public void addedToEngine(PooledEngine engine) {
-        logger.info("Health added to engine");
+    @Override
+	public void addedToEngine(Engine engine) {
         CurrentEngine = engine;
         Family family = Family.all(HealthComponent.class).get();
         engine.addEntityListener(family, this);
@@ -40,13 +40,11 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityAdded(Entity entity) {
-        logger.info(entity.getId()+" added");
         entities.add(entity);
     }
 
     @Override
     public void entityRemoved(Entity entity) {
-        logger.info(entity.getId()+" removed");
         entities.remove(entity);
     }
 
