@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
@@ -11,7 +12,9 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
+import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
 
@@ -118,7 +121,7 @@ public class EntityCreator {
 
     }
 
-    public static Entity createPlatformBlock(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, int travelDistance) {
+    public static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, PlatformMode mode) {
         Entity entity = engine.createEntity();
 
         PhysixBodyComponent bodyComponent = engine
@@ -127,7 +130,7 @@ public class EntityCreator {
                 physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(width, height)
+                .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(entity);
@@ -137,9 +140,15 @@ public class EntityCreator {
         entity.add(blockComp);
 
         PlatformComponent pl = new PlatformComponent();
-        pl.travelDistance = travelDistance * width;
-        // entity.add()
+        pl.travelDistance = travelDistance * GameConstants.getTileSizeX();
+        pl.mode = mode;
+        pl.startPos = new Vector2(x, y);
 
+        DirectionComponent d = new DirectionComponent();
+        d.facingDirection = dir;
+
+        entity.add(pl);
+        entity.add(d);
 
         engine.addEntity(entity);
         return entity;

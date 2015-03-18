@@ -40,6 +40,8 @@ import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 
 import java.nio.file.AccessDeniedException;
@@ -134,8 +136,25 @@ public class Game {
                 EntityCreator::createAndAddInvulnerableFloor);
 
         for (Layer layer : map.getLayers()) {
-            TileInfo[][] tiles = layer.getTiles();
+            if(layer.isObjectLayer()){
+                for(LayerObject obj : layer.getObjects()){
+                    if(obj.getName().equals("Platform")){
+                        PlatformMode mode = PlatformMode.valueOf(obj.getProperty("mode", PlatformMode.Patrouling.name()));
+                        Direction dir = Direction.RIGHT;
+                        int distance = obj.getIntProperty("distance", 0);
+                        EntityCreator.createPlatformBlock(obj.getX(), obj.getY(), distance, dir, mode);
+                    }
+                    if(obj.getName().equals("Rock")){
 
+                    }
+                    if(obj.getName().equals("RockTrigger")){
+
+                    }
+                }
+                continue;
+            }
+            // is tile layer:
+            TileInfo[][] tiles = layer.getTiles();
             for (int i = 0; i < map.getWidth(); i++) {
                 for (int j = 0; j < map.getHeight(); j++) {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {

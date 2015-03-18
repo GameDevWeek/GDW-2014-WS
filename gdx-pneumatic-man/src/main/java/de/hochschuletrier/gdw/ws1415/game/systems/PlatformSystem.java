@@ -30,8 +30,14 @@ public class PlatformSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
-        PositionComponent position = ComponentMappers.position.get(entity);
         DirectionComponent direction = entity.getComponent(DirectionComponent.class);
         PlatformComponent platform = entity.getComponent(PlatformComponent.class);
+
+        if(physix.getPosition().sub(platform.startPos).len2() <= platform.travelDistance*platform.travelDistance){
+            physix.setLinearVelocity(direction.facingDirection.toVector2().scl(platform.platformSpeed));
+        }else{
+            platform.startPos = platform.startPos.add(direction.facingDirection.toVector2().scl(platform.travelDistance));
+            direction.facingDirection = direction.facingDirection.rotate180();
+        }
     }
 }
