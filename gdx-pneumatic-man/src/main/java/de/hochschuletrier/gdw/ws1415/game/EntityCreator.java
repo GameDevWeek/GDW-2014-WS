@@ -1,13 +1,17 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import java.util.function.Consumer;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
@@ -30,24 +34,22 @@ public class EntityCreator {
         player.add(engine.createComponent(AnimationComponent.class));
         player.add(engine.createComponent(HealthComponent.class));
         player.add(engine.createComponent(DamageComponent.class));
-        
+
         player.add(engine.createComponent(PositionComponent.class));
         player.getComponent(PositionComponent.class).x = x;
         player.getComponent(PositionComponent.class).y = y;
         player.getComponent(PositionComponent.class).rotation = rotation;
 
-        
         player.add(engine.createComponent(PlayerComponent.class));
         player.add(engine.createComponent(InputComponent.class));
 
         engine.addEntity(player);
         return player;
     }
-    
-    public static Entity createAndAddDyingCharacter(Entity entity,
-    PooledEngine engine) {
+
+    public static Entity createAndAddDyingCharacter(Entity entity, PooledEngine engine) {
         Entity player = engine.createEntity();
-        
+
         AnimationComponent animation = entity.getComponent(AnimationComponent.class);
         player.add(animation);
 
@@ -75,7 +77,6 @@ public class EntityCreator {
         fixture.setUserData(pbdy);
         pbc.init(pbdy, physixSystem, entity);
 
-
         engine.addEntity(entity);
         return entity;
     }
@@ -98,14 +99,10 @@ public class EntityCreator {
 
         Entity entity = engine.createEntity();
 
-        PhysixBodyComponent bodyComponent = engine
-                .createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
-        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(width, height)
-                .restitution(0.1f);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(1).friction(1f).shapeBox(width, height).restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(entity);
 
@@ -121,14 +118,10 @@ public class EntityCreator {
     public static Entity createAndAddVulnerableFloor(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height) {
         Entity entity = engine.createEntity();
 
-        PhysixBodyComponent bodyComponent = engine
-                .createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
-        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(width, height)
-                .restitution(0.1f);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(1).friction(1f).shapeBox(width, height).restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(entity);
         entity.add(bodyComponent);
@@ -144,4 +137,25 @@ public class EntityCreator {
         return entity;
 
     }
+
+    public void createTrigger(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Consumer<Entity> consumer) {
+        Entity entity = engine.createEntity();
+        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
+        entity.add(modifyComponent);
+
+        TriggerComponent triggerComponent = engine.createComponent(TriggerComponent.class);
+        triggerComponent.consumer = consumer;
+        entity.add(triggerComponent);
+
+        modifyComponent.schedule(() -> {
+            PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.StaticBody, physixSystem).position(x, y);
+            bodyComponent.init(bodyDef, physixSystem, entity);
+            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).sensor(true).shapeBox(width, height);
+            bodyComponent.createFixture(fixtureDef);
+            entity.add(bodyComponent);
+        });
+        engine.addEntity(entity);
+    }
+
 }
