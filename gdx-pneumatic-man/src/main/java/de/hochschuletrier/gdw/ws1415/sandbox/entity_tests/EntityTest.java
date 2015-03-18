@@ -198,9 +198,6 @@ public class EntityTest extends SandboxGame {
                 Miner_2.getComponent(PositionComponent.class).y, 20, 20,
                 Color.GRAY);
 
-        logger.info("addedToEngine: " + score.zaehler_ate);
-        logger.info("entityAdded: " + score.zaehler_ate);
-
         /*
          * DrawRect(BlockEntity.getComponent(PositionComponent.class).x,
          * BlockEntity.getComponent(PositionComponent.class).y, DW * 0.5f, DH *
