@@ -63,8 +63,8 @@ public enum Direction{
             if(i > 0) return RIGHT;
             else return LEFT;
         else
-        if(j > 0) return UP;
-        else return DOWN;
+            if(j > 0) return UP;
+            else return DOWN;
     };
 
 }

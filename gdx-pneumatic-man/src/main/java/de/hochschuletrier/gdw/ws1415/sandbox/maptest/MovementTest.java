@@ -39,12 +39,12 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.BouncingComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
-import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 /**
@@ -88,6 +88,7 @@ public class MovementTest extends SandboxGame {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(movementSystem);
+        engine.addSystem(new InputKeyboardSystem());
 
         EntityCreator.engine = this.engine;
         EntityCreator.physixSystem = this.physixSystem;
@@ -128,26 +129,35 @@ public class MovementTest extends SandboxGame {
         Entity player = engine.createEntity();
         PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         player.add(modifyComponent);
+        
+        InputComponent inputC = engine.createComponent(InputComponent.class);
+        player.add(inputC);
+        
+        //=========================== MOVEMENT TEST
+        physixSystem.setGravity(0, 24);
+        
+        movementComponent = engine.createComponent(MovementComponent.class);
+        movementComponent.speed = 10000.0f;
+        player.add(movementComponent);
+        
+        jumpComponent = engine.createComponent(JumpComponent.class);
+        jumpComponent.jumpImpulse = 100000.0f;
+        jumpComponent.restingTime = 0.02f;
+        player.add(jumpComponent);
 
         modifyComponent.schedule(() -> {
             playerBody = engine.createComponent(PhysixBodyComponent.class);
             PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(spawn.getComponent(PositionComponent.class).x,
             		spawn.getComponent(PositionComponent.class).y).fixedRotation(true);
             playerBody.init(bodyDef, physixSystem, player);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(5).friction(0f).restitution(0.0001f).shapeBox(58, 90);
+            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(1).friction(0f).restitution(0.1f).shapeBox(58, 90);
             playerBody.createFixture(fixtureDef);
             player.add(playerBody);
         });
         
-        //=========================== MOVEMENT TEST
-        physixSystem.setGravity(0, 24);
+       
         
-        movementComponent = new MovementComponent();
-        movementComponent.speed = 15000.0f;
-        player.add(movementComponent);
-        
-        jumpComponent = new JumpComponent(100000.0f, 0.02f);
-        player.add(jumpComponent);
+       
 
         engine.addEntity(player);
         // ==============================================
@@ -230,21 +240,13 @@ public class MovementTest extends SandboxGame {
         }
         engine.update(delta);
         
-        if(movementComponent.movingLeft){
-        	movementComponent.stopMovingLeft();
-        }
-        if(movementComponent.movingRight){
-        	movementComponent.stopMovingRight();
-        }
-        
         
         mapRenderer.update(delta);
         camera.update(delta);
-
+        
+        
         if(playerBody != null) {
-           
-            float MovementX = 0.0f;
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+           /*
                 MovementX -= 300.0f;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -277,8 +279,7 @@ public class MovementTest extends SandboxGame {
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
                 jumpComponent.jump();
             }
-            */
-            
+           */ 
             camera.setDestination(playerBody.getPosition());
         }
     }
