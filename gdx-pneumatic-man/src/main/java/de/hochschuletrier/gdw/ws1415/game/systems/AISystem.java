@@ -90,7 +90,7 @@ public class AISystem extends IteratingSystem {
         }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
             // move forward
             
->>>>>>> Temporary merge branch 2
+
         }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
             // move forward
             
