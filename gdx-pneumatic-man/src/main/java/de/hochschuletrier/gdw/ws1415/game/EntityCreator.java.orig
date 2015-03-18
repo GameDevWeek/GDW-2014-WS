@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -15,8 +16,11 @@ import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+<<<<<<< HEAD
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
+=======
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+>>>>>>> db16ce6bf2fa1417c54c5b906cedae1c87f1950d
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
@@ -29,6 +33,8 @@ public class EntityCreator {
 
         player.add(engine.createComponent(AnimationComponent.class));
         player.add(engine.createComponent(HealthComponent.class));
+        player.add(engine.createComponent(SpawnComponent.class));
+<<<<<<< HEAD
         player.add(engine.createComponent(DamageComponent.class));
         
         player.add(engine.createComponent(PositionComponent.class));
@@ -38,7 +44,9 @@ public class EntityCreator {
 
         
         player.add(engine.createComponent(PlayerComponent.class));
+=======
         player.add(engine.createComponent(InputComponent.class));
+>>>>>>> db16ce6bf2fa1417c54c5b906cedae1c87f1950d
 
         engine.addEntity(player);
         return player;
@@ -48,13 +56,17 @@ public class EntityCreator {
     PooledEngine engine) {
         Entity player = engine.createEntity();
         
-        AnimationComponent animation = entity.getComponent(AnimationComponent.class);
-        player.add(animation);
-
+        player.add(engine.createComponent(PositionComponent.class));
+        player.add(engine.createComponent(SpawnComponent.class));
+        
+        player.add(entity.getComponent(AnimationComponent.class));
+        player.getComponent(AnimationComponent.class).animation
+        
         PositionComponent position = entity.getComponent(PositionComponent.class);
         position.rotation += 90;
         player.add(position);
 
+        
         engine.addEntity(player);
         return player;
     }
@@ -75,6 +87,7 @@ public class EntityCreator {
         fixture.setUserData(pbdy);
         pbc.init(pbdy, physixSystem, entity);
 
+        entity.add(pbc);
 
         engine.addEntity(entity);
         return entity;

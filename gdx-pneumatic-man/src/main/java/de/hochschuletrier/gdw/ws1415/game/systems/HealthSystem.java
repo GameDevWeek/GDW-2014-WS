@@ -2,13 +2,20 @@ package de.hochschuletrier.gdw.ws1415.game.systems;
 
 import java.util.ArrayList;
 
-import com.badlogic.ashley.core.Engine;
+import javafx.geometry.Pos;
+
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.utils.Timer;
 
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent.HealthState;
+import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 
 public class HealthSystem extends EntitySystem implements EntityListener {
 
@@ -22,9 +29,9 @@ public class HealthSystem extends EntitySystem implements EntityListener {
         super(Priority);
     }
 
-    Engine CurrentEngine;
+    PooledEngine CurrentEngine;
 
-    public void addedToEngine(Engine engine) {
+    public void addedToEngine(PooledEngine engine) {
         CurrentEngine = engine;
         Family family = Family.all(HealthComponent.class).get();
         engine.addEntityListener(family, this);
@@ -48,6 +55,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
             Health.DecrementByValueNextFrame = 0;
 
             if (Health.Value <= 0) {
+                entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DYING;
+                
+                PositionComponent position = entity.getComponent(PositionComponent.class);
+                EntityCreator.createAndAddDyingCharacter(entity, CurrentEngine);  
                 CurrentEngine.removeEntity(entity);
             }
 
