@@ -2,7 +2,6 @@ package de.hochschuletrier.gdw.ws1415.sandbox.hud;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -35,7 +34,6 @@ public class Hud extends SandboxGame
     private ArrayList<Sprite> MinerLeftListe;
     private ArrayList<Sprite> MinerFoundListe;
   
-    private Sprite sprite;
     private Stage stage;
     private BitmapFont font;
     
@@ -50,7 +48,7 @@ public class Hud extends SandboxGame
       {
           batch = DrawUtil.batch;
           stage = new Stage();
-          font = assetManager.getFont("orbitron_32");
+          font = assetManager.getFont("orbitron");
           timer = new Timer();
           
           
@@ -115,9 +113,9 @@ public class Hud extends SandboxGame
           
 //          font.draw(batch, "Score: " + score, 0, 20);
           
-          font.draw(batch, "Time: " + time, Gdx.graphics.getWidth()/2-40, Gdx.graphics.getHeight()-25);
+          font.draw(batch, "Time: " + time, Gdx.graphics.getWidth()/2-40, Gdx.graphics.getHeight()-30);
           
-          font.draw(batch, "Zerstörte Blöcke: " + blocks, 10, Gdx.graphics.getHeight()-25);
+          font.draw(batch, "Destroyed Blocks: " + blocks, 10, Gdx.graphics.getHeight()-30);
           
 //          sprite.draw(batch);
 //          batch.draw(sprite, 200, 200);
