@@ -26,7 +26,7 @@ public class OptionMenu extends MenuPage
 		super(skin, "logo");
 		int y = 400;
 		
-		createLabel(100, y).setText("Sound:");
+		createLabel(100, y).setText("SOUND:");
         soundSlider = createSlider(170, y, this::onSoundVolumeChanged);
         soundLabel = createLabel(380, y);
         soundMuteButton = createToggleButton(440, y, "Aus", this::onSoundMuteChanged);

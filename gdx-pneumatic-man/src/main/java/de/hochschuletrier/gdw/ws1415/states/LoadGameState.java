@@ -14,33 +14,33 @@ public class LoadGameState extends BaseGameState {
     private boolean isDone;
     private final AssetManagerX assetManager;
     private final Runnable completeFunc;
-    private final Texture loadScreen = new Texture(Gdx.files.internal("data/images/logo.png"));
+    private final Texture loadScreen = new Texture(Gdx.files.internal("data/images/background_menu.png"));
 
     public LoadGameState(AssetManagerX assetManager, Runnable completeFunc) {
         this.assetManager = assetManager;
         this.completeFunc = completeFunc;
     }
 
-    public void render() {
-       /* Main.getInstance().screenCamera.bind();
+    public void render() 
+    {
+    	float drawWidth = Gdx.graphics.getWidth() - 100.0f;
+    	float x = (Gdx.graphics.getWidth() - loadScreen.getWidth())/2;
+    	float y = (Gdx.graphics.getHeight() - loadScreen.getHeight())/2;
+
+    	Main.getInstance().screenCamera.bind();
+    	
+    	DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.BLACK);
+    	DrawUtil.draw(loadScreen, x, y);
+    	
+    	DrawUtil.fillRect(50, Gdx.graphics.getHeight() / 2 - 25, (int) (drawWidth * assetManager.getProgress()), 50, Color.YELLOW);
+    	DrawUtil.drawRect(50, Gdx.graphics.getHeight() / 2 - 25, drawWidth, 50, Color.YELLOW);
+    	
+    	 /* Main.getInstance().screenCamera.bind();
         DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.BLACK);
 
         float drawWidth = Gdx.graphics.getWidth() - 100.0f;
         DrawUtil.fillRect(50, Gdx.graphics.getHeight() / 2 - 25, (int) (drawWidth * assetManager.getProgress()), 50, Color.GREEN);
         DrawUtil.drawRect(50, Gdx.graphics.getHeight() / 2 - 25, drawWidth, 50, Color.GREEN);*/
-    	
-    	float drawWidth = Gdx.graphics.getWidth() - 100.0f;
-    	
-    	Main.getInstance().screenCamera.bind();
-    	DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.BLACK);
-    	
-    	float x = (Gdx.graphics.getWidth() - loadScreen.getWidth())/2;
-    	float y = (Gdx.graphics.getHeight() - loadScreen.getHeight())/2;
-    	
-    	DrawUtil.draw(loadScreen, x, y);
-    	
-    	DrawUtil.fillRect(50, Gdx.graphics.getHeight() / 2 - 25, (int) (drawWidth * assetManager.getProgress()), 50, Color.OLIVE);
-    	
     }
 
     @Override
