@@ -38,6 +38,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
@@ -88,6 +89,13 @@ public class EntityCreator {
         jumpComponent.jumpImpulse = 20000.0f;
         jumpComponent.restingTime = 0.02f;
         entity.add(jumpComponent);
+
+        MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
+        moveComponent.speed = 10000.0f;
+        entity.add(moveComponent);
+
+        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
+        entity.add(blockComp);
 
         engine.addEntity(entity);
         return entity;
