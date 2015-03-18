@@ -46,11 +46,14 @@ public class DeathAnimationSystem extends EntitySystem implements EntityListener
             DeathComponent death = entity.getComponent(DeathComponent.class);
             PositionComponent position = entity.getComponent(PositionComponent.class);
             if (death.dyingDuration > 0) 
+            if (death.stateTime < death.dyingDuration) 
             {
-                
+                death.stateTime += deltaTime;
+                entity.getComponent(PositionComponent.class).rotation += (death.rotationGoal/death.dyingDuration)*death.stateTime;
             }
             else
             {
+                entity.removeAll();
                 CurrentEngine.removeEntity(entity);
                 // RESTART HANDLING
             }

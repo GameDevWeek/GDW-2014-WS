@@ -8,7 +8,9 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 
 public class HealthSystem extends EntitySystem implements EntityListener {
@@ -48,11 +50,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
             Health.Value = Health.Value - Health.DecrementByValueNextFrame;
             Health.DecrementByValueNextFrame = 0;
 
-            if (Health.Value <= 0) {
+            if ((entity.getComponent(PlayerComponent.class)!= null) && (Health.Value <= 0)) {
                 entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DYING;
                 
                 PositionComponent position = entity.getComponent(PositionComponent.class);
-                //EntityCreator.createAndAddDyingCharacter(entity);  
+                EntityCreator.createAndAddDyingCharacter(entity); 
+                entity.removeAll();
                 CurrentEngine.removeEntity(entity);
             }
 
