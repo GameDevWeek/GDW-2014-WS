@@ -46,7 +46,6 @@ import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
-import java.util.function.Consumer;
 
 public class Game {
 
@@ -147,10 +146,15 @@ public class Game {
             if(layer.isObjectLayer()){
                 for(LayerObject obj : layer.getObjects()){
                     if(obj.getName().equals("Platform")){
-                        PlatformMode mode = PlatformMode.valueOf(obj.getProperty("mode", PlatformMode.Patrouling.name()));
-                        Direction dir = Direction.RIGHT;
-                        int distance = obj.getIntProperty("distance", 0);
-                        EntityCreator.createPlatformBlock(obj.getX(), obj.getY(), distance, dir, mode);
+                        PlatformMode mode = PlatformMode.valueOf(obj.getProperty("Mode", PlatformMode.ALWAYS.name()).toUpperCase());
+                        Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.UP.name()).toUpperCase()); // "Direction"
+                        int distance = obj.getIntProperty("Distance", 0);
+                        int hitpoints = obj.getIntProperty("Hitpoints", 0);
+                        float speed = obj.getFloatProperty("Speed", 0);
+                        if(hitpoints == 0)
+                            EntityCreator.IndestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode);
+                        else
+                            EntityCreator.DestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode, hitpoints);
                     }
                     if(obj.getName().equals("Rock")){
 
