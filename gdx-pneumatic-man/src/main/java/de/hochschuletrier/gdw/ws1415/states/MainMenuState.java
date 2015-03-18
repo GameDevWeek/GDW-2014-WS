@@ -28,6 +28,7 @@ public class MainMenuState extends BaseGameState {
 
     public MainMenuState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
+        music.play();
 
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
