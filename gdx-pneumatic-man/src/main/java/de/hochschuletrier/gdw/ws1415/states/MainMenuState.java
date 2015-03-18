@@ -24,7 +24,7 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
 
     private final AssetManagerX assetManager;
     private final Music music;
-    private final MenuManager menuManager=new MenuManager(1920,1020, null);
+    private final MenuManager menuManager=new MenuManager(Main.WINDOW_WIDTH,Main.WINDOW_HEIGHT, null);
     InputInterceptor inputProcessor;
 
     public MainMenuState(AssetManagerX assetManager) {
@@ -88,11 +88,11 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Main main = Main.getInstance();
+       /* Main main = Main.getInstance();
         if(!main.isTransitioning()) {
             main.changeState(new GameplayState(assetManager), new SplitHorizontalTransition(500), null);
-        }
-        return true;
+        }*/ //sprung ins spiel
+        return false;
     }
 
     @Override
