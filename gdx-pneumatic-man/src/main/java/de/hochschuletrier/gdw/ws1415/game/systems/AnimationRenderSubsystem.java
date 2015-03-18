@@ -19,7 +19,11 @@ public class AnimationRenderSubsystem {
         AnimationComponent animation = ComponentMappers.animation.get(entity);
         PositionComponent position = ComponentMappers.position.get(entity);
 
-        animation.stateTime += deltaTime;
+        if(animation.IsActive)
+        {
+            animation.stateTime += deltaTime;
+        }
+        
         TextureRegion keyFrame = animation.animation
                 .getKeyFrame(animation.stateTime);
         if (animation.stateTime > animation.animation.animationDuration) {

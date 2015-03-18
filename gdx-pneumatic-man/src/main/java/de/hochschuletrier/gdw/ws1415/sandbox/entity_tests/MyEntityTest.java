@@ -17,8 +17,8 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
@@ -73,7 +73,7 @@ public class MyEntityTest extends SandboxGame {
         logger.info("Health Value: " + health.Value);
         blockEntity.add(health);
         
-        blockEntity.add(engine.createComponent(BlockComponent.class));
+        blockEntity.add(engine.createComponent(DestructableBlockComponent.class));
         
         AnimationComponent animComp = engine.createComponent(AnimationComponent.class);
         animComp.reset();
@@ -105,6 +105,11 @@ public class MyEntityTest extends SandboxGame {
         
         arrow.add(arrowLayer);
         
+        animComp = engine.createComponent(AnimationComponent.class);
+        animComp.reset();
+        assetManager.loadAssetListWithParam("data/json/animations.json", AnimationExtended.class,
+        AnimationExtendedLoader.AnimationExtendedParameter.class);        
+        animComp.animation = assetManager.getAnimation("walking");
         arrow.add(animComp);
         
         engine.addEntity(arrow);
@@ -131,7 +136,7 @@ public class MyEntityTest extends SandboxGame {
         
         camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setBounds(0, 0, 1000, 1000);
-        camera.updateForced();
+        camera.updateForced(); 
         
         Main.getInstance().addScreenListener(camera);
     }
@@ -165,16 +170,26 @@ public class MyEntityTest extends SandboxGame {
         	healthOfBlock.Value -= 1; 
         }
         
-        float X = blockEntity.getComponent(PositionComponent.class).x;
-         
-	    if (arrow.getComponent(PositionComponent.class).x > X - 50
-	            && arrow.getComponent(PositionComponent.class).x < X + 50) {
-	        DamageComponent arrowDamage = arrow
-	                .getComponent(DamageComponent.class);
-	        if (arrowDamage.damageToTile) {
-	            healthOfBlock.Value -= arrowDamage.damage;
-	        }
-	    }
+
+        if(blockEntity != null && blockEntity.isScheduledForRemoval())
+        {
+            PositionComponent Position = blockEntity.getComponent(PositionComponent.class);
+            if(Position!=null)
+            {
+                float X = Position.x;
+                
+                if (arrow.getComponent(PositionComponent.class).x > X - 50
+                        && arrow.getComponent(PositionComponent.class).x < X + 50) {
+                    DamageComponent arrowDamage = arrow
+                            .getComponent(DamageComponent.class);
+                    if (arrowDamage.damageToTile) {
+                        healthOfBlock.Value -= arrowDamage.damage;
+                    }
+                }
+                
+            }
+            
+        }
     }
 }
 
