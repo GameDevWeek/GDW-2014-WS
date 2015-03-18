@@ -10,15 +10,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 
 public class EntityCreator {
@@ -117,6 +109,34 @@ public class EntityCreator {
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 0;
         entity.add(Health);
+
+        engine.addEntity(entity);
+        return entity;
+
+    }
+
+    public static Entity createPlatformBlock(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, int travelDistance) {
+        Entity entity = engine.createEntity();
+
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f).shapeBox(width, height)
+                .restitution(0.1f);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
+        entity.add(bodyComponent);
+
+        BlockComponent blockComp = engine.createComponent(BlockComponent.class);
+        entity.add(blockComp);
+
+        PlatformComponent pl = new PlatformComponent();
+        pl.travelDistance = travelDistance * width;
+        // entity.add()
+
 
         engine.addEntity(entity);
         return entity;
