@@ -117,6 +117,7 @@ public class Game {
         addContactListeners();
         
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
+
         if(Controllers.getControllers().size > 0)
             Controllers.getControllers().first().addListener(inputGamepadSystem);
     }

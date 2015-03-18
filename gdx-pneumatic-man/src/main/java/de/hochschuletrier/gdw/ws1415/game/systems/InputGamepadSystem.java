@@ -57,8 +57,8 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
         case 0:
         case 1:
         case 2: 
-        case 3: jump = true; System.out.println("Jump");break;
-        case 7: pause = true; System.out.println("Pause");break;
+        case 3: jump = true; break;
+        case 7: pause = true;break;
         }
         return false;
     }
@@ -83,12 +83,12 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
         if(axisCode == 1){
         	if(value > 0.5){
         		direction = value;
-        		System.out.println("Right");
+        		
         	}
         
         	else if(value < -0.5){
         		direction = value;
-        		System.out.println("Left");
+        		
         	}
         	else {
         		direction = 0;
@@ -103,10 +103,10 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
         switch(value){
         case northEast:
         case southEast:
-        case east: direction = 1; System.out.println("Right"); break;
+        case east: direction = 1; break;
         case northWest:
         case southWest:
-        case west: direction = -1; System.out.println("Left"); break;
+        case west: direction = -1; break;
         default: direction = 0; break;
         }
         return false;
