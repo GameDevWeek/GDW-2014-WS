@@ -12,14 +12,14 @@ import com.badlogic.ashley.core.Family;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.BlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
 
 /**
- * Renders all renderable components by using the Render-Subsystems.
+ * Renders all renderable components by using the Renderers.
  * 
  *
  */
@@ -81,11 +81,11 @@ public class RenderSystem extends EntitySystem implements EntityListener {
         // simple switch.
         for (Entity entity : entities) {
             AnimationComponent animation = ComponentMappers.animation.get(entity);
-            BlockComponent block = ComponentMappers.block.get(entity);
+            DestructableBlockComponent block = ComponentMappers.block.get(entity);
             HealthComponent health = ComponentMappers.health.get(entity);
             TextureComponent tex = ComponentMappers.texture.get(entity);
             
-            cameraSystem.preParallax(entity);
+//            cameraSystem.preParallax(entity);
 
             if (animation != null) {
                 if (block != null && health != null) {
@@ -97,7 +97,7 @@ public class RenderSystem extends EntitySystem implements EntityListener {
             	textureSystem.render(entity, deltaTime);
             }
 
-            cameraSystem.postParallax();
+//            cameraSystem.postParallax();
         }
     }
 

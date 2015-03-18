@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.maptest;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -46,7 +47,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
-
 /**
  *
  * @author Santo Pfingsten
@@ -88,12 +88,14 @@ public class MovementTest extends SandboxGame {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(movementSystem);
-        engine.addSystem(_HealthSystem);
+
+        EntityCreator.engine = this.engine;
+        EntityCreator.physixSystem = this.physixSystem;
     }
 
     @Override
     public void init(AssetManagerX assetManager) {
-        map = loadMap("data/maps/Test_Physics.tmx");
+        map = loadMap("data/maps/Testkarte_17.03.tmx");
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
@@ -186,18 +188,19 @@ public class MovementTest extends SandboxGame {
     }
     
     private void generateWorldFromTileMap() {
+        try {
+            GameConstants.setTileSizeX(map.getTileWidth());
+            GameConstants.setTileSizeY(map.getTileHeight());
+        }catch (AccessDeniedException e){
+            e.printStackTrace();
+        }
+
         int tileWidth = map.getTileWidth();
         int tileHeight = map.getTileHeight();
         RectangleGenerator generator = new RectangleGenerator();
-        generator.generate(map,
-                (Layer layer, TileInfo info) -> {
-                    return info.getBooleanProperty("Invulnerable", false)
-                    && info.getProperty("Type", "").equals("Floor");
-                },
-                (Rectangle rect) -> {
-                    EntityCreator.createAndAddInvulnerableFloor(engine,
-                            physixSystem, rect, tileWidth, tileHeight);
-                });
+        generator.generate(map, (Layer layer, TileInfo info) -> info
+                .getBooleanProperty("Invulnerable", false),
+                (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         for (Layer layer : map.getLayers()) {
             TileInfo[][] tiles = layer.getTiles();
@@ -205,14 +208,12 @@ public class MovementTest extends SandboxGame {
             for (int i = 0; i < map.getWidth(); i++) {
                 for (int j = 0; j < map.getHeight(); j++) {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
-                        if (tiles[i][j].getIntProperty("Hitpoints", 1) != 0
+                        if (tiles[i][j].getIntProperty("Hitpoints", 0) != 0
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
-                            EntityCreator.createAndAddVulnerableFloor(engine,
-                                    physixSystem,
+                            EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map.getTileWidth(),
-                                    map.getTileHeight());
+                                    j * map.getTileHeight() + 0.5f * map.getTileHeight()
+                                    );
                         }
                     }
                 }
@@ -224,11 +225,9 @@ public class MovementTest extends SandboxGame {
     @Override
     public void update(float delta) {
         camera.bind();
-        /*
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
-        */
         engine.update(delta);
         
         if(movementComponent.movingLeft){
@@ -254,7 +253,7 @@ public class MovementTest extends SandboxGame {
             playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
             
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-                jumpComponent.jump();
+                playerBody.applyImpulse(0, 1000);
             }
             
             if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
@@ -262,7 +261,6 @@ public class MovementTest extends SandboxGame {
                 Family.Builder FB = new Family.Builder();
                 Family HealthFamily = FB.one(HealthComponent.class).get();
                 ImmutableArray<Entity> HealthEntities = engine.getEntitiesFor(HealthFamily);
-                logger.info(""+HealthEntities.size());
                 for(Entity e : HealthEntities)
                 {
                     HealthComponent Health = e.getComponent(HealthComponent.class);
