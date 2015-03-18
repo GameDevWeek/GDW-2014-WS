@@ -1,10 +1,11 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
-import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
@@ -12,28 +13,37 @@ import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 
 public class CameraSystem {
 	private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
-	private Vector2 cameraDestination = new Vector2();
 	private Vector2 firstCameraPosition;
-	private Vector2 cameraPosition = new Vector2();
 	private Vector2 cameraPosDelta = new Vector2();
 	
 	private Vector2 dummyVector = new Vector2();
     
 	private Entity toFollow;
 	
+	private Vector2 cameraPos = new Vector2();
+	private boolean firstLayer = true;
+	
+	public CameraSystem() {
+		camera.setDestination(0f, 0f);
+        camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.updateForced();
+	}
+	
 	public LimitedSmoothCamera getCamera() {
 		return camera;
 	}
 
-	void preParallax(LayerComponent layer) {
-		cameraDestination.set(camera.getDestination().x, camera.getDestination().y);
-		cameraPosition.set(camera.getPosition().x, camera.getPosition().y);
-		
+	void applyParallax(LayerComponent layer) {
 		if(firstCameraPosition == null) {
-			firstCameraPosition = new Vector2(cameraPosition.x, cameraPosition.y);
+			firstCameraPosition = new Vector2(camera.getPosition().x, camera.getPosition().y);
+		}
+		
+		if(firstLayer) {
+			cameraPos.set(camera.getPosition().x, camera.getPosition().y);
+			firstLayer = false;
 		}
 
-        cameraPosDelta.set(cameraPosition).sub(firstCameraPosition.x, firstCameraPosition.y);
+        cameraPosDelta.set(cameraPos).sub(firstCameraPosition.x, firstCameraPosition.y);
         
         dummyVector.set(firstCameraPosition.x, firstCameraPosition.y);
         dummyVector.mulAdd(cameraPosDelta, layer.parallax);
@@ -44,25 +54,31 @@ public class CameraSystem {
         camera.bind();
 	}
 	
-	/**
-	 * Sets the camera position/destination back to the old camera position/destination.
-	 */
-	void postParallax() {
-		camera.setDestination(cameraPosition.x, cameraPosition.y);
-		camera.updateForced();
-		
-		camera.setDestination(cameraDestination.x, cameraDestination.y);
-		camera.bind();
-	}
-	
     void update(float deltaTime) {
-    	PositionComponent toFollowPos = ComponentMappers.position.get(toFollow);
-    	
-    	if(toFollowPos != null)
-    		camera.setDestination(toFollowPos.x, toFollowPos.y);
+    	// reset camera position to the correct position after parallax
+		camera.setDestination(cameraPos.x, cameraPos.y);
+		camera.updateForced();
+		firstLayer = true;
+		
+    	PositionComponent toFollowPos = null;
+    	if(toFollow != null) {
+    		toFollowPos = ComponentMappers.position.get(toFollow);
+        	if(toFollowPos != null)
+        		camera.setDestination(toFollowPos.x, toFollowPos.y);
+    	}	
+
+    	camera.updateForced();
     	
 		camera.bind();
 		camera.update(deltaTime);	
+    }
+    
+    public void adjustToMap(TiledMap map) {
+    	assert(map != null);
+    	
+        float totalMapWidth = map.getWidth() * map.getTileWidth();
+        float totalMapHeight = map.getHeight() * map.getTileHeight();
+        camera.setBounds(0, 0, totalMapWidth, totalMapHeight);
     }
     
     /**

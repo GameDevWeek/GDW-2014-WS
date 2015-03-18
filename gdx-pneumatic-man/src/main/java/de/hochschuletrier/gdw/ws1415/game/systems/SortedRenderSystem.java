@@ -52,7 +52,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     	
     	if (currentLayer == null || layerComponent.layer != currentLayer.layer) {
         	if(appliedParallax) {
-        		cameraSystem.postParallax();
+//        		cameraSystem.postParallax();
         		appliedParallax = false;
         	}
         	
@@ -65,14 +65,15 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     }
     
     private void onLayerChanged(LayerComponent oldLayer, LayerComponent newLayer) {
-    	cameraSystem.preParallax(newLayer);
+    	cameraSystem.applyParallax(newLayer);
     }
     
     @Override
 	public void update (float deltaTime) {	
-    	cameraSystem.postParallax();
     	cameraSystem.update(deltaTime);
     	super.update(deltaTime);	
+//    	cameraSystem.postParallax();
+    	
 	}
     
     

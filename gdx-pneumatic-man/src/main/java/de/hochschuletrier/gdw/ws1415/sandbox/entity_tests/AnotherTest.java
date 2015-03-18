@@ -6,22 +6,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
-import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
-import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
-import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
@@ -29,8 +24,6 @@ import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
-import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
-import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
@@ -65,17 +58,15 @@ public class AnotherTest extends SandboxGame {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private float totalMapWidth, totalMapHeight;
 
     private TiledMap map;
-    private TiledMapRendererGdx mapRenderer;
     private PhysixBodyComponent playerBody;
     private final CameraSystem cameraSystem = new CameraSystem();
     private final SortedRenderSystem  renderSystem = new SortedRenderSystem(cameraSystem);
     
     private Entity player;
     
-    private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
+    private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
     
     public AnotherTest() {
         engine.addSystem(physixSystem);
@@ -125,7 +116,7 @@ public class AnotherTest extends SandboxGame {
 
                     TextureRegion region = new TextureRegion(image);
                     region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
-                    createTileEntity(px, py, layer.getIndex(), 0.5f, image, region);
+                    createTileEntity(px, py, 0, 0.2f, image, region);
                 }
         }
 
@@ -167,24 +158,19 @@ public class AnotherTest extends SandboxGame {
         player.add(animComp);
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
-        layer.layer = 2;
+        layer.layer = 5;
         layer.parallax = 1f;
         player.add(layer);
         
         engine.addEntity(player);
 
-        addBackgroundEntity(0, 0, 1, 1f, assetManager);
+        addBackgroundEntity(0, 0, 2, 1f, assetManager);
         
-        addBackgroundEntity(100.f, 100.f, 0, 0.5f, assetManager);
+        addBackgroundEntity(100.f, 100.f, 1, 0.5f, assetManager);
         
         // Setup camera
-        LimitedSmoothCamera camera = cameraSystem.getCamera();
-        camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        totalMapWidth = map.getWidth() * map.getTileWidth();
-        totalMapHeight = map.getHeight() * map.getTileHeight();
-        camera.setBounds(0, 0, totalMapWidth, totalMapHeight);
-        camera.updateForced();
-        Main.getInstance().addScreenListener(camera);
+        Main.getInstance().addScreenListener(cameraSystem.getCamera());
+        cameraSystem.adjustToMap(map);
         
         cameraSystem.follow(player);
     }
@@ -231,23 +217,6 @@ public class AnotherTest extends SandboxGame {
         backgroundEntity.add(backgroundTex);
         
         engine.addEntity(backgroundEntity);
-    }
-
-    private void addShape(Rectangle rect, int tileWidth, int tileHeight) {
-        float width = rect.width * tileWidth;
-        float height = rect.height * tileHeight;
-        float x = rect.x * tileWidth + width / 2;
-        float y = rect.y * tileHeight + height / 2;
-
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(false);
-        Body body = physixSystem.getWorld().createBody(bodyDef);
-        body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(width, height));
-    }
-
-    private void addShape(float x, float y, int width, int height) {
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(false);
-        Body body = physixSystem.getWorld().createBody(bodyDef);
-        body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(width, height));
     }
 
     @Override
