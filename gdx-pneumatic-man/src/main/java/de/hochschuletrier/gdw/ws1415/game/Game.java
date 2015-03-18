@@ -33,15 +33,17 @@ import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-
+import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
+
+
 
 
 import java.nio.file.AccessDeniedException;
@@ -62,7 +64,8 @@ public class Game {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final RenderSystem renderSystem = new RenderSystem(GameConstants.PRIORITY_ANIMATIONS);
+    private final CameraSystem cameraSystem = new CameraSystem();
+    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX+2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
@@ -107,7 +110,7 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-        EntityCreator.createAndAddPlayer(500, 250);
+        cameraSystem.follow(EntityCreator.createAndAddPlayer(500, 250));
 
         addSystems();
         addContactListeners();
@@ -212,7 +215,7 @@ public class Game {
     }
 
     public void update(float delta) {
-        Main.getInstance().screenCamera.bind();
+        //Main.getInstance().screenCamera.bind();
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
