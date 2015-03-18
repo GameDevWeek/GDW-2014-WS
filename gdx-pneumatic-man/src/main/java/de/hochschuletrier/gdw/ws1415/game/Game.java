@@ -1,12 +1,10 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
-import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -50,23 +48,6 @@ import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
-
-
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-
-
-
-
-
-
-
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
 
 public class Game {
 

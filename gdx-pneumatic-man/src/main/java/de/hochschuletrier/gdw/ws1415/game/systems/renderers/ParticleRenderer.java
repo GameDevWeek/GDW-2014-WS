@@ -15,7 +15,7 @@ public class ParticleRenderer extends SortedFamilyRenderSystem.Renderer
     @SuppressWarnings("unchecked")
     public ParticleRenderer()
     {
-        super(Family.all(PositionComponent.class, ParticleComponent.class).get());
+        super(Family.all(ParticleComponent.class).get());
     }
 
     @Override

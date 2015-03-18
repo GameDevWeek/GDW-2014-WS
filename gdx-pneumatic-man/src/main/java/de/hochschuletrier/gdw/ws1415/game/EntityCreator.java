@@ -419,16 +419,19 @@ public class EntityCreator {
         pe.particleEffect.start();
         
         PointLightComponent pl = engine.createComponent(PointLightComponent.class);
-        pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),360,new Color(1f,0f,0f,1f),15f,20f,20f);
+        pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),360,new Color(1f,0f,0f,1f),10f,0,0);
         
         entity.add(pe);
         entity.add(pl);
     }
+    
     public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
     	Entity entity = engine.createEntity();
 
+    	// FOR TESTS:
     	if (info.getBooleanProperty("Invulnerable", false) && info.getProperty("Type", "").equals("Lava"))
     		addTestParticleAndLightComponent(entity);
+    	
     	addRenderComponents(entity, map, info, tileX, tileY);
     	
     	engine.addEntity(entity);
