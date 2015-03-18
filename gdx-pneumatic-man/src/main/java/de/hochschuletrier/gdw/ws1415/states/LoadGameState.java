@@ -16,7 +16,7 @@ public class LoadGameState extends BaseGameState {
     private boolean isDone;
     private final AssetManagerX assetManager;
     private final Runnable completeFunc;
-    private final Texture loadScreen = new Texture(Gdx.files.internal("data/images/background_menu.png"));
+    //private final Texture loadScreen = new Texture(Gdx.files.internal("data/images/background_menu.png"));
     private final Texture overlay = new Texture(Gdx.files.internal("data/images/titel.png"));
 
     public LoadGameState(AssetManagerX assetManager, Runnable completeFunc) {
@@ -27,21 +27,17 @@ public class LoadGameState extends BaseGameState {
     public void render() 
     {
     	float drawWidth = Gdx.graphics.getWidth() - 90.0f;
-    	float x = (Gdx.graphics.getWidth() - loadScreen.getWidth())/2;
-    	float y = (Gdx.graphics.getHeight() - loadScreen.getHeight())/2;
+    	float x = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
+    	float y = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
     	
-    	float v = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
-    	float w = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
+    	Color progressUnfillColor = new Color(Color.rgb888(255, 247, 126));
+    	Color progressFillColor = new Color(Color.rgb888(255, 239, 1));
 
     	Main.getInstance().screenCamera.bind();
-    	
-    	DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.BLACK);
-    	DrawUtil.draw(loadScreen, x, y);
-    	
-    	Color color = new Color(Color.rgb888(209, 190, 103));
-    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, drawWidth, 200, Color.DARK_GRAY);
-    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, (int) (drawWidth * assetManager.getProgress()), 200, color);
-    	DrawUtil.draw(overlay, v, w);
+    	    	    	
+    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, drawWidth, 200, progressUnfillColor);
+    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, (int) (drawWidth * assetManager.getProgress()), 200, progressFillColor);
+    	DrawUtil.draw(overlay, x, y);
     	
     	
     	 /* Main.getInstance().screenCamera.bind();

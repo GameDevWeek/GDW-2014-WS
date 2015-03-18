@@ -2,6 +2,7 @@
     "crosshair": "data/images/crosshair.png",
     "logo": "data/images/logo.png",
     "background_menu": "data/images/background_menu.png",
+    "background_overlay": "data/images/background_overlay.png",
     "beenden_button": "data/images/beenden_button.png",
     "credits_button": "data/images/credits_button.png",
     "optionen_button": "data/images/optionen_button.png",

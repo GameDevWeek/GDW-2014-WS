@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
@@ -38,7 +39,7 @@ public class MainMenuState extends BaseGameState {
 //        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
         
         menuManager.addLayer(mainMenu);
-        
+        menuManager.addLayer(new DecoImage(assetManager.getTexture("background_overlay")));
         menuManager.pushPage(mainMenu);
         
 //        menuManager.getStage().setDebugAll(true);
