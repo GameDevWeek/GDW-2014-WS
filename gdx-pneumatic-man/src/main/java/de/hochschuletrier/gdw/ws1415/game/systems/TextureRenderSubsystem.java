@@ -2,11 +2,13 @@ package de.hochschuletrier.gdw.ws1415.game.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
+
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
 
+@Deprecated
 public class TextureRenderSubsystem {
     void render(Entity entity, float deltaTime) {
         TextureComponent textureComponent = ComponentMappers.texture.get(entity);
