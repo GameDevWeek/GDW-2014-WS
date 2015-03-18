@@ -33,6 +33,7 @@ public class IngameMenu extends MenuPage
             addPageEntry(menumanager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menumanager));
             addPageEntry(menumanager,x,y-yStep*(i++),mainMenu, new OptionMenu(skin, menumanager));
             addPageEntry(menumanager,x,y-yStep*(i++),quit, new OptionMenu(skin, menumanager));
+            addCenteredImage((int)(x-(quit.getWidth()/2)),y-yStep*(i++),(int)quit.getWidth(),(int)quit.getHeight()/2,quit,()->System.exit(-1));
     }
     
     protected final void addPageEntry(MenuManager menuManager, int x, int y, DecoImage image, MenuPage page) {
