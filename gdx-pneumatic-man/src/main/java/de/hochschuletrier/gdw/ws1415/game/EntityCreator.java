@@ -20,7 +20,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
@@ -175,7 +174,7 @@ public class EntityCreator {
         entity.add(blockComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 0;
+        Health.Value = 1;
         entity.add(Health);
 
         engine.addEntity(entity);

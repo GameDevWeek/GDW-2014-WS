@@ -2,6 +2,9 @@ package de.hochschuletrier.gdw.ws1415.game.systems;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
@@ -15,6 +18,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 
 public class HealthSystem extends EntitySystem implements EntityListener {
 
+    private static final Logger logger = LoggerFactory.getLogger(HealthSystem.class);
     private final ArrayList<Entity> entities = new ArrayList();
 
     public HealthSystem() {
@@ -28,6 +32,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
     PooledEngine CurrentEngine;
 
     public void addedToEngine(PooledEngine engine) {
+        logger.info("Health added to engine");
         CurrentEngine = engine;
         Family family = Family.all(HealthComponent.class).get();
         engine.addEntityListener(family, this);
@@ -35,11 +40,13 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityAdded(Entity entity) {
+        logger.info(entity.getId()+" added");
         entities.add(entity);
     }
 
     @Override
     public void entityRemoved(Entity entity) {
+        logger.info(entity.getId()+" removed");
         entities.remove(entity);
     }
 
@@ -50,12 +57,15 @@ public class HealthSystem extends EntitySystem implements EntityListener {
             Health.Value = Health.Value - Health.DecrementByValueNextFrame;
             Health.DecrementByValueNextFrame = 0;
 
-            if ((entity.getComponent(PlayerComponent.class)!= null) && (Health.Value <= 0)) {
-                entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DYING;
-                
-                PositionComponent position = entity.getComponent(PositionComponent.class);
-                EntityCreator.createAndAddDyingCharacter(entity); 
-                entity.removeAll();
+            if((Health.Value <= 0))
+            {
+                if ((entity.getComponent(PlayerComponent.class)!= null)) {
+                    entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DYING;
+                    
+                    PositionComponent position = entity.getComponent(PositionComponent.class);
+                    EntityCreator.createAndAddDyingCharacter(entity); 
+                    entity.removeAll();
+                }
                 CurrentEngine.removeEntity(entity);
             }
 

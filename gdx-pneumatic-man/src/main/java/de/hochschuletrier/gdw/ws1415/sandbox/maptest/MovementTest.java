@@ -87,14 +87,14 @@ public class MovementTest extends SandboxGame {
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
 
     public MovementTest() {
+        EntityCreator.engine = this.engine;
+        EntityCreator.physixSystem = this.physixSystem;
+
+        engine.addSystem(_HealthSystem);
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(movementSystem);
         engine.addSystem(new InputKeyboardSystem());
-        engine.addSystem(new HealthSystem());
-
-        EntityCreator.engine = this.engine;
-        EntityCreator.physixSystem = this.physixSystem;
     }
 
     @Override
@@ -221,7 +221,7 @@ public class MovementTest extends SandboxGame {
             for (int i = 0; i < map.getWidth(); i++) {
                 for (int j = 0; j < map.getHeight(); j++) {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
-                        if (tiles[i][j].getIntProperty("Hitpoints", 0) != 0
+                        if (tiles[i][j].getIntProperty("Hitpoints", 1) != 0
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
@@ -244,6 +244,7 @@ public class MovementTest extends SandboxGame {
         engine.update(delta);
         
         
+        _HealthSystem.update(delta);
         mapRenderer.update(delta);
         camera.update(delta);
         
@@ -267,9 +268,11 @@ public class MovementTest extends SandboxGame {
                 Family.Builder FB = new Family.Builder();
                 Family HealthFamily = FB.one(HealthComponent.class).get();
                 ImmutableArray<Entity> HealthEntities = engine.getEntitiesFor(HealthFamily);
+                logger.info(""+HealthEntities.size());
                 for(Entity e : HealthEntities)
                 {
                     HealthComponent Health = e.getComponent(HealthComponent.class);
+                    logger.info("Health["+e.getId()+"]: "+Health.Value);
                     Health.Value -= 1;
                 }
             }
