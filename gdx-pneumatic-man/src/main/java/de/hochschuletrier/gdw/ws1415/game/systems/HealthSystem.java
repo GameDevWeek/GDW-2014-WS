@@ -22,7 +22,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
         super(Priority);
     }
 
+    Engine CurrentEngine;
+
     public void addedToEngine(Engine engine) {
+        CurrentEngine = engine;
         Family family = Family.all(HealthComponent.class).get();
         engine.addEntityListener(family, this);
     }
@@ -39,6 +42,15 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void update(float deltaTime) {
-    }
+        for (Entity entity : entities) {
+            HealthComponent Health = entity.getComponent(HealthComponent.class);
+            Health.Value = Health.Value - Health.DecrementByValueNextFrame;
+            Health.DecrementByValueNextFrame = 0;
 
+            if (Health.Value <= 0) {
+                CurrentEngine.removeEntity(entity);
+            }
+
+        }
+    }
 }
