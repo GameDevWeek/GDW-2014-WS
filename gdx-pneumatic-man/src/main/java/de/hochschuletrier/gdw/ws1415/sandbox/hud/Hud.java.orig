@@ -35,12 +35,11 @@ public class Hud extends SandboxGame
     private ArrayList<Sprite> MinerLeftListe;
     private ArrayList<Sprite> MinerFoundListe;
   
-    private Sprite sprite;
+//    private Sprite sprite;
     private Stage stage;
     private BitmapFont font;
     
     private int time = 0;
-    private int blocks = 0;
     
     private Timer timer;
   
@@ -50,7 +49,7 @@ public class Hud extends SandboxGame
       {
           batch = DrawUtil.batch;
           stage = new Stage();
-          font = assetManager.getFont("verdana_24");
+          font = assetManager.getFont("orbitron");
           timer = new Timer();
           
           
@@ -79,7 +78,10 @@ public class Hud extends SandboxGame
       
       
       
+<<<<<<< HEAD
+=======
       
+>>>>>>> 9ecb4089fbdeccc4dfd38427dd97797bddb5c413
       private void initMinerDisplay(AssetManagerX manager)
       {
           
@@ -87,12 +89,22 @@ public class Hud extends SandboxGame
           MinerFoundListe = new ArrayList<>();
           
           //besser: file aus json datei nehmen
+<<<<<<< HEAD
+//          textureMinerLeft = new Texture(Gdx.files.internal("data/menuImages/KollegeIconNichtGefunden.png"));
+//          textureMinerFound = new Texture(Gdx.files.internal("data/menuImages/KollegeIconGefunden.png"));
+          textureMinerLeft = manager.getTexture("miner_notfound");
+          textureMinerFound = manager.getTexture("miner_found");
+          
+//          sprite = new Sprite(textureMinerFound);
+//          sprite = manager.getTexture("miner_found");
+=======
 //          textureMinerLeft = new Texture(Gdx.files.internal("data/Images/KollegeIconNichtGefunden.png"));
 //          textureMinerFound = new Texture(Gdx.files.internal("data/menuImages/KollegeIconGefunden.png"));          
           
           textureMinerFound = manager.getTexture("miner_found");
           textureMinerLeft = manager.getTexture("miner_notfound");
           
+>>>>>>> 9ecb4089fbdeccc4dfd38427dd97797bddb5c413
           
          // allMiners = game.getMinersLeft();
           allMiners = 5;
@@ -111,13 +123,23 @@ public class Hud extends SandboxGame
     @Override
         public void update(float delta)
       {
+<<<<<<< HEAD
+            //Background Color
+//          Gdx.gl.glClearColor(0.5f, 1, 0.5f, 1);
+//          Gdx.gl.glClear(GL11.GL_COLOR_BUFFER_BIT);
+          
+   
+          batch.begin();
+=======
+>>>>>>> 9ecb4089fbdeccc4dfd38427dd97797bddb5c413
           Main.getInstance().screenCamera.bind();
           
-//          font.draw(batch, "Score: " + score, 0, 20);
           
-          font.draw(batch, "Time: " + time, stage.getWidth()/2-40, stage.getHeight()-30);
-          
-          font.draw(batch, "Zerstörte Blöcke: " + blocks, 10, stage.getHeight()-30);
+<<<<<<< HEAD
+          font.draw(batch, "Time: " + time, stage.getWidth()/2-50, stage.getHeight()-10);
+=======
+          font.draw(batch, "Time: " + time, 300, 200);
+>>>>>>> 9ecb4089fbdeccc4dfd38427dd97797bddb5c413
           
 //          sprite.draw(batch);
 //          batch.draw(sprite, 200, 200);
@@ -137,28 +159,27 @@ public class Hud extends SandboxGame
           if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
           {
               timer.start();
+              
           }
-          if(Gdx.input.isKeyJustPressed(Keys.B))
+          if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
           {
-              addDestroyedBlock();
+              timer.start();
           }
           
           
           
           int x = 5;
-          for (Sprite s : MinerFoundListe)
-          {
-              batch.draw(s, x, 0);
-              x += 70;
-          }
-          
           for (Sprite s : MinerLeftListe)
           {
               batch.draw(s, x, 0);
               x += 70;
           }
 
-
+          for (Sprite s : MinerFoundListe)
+          {
+              batch.draw(s, x, 0);
+              x += 70;
+          }
         
       }
     
@@ -172,7 +193,10 @@ public class Hud extends SandboxGame
       
       
       
+<<<<<<< HEAD
+=======
       
+>>>>>>> 9ecb4089fbdeccc4dfd38427dd97797bddb5c413
       public void minerFound()
       {
           if(MinerLeftListe.size() > 0)
@@ -181,12 +205,8 @@ public class Hud extends SandboxGame
           }
           MinerFoundListe.add(new Sprite(textureMinerFound));
       }
-
       
-      public void addDestroyedBlock()
-      {
-          blocks++;
-      }
+      
       
     
  /*   
