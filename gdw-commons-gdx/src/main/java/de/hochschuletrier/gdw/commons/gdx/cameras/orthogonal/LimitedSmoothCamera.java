@@ -30,6 +30,15 @@ public class LimitedSmoothCamera extends SmoothCamera {
             destination.y = y;
         }
     }
+    
+    /**
+     * 
+     * Sets the destination without checking the bounds.
+     */
+    public void forceDestination(float x, float y) {
+        destination.x = x;
+        destination.y = y;
+    }
 
     private float clamp(float in, float min, float max, float viewportSize) {
         if ((max - min) <= viewportSize) {

@@ -23,14 +23,28 @@ public class TextureRenderer extends SortedFamilyRenderSystem.Renderer {
     public void render(Entity entity, float deltaTime) {
         TextureComponent textureComponent = ComponentMappers.texture.get(entity);
         PositionComponent position = ComponentMappers.position.get(entity);
-        
-        render(textureComponent.texture, position.x, position.y, position.rotation);
+
+        if(textureComponent.region == null)
+        	render(textureComponent.texture, position.x, position.y, position.rotation);
+        else
+        	render(textureComponent.region, position.x, position.y, position.rotation);
     }
     
     private void render(Texture tex, float x, float y, float rotation) {
         int w = tex.getWidth();
         int h = tex.getHeight();
         
-    	DrawUtil.batch.draw(tex, x, y, w*0.5f, h*0.5f, w, h, 1f, 1f, rotation, (int)0, (int)0, (int)w, (int)h, false, true);
+    	DrawUtil.batch.draw(tex, x, y, w*0.5f, h*0.5f, w, h, 1f, 1f, rotation, 
+    			(int)0, (int)0, (int)w, (int)h, false, true);
+    }
+    
+    private void render(TextureRegion region, float x, float y, float rotation) {
+    	Texture tex = region.getTexture();
+    	
+        int w = region.getRegionWidth();
+        int h = region.getRegionHeight();
+        
+    	DrawUtil.batch.draw(tex, x, y, w*0.5f, h*0.5f, w, h, 1f, 1f, rotation, 
+    			region.getRegionX(), region.getRegionY(), w, h, false, true);
     }
 }

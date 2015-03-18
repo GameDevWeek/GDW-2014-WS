@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
@@ -16,14 +17,14 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
 public class MyEntityTest extends SandboxGame {
@@ -38,7 +39,7 @@ public class MyEntityTest extends SandboxGame {
 
     private final HealthSystem Health = new HealthSystem(0);
     private final LimitedSmoothCamera camera;
-    private final SortedRenderSystem  renderSystem = new SortedRenderSystem();
+    private final RenderSystem  renderSystem = new RenderSystem();
     
     public MyEntityTest() {
         engine.addSystem(Health); 

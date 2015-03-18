@@ -13,12 +13,18 @@ import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.DestructableBlockRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.TextureRenderer;
 
+/**
+ * 
+ * All Entities that have to be rendered require a PositionComponent and a LayerComponent. <br>
+ * If at least one of them is not provided the Entity won't be rendered.
+ *
+ */
 public class SortedRenderSystem extends SortedFamilyRenderSystem {
 	private LayerComponent currentLayer = null;
-	private CameraSystem cameraSystem = new CameraSystem();
+	private CameraSystem cameraSystem;
 	
     @SuppressWarnings("unchecked")
-	public SortedRenderSystem() {
+	public SortedRenderSystem(CameraSystem cameraSystem) {
         super(Family.all(PositionComponent.class, LayerComponent.class).get(), new Comparator<Entity>() {
 
             @Override
@@ -30,40 +36,40 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         });
 
         
-        // Order of adding = order of choosing of the renderer for the entity
+        // Order of adding = order of renderer selection for the entity
         // addRenderer(new ParticleRenderer());
         addRenderer(new AnimationRenderer());
         addRenderer(new DestructableBlockRenderer());
         addRenderer(new TextureRenderer());
+        
+        this.cameraSystem = cameraSystem;
     }
     
     @Override
     public void processEntity(Entity entity, float deltaTime) {
     	LayerComponent layerComponent = ComponentMappers.layer.get(entity);
+    	boolean appliedParallax = false;
     	if (layerComponent != currentLayer) {
     		onLayerChanged(currentLayer, layerComponent);
     		currentLayer = layerComponent;
+    		appliedParallax = true;
     	}
     	
     	super.processEntity(entity, deltaTime);
+    	
+    	if(appliedParallax)
+    		cameraSystem.postParallax();
     }
     
     private void onLayerChanged(LayerComponent oldLayer, LayerComponent newLayer) {
-    	if(oldLayer != null)
-    		cameraSystem.postParallax();
-
     	cameraSystem.preParallax(newLayer);
     }
     
-    public LimitedSmoothCamera getCamera() {
-    	return cameraSystem.getCamera();
-    }
-    
     @Override
-	public void update (float deltaTime) {
-    	super.update(deltaTime);
-    	
+	public void update (float deltaTime) {	
     	cameraSystem.update(deltaTime);
+    	
+    	super.update(deltaTime);	
 	}
     
     

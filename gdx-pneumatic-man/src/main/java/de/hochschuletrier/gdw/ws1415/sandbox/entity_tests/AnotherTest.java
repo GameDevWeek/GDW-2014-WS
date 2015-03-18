@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -20,6 +21,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierCompon
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
+import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
@@ -36,6 +38,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
+import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
@@ -44,10 +47,6 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Santo Pfingsten
- */
 public class AnotherTest extends SandboxGame {
 
     private static final Logger logger = LoggerFactory.getLogger(AnotherTest.class);
@@ -66,16 +65,17 @@ public class AnotherTest extends SandboxGame {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private LimitedSmoothCamera camera;
     private float totalMapWidth, totalMapHeight;
 
     private TiledMap map;
     private TiledMapRendererGdx mapRenderer;
     private PhysixBodyComponent playerBody;
-    private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
-    private final SortedRenderSystem  renderSystem = new SortedRenderSystem();
+    private final CameraSystem cameraSystem = new CameraSystem();
+    private final SortedRenderSystem  renderSystem = new SortedRenderSystem(cameraSystem);
     
     private Entity player;
+    
+    private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
     
     public AnotherTest() {
         engine.addSystem(physixSystem);
@@ -89,40 +89,44 @@ public class AnotherTest extends SandboxGame {
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
-            tilesetImages.put(tileset, new Texture(filename));
+            Texture tex = new Texture(filename);
+            tileset.setAttachment(tex);
+            tilesetImages.put(tileset, tex);
         }
-        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
+        
+        for(Layer layer : map.getLayers()) {
+        	TileInfo[][] tiles = layer.getTiles();
+        	
+            for (int x = 0; x < map.getWidth(); x++) 
+                for (int y = 0; y < map.getHeight(); y++)  {
+                	TileInfo info = tiles[x][y];
+                	
+                	if(info == null)
+                		continue;
 
-        // Generate static world
-        int tileWidth = map.getTileWidth();
-        int tileHeight = map.getTileHeight();
-        RectangleGenerator generator = new RectangleGenerator();
-        generator.generate(map,
-                (Layer layer, TileInfo info) -> info.getBooleanProperty("Invulnerable", false),
-                (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
+                    TileSet tileset = map.findTileSet(info.globalId);
+                    Texture image = (Texture) tileset.getAttachment();
+                    
+                    int sheetX = tileset.getTileX(tiles[x][y].localId);
+                    int sheetY = tileset.getTileY(tiles[x][y].localId);
 
-        // create destroyable world
-        for (Layer layer : map.getLayers()) {
-            TileInfo[][] tiles = layer.getTiles();
+                    int mapTileWidth = map.getTileWidth();
+                    int mapTileHeight = map.getTileHeight();
+                    
+                    int tileOffsetY = tileset.getTileHeight() - mapTileHeight;
 
-            //if (layer.getName().equals(physicsLayerName))
-            for (int i = 0; i < map.getWidth(); i++) {
-                for (int j = 0; j < map.getHeight(); j++) {
-                    if (tiles != null) {
-                        if (tiles[i] != null) {
-                            if (tiles[i][j] != null) {
-                                if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0) {
+                    float px = (x * mapTileWidth);
+                    float py = (y * mapTileHeight) - tileOffsetY;
+                    
+                    int coordX = (int) (sheetX * tileset.getTileWidth()); 
+                    coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
+                    int coordY = ((int) sheetY * tileset.getTileHeight());
+                    coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();                
 
-                                    addShape(i * map.getTileWidth()+0.5f*map.getTileWidth(),
-                                            j * map.getTileHeight()+0.5f*map.getTileHeight(),
-                                            map.getTileWidth(),
-                                            map.getTileHeight());
-                                }
-                            }
-                        }
-                    }
+                    TextureRegion region = new TextureRegion(image);
+                    region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
+                    createTileEntity(px, py, layer.getIndex(), 0.9f, image, region);
                 }
-            }
         }
 
         //Create a SpawnPoint
@@ -174,17 +178,41 @@ public class AnotherTest extends SandboxGame {
         addBackgroundEntity(100.f, 100.f, 0, 0.5f, assetManager);
         
         // Setup camera
-        camera = renderSystem.getCamera();
+        LimitedSmoothCamera camera = cameraSystem.getCamera();
         camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
         camera.setBounds(0, 0, totalMapWidth, totalMapHeight);
         camera.updateForced();
         Main.getInstance().addScreenListener(camera);
+        
+        cameraSystem.follow(player);
+    }
+    
+    private void createTileEntity(float x, float y, int layer, float parallax, Texture texture, TextureRegion region) {
+    	Entity tileEntity = engine.createEntity();
+    	
+        LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
+        entityLayer.layer = layer;
+        entityLayer.parallax = parallax;
+        
+        TextureComponent tex = engine.createComponent(TextureComponent.class);
+        tex.texture = texture;
+        tex.region = region;
+        
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.x = x;
+        pos.y = y;
+        pos.rotation = 0;
+        
+        tileEntity.add(pos);
+        tileEntity.add(entityLayer);
+        tileEntity.add(tex);
+        
+        engine.addEntity(tileEntity);
     }
     
     private void addBackgroundEntity(float x, float y, int layer, float parallax, AssetManagerX assetManager) {
-        // ***** backgroundEntity ******
         Entity backgroundEntity = engine.createEntity();
         LayerComponent backgroundLayer = engine.createComponent(LayerComponent.class);
         backgroundLayer.layer = layer;
@@ -224,7 +252,7 @@ public class AnotherTest extends SandboxGame {
 
     @Override
     public void dispose() {
-        Main.getInstance().removeScreenListener(camera);
+        Main.getInstance().removeScreenListener(cameraSystem.getCamera());
         tilesetImages.values().forEach(Texture::dispose);
     }
 
@@ -239,13 +267,7 @@ public class AnotherTest extends SandboxGame {
 
     @Override
     public void update(float delta) {
-        camera.bind();
-//        for (Layer layer : map.getLayers()) {
-//            mapRenderer.render(0, 0, layer);
-//        }
         engine.update(delta);
-
-//        mapRenderer.update(delta);
 
         if (playerBody != null) {
             float speed = 10000.0f;
@@ -267,7 +289,6 @@ public class AnotherTest extends SandboxGame {
             PositionComponent pos = player.getComponent(PositionComponent.class);
             pos.x = playerBody.getPosition().x;
             pos.y = playerBody.getPosition().y;
-            camera.setDestination(playerBody.getPosition());
         }
     }
 }
