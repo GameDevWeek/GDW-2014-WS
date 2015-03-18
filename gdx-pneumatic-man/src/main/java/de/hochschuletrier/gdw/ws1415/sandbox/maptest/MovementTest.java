@@ -39,6 +39,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -83,6 +84,9 @@ public class MovementTest extends SandboxGame {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(movementSystem);
+
+        EntityCreator.engine = this.engine;
+        EntityCreator.physixSystem = this.physixSystem;
     }
 
     @Override
@@ -180,18 +184,20 @@ public class MovementTest extends SandboxGame {
     }
     
     private void generateWorldFromTileMap() {
-        int tileWidth = map.getTileWidth();
-        int tileHeight = map.getTileHeight();
+        try {
+            GameConstants.setTileSizeX(map.getTileWidth());
+            GameConstants.setTileSizeY(map.getTileHeight());
+        }catch (AccessDeniedException e){
+            e.printStackTrace();
+        }
+
         RectangleGenerator generator = new RectangleGenerator();
         generator.generate(map,
                 (Layer layer, TileInfo info) -> {
                     return info.getBooleanProperty("Invulnerable", false)
                     && info.getProperty("Type", "").equals("Floor");
                 },
-                (Rectangle rect) -> {
-                    EntityCreator.createAndAddInvulnerableFloor(engine,
-                            physixSystem, rect, tileWidth, tileHeight);
-                });
+                EntityCreator::createAndAddInvulnerableFloor);
 
         for (Layer layer : map.getLayers()) {
             TileInfo[][] tiles = layer.getTiles();
@@ -201,12 +207,10 @@ public class MovementTest extends SandboxGame {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
                         if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
-                            EntityCreator.createAndAddVulnerableFloor(engine,
-                                    physixSystem,
+                            EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map.getTileWidth(),
-                                    map.getTileHeight());
+                                    j * map.getTileHeight() + 0.5f * map.getTileHeight()
+                                    );
                         }
                     }
                 }
