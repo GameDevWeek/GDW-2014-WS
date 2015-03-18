@@ -9,6 +9,8 @@ public class CreditsMenu extends MenuPage
 	public CreditsMenu(Skin skin, MenuManager menuManager) 
 	{
 		super(skin, "background_menu");
+		
+		
 	}
 
 }

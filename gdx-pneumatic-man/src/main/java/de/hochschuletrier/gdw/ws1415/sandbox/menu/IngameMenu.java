@@ -28,10 +28,10 @@ public class IngameMenu extends MenuPage
         int y=800;
         int yStep=100;
         
-            addPageEntry(menumanager,x,y-yStep*(i++),backToGame, new OptionMenu(skin, menumanager));
-            addPageEntry(menumanager,x,y-yStep*(i++),restart, new OptionMenu(skin, menumanager));
+            addPageEntry(menumanager,x,y-yStep*(i++),backToGame, new OptionMenu(skin, menumanager));        //Resume Game
+            addPageEntry(menumanager,x,y-yStep*(i++),restart, new OptionMenu(skin, menumanager));           //Restart Level
             addPageEntry(menumanager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menumanager));
-            addPageEntry(menumanager,x,y-yStep*(i++),mainMenu, new OptionMenu(skin, menumanager));
+            addPageEntry(menumanager,x,y-yStep*(i++),mainMenu, new MainMenu(skin, menumanager, MainMenu.Type.MAINMENU));
             addPageEntry(menumanager,x,y-yStep*(i++),quit, new OptionMenu(skin, menumanager));
             addCenteredImage((int)(x-(quit.getWidth()/2)),y-yStep*(i++),(int)quit.getWidth(),(int)quit.getHeight()/2,quit,()->System.exit(-1));
     }
