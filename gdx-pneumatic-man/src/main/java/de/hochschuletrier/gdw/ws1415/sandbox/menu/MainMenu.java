@@ -10,7 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
+import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
+import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.RotatingDecoImage;
@@ -36,10 +37,10 @@ public class MainMenu extends MenuPage{
         super(skin,"background_menu" );
         int x=960;
         int i=0;
-        int y=800;
+        int y=510;
         int yStep=100;
         
-            addPageEntry(menuManager,x,y-yStep*(i++),start, new OptionMenu(skin, menuManager));
+            addPageEntryStart(menuManager,x,y-yStep*(i++),start, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager,x,y-yStep*(i++),credits, new CreditsMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
@@ -57,6 +58,12 @@ public class MainMenu extends MenuPage{
         
     }
     
+    protected final void addPageEntryStart(MenuManager menuManager, int x, int y, DecoImage image, MenuPage page) {
+        menuManager.addLayer(page);
+        
+        addCenteredImage((int)(x-(image.getWidth()/2)), y, (int)image.getWidth(), (int)image.getHeight(), image, () ->  main.changeState(new GameplayState(assetManager),new SplitHorizontalTransition(500), null));
+        
+    }
    /*private void addGear(DecoImage image) {
         //final Texture texture = assetManager.getTexture(name);
         //final DecoImage decoImage = new DecoImage(texture);
