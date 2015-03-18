@@ -56,11 +56,12 @@ public class MenuPage extends Group {
 
     protected final void addCenteredImage(int x, int y, int width, int height, DecoImage image, Runnable runnable)
     {
-        image.setPosition(x+width,y-height/2);
+        image.setPosition(x,y);
         image.setTouchable(Touchable.enabled);
         image.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float width, float height) {
+                //System.out.println("kjfghkd");
                 runnable.run();
             }
         });
