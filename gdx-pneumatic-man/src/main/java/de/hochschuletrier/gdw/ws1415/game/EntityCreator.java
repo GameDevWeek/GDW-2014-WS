@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ws1415.game;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
@@ -254,5 +255,51 @@ public class EntityCreator {
 
     public static Entity IndestructablePlattformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode) {
         return createPlatformBlock(x,y, travelDistance, dir, mode);
+    }
+
+    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Direction direction) {
+        Entity entity = engine.createEntity();
+
+
+        float angle;
+        if (direction == Direction.RIGHT) {
+            angle = (float) Math.PI/2;
+        } else if (direction == Direction.UP) {
+            angle = (float) Math.PI;
+        } else if (direction == Direction.DOWN) {
+            angle = 0;
+        } else {
+            angle = (float) Math.PI*3/2;
+        }
+
+        PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        bodyComponent.getBody().setUserData(bodyComponent);
+
+        PhysixFixtureDef fixtureDefSpikeGround = new PhysixFixtureDef(physixSystem)
+                .density(1)
+                .friction(1f)
+                .shapeBox(width, height * 0.8f, new Vector2(0, -height*0.2f), angle)
+                .restitution(0.1f);
+        Fixture fixtureSpikeGround = bodyComponent.createFixture(fixtureDefSpikeGround);
+        fixtureSpikeGround.setUserData(bodyComponent);
+
+        PhysixFixtureDef fixtureDefBottomSpike = new PhysixFixtureDef(physixSystem)
+                .density(1)
+                .friction(1f)
+                .shapeBox(width, height * 0.2f, new Vector2(0, height*0.8f), angle)
+                .restitution(0.1f);
+        Fixture fixtureBottomSpike = bodyComponent.createFixture(fixtureDefBottomSpike);
+        fixtureBottomSpike.setUserData(bodyComponent);
+
+        entity.add(bodyComponent);
+
+        DestructableBlockComponent blockComp = new DestructableBlockComponent();
+        entity.add(blockComp);
+
+        engine.addEntity(entity);
+        return entity;
+
     }
 }
