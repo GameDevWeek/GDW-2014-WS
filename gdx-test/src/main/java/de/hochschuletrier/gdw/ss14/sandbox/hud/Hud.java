@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss14.sandbox.hud;
 
+import java.util.ArrayList;
+
 import org.lwjgl.opengl.GL11;
 
 import com.badlogic.gdx.Gdx;
@@ -15,23 +17,37 @@ import de.hochschuletrier.gdw.ss14.sandbox.SandboxGame;
 public class Hud extends SandboxGame
 {
     
-  private int allMiners;
+    private int allMiners;
   
-  private SpriteBatch batch;
-  private Texture texture;
-  private Sprite sprite;
-  private Stage stage;
+    private SpriteBatch batch;
+    private Texture texture;
+    private Sprite sprite;
+    private Stage stage;
+    private Texture textureMinerLeft;
+    private Texture textureMinerFound;
+    private ArrayList<Sprite> list;
   
       @Override
       public void init(AssetManagerX assetManager)
       {
           batch = new SpriteBatch();
           texture = new Texture(Gdx.files.internal("data/menuImages/dummyMiner.png"));
-          sprite = new Sprite(texture);
+//          sprite = new Sprite(texture);
           stage = new Stage();
          // allMiners = getMinersLeft();
           allMiners = 5;
           //loadMinersPictures();
+          
+          list = new ArrayList<Sprite>();
+          
+          while(allMiners>0)
+          {
+              
+              list.add(new Sprite(textureMinerLeft));
+              
+          }
+          
+          drawMinersLeft();
         
           
       }
@@ -57,9 +73,21 @@ public class Hud extends SandboxGame
         
     }
     
-    public void minerRescued()
+    
+    public void drawMinersLeft()
     {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL11.GL_COLOR_BUFFER_BIT);
+   
+        batch.begin();
         
+        for( Sprite s: list)
+        {
+            
+        }
+        
+        
+        batch.end();
         
     }
     
