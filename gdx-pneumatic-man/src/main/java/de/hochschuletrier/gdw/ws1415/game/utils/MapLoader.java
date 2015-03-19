@@ -134,6 +134,9 @@ public class MapLoader
                         AIType type = AIType.valueOf(obj.getProperty("Type", AIType.CHAMELEON.name()).toUpperCase());
                             EntityCreator.createAndAddEnemy(obj.getX(), obj.getY(), dir, type);
                     }
+                    else if(obj.getProperty("Name", "").equalsIgnoreCase("Miner")){
+                    
+                    }
                     else{
                         Gdx.app.log("WARNING", "object " + obj.getName() + "does not match any name. No Entity created");
                     }
