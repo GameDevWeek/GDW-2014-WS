@@ -107,10 +107,12 @@ public class Game {
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
 
+        addSystems();
+        
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-        addSystems();
+        
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
 
@@ -181,7 +183,7 @@ public class Game {
                                 obj.getWidth(), obj.getHeight(), e);
                     }
                     if(obj.getName().equalsIgnoreCase("Player")){
-
+                        EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0);
                     }
                     if(obj.getName().equalsIgnoreCase("PlayerSpawn")){
                         //TODO: spawn point entity ?!

@@ -30,6 +30,7 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
@@ -73,6 +74,7 @@ public class AnotherTest extends SandboxGame {
     public AnotherTest() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
     }
 
@@ -101,6 +103,7 @@ public class AnotherTest extends SandboxGame {
 
         // create a simple player ball
         player = engine.createEntity();
+        player.add(engine.createComponent(PlayerComponent.class));
         PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         player.add(modifyComponent);
 

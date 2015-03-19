@@ -12,8 +12,6 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
@@ -47,7 +45,6 @@ public class CameraSystem extends EntitySystem implements EntityListener {
 	
     @Override
     public void addedToEngine(Engine engine) {
-        // one() bekommt später noch eine geplante TextureComponent
         @SuppressWarnings("unchecked")
         Family family = Family.all(PlayerComponent.class).get();
         engine.addEntityListener(family, this);
@@ -81,9 +78,11 @@ public class CameraSystem extends EntitySystem implements EntityListener {
 	@Override
     public void update(float deltaTime) {
     	// reset camera position to the correct position after parallax
-		camera.setDestination(cameraPos.x, cameraPos.y);
-		camera.updateForced();
-		firstLayer = true;
+	    if(!firstLayer) {
+	        camera.setDestination(cameraPos.x, cameraPos.y);
+	        camera.updateForced();
+	        firstLayer = true;
+	    }
 		
     	if(toFollow != null) {
     		PositionComponent toFollowPos = ComponentMappers.position.get(toFollow);
@@ -92,9 +91,8 @@ public class CameraSystem extends EntitySystem implements EntityListener {
     	}	
 
     	camera.updateForced();
-    	
-		camera.bind();
-		camera.update(deltaTime);	
+    	camera.update(deltaTime);
+		camera.bind();	
     }
     
     public void adjustToMap(TiledMap map) {
@@ -113,15 +111,15 @@ public class CameraSystem extends EntitySystem implements EntityListener {
      */
     @Deprecated
     public void follow(Entity entity) {
-//    	this.toFollow = entity;
+    	this.toFollow = entity;
     }
 
     @Override
     public void entityAdded(Entity entity) {
         entities.add(entity);;
-        
+
         if(toFollow == null)
-            toFollow = entity;
+            followEx(entity);
     }
 
     @Override
@@ -130,8 +128,17 @@ public class CameraSystem extends EntitySystem implements EntityListener {
         
         if(entity == toFollow)
             if(entities.size() > 0)
-                toFollow = entities.get(0);
+                followEx(entities.get(0));
             else
                 toFollow = null;
+    }
+    
+    private void followEx(Entity entity) {
+        toFollow = entity;
+        PositionComponent pos = ComponentMappers.position.get(entity);
+//        if(firstCameraPosition == null) {
+//            firstCameraPosition = new Vector2();
+//        }
+//        firstCameraPosition.set(pos.x, pos.y);
     }
 }

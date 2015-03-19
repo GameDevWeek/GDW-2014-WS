@@ -37,7 +37,6 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
 
         
         // Order of adding = order of renderer selection for the entity
-        // addRenderer(new ParticleRenderer());
         addRenderer(new AnimationRenderer());
         addRenderer(new DestructableBlockRenderer());
         addRenderer(new TextureRenderer());
@@ -64,7 +63,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     
     @Override
 	public void update (float deltaTime) {	
-    	cameraSystem.update(deltaTime);
+//        cameraSystem.update(deltaTime);
     	super.update(deltaTime);	
 	}
     
