@@ -7,10 +7,14 @@ import com.badlogic.gdx.utils.Pool;
 public class ConeLightComponent extends Component implements Pool.Poolable
 { 
     public ConeLight coneLight;
+    public float offsetX = 0;
+    public float offsetY = 0;
 
     @Override
     public void reset()
     {
-        coneLight = null; 
+        coneLight = null;
+        offsetX = 0;
+        offsetY = 0;
     }
 }

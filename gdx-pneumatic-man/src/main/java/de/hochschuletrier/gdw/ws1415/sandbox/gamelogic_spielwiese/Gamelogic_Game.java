@@ -151,7 +151,7 @@ public class Gamelogic_Game extends SandboxGame {
             inputKeyboardSystem.setProcessing(true);
         }
         
-        Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
+        //Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
     }
 
     @Override
@@ -291,7 +291,7 @@ public class Gamelogic_Game extends SandboxGame {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
-                                    Map, info, i, j);
+                                    Map, info, info.getIntProperty("Hitpoint", 0), i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) 
                         {
