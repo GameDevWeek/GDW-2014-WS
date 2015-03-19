@@ -32,6 +32,8 @@ import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
@@ -84,8 +86,9 @@ public class EntityCreator {
         entity.add(bodyComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
+
         jumpComponent.jumpImpulse = 25000.0f;
-        jumpComponent.restingTime = 0.02f;
+        jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
         MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
@@ -298,14 +301,23 @@ public class EntityCreator {
     public static Entity createAndAddLava(Rectangle rect) {
         Entity entity = engine.createEntity();
 
+        float scale = 0.9f;
         float width = rect.width * GameConstants.getTileSizeX();
-        float height = rect.height * GameConstants.getTileSizeY();
+        float height = rect.height * GameConstants.getTileSizeY() * scale;
         float x = rect.x * GameConstants.getTileSizeX() + width / 2;
-        float y = rect.y * GameConstants.getTileSizeY() + height / 2;
-
-        entity.add(defineBoxPhysixBodyComponent(entity, x, y,
-               width, height,
-                true, 1f, 1f, 0.1f));
+        float y = rect.y * GameConstants.getTileSizeY() + height / 2 + height * (1-scale);
+        
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1f).friction(1f).shapeBox(width, height)
+                .restitution(0.1f);
+        fixtureDef.sensor(true);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
 
         KillsPlayerOnContactComponent killComponent = engine
                 .createComponent(KillsPlayerOnContactComponent.class);
@@ -443,6 +455,73 @@ public class EntityCreator {
 
     }
     
+    public static void createLavaFountain(float x, float y, float height, float intervall, 
+            float intervallOffset, float length){
+        Entity entity = engine.createEntity();
+        
+        float lavaBallSpeed = -2000.0f;
+        float lavaBallSpawnIntervall = 0.5f;
+        
+        PositionComponent position = engine.createComponent(PositionComponent.class);
+        position.x = x;
+        position.y = y;
+        entity.add(position);
+        
+        LavaFountainComponent lavaFountain = engine.createComponent(LavaFountainComponent.class);
+        lavaFountain.height = height;
+        lavaFountain.intervall = intervall;
+        lavaFountain.intervallOffset = intervallOffset;
+        lavaFountain.length = length;
+        lavaFountain.lavaBallSpeed = lavaBallSpeed;
+        lavaFountain.lavaBallSpawnIntervall = lavaBallSpawnIntervall;
+        entity.add(lavaFountain);
+        
+        engine.addEntity(entity);
+    }
+    
+    public static void createLavaBall(float x, float y, float lavaBallSpeed, float travelLength){
+        Entity entity = engine.createEntity();
+        
+        float radius = GameConstants.getTileSizeX()/2;
+        
+        float positionX = x + GameConstants.getTileSizeX()/2;
+        float positionY = y + GameConstants.getTileSizeY()/2;
+        
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                physixSystem).position(positionX, positionY).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1f).friction(1f).shapeCircle(radius)
+                .restitution(0.1f);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
+        entity.add(bodyComponent);
+        
+        MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
+        moveComponent.velocity.set(0, lavaBallSpeed);
+        entity.add(moveComponent);
+        
+        DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
+        damageComponent.damage = 1;
+        damageComponent.damageToPlayer = true;
+        entity.add(damageComponent);
+        
+        LavaBallComponent lavaBallComponent = engine.createComponent(LavaBallComponent.class);
+        lavaBallComponent.travelLength = travelLength;
+        lavaBallComponent.startPositionX = positionX;
+        lavaBallComponent.startPositionY = positionY;
+        entity.add(lavaBallComponent);
+        
+        PositionComponent position = engine.createComponent(PositionComponent.class);
+        position.x = positionX;
+        position.y = positionY;
+        entity.add(position);
+        
+        engine.addEntity(entity);
+    }
+    
     
     // ********** Rendering section BEGIN **********
     
@@ -555,4 +634,6 @@ public class EntityCreator {
     	addRenderComponents(entity, px, py, 0, 0.2f, anim);
     }
     // ********** Rendering section END **********
+    
+   
 }

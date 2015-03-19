@@ -42,6 +42,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.LavaFountainSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
@@ -94,6 +95,7 @@ public class Game {
             GameConstants.PRIORITY_PHYSIX + 1,
             physixSystem
     );
+    private final LavaFountainSystem lavaFountainSystem = new LavaFountainSystem(GameConstants.PRIORITY_ENTITIES+3);
 
     private InputManager inputManager = new InputManager();
     
@@ -217,6 +219,18 @@ public class Game {
                     }
 
                 }
+                // Spawning LavaFountains here
+                for(LayerObject obj : layer.getObjects()){
+                    if(obj.getName().equalsIgnoreCase("LavaFountain")){
+                        float positionX = obj.getX();
+                        float positionY = obj.getY();
+                        float height = obj.getFloatProperty("Height", 1.0f);
+                        float intervall = obj.getFloatProperty("Intervall", 1.0f);
+                        float intervallOffset = obj.getFloatProperty("IntervallOffset", 0.0f);
+                        float length = obj.getFloatProperty("Length", 1.0f);
+                        EntityCreator.createLavaFountain(positionX, positionY, height, intervall, intervallOffset, length);
+                    }
+                }
                 continue; // because it was a object layer
             }
             
@@ -326,6 +340,7 @@ public class Game {
         engine.addSystem(aisystems);
         engine.addSystem(_HealthSystem);
         engine.addSystem(_ScoreSystem);
+        engine.addSystem(lavaFountainSystem);
     }
 
     private void addContactListeners() {
