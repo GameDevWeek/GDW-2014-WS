@@ -409,6 +409,11 @@ public class EntityCreator {
         fixtureSpikeGround.setUserData(bodyComponent);
 
         entity.add(bodyComponent);
+        
+        DamageComponent Damage = engine.createComponent(DamageComponent.class);
+        Damage.damageToPlayer = true;
+        Damage.damage = 2;
+        entity.add(Damage);
 
         DestructableBlockComponent blockComp = new DestructableBlockComponent();
         entity.add(blockComp);

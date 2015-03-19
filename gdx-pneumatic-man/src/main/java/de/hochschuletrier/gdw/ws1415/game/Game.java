@@ -38,6 +38,7 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
@@ -60,6 +61,8 @@ public class Game {
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
+
+    private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
     private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
@@ -302,16 +305,17 @@ public class Game {
         engine.addSystem(inputKeyboardSystem);
         engine.addSystem(inputGamepadSystem);
         engine.addSystem(aisystems);
+        engine.addSystem(_HealthSystem);
     }
 
     private void addContactListeners() {
         PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
-        physixSystem.getWorld().setContactListener(contactListener);
         contactListener
                 .addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
         contactListener.addListener(FallingRockComponent.class, new RockContactListener());
+        physixSystem.getWorld().setContactListener(contactListener);
     }
 
     private void setupPhysixWorld() {
