@@ -27,7 +27,10 @@
         "text": {
             "time": 0,
             "items" : [
-                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Organisation", "delay": "0" },
+            
+                { "type": "text", "path" : "text", "group" : "startanimation", "style" : "title_left", "text" : "PNEUMATIC MOLE", "delay" : "0"},
+                
+                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Organisation", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Santo Pfingsten  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Tobias Meier", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1350" },
@@ -80,13 +83,15 @@
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Julia Wolf  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Michelle Kaufmann", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Saskia Hohmann  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "style" : "text_right", "text": "  Hans Boehme", "delay": "0" },
-                { "type": "text", "path" : "text", "style" : "text_left", "text": "Lynn Friedrich  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Maxine Hammen", "delay": "0" },
+                { "type": "text", "path" : "text", "style" : "text_left", "text": "Lynn Friedrich  ", "delay": "1350" },
                 
                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Assets", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Tobias Gepp  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Dominik Petersdorf", "delay": "0" },
+                
+                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Animation", "delay": "3000" },
+                { "type": "text", "path" : "text", "style" : "text_left", "text": "Hans Boehme  ", "delay": "1350" },
                 
                
                 { "type": "text", "path" : "btw", "group" : "btw", "style" : "text_right", "text": "btw..", "delay": "8500" },
@@ -107,6 +112,12 @@
                     "minCurveAngle": 25, "maxCurveAngle": 55,
                     "trailMaxSteps": 3, "trailStepTime": 50
                 },
+                { "time": 0, "animation": "construct", "animationTime": 1000, "group": "startanimation",
+                    "minRadius" : 300, "maxRadius" : 300,
+                    "minAngle" : 200, "maxAngle" : 225,
+                    "minCurveAngle": 45, "maxCurveAngle": 135
+                },
+                
                 
                 { "time": 0, "animation": "untype_instant", "group": "btw" },
                 { "time": 0, "animation": "untype_instant", "group": "git1" },

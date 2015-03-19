@@ -10,5 +10,5 @@
     "miner_found": "data/images/KollegeIconGefunden.png",
     "miner_notfound": "data/images/KollegeIconNichtGefunden.png",
     "zeigefinger": "data/images/zeigefinger.png",
-    "credit_Background": "data/images/Credits_2.png"
+    "credit_background" : "data/images/Credits_2.png"
 }
