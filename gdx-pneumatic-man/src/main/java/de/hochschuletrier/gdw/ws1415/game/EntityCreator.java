@@ -96,40 +96,41 @@ public class EntityCreator {
         moveComponent.speed = 12000.0f;
         entity.add(moveComponent);
 
-//        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-//        entity.add(blockComp);
+        // ***** temporary *****
+        AnimationComponent anim = engine.createComponent(AnimationComponent.class);
+        anim.IsActive = true;
+        anim.animation = assetManager.getAnimation("walking");
+        entity.add(anim);
+        
+        LayerComponent layer = engine.createComponent(LayerComponent.class);
+        layer.layer = 1;
+        entity.add(layer);
 
         engine.addEntity(entity);
         return entity;
     }
     
     public static Entity modifyPlayerToDying(Entity entityToDie) {
-        //Entity dyingEntity = engine.createEntity();
-        
-        //TODO
-        //Loading new Dying-Animation - waiting for Assets
-        
         entityToDie.remove(AnimationComponent.class);
-//        entityToDie.remove(DamageComponent.class);
-//        entityToDie.remove(InputComponent.class);
-//        entityToDie.remove(PlayerComponent.class);
-//        entityToDie.remove(HealthComponent.class);
-//        entityToDie.remove(PhysixBodyComponent.class);
-//        entityToDie.remove(MovementComponent.class);
-//        entityToDie.remove(JumpComponent.class);
-//        entityToDie.remove(PositionComponent.class);
+        entityToDie.remove(DamageComponent.class);
+        entityToDie.remove(InputComponent.class);
+        entityToDie.remove(PlayerComponent.class);
+        entityToDie.remove(HealthComponent.class);
+        entityToDie.remove(PhysixBodyComponent.class);
+        entityToDie.remove(MovementComponent.class);
+        entityToDie.remove(JumpComponent.class);
         
         DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
-        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
-        deathAnimation.IsActive = true;
-        deathAnimation.animation = assetManager.getAnimation("walking");
-        
-        entityToDie.add(deathAnimation);
         entityToDie.add(deathComponent);
+        
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        deathAnimation.animation = assetManager.getAnimation("char_death");
+        entityToDie.add(deathAnimation);
+        
         LayerComponent Layer = engine.createComponent(LayerComponent.class);
         Layer.layer = 1;
         entityToDie.add(Layer);
-
+        
         return entityToDie;
     }
 
