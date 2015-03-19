@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.menu;
 
-
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -44,11 +43,11 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
             addActor(new SceneAnimatorActor(sceneAnimator));
 
             // If this is a build jar file, disable hotkeys
-            if (!Main.IS_RELEASE) {
+//            if (!Main.IS_RELEASE) {
 //                increaseSpeed.register();
 //                decreaseSpeed.register();
 //                resetSpeed.register();
-            }
+//            }
         } catch (Exception ex) {
             logger.error("Error loading credits", ex);
         }

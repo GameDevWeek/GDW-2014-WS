@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
-import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
@@ -16,8 +15,8 @@ public class LoadGameState extends BaseGameState {
     private boolean isDone;
     private final AssetManagerX assetManager;
     private final Runnable completeFunc;
-//    private final Texture loadScreen = new Texture(Gdx.files.internal("data/images/background_menu.png"));
-    private final Texture overlay = new Texture(Gdx.files.internal("data/images/background_menu.png"));
+    //private final Texture loadScreen = new Texture(Gdx.files.internal("data/images/background_menu.png"));
+    private final Texture overlay = new Texture(Gdx.files.internal("data/images/titel.png"));
 
     public LoadGameState(AssetManagerX assetManager, Runnable completeFunc) {
         this.assetManager = assetManager;

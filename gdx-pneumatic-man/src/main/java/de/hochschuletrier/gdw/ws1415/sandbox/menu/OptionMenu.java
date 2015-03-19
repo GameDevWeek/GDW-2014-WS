@@ -28,7 +28,7 @@ public class OptionMenu extends MenuPage
 		createLabel(menuManager.getWidth()/2-75, y).setText("SOUND");
 		y-= 20;
         soundSlider = createSlider(menuManager.getWidth()/2-160, y, this::onSoundVolumeChanged);
-        //soundSlider.setValue(1);
+        //soundSlider.setValue(0.5f);
         soundLabel = createLabel(menuManager.getWidth()/2+190, y);
         soundLabel.setVisible(false);
        // soundMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onSoundMuteChanged);
@@ -38,7 +38,7 @@ public class OptionMenu extends MenuPage
         createLabel(menuManager.getWidth()/2-75, y).setText("MUSIC");
         y -= 20;
         musicSlider = createSlider(menuManager.getWidth()/2-160, y, this::onMusicVolumeChanged);
-        //musicSlider.setValue(1);
+       // musicSlider.setValue(0.5f);
         musicLabel = createLabel(menuManager.getWidth()/2+190, y);
         musicLabel.setVisible(false);
        // musicMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onMusicMuteChanged);

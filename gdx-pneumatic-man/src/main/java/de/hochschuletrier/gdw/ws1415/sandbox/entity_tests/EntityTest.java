@@ -14,10 +14,11 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
@@ -25,6 +26,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.RenderSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
 public class EntityTest extends SandboxGame {
@@ -40,10 +42,14 @@ public class EntityTest extends SandboxGame {
     private final HealthSystem Health = new HealthSystem(0);
     private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
     private final RenderSystem DestructableBlockRender = new RenderSystem();
+    private final ScoreSystem score = new ScoreSystem();
 
     public EntityTest() {
         engine.addSystem(Health);
         engine.addSystem(DestructableBlockRender);
+        engine.addSystem(score);
+        
+        EntityCreator.engine = engine;
     }
 
     @Override
@@ -54,17 +60,42 @@ public class EntityTest extends SandboxGame {
     Entity BlockEntity;
     Entity Arrow;
     Entity Unit;
-    Entity Miner;
+    Entity Miner_1;
+    Entity Miner_2;
+    Entity Goal;
 
     @Override
     public void init(AssetManagerX assetManager) {
-
-        Miner = engine.createEntity();
-        MinerComponent mc = engine.createComponent(MinerComponent.class);
+        
+        Goal = engine.createEntity();
+        Miner_1 = engine.createEntity();
+        MinerComponent mc_1 = engine.createComponent(MinerComponent.class);
         GoalComponent goal = engine.createComponent(GoalComponent.class);
-        Miner.add(mc);
-        Miner.add(goal);
-        engine.addEntity(Miner);
+        goal.reset();
+        goal.miners_threshold = 2;
+        PositionComponent pos1 = engine
+                .createComponent(PositionComponent.class);
+
+        Goal.add(goal);
+        engine.addEntity(Goal);
+
+        Miner_1.add(mc_1);
+        Miner_1.add(goal);
+        Miner_1.add(pos1);
+        Miner_1.getComponent(PositionComponent.class).x = 400;
+        Miner_1.getComponent(PositionComponent.class).y = 100;
+        engine.addEntity(Miner_1);
+
+        Miner_2 = engine.createEntity();
+        MinerComponent mc_2 = engine.createComponent(MinerComponent.class);
+        PositionComponent pos2 = engine
+                .createComponent(PositionComponent.class);
+        Miner_2.add(mc_2);
+        Miner_2.add(goal);
+        Miner_2.add(pos2);
+        Miner_2.getComponent(PositionComponent.class).x = 500;
+        Miner_2.getComponent(PositionComponent.class).y = 100;
+        engine.addEntity(Miner_2);
 
         BlockEntity = engine.createEntity();
 
@@ -80,7 +111,8 @@ public class EntityTest extends SandboxGame {
         logger.info("Health Value: " + Health.Value);
         BlockEntity.add(Health);
 
-        BlockEntity.add(engine.createComponent(DestructableBlockComponent.class));
+        BlockEntity.add(engine
+                .createComponent(DestructableBlockComponent.class));
 
         AnimationComponent ac = engine
                 .createComponent(AnimationComponent.class);
@@ -154,6 +186,21 @@ public class EntityTest extends SandboxGame {
 
         HealthComponent HealthOfBlock = BlockEntity
                 .getComponent(HealthComponent.class);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            engine.removeEntity(Miner_1);
+        }
+
+        if (Miner_1.getComponent(PositionComponent.class) != null) {
+            DrawRect(Miner_1.getComponent(PositionComponent.class).x,
+                    Miner_1.getComponent(PositionComponent.class).y, 20, 20,
+                    Color.GRAY);
+        }
+
+        DrawRect(Miner_2.getComponent(PositionComponent.class).x,
+                Miner_2.getComponent(PositionComponent.class).y, 20, 20,
+                Color.GRAY);
+
         /*
          * DrawRect(BlockEntity.getComponent(PositionComponent.class).x,
          * BlockEntity.getComponent(PositionComponent.class).y, DW * 0.5f, DH *
@@ -161,12 +208,11 @@ public class EntityTest extends SandboxGame {
          */
         // DrawRect(ArrowPosition.x, ArrowPosition.y, 10, 10, Color.RED);
 
-        DestructableBlockRender.update(delta);
-        if (HealthOfBlock != null
-                && Gdx.input.isKeyJustPressed(Input.Keys.SPACE)
-                && HealthOfBlock.Value > 0) {
-            HealthOfBlock.Value -= 1;
-        }
+        /**
+         * DestructableBlockRender.update(delta); if (HealthOfBlock != null &&
+         * Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && HealthOfBlock.Value >
+         * 0) { HealthOfBlock.Value -= 1; }
+         **/
 
         /*
          * if (Arrow.getComponent(PositionComponent.class).x > X - 50 &&
