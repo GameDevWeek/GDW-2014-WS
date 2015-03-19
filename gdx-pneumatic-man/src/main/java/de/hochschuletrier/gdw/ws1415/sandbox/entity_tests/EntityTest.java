@@ -200,8 +200,6 @@ public class EntityTest extends SandboxGame {
         DrawRect(Miner_2.getComponent(PositionComponent.class).x,
                 Miner_2.getComponent(PositionComponent.class).y, 20, 20,
                 Color.GRAY);
-        
-        logger.info("Score: " + score.goal.getComponent(GoalComponent.class).miners_saved);
 
         /*
          * DrawRect(BlockEntity.getComponent(PositionComponent.class).x,
