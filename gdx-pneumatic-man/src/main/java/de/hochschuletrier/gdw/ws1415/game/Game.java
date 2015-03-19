@@ -48,7 +48,24 @@ import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
+import de.hochschuletrier.gdw.ws1415.game.utils.NoGamepadException;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
+
+
+
+
+
+
+import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
+
+
+
+
+
+import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
 
 public class Game {
 
@@ -78,6 +95,8 @@ public class Game {
             physixSystem
     );
 
+    private InputManager inputManager = new InputManager();
+    
     private Sound impactSound;
     private AnimationExtended ballAnimation;
 
@@ -97,6 +116,7 @@ public class Game {
 
     public void dispose() {
         togglePhysixDebug.unregister();
+        inputManager.close();
     }
 
     public void init(AssetManagerX assetManager) {
@@ -120,19 +140,9 @@ public class Game {
 
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
-
-        Controllers.addListener(inputGamepadSystem);
         
-        if(Controllers.getControllers().size > 0)
-        {
-            inputKeyboardSystem.setProcessing(false);
-            inputGamepadSystem.setProcessing(true);
-        }
-        else
-        {
-            inputGamepadSystem.setProcessing(false);
-            inputKeyboardSystem.setProcessing(true);
-        }
+        inputManager.init();
+       
     }
 
     private void generateWorldFromTileMap() {
