@@ -153,11 +153,10 @@ public class Gamelogic_Game extends SandboxGame {
         }
         
         Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
-        Entity goal = engine.createEntity();
+        Entity goal = EntityCreator.createAndAddEventBox(900.0f, 900.0f);
         GoalComponent goal_component = engine.createComponent(GoalComponent.class);
         goal_component.miners_threshold = 1;
         goal.add(goal_component);
-        engine.addEntity(goal);
     }
 
     @Override
