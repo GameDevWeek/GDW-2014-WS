@@ -6,7 +6,7 @@ import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 
-public class InputManager {
+public class InputManager implements SettingListener<Boolean>{
 	
 	public enum Input{
 		KEYBOARD, GAMEPAD
@@ -49,4 +49,13 @@ public class InputManager {
 		return Controllers.getControllers().size > 0;
 	}
 
+	public void init()
+	{
+	    // Listener anmelden
+	}
+	
+	public void close()
+	{
+	    // Listener abmelden
+	}
 }

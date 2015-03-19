@@ -93,7 +93,7 @@ public class Game {
             physixSystem
     );
 
-    
+    private InputManager inputManager = new InputManager();
     
     private Sound impactSound;
     private AnimationExtended ballAnimation;
@@ -114,6 +114,7 @@ public class Game {
 
     public void dispose() {
         togglePhysixDebug.unregister();
+        inputManager.close();
     }
 
     public void init(AssetManagerX assetManager) {
@@ -137,7 +138,7 @@ public class Game {
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
-        InputManager inputManager = new InputManager();
+        inputManager.init();
        
     }
 
