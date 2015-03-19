@@ -48,6 +48,8 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
     public MainMenuState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
         this.assetManager=assetManager;
+        MusicManager.play(music, 2.0f);
+        
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
        

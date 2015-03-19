@@ -7,11 +7,12 @@
     "credits_button": "data/images/credits_button.png",
     "optionen_button": "data/images/optionen_button.png",
     "start_button": "data/images/start_button.png",
-    "levels_button": "data/images/levels_button.png",
-    "score_button": "data/images/score_button.png",
-    "back_button": "data/images/back_button.png",
     "miner_found": "data/images/KollegeIconGefunden.png",
     "miner_notfound": "data/images/KollegeIconNichtGefunden.png",
-    "zeigefinger2": "data/images/zeigefinger2.png",
+    "zeigefinger": "data/images/zeigefinger.png",
+<<<<<<< HEAD
+    "credit_Background": "data/images/Credits_2.png"
+=======
     "credit_background" : "data/images/Credits_2.png"
+>>>>>>> 25971868b1dc06cea1bfdfe2528e86f4667162ce
 }
