@@ -43,6 +43,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
@@ -63,6 +64,7 @@ public class Game {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
 
+    private final ScoreSystem _ScoreSystem = new ScoreSystem();
     private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
@@ -103,6 +105,8 @@ public class Game {
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
 
+        addSystems();
+
         map = loadMap("data/maps/Testkarte_17.03.tmx");
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
@@ -114,7 +118,6 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-        addSystems();
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
 
@@ -312,6 +315,7 @@ public class Game {
         engine.addSystem(inputGamepadSystem);
         engine.addSystem(aisystems);
         engine.addSystem(_HealthSystem);
+        engine.addSystem(_ScoreSystem);
     }
 
     private void addContactListeners() {
