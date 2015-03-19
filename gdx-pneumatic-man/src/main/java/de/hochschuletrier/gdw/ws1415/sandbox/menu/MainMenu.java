@@ -40,7 +40,7 @@ public class MainMenu extends MenuPage{
         int y=510;
         int yStep=100;
         
-            addPageEntryStart(menuManager,x,y-yStep*(i++),start, new OptionMenu(skin, menuManager));
+            addPageEntryStart(menuManager,x,y-yStep*(i++),start);
             addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager,x,y-yStep*(i++),credits, new CreditsMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
@@ -58,8 +58,8 @@ public class MainMenu extends MenuPage{
         
     }
     
-    protected final void addPageEntryStart(MenuManager menuManager, int x, int y, DecoImage image, MenuPage page) {
-        menuManager.addLayer(page);
+    protected final void addPageEntryStart(MenuManager menuManager, int x, int y, DecoImage image) {
+        //menuManager.addLayer(page);
         
         addCenteredImage((int)(x-(image.getWidth()/2)), y, (int)image.getWidth(), (int)image.getHeight(), image, () ->  main.changeState(new GameplayState(assetManager),new SplitHorizontalTransition(500), null));
         
