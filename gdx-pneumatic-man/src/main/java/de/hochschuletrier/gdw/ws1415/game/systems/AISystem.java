@@ -34,6 +34,7 @@ public class AISystem extends IteratingSystem {
      */
     private boolean checkInFront(PhysixBodyComponent physix, Vector2 dir, float speed){
         Ray ray = new Ray();
+        if(speed == 0) return false;
         this.physixSystem.getWorld().rayCast(ray, physix.getPosition(),
                 physix.getPosition()
                         .add(dir.scl(speed)));
@@ -54,6 +55,7 @@ public class AISystem extends IteratingSystem {
      */
     private boolean checkBottomFront(PhysixBodyComponent physix, Vector2 dir, float speed){
         Ray ray = new Ray();
+        if(speed == 0) return false;
         this.physixSystem.getWorld().rayCast(ray, physix.getPosition(),
                 physix.getPosition()
                         .add(dir.scl(speed))
