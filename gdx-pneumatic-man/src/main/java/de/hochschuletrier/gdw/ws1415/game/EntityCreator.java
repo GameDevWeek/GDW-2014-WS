@@ -99,16 +99,14 @@ public class EntityCreator {
         return entity;
     }
     
-    public static Entity createDyingCharacter(Entity entityToDie) {
-        Entity dyingEntity = engine.createEntity();
+    public static Entity modifyPlayerToDying(Entity entityToDie) {
+        //Entity dyingEntity = engine.createEntity();
         
         //TODO
         //Loading new Dying-Animation - waiting for Assets
         
         
         DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
-        
-        
         AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
         TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("data/images/Cowboy small.jpg")));
         deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
@@ -116,14 +114,19 @@ public class EntityCreator {
 //        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
 //        animation.IsActive = false;
 //        dyingEntity.add(animation);
+        entityToDie.remove(AnimationComponent.class);
+        entityToDie.remove(DamageComponent.class);
+        entityToDie.remove(InputComponent.class);
+        entityToDie.remove(PlayerComponent.class);
+        entityToDie.remove(HealthComponent.class);
+        entityToDie.remove(PhysixBodyComponent.class);
+        entityToDie.remove(MovementComponent.class);
+        entityToDie.remove(JumpComponent.class);
         
-        PositionComponent position = entityToDie.getComponent(PositionComponent.class);
+        entityToDie.add(deathAnimation);
+        entityToDie.add(deathComponent);
 
-        dyingEntity.add(deathAnimation);
-        dyingEntity.add(position);
-        dyingEntity.add(deathComponent);
-
-        return dyingEntity;
+        return entityToDie;
     }
 
     /**
