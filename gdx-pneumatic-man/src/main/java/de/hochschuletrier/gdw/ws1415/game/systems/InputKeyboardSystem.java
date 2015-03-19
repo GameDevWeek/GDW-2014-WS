@@ -12,7 +12,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
 
     boolean jump = false;
     
-    boolean pause = false;
+    public boolean pause = false;
     
     boolean left = false;
     
