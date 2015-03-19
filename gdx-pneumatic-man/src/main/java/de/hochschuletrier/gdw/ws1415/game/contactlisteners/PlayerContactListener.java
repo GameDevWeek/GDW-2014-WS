@@ -56,13 +56,14 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 .sub(contact.getOtherFixture().getBody().getPosition()); // vector von object zu player
         // kommt player von oben?
 
-        if(d.dot(Vector2.Y) < 0 && anim.animationFinished) {
-            Family VulnerableBlockFamily = Family.all(DestructableBlockComponent.class, HealthComponent.class).get();
-            if (VulnerableBlockFamily.matches(otherEntity)) {
-                if (contact.getWorldManifold().getNormal().y > 0) {
-                    HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
-                    OtherHealth.Value -= 1;
-                }
+        if(d.dot(Vector2.Y) < 0) { //TODO: && anim.animationFinished
+            if (ComponentMappers.block.has(otherEntity)) {
+//                if (ComponentMappers.health.has(otherEntity)) {
+//                    if (contact.getWorldManifold().getNormal().y > 0) {
+//                        HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
+//                        OtherHealth.Value -= 1;
+//                    }
+//                }
             }
         }
     }

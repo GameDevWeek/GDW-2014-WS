@@ -37,15 +37,7 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.*;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
@@ -73,6 +65,7 @@ public class Game {
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
     private final InputGamepadSystem inputGamepadSystem = new InputGamepadSystem();
+    private final DestroyBlocksSystem destroyBlocksSystem = new DestroyBlocksSystem();
     private final AISystem aisystems = new AISystem(
             GameConstants.PRIORITY_PHYSIX + 1,
             physixSystem
@@ -222,7 +215,7 @@ public class Game {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map, info, i, j);
+                                    map, info, info.getIntProperty("Hitpoint", 0), i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
                         	TileInfo info = tiles[i][j];
@@ -316,6 +309,7 @@ public class Game {
         engine.addSystem(aisystems);
         engine.addSystem(_HealthSystem);
         engine.addSystem(_ScoreSystem);
+        engine.addSystem(destroyBlocksSystem);
     }
 
     private void addContactListeners() {
