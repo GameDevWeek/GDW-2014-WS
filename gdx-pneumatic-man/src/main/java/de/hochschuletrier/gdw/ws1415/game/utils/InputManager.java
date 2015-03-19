@@ -16,22 +16,26 @@ public class InputManager {
 		//default
 		setKeyboard();
 	}
-	
-	public void setInpud(Input input)throws NoGamepadException{
+	/**
+	 * 
+	 * @param KEYBOARD_MOUSE, GAMEPAD
+	 * @throws NoGamepadException
+	 */
+	public void setInput(Input input)throws NoGamepadException{
 		switch(input){
 		case KEYBOARD_MOUSE: setKeyboard(); break;
 		case GAMEPAD: setGamepad(); break;
 		}
 	}
 	
-	public void setKeyboard(){
+	private void setKeyboard(){
 		EntityCreator.engine.getSystem(InputKeyboardSystem.class).setProcessing(true);
 		EntityCreator.engine.getSystem(InputGamepadSystem.class).setProcessing(false);
 		
 		
 	}
 	
-	public void setGamepad() throws NoGamepadException{
+	private void setGamepad() throws NoGamepadException{
 		if(Controllers.getControllers().size == 0){
 			throw new NoGamepadException();
 		}
