@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import de.hochschuletrier.gdw.commons.devcon.DevConsole;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarEnum;
@@ -20,6 +21,7 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
 import de.hochschuletrier.gdw.commons.gdx.devcon.DevConsoleView;
+import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundDistanceModel;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyManager;
@@ -33,6 +35,7 @@ import de.hochschuletrier.gdw.commons.utils.ClassUtils;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxCommand;
 import de.hochschuletrier.gdw.ws1415.states.LoadGameState;
 import de.hochschuletrier.gdw.ws1415.states.MainMenuState;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
@@ -49,8 +52,9 @@ public class Main extends StateBasedGame {
 
     public static final boolean IS_RELEASE = ClassUtils.getClassUrl(Main.class).getProtocol().equals("jar");
 
-    public static final int WINDOW_HEIGHT = 600;
-    public static final int WINDOW_WIDTH = 1024;
+
+    public static final int WINDOW_HEIGHT = 1080;
+    public static final int WINDOW_WIDTH = 1920;
 
     private static final AssetManagerX assetManager = new AssetManagerX();
     private static Main instance;
@@ -108,7 +112,7 @@ public class Main extends StateBasedGame {
         loadAssetLists();
         setupGdx();
 
-        skin = new Skin(Gdx.files.internal("data/skins/basic.json"));
+        skin = new Skin(Gdx.files.internal("data/skins/sotf.json"));
         consoleView.init(skin);
         addScreenListener(consoleView);
         inputMultiplexer.addProcessor(consoleView.getInputProcessor());
@@ -121,6 +125,10 @@ public class Main extends StateBasedGame {
 
         this.console.register(emitterMode);
         emitterMode.addListener(this::onEmitterModeChanged);
+        
+        SoundEmitter.setGlobalVolume(Settings.SOUND_VOLUME.get());
+        MusicManager.setGlobalVolume(Settings.MUSIC_VOLUME.get());
+        
     }
 
     private void onLoadComplete() {
@@ -160,6 +168,14 @@ public class Main extends StateBasedGame {
             consoleView.render();
         }
     }
+    
+    public AssetManagerX  getAssetManager(){
+        return assetManager;
+    }
+    
+    public Skin getSkin() {
+        return skin;
+    }
 
     @Override
     protected void preUpdate(float delta) {
@@ -174,6 +190,7 @@ public class Main extends StateBasedGame {
 
     @Override
     protected void postUpdate(float delta) {
+    	MusicManager.update(delta);
         postRender();
     }
 
