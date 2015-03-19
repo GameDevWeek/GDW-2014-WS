@@ -41,7 +41,7 @@ public class MainMenu extends MenuPage{
         
             addPageEntry(menuManager,x,y-yStep*(i++),start, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager,x,y-yStep*(i++),credits, new CreditsMenu(skin, menuManager));
+            addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
             addCenteredImage((int)(x-(ende.getWidth()/2)),y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2,ende,()->System.exit(-1));
         //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
