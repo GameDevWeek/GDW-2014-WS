@@ -106,15 +106,6 @@ public class EntityCreator {
         //TODO
         //Loading new Dying-Animation - waiting for Assets
         
-        
-        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
-        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
-        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("data/images/Cowboy small.jpg")));
-        deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
-        
-//        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
-//        animation.IsActive = false;
-//        dyingEntity.add(animation);
         entityToDie.remove(AnimationComponent.class);
         entityToDie.remove(DamageComponent.class);
         entityToDie.remove(InputComponent.class);
@@ -123,9 +114,24 @@ public class EntityCreator {
         entityToDie.remove(PhysixBodyComponent.class);
         entityToDie.remove(MovementComponent.class);
         entityToDie.remove(JumpComponent.class);
+
+        
+        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("data/animations/char_death_2048.png")));
+        deathAnimation.IsActive = true;
+        deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
+        
+//        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
+//        animation.IsActive = false;
+//        dyingEntity.add(animation);
         
         entityToDie.add(deathAnimation);
         entityToDie.add(deathComponent);
+         // Shifts camera to (0,0)??
+        LayerComponent Layer = engine.createComponent(LayerComponent.class);
+        Layer.layer = 1;
+        entityToDie.add(Layer);
 
         return entityToDie;
     }
