@@ -9,6 +9,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 
 
@@ -47,7 +48,10 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
     public void disconnected(Controller controller)
     {
         // TODO Auto-generated method stub
-      
+        if(Controllers.getControllers().size == 0)
+        {
+            Settings.GAMEPAD_ENABLED.set(false);
+        }
     }
 
     @Override
