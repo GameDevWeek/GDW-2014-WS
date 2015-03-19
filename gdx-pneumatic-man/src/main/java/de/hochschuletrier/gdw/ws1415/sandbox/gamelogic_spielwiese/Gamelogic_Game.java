@@ -6,6 +6,8 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import box2dLight.RayHandler;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
@@ -37,6 +39,7 @@ import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
@@ -82,7 +85,8 @@ public class Gamelogic_Game extends SandboxGame {
     private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
-    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
+    private final RayHandler rayHandler = new RayHandler(physixSystem.getWorld());
+    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
@@ -116,7 +120,7 @@ public class Gamelogic_Game extends SandboxGame {
 
         // MapLoader erstelt etwas ungültiges
         // Wirft cpp exception/assert
-        //MapLoader mapLoader = new MapLoader(engine, physixSystem, "data/maps/Testkarte_17.03.tmx");
+        //MapLoader mapLoader = new MapLoader(engine, physixSystem, "data/maps/Testkarte_19.03.tmx");
         //Map = mapLoader.getTiledMap();
 
         Map = Game.loadMap("data/maps/Testkarte_19.03.tmx");
@@ -149,6 +153,11 @@ public class Gamelogic_Game extends SandboxGame {
         }
         
         Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
+        Entity goal = engine.createEntity();
+        GoalComponent goal_component = engine.createComponent(GoalComponent.class);
+        goal_component.miners_threshold = 1;
+        goal.add(goal_component);
+        engine.addEntity(goal);
     }
 
     @Override
@@ -169,7 +178,6 @@ public class Gamelogic_Game extends SandboxGame {
                 MovementX += 300.0f;
             }
             playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
-            
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F2))
         {
