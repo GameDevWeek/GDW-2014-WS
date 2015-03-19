@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -19,14 +20,14 @@ import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-
-
-import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DeathComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockTriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
@@ -34,17 +35,13 @@ import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactCompone
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
-
-
-import de.hochschuletrier.gdw.ws1415.game.components.*;
-import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-import de.hochschuletrier.gdw.ws1415.game.utils.EventBoxType;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
@@ -58,8 +55,12 @@ public class EntityCreator {
         entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(DamageComponent.class));
-        entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
+        entity.add(engine.createComponent(PlayerComponent.class));
+
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        entity.add(Health);
 
         float width = GameConstants.getTileSizeX() * 0.9f;
         float height = GameConstants.getTileSizeY() * 1.5f;
@@ -75,6 +76,12 @@ public class EntityCreator {
                 .shapeBox(width, height);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
+        fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f).restitution(0.1f)
+                .shapeCircle(10, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
+        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        
         entity.add(bodyComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
@@ -91,6 +98,33 @@ public class EntityCreator {
 
         engine.addEntity(entity);
         return entity;
+    }
+    
+    public static Entity createDyingCharacter(Entity entityToDie) {
+        Entity dyingEntity = engine.createEntity();
+        
+        //TODO
+        //Loading new Dying-Animation - waiting for Assets
+        
+        
+        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
+        
+        
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("data/images/Cowboy small.jpg")));
+        deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
+        
+//        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
+//        animation.IsActive = false;
+//        dyingEntity.add(animation);
+        
+        PositionComponent position = entityToDie.getComponent(PositionComponent.class);
+
+        dyingEntity.add(deathAnimation);
+        dyingEntity.add(position);
+        dyingEntity.add(deathComponent);
+
+        return dyingEntity;
     }
 
     /**
@@ -130,7 +164,7 @@ public class EntityCreator {
         return entity;
     }
 
-    public static Entity createAndAddEventBox(EventBoxType type, float x, float y) {
+    public static Entity createAndAddEventBox(float x, float y) {
         Entity box = engine.createEntity();
 
         box.add(engine.createComponent(TriggerComponent.class));
@@ -238,7 +272,7 @@ public class EntityCreator {
         entity.add(blockComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 0;
+        Health.Value = 1;
         entity.add(Health);
 
         engine.addEntity(entity);
@@ -338,21 +372,32 @@ public class EntityCreator {
         return createPlatformBlock(x,y, travelDistance, dir, mode);
     }
 
-    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Direction direction,
+    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, String direction,
     		TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity entity = engine.createEntity();
 
         addRenderComponents(entity, map, info, tileX, tileY); 
 
         float angle;
-        if (direction == Direction.RIGHT) {
-            angle = (float) Math.PI/2;
-        } else if (direction == Direction.UP) {
+        Vector2 verschiebung;
+        Vector2 rayCastTarget;
+        float rayLength = 50000f;
+        if (direction.equals("SpikeRight")) {
+            angle = (float) Math.PI / 2;
+            verschiebung = new Vector2(width * 0.1f, 0);
+            rayCastTarget = new Vector2(x - rayLength, y);
+        } else if (direction.equals("SpikeTop")) {
             angle = (float) Math.PI;
-        } else if (direction == Direction.DOWN) {
+            verschiebung = new Vector2(0, -height * 0.1f);
+            rayCastTarget = new Vector2(x, y + rayLength);
+        } else if (direction.equals("SpikeDown")) {
             angle = 0;
+            verschiebung = new Vector2(0, height * 0.1f);
+            rayCastTarget = new Vector2(x, y - rayLength);
         } else {
-            angle = (float) Math.PI*3/2;
+            angle = (float) Math.PI * 3 / 2;
+            verschiebung = new Vector2(-width * 0.1f, 0);
+            rayCastTarget = new Vector2(x + rayLength, y);
         }
 
         PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
@@ -363,18 +408,11 @@ public class EntityCreator {
         PhysixFixtureDef fixtureDefSpikeGround = new PhysixFixtureDef(physixSystem)
                 .density(1)
                 .friction(1f)
-                .shapeBox(width, height * 0.8f, new Vector2(0, -height*0.2f), angle)
-                .restitution(0.1f);
+                .shapeBox(width, height * 0.8f, verschiebung, angle)
+                .restitution(0.1f)
+                .sensor(true);
         Fixture fixtureSpikeGround = bodyComponent.createFixture(fixtureDefSpikeGround);
         fixtureSpikeGround.setUserData(bodyComponent);
-
-        PhysixFixtureDef fixtureDefBottomSpike = new PhysixFixtureDef(physixSystem)
-                .density(1)
-                .friction(1f)
-                .shapeBox(width, height * 0.2f, new Vector2(0, height*0.8f), angle)
-                .restitution(0.1f);
-        Fixture fixtureBottomSpike = bodyComponent.createFixture(fixtureDefBottomSpike);
-        fixtureBottomSpike.setUserData(bodyComponent);
 
         entity.add(bodyComponent);
 

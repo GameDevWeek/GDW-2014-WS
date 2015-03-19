@@ -128,3 +128,6 @@ Temporary Items
 
 publish.sh
 update-from.sh
+
+#*.orig merge files
+*.orig
