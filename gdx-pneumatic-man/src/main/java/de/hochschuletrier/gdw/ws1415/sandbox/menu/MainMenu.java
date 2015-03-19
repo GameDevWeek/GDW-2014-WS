@@ -29,7 +29,6 @@ public class MainMenu extends MenuPage{
     DecoImage highscore = new DecoImage(assetManager.getTexture("score_button"));
     DecoImage levels = new DecoImage(assetManager.getTexture("levels_button"));
     //DecoImage hand=new DecoImage(assetManager.getTexture("zeigefinger"));
-    Credits credit = new Credits();
     
     public enum Type {
         MAINMENU,
@@ -45,22 +44,17 @@ public class MainMenu extends MenuPage{
         int yStep = 110;
         
     		//addPageEntryStart(menuManager,x,y-yStep*1, start);
-        	addPageEntryStart(menuManager,x,y-yStep*(i++), start);
+        	//addPageEntryStart(menuManager,x,y-yStep*(i++), start);
         	addPageEntry(menuManager, x, y-yStep*(i++), levels, new LevelMenu(skin, menuManager));
             addPageEntry(menuManager,x, y-yStep*(i++), optionen, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager, x, y-yStep*(i++), highscore, new ScoreMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
-            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> updateCredits());
+            //addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> menuManager.pushPage(n));
+            addPageEntry(menuManager, x, y-yStep*(i++), credits, new CreditsMenu(skin, menuManager));
             addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2, ende, ()->System.exit(0));
         //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
             //addGear(hand);
-    }
-    
-    private void updateCredits()
-    {
-    	credit.init(assetManager);
-    	credit.update(60);
     }
 
     
