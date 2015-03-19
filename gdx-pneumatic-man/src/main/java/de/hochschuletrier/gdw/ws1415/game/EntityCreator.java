@@ -32,6 +32,8 @@ import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
@@ -433,7 +435,25 @@ public class EntityCreator {
 
     }
     
-    public static void createLavaBall(float x, float y, float lavaBallSpeed){
+    public static void createLavaFountain(float x, float y, float height, float intervall, 
+            float intervallOffset, float length, float lavaBallSpeed){
+        Entity entity = engine.createEntity();
+        
+        PositionComponent position = engine.createComponent(PositionComponent.class);
+        position.x = x;
+        position.y = y;
+        entity.add(position);
+        
+        LavaFountainComponent lavaFountain = engine.createComponent(LavaFountainComponent.class);
+        lavaFountain.height = height;
+        lavaFountain.intervall = intervall;
+        lavaFountain.intervallOffset = intervallOffset;
+        lavaFountain.length = length;
+        lavaFountain.lavaBallSpeed = lavaBallSpeed;
+        entity.add(lavaFountain);
+    }
+    
+    public static void createLavaBall(float x, float y, float lavaBallSpeed, float travelLength){
         Entity entity = engine.createEntity();
         
         float radius = GameConstants.getTileSizeX()/2;
@@ -448,7 +468,19 @@ public class EntityCreator {
                 .restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(entity);
+        entity.add(bodyComponent);
         
+        MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
+        moveComponent.velocity.set(0, lavaBallSpeed);
+        entity.add(moveComponent);
+        
+        DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
+        damageComponent.damage = 1;
+        damageComponent.damageToPlayer = true;
+        entity.add(damageComponent);
+        
+        LavaBallComponent lavaComponent = engine.createComponent(LavaBallComponent.class);
+        lavaComponent.restDistance = travelLength;
     }
     
     

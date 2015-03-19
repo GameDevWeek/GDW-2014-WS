@@ -24,5 +24,6 @@ public class ComponentMappers {
     public static final ComponentMapper<ParticleComponent> particle = ComponentMapper.getFor(ParticleComponent.class);
     public static final ComponentMapper<FallingRockComponent> rockTraps = ComponentMapper.getFor(FallingRockComponent.class);
     public static final ComponentMapper<LavaFountainComponent> lavaFountain = ComponentMapper.getFor(LavaFountainComponent.class);
+    public static final ComponentMapper<LavaBallComponent> lavaBall = ComponentMapper.getFor(LavaBallComponent.class);
 
 }
