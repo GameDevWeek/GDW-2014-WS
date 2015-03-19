@@ -31,8 +31,8 @@ public class Hud extends SandboxGame
     private SpriteBatch batch;
     private Texture textureMinerLeft;
     private Texture textureMinerFound;
-    private ArrayList<Sprite> MinerLeftListe;
-    private ArrayList<Sprite> MinerFoundListe;
+    private ArrayList<Sprite> minerLeftListe;
+    private ArrayList<Sprite> minerFoundListe;
   
     private BitmapFont font;
     
@@ -68,19 +68,13 @@ public class Hud extends SandboxGame
           
       }
       
-      public int getTime()
-      {
-          return time;
-      }
-      
-      
       
       
       private void initMinerDisplay(AssetManagerX manager)
       {
           
-          MinerLeftListe = new ArrayList<>();
-          MinerFoundListe = new ArrayList<>();
+          minerLeftListe = new ArrayList<>();
+          minerFoundListe = new ArrayList<>();
           
           //old (without json)
 //          textureMinerLeft = new Texture(Gdx.files.internal("data/Images/KollegeIconNichtGefunden.png"));
@@ -95,7 +89,7 @@ public class Hud extends SandboxGame
           
           for (int x = 0; x < allMiners; x++)
           {
-              MinerLeftListe.add(new Sprite(textureMinerLeft));
+              minerLeftListe.add(new Sprite(textureMinerLeft));
           }
           
           //test Changing when Miner is Found
@@ -118,35 +112,40 @@ public class Hud extends SandboxGame
           //test Miner found Counter
           if(Gdx.input.isKeyJustPressed(Keys.M))
           {
-              minerFound();
+              addMinerFound();
           }
           //test stop Time
           if(Gdx.input.isKeyJustPressed(Keys.P))
           {
-              timer.stop();
+              stopHudTimer();
               
           }
           //test continue Time
           if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
           {
-              timer.start();
+              startHudTimer();
           }
           //test Block destroyed Counter
           if(Gdx.input.isKeyJustPressed(Keys.B))
           {
               addDestroyedBlock();
           }
+          //test reset
+          if(Gdx.input.isKeyJustPressed(Keys.R))
+          {
+              resetHud();
+          }
           
           
           
           int x = 5;
-          for (Sprite s : MinerFoundListe)
+          for (Sprite s : minerFoundListe)
           {
               batch.draw(s, x, 0);
               x += 70;
           }
           
-          for (Sprite s : MinerLeftListe)
+          for (Sprite s : minerLeftListe)
           {
               batch.draw(s, x, 0);
               x += 70;
@@ -164,14 +163,13 @@ public class Hud extends SandboxGame
       }
       
       
-      
-      public void minerFound()
+      public void addMinerFound()
       {
-          if(MinerLeftListe.size() > 0)
+          if(minerLeftListe.size() > 0)
           {
-              MinerLeftListe.remove(MinerLeftListe.size()-1);
+              minerLeftListe.remove(minerLeftListe.size()-1);
           }
-          MinerFoundListe.add(new Sprite(textureMinerFound));
+          minerFoundListe.add(new Sprite(textureMinerFound));
       }
 
       
@@ -179,5 +177,27 @@ public class Hud extends SandboxGame
       {
           blocks++;
       }
+      
+      public void startHudTimer()
+      {
+          timer.start();
+      }
+      public void stopHudTimer()
+      {
+          timer.stop();
+      }
+      public void resetHud()
+      {
+          time = 0;
+          blocks = 0;
+          minerLeftListe.clear();
+          minerFoundListe.clear();
+      }
+      public void setVisibleMiners(int miners)
+      {
+          allMiners = miners;
+      }
+      
+      
 
 }
