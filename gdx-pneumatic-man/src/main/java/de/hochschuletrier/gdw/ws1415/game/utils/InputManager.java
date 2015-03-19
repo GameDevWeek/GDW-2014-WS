@@ -26,7 +26,7 @@ public class InputManager {
 	
 	public void setKeyboard(){
 		EntityCreator.engine.getSystem(InputKeyboardSystem.class).setProcessing(true);
-		EntityCreator.engine.getSystem(InputGamepadSystem.class).setProcessing(true);
+		EntityCreator.engine.getSystem(InputGamepadSystem.class).setProcessing(false);
 		
 		
 	}
