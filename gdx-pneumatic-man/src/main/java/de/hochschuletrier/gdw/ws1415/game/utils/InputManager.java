@@ -9,7 +9,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 public class InputManager {
 	
 	public enum Input{
-		KEYBOARD_MOUSE, GAMEPAD
+		KEYBOARD, GAMEPAD
 	}
 	
 	public InputManager(){
@@ -23,7 +23,7 @@ public class InputManager {
 	 */
 	public void setInput(Input input)throws NoGamepadException{
 		switch(input){
-		case KEYBOARD_MOUSE: setKeyboard(); break;
+		case KEYBOARD: setKeyboard(); break;
 		case GAMEPAD: setGamepad(); break;
 		}
 	}
