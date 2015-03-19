@@ -45,11 +45,9 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
             
     public MainMenuState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
-        MusicManager.play(music, 2.0f);
-        
-        this.assetManager = assetManager;
+        this.assetManager=assetManager;
         Skin skin = Main.getInstance().getSkin();
-        final MainMenu mainMenu = new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
+        final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
         
         //test IngameMenu:
 //        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
@@ -96,8 +94,6 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
        // hand.setX(MouseInfo.getPointerInfo().getLocation().x);
         //hand.setY(Main.WINDOW_HEIGHT - MouseInfo.getPointerInfo().getLocation().y);
         hand.setPosition(vector.x-728,vector.y-1194);
-        System.out.println((MouseInfo.getPointerInfo().getLocation().x+" "+hand.getX()));
-        System.out.println(MouseInfo.getPointerInfo().getLocation().y*(-1)+" "+hand.getY());
         render();
     }
 
