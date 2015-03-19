@@ -169,7 +169,6 @@ public class Gamelogic_Game extends SandboxGame {
                 MovementX += 300.0f;
             }
             playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
-            
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F2))
         {

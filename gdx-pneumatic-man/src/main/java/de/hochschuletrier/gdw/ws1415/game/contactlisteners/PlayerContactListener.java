@@ -63,7 +63,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
         //if(d.dot(Vector2.Y) < 0 && anim.animationFinished) {
             Family VulnerableBlockFamily = Family.all(DestructableBlockComponent.class, HealthComponent.class).get();
             if (VulnerableBlockFamily.matches(otherEntity)) {
-                logger.info(contact.getWorldManifold().getNormal().toString());
+                logger.info("Player-Block Normal: "+contact.getWorldManifold().getNormal().toString());
                 if (contact.getWorldManifold().getNormal().y < 0) {
                     HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
                     OtherHealth.Value -= 1;
