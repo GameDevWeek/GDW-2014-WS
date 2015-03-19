@@ -10,6 +10,8 @@ public class ScoreMenu extends MenuPage
 	{
 		super(skin, "background_menu");
 		createLabel(menuManager.getWidth()/2, menuManager.getHeight()/2).setText("HIGHSCORE");
+		
+		addCenteredButton(450, 850, 200, 200, "<", () -> menuManager.popPage());
 	}
 	
 	private Label createLabel(int x, int y)
