@@ -11,8 +11,8 @@
         "text": {
             "type": "linear",
             "destinations": [
-                {"x": 512, "y": 480, "speed": 30 },
-                {"x": 512, "y": -100, "speed": 30 }
+                {"x": 950, "y": 200, "speed": 30 },
+                {"x": 950, "y": 1000, "speed": 30 }
             ]
         },
         "btw": {
@@ -130,7 +130,7 @@
                 { "time": 6600, "animation": "untype", "animationTime": 50, "group": "git1" },
                 { "time": 7500, "animation": "type", "animationTime": 50, "group": "git1b" },
 
-                { "time": 14000, "animation": "fade_out", "animationTime": 2000, "group": "*" }
+                { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "*" }
             ]
         }
     }
