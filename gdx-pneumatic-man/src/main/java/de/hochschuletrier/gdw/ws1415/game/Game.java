@@ -101,6 +101,7 @@ public class Game {
 
         EntityCreator.engine = this.engine;
         EntityCreator.physixSystem = this.physixSystem;
+        
     }
 
     public void dispose() {
@@ -110,6 +111,9 @@ public class Game {
 
     public void init(AssetManagerX assetManager) {
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
+    	
+        EntityCreator.assetManager = assetManager;
+                
 
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
@@ -123,7 +127,8 @@ public class Game {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-
+        cameraSystem.adjustToMap(map);
+        
         setupPhysixWorld();
 
         addContactListeners();
@@ -205,11 +210,10 @@ public class Game {
                                 obj.getX() - obj.getWidth()/2, obj.getY() + obj.getHeight()/2,
                                 obj.getWidth(), obj.getHeight(), e);
                     }
-                    else if(obj.getProperty("Name", "").equalsIgnoreCase("Player")) {
-                            
+                    else if(obj.getName().equalsIgnoreCase("Player")) {
+                        EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0);
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("PlayerSpawn")){
-                        cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
                         //TESTS FOR LIGHT
                         EntityCreator.createConeLight(obj.getX(), obj.getY()-500f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
                         //EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}/*new float[]{obj.getX()+20f, obj.getY()-20f,obj.getX()+40f, obj.getY()-20f}*/);
@@ -221,10 +225,6 @@ public class Game {
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("Enemy")){
                         Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.LEFT.name()).toUpperCase());
                         AIType type = AIType.valueOf(obj.getProperty("Type", AIType.CHAMELEON.name()).toUpperCase());
-                            EntityCreator.createAndAddEnemy(obj.getX(), obj.getY(), dir, type);
-                    }
-                    else{
-                        Gdx.app.log("WARNING", "object " + obj.getName() + "does not match any name. No Entity created");
                     }
 
                 }
@@ -340,6 +340,7 @@ public class Game {
     private void addSystems() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);

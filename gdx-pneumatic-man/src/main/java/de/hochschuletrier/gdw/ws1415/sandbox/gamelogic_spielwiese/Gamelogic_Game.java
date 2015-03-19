@@ -151,7 +151,7 @@ public class Gamelogic_Game extends SandboxGame {
             inputKeyboardSystem.setProcessing(true);
         }
         
-        Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
+        //Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
     }
 
     @Override

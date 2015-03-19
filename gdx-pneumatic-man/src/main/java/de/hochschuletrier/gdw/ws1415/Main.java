@@ -52,7 +52,7 @@ public class Main extends StateBasedGame {
     public static final int WINDOW_HEIGHT = 600;
     public static final int WINDOW_WIDTH = 1024;
 
-    private final AssetManagerX assetManager = new AssetManagerX();
+    private static final AssetManagerX assetManager = new AssetManagerX();
     private static Main instance;
     private static LwjglApplicationConfiguration appCfg;
 
