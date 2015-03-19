@@ -23,7 +23,6 @@ public class PauseGameState extends BaseGameState implements InputProcessor {
     private BaseGameState previosGameState;
 
     public PauseGameState() {
-        System.out.println("PauseGameState");
         inputProcessor = new InputInterceptor(this);
         Main.inputMultiplexer.addProcessor(inputProcessor);
     }
