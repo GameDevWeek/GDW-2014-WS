@@ -142,6 +142,7 @@ public class EntityCreator {
         entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(MinerComponent.class));
+        entity.add(engine.createComponent(HealthComponent.class));
         
         float width = GameConstants.getTileSizeX() * 0.9f;
         float height = GameConstants.getTileSizeY() * 0.9f;
@@ -158,6 +159,7 @@ public class EntityCreator {
         fixture.setUserData(bodyComponent);
         entity.add(bodyComponent);
         
+        engine.addEntity(entity);
         return entity;
     }
 
