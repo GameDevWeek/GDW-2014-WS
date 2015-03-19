@@ -103,6 +103,8 @@ public class Game {
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
 
+        addSystems();
+
         map = loadMap("data/maps/Testkarte_17.03.tmx");
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
@@ -114,7 +116,6 @@ public class Game {
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-        addSystems();
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
 
