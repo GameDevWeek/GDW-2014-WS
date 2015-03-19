@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.math.Vector2;
 
+import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -69,21 +70,6 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
-
-        Vector2 d = contact.getMyFixture().getBody().getPosition()
-                .sub(contact.getOtherFixture().getBody().getPosition()); // vector von object zu player
-        // kommt player von oben?
-
-        //if(d.dot(Vector2.Y) < 0 && anim.animationFinished) {
-            Family VulnerableBlockFamily = Family.all(DestructableBlockComponent.class, HealthComponent.class).get();
-            if (VulnerableBlockFamily.matches(otherEntity)) {
-                logger.info("Player-Block Normal: "+contact.getWorldManifold().getNormal().toString());
-                if (contact.getWorldManifold().getNormal().y < 0) {
-                    HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
-                    OtherHealth.Value -= 1;
-                }
-            }
-        //}
     }
 
         // If the contact was with a tile then nothing happens to the player but

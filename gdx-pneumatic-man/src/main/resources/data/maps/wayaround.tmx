@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="64" tileheight="64" nextobjectid="9">
+ <properties>
+  <property name="Background" value="Hintergrund1.png"/>
+ </properties>
+ <tileset firstgid="1" source="tilesets/DummyTileset2.tsx"/>
+ <layer name="Background" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt24luozAUBdCks9GORqP2/z92qBSrtmOzjVkE50gW2VTKu7IBO7ndAAD21+39DzR0P0DrGrSzuJ9g//Joo2u0/zP1kSX1aHXsLwv3n7tyHq2PXR6pvB7h2Grn3txLoU31u/I35zpzHmEMud/m13pOHuGzzuepWj1KWUyp9dw+on+k4n4Q+1P47JRjnjtuySO1xvXuWL+KXzdepeJ6zBlnhuRZDN1HyyNVu2bKt6Gut+y12tjURVt5TLfW/Xkpj1J2zh+ptfIo9Rl5jNvifJ6/13r/8nhWu18Zu/aVRyrUY+nxjOWwVR5nEe4Hv/Xte99+9O1n337dvu4P3vr2+nj8mj2fmkctE3mkxmr6+f5H394fj98fz4fmuGrN9e64vddqrdemjrhee9UsPh0xjyurze9uodV84plsUY94rmSN+8EzGZpPLD2O56Va9Cl5pFrXY+5aojxSe9dj7/0fTYt6/M+4JY/UnnkYr54t+V5PTv9ox3h1LK3yWJKJ8erZ1Hr8zZ6HDMK8fBe9Xtp22Xbu/q9iaj1K3ystiV+fMt8nj1TLPOaMW+H+Xh6p/PtwtWustea15ZEKa0JhDXbLbe03DFcWr9OFtdgttkO/Kbmyvddq5QEAAAAAAAAAAAAAAAAAAAAAAAAAAMAa/gGhgAjz
+  </data>
+ </layer>
+ <layer name="Mittellayer" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJAAAIwDBH/7/Y2dlBheSCQiMAAAAAAAAAAAAAAAAAAPgotwNo/LjFDwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgqphwAZ
+  </data>
+ </layer>
+ <layer name="Spielebene" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2tuKwjAUBdCYl+k8DfP/PzsIFpNepNq0J0PXgqBV4cjeNAgxJQAA4AhD9Begoo++6KMv+ujHkPTRE328tpTNkZnp47VhZRFLDwAAABzp9ljUbh0snqLziJ7fm+g8ouf35p5Hfqyz5aSPqbPyyJN19vz/YimPvOH50nWr+VfWOo+1+2Dts/qoRecRPb83LfLYs2/poxbZh/1qrvy9u3XfH43n7O6Pdvbmce8kp8//B6GPWqs+xk7eYb+a25rHz+R67OAr1fdHLt4vH/fOv4qteUw/V+Y8rLzecv5VtOijfO2dPuxXc2Uen/zGajmf55nQd8ByHjVXntP9nricDy6LPqvVBwAAAAAAAAAAAAAAAAAAAAAAAAAAAEf4A/kbBKE=
+  </data>
+ </layer>
+ <objectgroup name="Objektebene">
+  <object id="1" name="Player" x="196" y="132" width="64" height="64">
+   <properties>
+    <property name="Name" value="Player"/>
+   </properties>
+  </object>
+  <object id="3" name="LavaFountain" x="452" y="132" width="124" height="60">
+   <properties>
+    <property name="Height" value="2.0"/>
+    <property name="Intervall" value="2.0"/>
+    <property name="IntervallOffset" value="2.0"/>
+    <property name="Length" value="2.0"/>
+    <property name="Name" value="LavaFountain"/>
+   </properties>
+  </object>
+  <object id="4" name="RockTrigger" x="704" y="128" width="200" height="64">
+   <properties>
+    <property name="Id" value="1"/>
+    <property name="Name" value="RockTrigger"/>
+   </properties>
+  </object>
+  <object id="5" name="Plattform" x="1153" y="127" width="64" height="64">
+   <properties>
+    <property name="Direction" value="horizontal"/>
+    <property name="Distance" value="2.0"/>
+    <property name="Hitpoints" value="5"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Name" value="Blockname*"/>
+    <property name="Speed" value="2.0"/>
+    <property name="Type" value="Plattform"/>
+   </properties>
+  </object>
+  <object id="6" name="Rock" x="706" y="254" width="64" height="64">
+   <properties>
+    <property name="Name" value="Rock"/>
+    <property name="TriggerId" value="1"/>
+   </properties>
+  </object>
+  <object id="8" name="Plattform" x="384" y="2626" width="64" height="64">
+   <properties>
+    <property name="Direction" value="horizontal"/>
+    <property name="Distance" value="2.0"/>
+    <property name="Hitpoints" value="5"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Name" value="Blockname*"/>
+    <property name="Speed" value="2.0"/>
+    <property name="Type" value="Plattform"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

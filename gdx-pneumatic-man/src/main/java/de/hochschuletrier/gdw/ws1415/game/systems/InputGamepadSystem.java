@@ -57,7 +57,7 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
         case 1:
         case 2: 
         case 3: jump = true; break;
-        case 7: pause = true;break;
+        case 7: pause = !pause;break;
         }
         return false;
     }
@@ -70,7 +70,7 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
         case 1:
         case 2:
         case 3: jump = false; break;
-        case 7: pause = false; break;
+        
         }
       
         return false;
