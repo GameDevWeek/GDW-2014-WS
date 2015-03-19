@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.menu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -9,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.graphics.Color;
-
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.commons.gdx.utils.ScreenUtil;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
@@ -22,7 +21,7 @@ public class OptionMenu extends MenuPage
 	private final Label soundLabel, musicLabel;
     private final Slider soundSlider, musicSlider;
     private final ButtonGroup<TextButton> buttonGroup = new ButtonGroup<TextButton>();
-    private final TextButton gamepadButton, keyboardButton;
+    private final TextButton gamepadButton, keyboardButton, fullscreenButton;
    // private final TextButton soundMuteButton, musicMuteButton;
 	
 	public OptionMenu(Skin skin, MenuManager menuManager)
@@ -33,7 +32,7 @@ public class OptionMenu extends MenuPage
 		createLabel(menuManager.getWidth()/2-75, y).setText("SOUND");
 		y-= 20;
         soundSlider = createSlider(menuManager.getWidth()/2-160, y, this::onSoundVolumeChanged);
-        //soundSlider.setValue(0.5f);
+        soundSlider.setValue(0.5f);
         soundLabel = createLabel(menuManager.getWidth()/2+190, y);
         soundLabel.setVisible(false);
        // soundMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onSoundMuteChanged);
@@ -43,7 +42,7 @@ public class OptionMenu extends MenuPage
         createLabel(menuManager.getWidth()/2-75, y).setText("MUSIC");
         y -= 20;
         musicSlider = createSlider(menuManager.getWidth()/2-160, y, this::onMusicVolumeChanged);
-       // musicSlider.setValue(0.5f);
+        musicSlider.setValue(0.5f);
         musicLabel = createLabel(menuManager.getWidth()/2+190, y);
         musicLabel.setVisible(false);
        // musicMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onMusicMuteChanged);
@@ -55,16 +54,18 @@ public class OptionMenu extends MenuPage
 //    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, (int) (drawWidth * assetManager.getProgress()), 200, progressFillColor);
         
        // createLabel(menuManager.getWidth()/2-150, y).setText("GAMEPAD / KEYBOARD");
-        y -= 50;
-        gamepadButton = addButton(menuManager.getWidth()/2-150, y, 100, 50, "GAMEPAD", this::onGamepadChanged, "toggle");
-        keyboardButton = addButton(menuManager.getWidth()/2-40, y, 100, 50, "KEYBOARD", this::onKeyboardChanged, "toggle");
+        y -= 75;
+        gamepadButton = addButton(menuManager.getWidth()/2-160, y, 100, 50, "GAMEPAD", this::onGamepadChanged, "toggle");
+        keyboardButton = addButton(menuManager.getWidth()/2-50, y, 100, 50, "KEYBOARD", this::onKeyboardChanged, "toggle");
+        y -= 75;
+        
+        fullscreenButton = addButton(menuManager.getWidth()/2-160, y, 100, 50, "FULLSCREEN", this::onFullscreenChanged, "toggle");
         
         buttonGroup.add(gamepadButton);
         buttonGroup.add(keyboardButton);
         buttonGroup.setChecked("KEYBOARD");
-                		
-		//addCenteredButton(450, 850, 100, 100, "<", () -> menuManager.popPage());
-		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
+        
+   		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
 	}
 	
 	private Label createLabel(int x, int y)
@@ -100,7 +101,7 @@ public class OptionMenu extends MenuPage
     private void onSoundVolumeChanged() 
     {
         final float value = soundSlider.getValue();
-        soundLabel.setText(pctToString(value));
+        //soundLabel.setText(pctToString(value));
         SoundEmitter.setGlobalVolume(value);
     }
 
@@ -108,7 +109,7 @@ public class OptionMenu extends MenuPage
     {
         final float value = musicSlider.getValue();
         //System.out.println("Test");
-        musicLabel.setText(pctToString(value));
+        //musicLabel.setText(pctToString(value));
         MusicManager.setGlobalVolume(value);
     }
     
@@ -174,6 +175,13 @@ public class OptionMenu extends MenuPage
       //  Settings.MUSIC_MUTE.set(!musicMuteButton.isChecked());
         //Settings.FULLSCREEN.set(Gdx.graphics.isFullscreen());
         Settings.flush();
+    }
+    
+    private void onFullscreenChanged() {
+        boolean fullscreenOn = fullscreenButton.isChecked();
+        fullscreenButton.setText(fullscreenOn ? "An" : "Aus");
+
+        ScreenUtil.setFullscreen(fullscreenOn);
     }
     
     private TextButton createToggleButton(int x, int y, String text, Runnable runnable) 

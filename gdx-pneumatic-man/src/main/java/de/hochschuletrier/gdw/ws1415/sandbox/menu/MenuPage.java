@@ -34,7 +34,7 @@ public class MenuPage extends Group {
         addActor(new DecoImage(assetManager.getTexture(background)));
         
 
-        setVisible(true);
+        setVisible(false);
     }
 
     @Override

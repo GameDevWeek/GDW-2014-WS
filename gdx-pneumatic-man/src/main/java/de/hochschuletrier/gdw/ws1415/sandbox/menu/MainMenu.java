@@ -44,7 +44,7 @@ public class MainMenu extends MenuPage{
         int yStep = 110;
         
     		//addPageEntryStart(menuManager,x,y-yStep*1, start);
-        	//addPageEntryStart(menuManager,x,y-yStep*(i++), start);
+        	addPageEntryStart(menuManager,x,y-yStep*(i++), start);
         	addPageEntry(menuManager, x, y-yStep*(i++), levels, new LevelMenu(skin, menuManager));
             addPageEntry(menuManager,x, y-yStep*(i++), optionen, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager, x, y-yStep*(i++), highscore, new ScoreMenu(skin, menuManager));
@@ -53,7 +53,7 @@ public class MainMenu extends MenuPage{
             //addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> menuManager.pushPage(n));
             addPageEntry(menuManager, x, y-yStep*(i++), credits, new CreditsMenu(skin, menuManager));
             addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2, ende, ()->System.exit(0));
-        //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
+            //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
             //addGear(hand);
     }
 
