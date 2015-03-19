@@ -8,10 +8,10 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class PlayerComponent extends Component implements Pool.Poolable {
 
+    public int saved_miners;
     @Override
     public void reset() {
-        // TODO Auto-generated method stub
-
+        saved_miners = 0;
     }
 
 }
