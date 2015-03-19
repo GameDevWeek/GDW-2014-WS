@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
-import javafx.geometry.Pos;
 import box2dLight.ChainLight;
 import box2dLight.ConeLight;
 import box2dLight.DirectionalLight;
