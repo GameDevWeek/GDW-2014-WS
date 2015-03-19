@@ -183,7 +183,7 @@ public class Game {
                                 obj.getWidth(), obj.getHeight(), e);
                     }
                     if(obj.getName().equalsIgnoreCase("Player")){
-                        cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
+
                     }
                     if(obj.getName().equalsIgnoreCase("PlayerSpawn")){
                         //TODO: spawn point entity ?!
@@ -298,6 +298,7 @@ public class Game {
     private void addSystems() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
