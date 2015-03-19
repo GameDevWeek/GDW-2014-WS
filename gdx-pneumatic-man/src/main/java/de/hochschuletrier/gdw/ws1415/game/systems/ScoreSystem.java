@@ -46,9 +46,9 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         if(tick>=1.0f){
             current_game_time += 1;
             tick-=1.0f;
-            if(goal.getComponent(GoalComponent.class).miners_threshold == player.getComponent(PlayerComponent.class).saved_miners){
-                goal.getComponent(GoalComponent.class).end_of_level = true;
-            }
+            //if(goal.getComponent(GoalComponent.class).miners_threshold == player.getComponent(PlayerComponent.class).saved_miners){
+            //    goal.getComponent(GoalComponent.class).end_of_level = true;
+            //}
             //logger.info("Time: " + current_game_time);
         }
         /**
