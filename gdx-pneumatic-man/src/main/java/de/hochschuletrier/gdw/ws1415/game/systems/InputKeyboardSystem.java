@@ -6,10 +6,15 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
+import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
+import de.hochschuletrier.gdw.ws1415.states.PauseGameState;
 
 public class InputKeyboardSystem extends IteratingSystem implements InputProcessor{
 
+    private Game game;
     boolean jump = false;
     
     boolean pause = false;
@@ -18,9 +23,10 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
     
     boolean right = false;
     
-    public InputKeyboardSystem()
+    public InputKeyboardSystem(Game game)
     {
         super(Family.all(InputComponent.class).get());
+        this.game =game;
     }
 
     
@@ -45,6 +51,8 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         if(pause)
         {
             inputComponent.pause = true;
+            Main main = Main.getInstance();
+            main.changeState(new PauseGameState(game));
         }
         
     }
