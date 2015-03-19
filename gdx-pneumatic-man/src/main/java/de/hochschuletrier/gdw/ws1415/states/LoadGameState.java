@@ -25,7 +25,6 @@ public class LoadGameState extends BaseGameState {
 
     public void render() 
     {
-    	System.out.println("RENDER LOAD GAME");
     	float drawWidth = Gdx.graphics.getWidth() - 90.0f;
     	float x = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
     	float y = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
