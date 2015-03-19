@@ -28,8 +28,8 @@ import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.utils.Point;
 import de.hochschuletrier.gdw.ws1415.Main;
-import de.hochschuletrier.gdw.ws1415.sandbox.menu.IngameMenu;
-import de.hochschuletrier.gdw.ws1415.sandbox.menu.MainMenu;
+import de.hochschuletrier.gdw.ws1415.game.menu.IngameMenu;
+import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu;
 
 /**
  * Menu state

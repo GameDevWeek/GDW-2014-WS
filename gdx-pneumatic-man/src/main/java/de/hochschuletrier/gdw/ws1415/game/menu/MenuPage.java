@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ws1415.sandbox.menu;
+package de.hochschuletrier.gdw.ws1415.game.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ws1415.sandbox.hud;
 import java.util.ArrayList;
 
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,14 +17,16 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 
 
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
 
 
-public class Hud extends SandboxGame
+public class Hud extends Game
 {
     
     private int allMiners;

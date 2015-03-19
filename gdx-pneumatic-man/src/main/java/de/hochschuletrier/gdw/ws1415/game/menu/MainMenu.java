@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ws1415.sandbox.menu;
+package de.hochschuletrier.gdw.ws1415.game.menu;
 
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
