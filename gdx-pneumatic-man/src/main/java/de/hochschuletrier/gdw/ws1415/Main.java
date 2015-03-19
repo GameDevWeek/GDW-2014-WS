@@ -58,6 +58,7 @@ public class Main extends StateBasedGame {
 
     private final AssetManagerX assetManager = new AssetManagerX();
     private static Main instance;
+    private static LwjglApplicationConfiguration appCfg;
 
     public final DevConsole console = new DevConsole(16);
     private final DevConsoleView consoleView = new DevConsoleView(console);
@@ -139,6 +140,9 @@ public class Main extends StateBasedGame {
         if (cmdLine.hasOption("sandbox")) {
             SandboxCommand.runSandbox(cmdLine.getOptionValue("sandbox"));
         }
+        Gdx.graphics.setVSync(true);
+        appCfg.foregroundFPS = 60;
+        appCfg.backgroundFPS = 60;
     }
 
     @Override
@@ -211,17 +215,17 @@ public class Main extends StateBasedGame {
     }
 
     public static void main(String[] args) {
-        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "LibGDX Test";
-        cfg.width = WINDOW_WIDTH;
-        cfg.height = WINDOW_HEIGHT;
-        cfg.useGL30 = false;
-        cfg.vSyncEnabled = true;
-        cfg.foregroundFPS = 60;
-        cfg.backgroundFPS = 60;
+        appCfg = new LwjglApplicationConfiguration();
+        appCfg.title = "LibGDX Test";
+        appCfg.width = WINDOW_WIDTH;
+        appCfg.height = WINDOW_HEIGHT;
+        appCfg.useGL30 = false;
+        appCfg.vSyncEnabled = false;
+        appCfg.foregroundFPS = -1;
+        appCfg.backgroundFPS = -1;
 
         parseOptions(args);
-        new LwjglApplication(getInstance(), cfg);
+        new LwjglApplication(getInstance(), appCfg);
     }
 
     private static void parseOptions(String[] args) throws IllegalArgumentException {
