@@ -31,9 +31,9 @@ public class DestroyBlocksSystem extends IteratingSystem {
 
 
         if(ani != null) {
-            //if (ani.animationFinished) {
+            if (ani.animationFinished) {
                 Vector2 p1 = physix.getBody().getPosition();
-                Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(GameConstants.getTileSizeY() * 1.5f)); // FIXME MAGIC NUMBER
+                Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(1.4f)); // FIXME MAGIC NUMBER
 
                 EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
                     PhysixBodyComponent bodyComponent = fixture.getUserData() instanceof PhysixBodyComponent ?
@@ -48,9 +48,9 @@ public class DestroyBlocksSystem extends IteratingSystem {
                     }
                     return 1;
                 }, p1, p2);
-                //ani.animationFinished = false;
+                ani.animationFinished = false;
             }
-        //}
+        }
     }
 }
 

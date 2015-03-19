@@ -54,23 +54,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
-import de.hochschuletrier.gdw.ws1415.game.utils.NoGamepadException;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
-
-
-
-
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-
-
-
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
 
 public class Game {
 
@@ -271,7 +255,7 @@ public class Game {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map, info, info.getIntProperty("Hitpoint", 0), i, j);
+                                    map, info, info.getIntProperty("Hitpoint", 2), i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
                             TileInfo info = tiles[i][j];

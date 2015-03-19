@@ -63,21 +63,6 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
-
-        Vector2 d = contact.getMyFixture().getBody().getPosition()
-                .sub(contact.getOtherFixture().getBody().getPosition()); // vector von object zu player
-        // kommt player von oben?
-
-        if(d.dot(Vector2.Y) < 0) { //TODO: && anim.animationFinished
-            if (ComponentMappers.block.has(otherEntity)) {
-//                if (ComponentMappers.health.has(otherEntity)) {
-//                    if (contact.getWorldManifold().getNormal().y > 0) {
-//                        HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
-//                        OtherHealth.Value -= 1;
-//                    }
-//                }
-            }
-        //}
     }
 
         // If the contact was with a tile then nothing happens to the player but
