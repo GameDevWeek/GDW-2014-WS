@@ -136,9 +136,9 @@ public class CameraSystem extends EntitySystem implements EntityListener {
     private void followEx(Entity entity) {
         toFollow = entity;
         PositionComponent pos = ComponentMappers.position.get(entity);
-//        if(firstCameraPosition == null) {
-//            firstCameraPosition = new Vector2();
-//        }
-//        firstCameraPosition.set(pos.x, pos.y);
+        if(firstCameraPosition == null) {
+            firstCameraPosition = new Vector2();
+        }
+        firstCameraPosition.set(pos.x, pos.y);
     }
 }

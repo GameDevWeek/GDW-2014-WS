@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import javafx.geometry.Pos;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
+import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
@@ -48,7 +51,8 @@ public class EntityCreator {
 
     public static PooledEngine engine;
     public static PhysixSystem physixSystem;
-
+    public static AssetManagerX assetManager;
+    
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
 
@@ -92,8 +96,8 @@ public class EntityCreator {
         moveComponent.speed = 12000.0f;
         entity.add(moveComponent);
 
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
+//        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
+//        entity.add(blockComp);
 
         engine.addEntity(entity);
         return entity;
@@ -106,28 +110,22 @@ public class EntityCreator {
         //Loading new Dying-Animation - waiting for Assets
         
         entityToDie.remove(AnimationComponent.class);
-        entityToDie.remove(DamageComponent.class);
-        entityToDie.remove(InputComponent.class);
-        entityToDie.remove(PlayerComponent.class);
-        entityToDie.remove(HealthComponent.class);
-        entityToDie.remove(PhysixBodyComponent.class);
-        entityToDie.remove(MovementComponent.class);
-        entityToDie.remove(JumpComponent.class);
-
+//        entityToDie.remove(DamageComponent.class);
+//        entityToDie.remove(InputComponent.class);
+//        entityToDie.remove(PlayerComponent.class);
+//        entityToDie.remove(HealthComponent.class);
+//        entityToDie.remove(PhysixBodyComponent.class);
+//        entityToDie.remove(MovementComponent.class);
+//        entityToDie.remove(JumpComponent.class);
+//        entityToDie.remove(PositionComponent.class);
         
         DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
         AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
-        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("data/animations/char_death_2048.png")));
         deathAnimation.IsActive = true;
-        deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
-        
-//        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
-//        animation.IsActive = false;
-//        dyingEntity.add(animation);
+        deathAnimation.animation = assetManager.getAnimation("walking");
         
         entityToDie.add(deathAnimation);
         entityToDie.add(deathComponent);
-         // Shifts camera to (0,0)??
         LayerComponent Layer = engine.createComponent(LayerComponent.class);
         Layer.layer = 1;
         entityToDie.add(Layer);

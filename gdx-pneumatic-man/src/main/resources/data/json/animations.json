@@ -14,5 +14,13 @@
         "playType" : "LOOP",
         "columns": 2,
         "rows" : 1
+    },
+        "char_death": {
+        "filename": "data/animations/char_death_2048.png",
+        "frames" : 40,
+        "frameDuration": [0.1, 0.1],
+        "playType" : "NORMAL",
+        "columns": 8,
+        "rows" : 5
     }
 }

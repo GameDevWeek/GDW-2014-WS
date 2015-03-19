@@ -93,6 +93,7 @@ public class Game {
 
         EntityCreator.engine = this.engine;
         EntityCreator.physixSystem = this.physixSystem;
+        
     }
 
     public void dispose() {
@@ -100,8 +101,9 @@ public class Game {
     }
 
     public void init(AssetManagerX assetManager) {
-    	Main.getInstance().addScreenListener(cameraSystem.getCamera());
-    	
+        Main.getInstance().addScreenListener(cameraSystem.getCamera());
+        EntityCreator.assetManager = assetManager;
+                
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
 
@@ -114,16 +116,11 @@ public class Game {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-
-        addSystems();
+        cameraSystem.adjustToMap(map);
         
         setupPhysixWorld();
         generateWorldFromTileMap();
 
-<<<<<<< HEAD
-        
-=======
->>>>>>> develop
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
 
@@ -194,13 +191,8 @@ public class Game {
                                 obj.getX() - obj.getWidth()/2, obj.getY() - obj.getHeight()/2,
                                 obj.getWidth(), obj.getHeight(), e);
                     }
-<<<<<<< HEAD
-                    if(obj.getName().equalsIgnoreCase("Player")){
-                        EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0);
-=======
                     else if(obj.getName().equalsIgnoreCase("Player")) {
-                            cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
->>>>>>> develop
+                            EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0);
                     }
                     else if(obj.getName().equalsIgnoreCase("PlayerSpawn")){
                         //TODO: spawn point entity ?!
@@ -229,14 +221,14 @@ public class Game {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
                         if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
@@ -247,7 +239,7 @@ public class Game {
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeTop")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
@@ -258,7 +250,7 @@ public class Game {
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeRight")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
@@ -269,7 +261,7 @@ public class Game {
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
@@ -280,7 +272,7 @@ public class Game {
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
-                        	TileInfo info = tiles[i][j];
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
@@ -292,14 +284,14 @@ public class Game {
                         }
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
-                        	TileInfo info = tiles[i][j];
-                        	EntityCreator.createAndAddVisualEntity(map, info, i, j);
+                            TileInfo info = tiles[i][j];
+                            EntityCreator.createAndAddVisualEntity(map, info, i, j);
                         }
                         
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
                                 && tiles[i][j].getProperty("Type", "").equals("Lava")) {
-                        	TileInfo info = tiles[i][j];
-                        	EntityCreator.createAndAddVisualEntity(map, info, i, j);
+                            TileInfo info = tiles[i][j];
+                            EntityCreator.createAndAddVisualEntity(map, info, i, j);
                         }
                     }
                 }
