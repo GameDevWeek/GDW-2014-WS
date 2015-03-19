@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
+import de.hochschuletrier.gdw.ws1415.sandbox.credits.Credits;
 import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
@@ -26,7 +27,8 @@ public class MainMenu extends MenuPage{
     DecoImage credits=new DecoImage(assetManager.getTexture("credits_button"));
     DecoImage ende=new DecoImage(assetManager.getTexture("beenden_button"));
     //DecoImage hand=new DecoImage(assetManager.getTexture("zeigefinger"));
-
+    Credits credit = new Credits();
+    
     public enum Type {
         MAINMENU,
         INGAME
@@ -42,14 +44,20 @@ public class MainMenu extends MenuPage{
         
             addPageEntryStart(menuManager,x,y-yStep*(i++),start);
             addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
+            //addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
-            addCenteredImage((int)(x-(ende.getWidth()/2)),y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2,ende,()->System.exit(-1));
+            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> updateCredits());
+            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2,ende,()->System.exit(0));
         //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
             //addGear(hand);
-            
-        
     }
+    
+    private void updateCredits()
+    {
+    	credit.init(assetManager);
+    	credit.update(60);
+    }
+
     
     protected final void addPageEntry(MenuManager menuManager, int x, int y, DecoImage image, MenuPage page) {
         menuManager.addLayer(page);

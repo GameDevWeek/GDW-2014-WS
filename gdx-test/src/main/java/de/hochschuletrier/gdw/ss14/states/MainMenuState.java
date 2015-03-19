@@ -28,7 +28,7 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
         music = assetManager.getMusic("menu");
 
         music.setLooping(true);
-//        music.play();
+        music.play();
 
         inputProcessor = new InputInterceptor(this);
         Main.inputMultiplexer.addProcessor(inputProcessor);

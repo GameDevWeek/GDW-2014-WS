@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.menu;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
@@ -13,36 +14,44 @@ import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 
 public class OptionMenu extends MenuPage
 {	
-	//Musik/Sound laut/leise
-	//Musik/Sound mute
-	//Gamepad/Keyboard
-	
 	private final Label soundLabel, musicLabel;
     private final Slider soundSlider, musicSlider;
+    private final ButtonGroup<TextButton> buttonGroup = new ButtonGroup<TextButton>();
+    private final TextButton gamepadButton, keyboardButton;
     private final TextButton soundMuteButton, musicMuteButton;
 	
 	public OptionMenu(Skin skin, MenuManager menuManager)
 	{ 		
-		super(skin, "logo");
+		super(skin, "background_menu");
 		int y = 400;
 		
-		createLabel(100, y).setText("SOUND:");
-        soundSlider = createSlider(170, y, this::onSoundVolumeChanged);
-        soundLabel = createLabel(380, y);
-        soundMuteButton = createToggleButton(440, y, "Aus", this::onSoundMuteChanged);
+		createLabel(menuManager.getWidth()/2-150, y).setText("SOUND:");
+        soundSlider = createSlider(menuManager.getWidth()/2-20, y, this::onSoundVolumeChanged);
+        soundLabel = createLabel(menuManager.getWidth()/2+190, y);
+        soundMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onSoundMuteChanged);
         y -= 50;
 
-        createLabel(100, y).setText("Musik:");
-        musicSlider = createSlider(170, y, this::onMusicVolumeChanged);
-        musicLabel = createLabel(380, y);
-        musicMuteButton = createToggleButton(440, y, "Aus", this::onMusicMuteChanged);
+        createLabel(menuManager.getWidth()/2-150, y).setText("MUSIK:");
+        musicSlider = createSlider(menuManager.getWidth()/2-20, y, this::onMusicVolumeChanged);
+        musicLabel = createLabel(menuManager.getWidth()/2+190, y);
+        musicMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onMusicMuteChanged);
         y -= 50;
         
-        createLabel(100, y).setText("Gamepad/Keyboard");
+        createLabel(menuManager.getWidth()/2-150, y).setText("GAMEPAD / KEYBOARD");
+        y -= 50;
        // createToggleButton(x, y, text, runnable)
        // createToggleButton(x, y, text, runnable)
+        gamepadButton = addButton(menuManager.getWidth()/2-150, y, 100, 50, "GAMEPAD", this::onSoundMuteChanged, "toggle");
+        keyboardButton = addButton(menuManager.getWidth()/2-40, y, 100, 50, "KEYBOARD", this::onSoundMuteChanged, "toggle");
+        
+        buttonGroup.add(gamepadButton);
+        buttonGroup.add(keyboardButton);
+        
+        buttonGroup.setChecked("keyboardButton");
+        		
+        		//CenteredButton(menuManager.getWidth()/2-20, y).setText("GAMEPAD");
 		
-		addCenteredButton(menuManager.getWidth() - 100, 54, 100, 40, "RETURN", () -> menuManager.popPage());
+		addCenteredButton(menuManager.getWidth() - 300, 100, 200, 100, "RETURN", () -> menuManager.popPage());
 	}
 	
 	private Label createLabel(int x, int y)
