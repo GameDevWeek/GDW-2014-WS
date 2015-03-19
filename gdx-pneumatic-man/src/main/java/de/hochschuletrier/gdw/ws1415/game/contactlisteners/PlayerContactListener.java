@@ -32,7 +32,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
         Entity otherEntity = contact.getOtherComponent().getEntity();
         
         if(otherEntity.getComponent(MinerComponent.class) != null){
-            player.getComponent(PlayerComponent.class).saved_miners += 1;
+            otherEntity.getComponent(HealthComponent.class).Value = 0;
         }
 
         // Player collides with lava.

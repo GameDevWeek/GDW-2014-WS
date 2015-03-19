@@ -12,7 +12,7 @@ import de.hochschuletrier.gdw.ws1415.Main;
  * 
  * @author Tobias Thierbach 19.03.2015
  * 
- *         #keine Ahnung
+
  *
  *
  */
@@ -21,6 +21,9 @@ public class PauseGameState extends BaseGameState implements InputProcessor {
     InputInterceptor inputProcessor;
 
     private BaseGameState previosGameState;
+
+    
+
 
     public PauseGameState() {
         inputProcessor = new InputInterceptor(this);
