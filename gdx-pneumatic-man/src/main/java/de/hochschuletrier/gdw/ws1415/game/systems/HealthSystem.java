@@ -68,6 +68,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else
                 {
+                    logger.info(entity.getId() + " removed");
                     CurrentEngine.removeEntity(entity);
                 }
             }
