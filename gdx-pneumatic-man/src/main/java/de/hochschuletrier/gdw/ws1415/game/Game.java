@@ -22,6 +22,7 @@ import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
 import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
@@ -42,21 +43,12 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ws1415.game.systems.*;
-import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.LavaFountainSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
 import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
+import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 
 
 public class Game {
@@ -97,6 +89,7 @@ public class Game {
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
     
     private String levelFilePath = "data/maps/Testkarte_19.03.tmx";
+    private AssetManagerX assetManager;
 
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -117,6 +110,17 @@ public class Game {
     public void init(AssetManagerX assetManager) {
              
         EntityCreator.assetManager = assetManager;
+        
+        this.assetManager = assetManager;
+        
+        Main.getInstance().addScreenListener(cameraSystem.getCamera());
+
+        Main.getInstance().console.register(physixDebug);
+        physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
+
+        addSystems();
+        
+        selectPathFromSettings();
         
         loadCurrentlySelectedLevel();
         
@@ -139,13 +143,6 @@ public class Game {
     {
         engine.removeAllEntities();
         
-//        selectPathFromSettings();
-        Main.getInstance().addScreenListener(cameraSystem.getCamera());
-
-        Main.getInstance().console.register(physixDebug);
-        physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
-
-        addSystems();
         // Load Map
         map = loadMap(levelFilePath);
         for (TileSet tileset : map.getTileSets()) {
@@ -159,9 +156,13 @@ public class Game {
     private void selectPathFromSettings()
     {
         String levelName = Settings.CURRENTLY_SELECTED_LEVEL;
+        System.out.println("CurrentlySelectedLevel: " + levelName);
         switch (levelName)
         {
             case "Test":
+                levelFilePath = "data/maps/Testkarte_19.03.tmx";
+                break;
+            case "Test2":
                 levelFilePath = "data/maps/Testkarte_19.03.tmx";
                 break;
             default:
@@ -230,25 +231,14 @@ public class Game {
             
         }
         
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
-            levelFilePath = "data/maps/Testkarte_17.03.tmx";
-            System.out.println("Level Pfad geändert auf: " + levelFilePath);
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)){
-           // levelFilePath = "data/maps/Testkarte_18.03.tmx";
-            System.out.println("Level Pfad geändert auf: " + levelFilePath);
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)){
-            levelFilePath = "data/maps/Testkarte_19.03.tmx";
-            System.out.println("Level Pfad geändert auf: " + levelFilePath);
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)){
-            levelFilePath = "data/maps/demo.tmx";
-            System.out.println("Level Pfad geändert auf: " + levelFilePath);
-        }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
             System.out.println("Restart Level"); 
-            this.loadCurrentlySelectedLevel();
+            Settings.CURRENTLY_SELECTED_LEVEL = "Test2";
+//            engine.removeAllEntities();
+            
+            // Level Reset
+            Main.getInstance().changeState(new GameplayState(assetManager));
+            // Controls fail to work after reset
         }
     }
 }
