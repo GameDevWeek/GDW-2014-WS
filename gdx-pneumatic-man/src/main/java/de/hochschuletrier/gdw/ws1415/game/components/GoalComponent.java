@@ -5,13 +5,11 @@ import com.badlogic.gdx.utils.Pool;
 
 public class GoalComponent extends Component implements Pool.Poolable {
 
-    public int miners_saved;
     public int miners_threshold;
     public boolean end_of_level;
 
     @Override
     public void reset() {
-        miners_saved = 0;
         miners_threshold = 0;
         end_of_level = false;
     }
