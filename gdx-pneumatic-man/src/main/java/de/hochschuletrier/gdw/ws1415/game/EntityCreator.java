@@ -75,6 +75,10 @@ public class EntityCreator {
         entity.add(engine.createComponent(InputComponent.class));
         entity.add(engine.createComponent(PlayerComponent.class));
 
+        addTestParticleAndLightComponent(entity);
+        
+//        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
+
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 1;
         entity.add(Health);
@@ -195,6 +199,21 @@ public class EntityCreator {
 
         box.add(engine.createComponent(TriggerComponent.class));
         box.add(engine.createComponent(PositionComponent.class));
+        
+        float width = GameConstants.getTileSizeX();
+        float height = GameConstants.getTileSizeY() * 0.4f;
+        
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, box);
+        bodyComponent.getBody().setUserData(bodyComponent);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(0).restitution(0.1f)
+                .shapeBox(width, height).sensor(true);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        box.add(bodyComponent);;
 
         engine.addEntity(box);
         return box;
@@ -649,13 +668,13 @@ public class EntityCreator {
     public static void addTestParticleAndLightComponent(Entity entity) {
         ParticleComponent pe = engine.createComponent(ParticleComponent.class);
         
-        pe.particleEffect = new ParticleEffect();
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("explosion"));
         
-        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
+        //pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
         pe.loop=true;
         pe.particleEffect.flipY();
         pe.particleEffect.start();
-        
+        pe.offsetY = 100f;
         PointLightComponent pl = engine.createComponent(PointLightComponent.class);
         pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),125,new Color(1f,0f,0f,1f),5f,0,0);
         
