@@ -28,7 +28,7 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
             animation.stateTime += deltaTime;
             if (animation.stateTime >= animation.animation.animationDuration)
             {
-                animation.stateTime %= animation.animation.animationDuration;
+                //animation.stateTime %= animation.animation.animationDuration;
                 animation.animationFinished = true;
             }
         }
