@@ -4,12 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +26,8 @@ public class Credits extends SandboxGame implements SceneAnimator.Getter {
     
     private SceneAnimator sceneAnimator;
     private AssetManagerX assetManager;
+    private DecoImage background;
+    
     
     public Credits() {
     }
@@ -35,6 +40,10 @@ public class Credits extends SandboxGame implements SceneAnimator.Getter {
         } catch (Exception ex) {
             logger.error("Error loading credits", ex);
         }
+        
+        background  = new DecoImage(assetManager.getTexture("credit_background"));
+        background.setPosition(0, 0);
+        
     }
 
 
