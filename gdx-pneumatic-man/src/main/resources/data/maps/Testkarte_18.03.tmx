@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="20" tilewidth="64" tileheight="64">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="20" tilewidth="64" tileheight="64" nextobjectid="37">
  <properties>
   <property name="Background" value="Hintergrund1.png"/>
  </properties>
@@ -16,11 +16,11 @@
  </layer>
  <layer name="Spielebene" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJztmIsKgzAMReue7r3//1qFKUi0t9NmLjX3wKWIaJFDa5oqhFAxpkLsQB+2oA9b0Icttu5jB2IRTz6W0tc9a7ilD8ywBt2DaOHJxzXM8yPPAwcQLTz5kHsO+vaps9kRRAtPPmRiZ+LYOfkEooVnH1OgnsUZRIut+5hDqn+kWV/l9q+s1+25rNnLS/23vnn+PohFSumnpubjfmWLknyU0vPIIbaG6zYXcF+u9Ud3fRPvfnZJzRerQ5lPXm3eP3p375rjePyna47jsQES8gmX
+   eJztmIsKgzAMRevcg71x//+xE6Ygwdwua3SpyYFLK60tcmlN0qSUmpApBXYIP2wRftgi/LDF1v3YAVnEkx+/MsY9a3gbfmCmMWgLpIUnP65J5g/NB/ZAWnjyg9456NvncrMDkBae/KDicmIuTz4CaeHZjzlQzeIEpMXW/ZCQqx9pxlel9SvrcXspa9bycv+tb96/T2SRWuqpuf3ivrJFTX7UUvMogTvD514XME7P+mN4vpG1n4Ny+3FxaOijrtdrobVHrzVaro/mScYkczTaf3qt0XJ9NE8yJpmj0b4BR4EKdg==
   </data>
  </layer>
  <objectgroup name="Objektebene 1">
-  <object name="Plattform_Block0" x="2240" y="452" width="64" height="64">
+  <object id="1" name="Plattform_Block0" x="2240" y="452" width="64" height="64">
    <properties>
     <property name="Direction" value="horizontal"/>
     <property name="Distance" value="5.0"/>
@@ -30,7 +30,7 @@
     <property name="Type" value="Plattform"/>
    </properties>
   </object>
-  <object name="Plattform_Block6" x="2880" y="380" width="64" height="64">
+  <object id="18" name="Plattform_Block6" x="2880" y="380" width="64" height="64">
    <properties>
     <property name="Direction" value="vertical"/>
     <property name="Distance" value="3.0"/>
@@ -41,7 +41,7 @@
     <property name="Type" value="Plattform"/>
    </properties>
   </object>
-  <object name="LavaFountain" x="1918" y="1022" width="64" height="64">
+  <object id="21" name="LavaFountain" x="1918" y="1022" width="64" height="64">
    <properties>
     <property name="Height" value="2.0"/>
     <property name="Intervall" value="2.0"/>
@@ -49,63 +49,63 @@
     <property name="Length" value="2.0"/>
    </properties>
   </object>
-  <object name="Player" x="130" y="1020" width="64" height="64"/>
-  <object name="RockTriggerX" x="2372" y="704" width="118" height="376">
+  <object id="22" name="Player" x="130" y="1020" width="64" height="64"/>
+  <object id="23" name="RockTriggerX" x="2372" y="704" width="118" height="376">
    <properties>
     <property name="Id" value="1"/>
     <property name="Name" value="RockTrigger"/>
    </properties>
   </object>
-  <object name="Rock" x="2048" y="635" width="64" height="64">
+  <object id="25" name="Rock" x="2048" y="635" width="64" height="64">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="1"/>
    </properties>
   </object>
-  <object name="Rock" x="2880" y="766" width="64" height="64">
+  <object id="26" name="Rock" x="2880" y="766" width="64" height="64">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="2"/>
    </properties>
   </object>
-  <object name="Rock" x="2752" y="766" width="64" height="64">
+  <object id="27" name="Rock" x="2752" y="766" width="64" height="64">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="1"/>
    </properties>
   </object>
-  <object name="RockTriggerX" x="2564" y="706" width="126" height="378">
+  <object id="29" name="RockTriggerX" x="2564" y="706" width="126" height="378">
    <properties>
     <property name="Id" value="2"/>
     <property name="Name" value="RockTrigger"/>
    </properties>
   </object>
-  <object name="Rock" x="3010" y="770" width="64" height="64">
+  <object id="30" name="Rock" x="3010" y="770" width="64" height="64">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="3"/>
    </properties>
   </object>
-  <object name="Enemy" x="4674" y="1019" width="64" height="62">
+  <object id="31" name="Enemy" x="4674" y="1019" width="64" height="62">
    <properties>
     <property name="Direction" value="right"/>
     <property name="Name" value="Enemy"/>
     <property name="Type" value="dog"/>
    </properties>
   </object>
-  <object name="Enemy" x="5121" y="1020" width="64" height="62">
+  <object id="32" name="Enemy" x="5121" y="1020" width="64" height="62">
    <properties>
     <property name="Direction" value="right"/>
     <property name="Name" value="Enemy"/>
     <property name="Type" value="dog"/>
    </properties>
   </object>
-  <object name="Miner" x="5567.5" y="1027.5" width="63" height="61">
+  <object id="34" name="Miner" x="5567.5" y="1027.5" width="63" height="61">
    <properties>
     <property name="Name" value="Miner"/>
    </properties>
   </object>
-  <object name="LevelEnd" x="6276.59" y="683.152" width="65" height="64">
+  <object id="35" name="LevelEnd" x="6276.59" y="683.152" width="65" height="64">
    <properties>
     <property name="Name" value="LevelEnd"/>
    </properties>
