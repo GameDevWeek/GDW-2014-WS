@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ws1415.sandbox.hud;
+package de.hochschuletrier.gdw.ws1415.game.hud;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
 
 
-public class Hud extends SandboxGame
+public class Hud extends Game
 {
     
     private int allMiners;

@@ -1,8 +1,8 @@
 {
     "textStyles" : {
-        "title_left": { "color": "FFFFFF", "font": "orbitron", "align": "right" },
-        "title_right": { "color": "FFFFFF", "font": "orbitron", "align": "left" },
-        "title_center": { "color": "FFFFFF", "font": "orbitron", "align": "center" },
+        "title_left": { "color": "FFDB58", "font": "orbitron", "align": "right" },
+        "title_right": { "color": "FFDB58", "font": "orbitron", "align": "left" },
+        "title_center": { "color": "FFDB58", "font": "orbitron", "align": "center" },
         "text_center": { "color": "FFFFFF", "font": "orbitron", "align": "center" },
         "text_left": { "color": "FFFFFF", "font": "orbitron", "align": "right" },
         "text_right": { "color": "FFFFFF", "font": "orbitron", "align": "left" }
@@ -18,8 +18,8 @@
         "btw": {
             "type": "linear",
             "destinations": [
-                {"x": 200, "y": 480, "speed": 30 },
-                {"x": 200, "y": -100, "speed": 30 }
+                {"x": 950, "y": 200, "speed": 30 },
+                {"x": 950, "y": 1000, "speed": 30 }
             ]
         }
     },
