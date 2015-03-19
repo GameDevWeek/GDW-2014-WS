@@ -23,6 +23,7 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
 	public boolean jump;
 	public float direction;
 	public boolean pause;
+	public boolean active;
 	
 	protected void processEntity(Entity entity, float deltaTime) {
 		InputComponent inputComponent = entity.getComponent(InputComponent.class);

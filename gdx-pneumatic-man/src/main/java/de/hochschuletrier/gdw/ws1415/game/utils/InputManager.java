@@ -10,8 +10,10 @@ import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 public class InputManager implements SettingListener<Boolean>{
 	
 	private void setKeyboard(){
+	    MyControllers.removeListener(EntityCreator.engine.getSystem(InputGamepadSystem.class));
 		EntityCreator.engine.getSystem(InputKeyboardSystem.class).setProcessing(true);
 		EntityCreator.engine.getSystem(InputGamepadSystem.class).setProcessing(false);
+		EntityCreator.engine.getSystem(InputGamepadSystem.class).active = false;
 	}
 	
 	private void setGamepad() throws NoGamepadException{
@@ -21,6 +23,7 @@ public class InputManager implements SettingListener<Boolean>{
 		MyControllers.addListener(EntityCreator.engine.getSystem(InputGamepadSystem.class));
 		EntityCreator.engine.getSystem(InputGamepadSystem.class).setProcessing(true);
 		EntityCreator.engine.getSystem(InputKeyboardSystem.class).setProcessing(false);
+		EntityCreator.engine.getSystem(InputGamepadSystem.class).active = true;
 	}
 
 	public void init()
