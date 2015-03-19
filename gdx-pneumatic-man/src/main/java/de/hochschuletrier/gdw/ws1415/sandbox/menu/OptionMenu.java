@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.ws1415.Settings;
 
 public class OptionMenu extends MenuPage
 {	
@@ -52,10 +53,7 @@ public class OptionMenu extends MenuPage
         
         buttonGroup.add(gamepadButton);
         buttonGroup.add(keyboardButton);
-        
-        buttonGroup.setChecked("keyboardButton");
-        		
-        		//CenteredButton(menuManager.getWidth()/2-20, y).setText("GAMEPAD");
+        buttonGroup.setChecked("keyboardButton");	
 		
 		addCenteredButton(450, 850, 200, 200, "<", () -> menuManager.popPage());
 	}
@@ -123,20 +121,20 @@ public class OptionMenu extends MenuPage
     }
 
     private void restoreSettings() {
-//        soundSlider.setValue(Settings.SOUND_VOLUME.get());
-//        soundMuteButton.setChecked(!Settings.SOUND_MUTE.get());
-//        musicSlider.setValue(Settings.MUSIC_VOLUME.get());
-//        musicMuteButton.setChecked(!Settings.MUSIC_MUTE.get());
-//        fullscreenButton.setChecked(Gdx.graphics.isFullscreen());
+        soundSlider.setValue(Settings.SOUND_VOLUME.get());
+        soundMuteButton.setChecked(!Settings.SOUND_MUTE.get());
+        musicSlider.setValue(Settings.MUSIC_VOLUME.get());
+        musicMuteButton.setChecked(!Settings.MUSIC_MUTE.get());
+        //fullscreenButton.setChecked(Gdx.graphics.isFullscreen());
     }
-//
+
     private void storeSettings() {
- //       Settings.SOUND_VOLUME.set(soundSlider.getValue());
-//        Settings.SOUND_MUTE.set(!soundMuteButton.isChecked());
-//        Settings.MUSIC_VOLUME.set(musicSlider.getValue());
-//        Settings.MUSIC_MUTE.set(!musicMuteButton.isChecked());
-//        Settings.FULLSCREEN.set(Gdx.graphics.isFullscreen());
-//        Settings.flush();
+        Settings.SOUND_VOLUME.set(soundSlider.getValue());
+        Settings.SOUND_MUTE.set(!soundMuteButton.isChecked());
+        Settings.MUSIC_VOLUME.set(musicSlider.getValue());
+        Settings.MUSIC_MUTE.set(!musicMuteButton.isChecked());
+        //Settings.FULLSCREEN.set(Gdx.graphics.isFullscreen());
+        Settings.flush();
     }
     
     private TextButton createToggleButton(int x, int y, String text, Runnable runnable) {
