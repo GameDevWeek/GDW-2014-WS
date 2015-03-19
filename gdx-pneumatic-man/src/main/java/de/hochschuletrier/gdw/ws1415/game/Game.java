@@ -32,6 +32,7 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
@@ -56,6 +57,8 @@ import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
 import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.game.utils.NoGamepadException;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
+
+
 
 
 
@@ -105,6 +108,8 @@ public class Game {
     private TiledMap map;
     private TiledMapRendererGdx mapRenderer;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
+    
+    private String levelFilePath = "data/maps/Testkarte_19.03.tmx";
 
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -122,21 +127,10 @@ public class Game {
     }
 
     public void init(AssetManagerX assetManager) {
-        Main.getInstance().addScreenListener(cameraSystem.getCamera());
-
-        Main.getInstance().console.register(physixDebug);
-        physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
-
-        addSystems();
-
-        map = loadMap("data/maps/Testkarte_19.03.tmx");
-        for (TileSet tileset : map.getTileSets()) {
-            TmxImage img = tileset.getImage();
-            String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
-            tilesetImages.put(tileset, new Texture(filename));
-        }
-        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-
+             
+        
+        loadCurrentlySelectedLevel();
+        
         setupPhysixWorld();
 
         addContactListeners();
@@ -167,11 +161,47 @@ public class Game {
 
     
 
+    private void loadCurrentlySelectedLevel()
+    {
+        engine.removeAllEntities();
+        
+//        selectPathFromSettings();
+        Main.getInstance().addScreenListener(cameraSystem.getCamera());
+
+        Main.getInstance().console.register(physixDebug);
+        physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
+
+        addSystems();
+        // Load Map
+        map = loadMap(levelFilePath);
+        for (TileSet tileset : map.getTileSets()) {
+            TmxImage img = tileset.getImage();
+            String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
+            tilesetImages.put(tileset, new Texture(filename));
+        }
+        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
+    }
+
+    private void selectPathFromSettings()
+    {
+        String levelName = Settings.CURRENTLY_SELECTED_LEVEL;
+        switch (levelName)
+        {
+            case "Test":
+                levelFilePath = "data/maps/Testkarte_19.03.tmx";
+                break;
+            default:
+                System.out.println("No Level has been set");
+        }
+    }
+
     public static TiledMap loadMap(String filename) {
         try {
             return new TiledMap(filename, LayerObject.PolyMode.ABSOLUTE);
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Map konnte nicht geladen werden: " + filename);
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Map konnte nicht geladen werden: ");
+            
         }
     }
 
@@ -216,6 +246,33 @@ public class Game {
         else
         {
             engine.update(delta);
+        }
+        
+        // Level reset Testing
+        if(inputKeyboardSystem.keyTyped('1'))
+        {
+            
+        }
+        
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
+            levelFilePath = "data/maps/Testkarte_17.03.tmx";
+            System.out.println("Level Pfad geändert auf: " + levelFilePath);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)){
+           // levelFilePath = "data/maps/Testkarte_18.03.tmx";
+            System.out.println("Level Pfad geändert auf: " + levelFilePath);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)){
+            levelFilePath = "data/maps/Testkarte_19.03.tmx";
+            System.out.println("Level Pfad geändert auf: " + levelFilePath);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)){
+            levelFilePath = "data/maps/demo.tmx";
+            System.out.println("Level Pfad geändert auf: " + levelFilePath);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
+            System.out.println("Restart Level"); 
+            this.loadCurrentlySelectedLevel();
         }
     }
 }
