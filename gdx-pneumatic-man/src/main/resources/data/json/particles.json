@@ -1,0 +1,6 @@
+{
+    "explosion":"data/particle/xpl_prtkl.p",
+     "laser":"data/particle/lsr_prtkl.p",
+    "lava":"data/particle/lv_prtkl.p"
+  
+}
