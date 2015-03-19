@@ -222,9 +222,7 @@ public class Game {
                                 obj.getWidth(), obj.getHeight(), e);
                     }
                     else if(obj.getName().equalsIgnoreCase("Player")) {
-                            EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0);
-                    else if(obj.getProperty("Name", "").equalsIgnoreCase("Player")) {
-                            
+                        EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0);
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("PlayerSpawn")){
                         //TESTS FOR LIGHT
