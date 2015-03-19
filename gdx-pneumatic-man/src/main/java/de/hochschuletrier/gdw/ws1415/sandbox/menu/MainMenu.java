@@ -22,10 +22,10 @@ import java.awt.Cursor;
 
 public class MainMenu extends MenuPage{
     
-    DecoImage start=new DecoImage(assetManager.getTexture("start_button"));
-    DecoImage optionen=new DecoImage(assetManager.getTexture("optionen_button"));
-    DecoImage credits=new DecoImage(assetManager.getTexture("credits_button"));
-    DecoImage ende=new DecoImage(assetManager.getTexture("beenden_button"));
+    DecoImage start = new DecoImage(assetManager.getTexture("start_button"));
+    DecoImage optionen = new DecoImage(assetManager.getTexture("optionen_button"));
+    DecoImage credits = new DecoImage(assetManager.getTexture("credits_button"));
+    DecoImage ende = new DecoImage(assetManager.getTexture("beenden_button"));
     DecoImage highscore = new DecoImage(assetManager.getTexture("start_button"));
     //DecoImage hand=new DecoImage(assetManager.getTexture("zeigefinger"));
     Credits credit = new Credits();
@@ -39,17 +39,17 @@ public class MainMenu extends MenuPage{
     {
         super(skin,"background_menu" );
         int x = 960;
-        int i = 0;
-        int y = 510;
+        int i = 1;
+        int y = 610;
         int yStep = 100;
         
-            addPageEntryStart(menuManager,x,y-yStep*(i++),start, new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
+            addPageEntry(menuManager,x,y-yStep*(++i), optionen, new OptionMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager, x, y-yStep*(i++), highscore, new ScoreMenu(skin, menuManager));
-            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> updateCredits());
-            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2,ende,()->System.exit(0));
+            addPageEntry(menuManager, x, y-yStep*(++i), highscore, new ScoreMenu(skin, menuManager));
+        	addPageEntryStart(menuManager,x,y-yStep*1, start, new OptionMenu(skin, menuManager));
+            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(++i), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> updateCredits());
+            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(++i),(int)ende.getWidth(),(int)ende.getHeight()/2, ende, ()->System.exit(0));
         //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
             //addGear(hand);
     }
