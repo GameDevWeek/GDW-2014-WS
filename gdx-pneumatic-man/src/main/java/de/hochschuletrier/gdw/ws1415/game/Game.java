@@ -122,6 +122,7 @@ public class Game {
     }
 
     public void init(AssetManagerX assetManager) {
+        
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
 
         Main.getInstance().console.register(physixDebug);

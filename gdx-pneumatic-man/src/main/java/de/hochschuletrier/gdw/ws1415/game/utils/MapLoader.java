@@ -1,5 +1,8 @@
 package de.hochschuletrier.gdw.ws1415.game.utils;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +12,10 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Json;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.commons.jackson.JacksonReader;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
@@ -31,9 +36,50 @@ import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 // 
 public class MapLoader
 {
-
+    /**
+     * 
+     * @return List of all avaiable Maps
+     * @author Tobias Gepp
+     */
+    public static ArrayList<String>loadMapList() throws IOException 
+    {
+        ArrayList<String> list = new ArrayList<String>();        
+        
+        InputStream fis = new FileInputStream("src/main/resources/data/maps/Test.txt");
+        StringBuffer line = new StringBuffer(80);
+        boolean lastWasReturn = false;
+        int c = 0;
+        while( (c = fis.read()) > 0  )
+        {
+            if ( c != 13 && c != 10 )
+            {
+                lastWasReturn = false;
+                line.append( (char)c );
+            } else
+            {
+                if ( lastWasReturn == false )
+                {
+                    lastWasReturn = true;
+                    list.add( line.toString()  );
+                    line = new StringBuffer(80);
+                }
+            }
+        }    
+        if ( list.equals("") == false ) list.add( line.toString() );
+        
+        return list;
+    }
+    
     public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
     {
+        
+        try
+        {
+            for ( String s: MapLoader.loadMapList() ) System.out.println( s ); 
+        } catch( IOException e )
+        {
+            e.printStackTrace();
+        }
         
         try {
             GameConstants.setTileSizeX(map.getTileWidth());
