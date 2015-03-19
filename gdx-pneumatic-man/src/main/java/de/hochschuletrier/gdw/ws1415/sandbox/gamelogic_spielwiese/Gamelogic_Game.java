@@ -119,7 +119,7 @@ public class Gamelogic_Game extends SandboxGame {
         //MapLoader mapLoader = new MapLoader(engine, physixSystem, "data/maps/Testkarte_17.03.tmx");
         //Map = mapLoader.getTiledMap();
 
-        Map = Game.loadMap("data/maps/Testkarte_17.03.tmx");
+        Map = Game.loadMap("data/maps/Testkarte_19.03.tmx");
         for (TileSet tileset : Map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
@@ -147,6 +147,8 @@ public class Gamelogic_Game extends SandboxGame {
             inputGamepadSystem.setProcessing(false);
             inputKeyboardSystem.setProcessing(true);
         }
+        
+        Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
     }
 
     @Override
