@@ -57,6 +57,8 @@ public class EntityCreator {
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         entity.add(engine.createComponent(PlayerComponent.class));
+        
+//        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 1;
