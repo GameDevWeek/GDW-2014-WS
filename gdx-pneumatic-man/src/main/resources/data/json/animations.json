@@ -1,8 +1,8 @@
 {
     "walking": {
         "filename": "data/animations/walking.png",
-        "frames" : 7,
-        "frameDuration": [1, 1, 1, 1, 1, 1, 1],
+        "frames" : 1,
+        "frameDuration": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
         "playType" : "LOOP",
         "columns": 7,
         "rows" : 1
@@ -14,5 +14,29 @@
         "playType" : "LOOP",
         "columns": 2,
         "rows" : 1
+    },
+    "char_death": {
+        "filename": "data/animations/char_death_2048.png",
+        "frames" : 40,
+        "frameDuration": [0.05],
+        "playType" : "NORMAL",
+        "columns": 8,
+        "rows" : 5
+    },
+    "char_idle": {
+        "filename": "data/animations/char_idle_1024.png",
+        "frames" : 20,
+        "frameDuration": [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05],
+        "playType" : "LOOP",
+        "columns": 8,
+        "rows" : 3
+    },
+    "char_jump": {
+        "filename": "data/animations/char_jump_2048.png",
+        "frames" : 31,
+        "frameDuration": [0.05],
+        "playType" : "NORMAL",
+        "columns": 8,
+        "rows" : 4
     }
 }

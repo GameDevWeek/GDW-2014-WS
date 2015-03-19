@@ -4,25 +4,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Santo Pfingsten
- */
+
+
 public class Credits extends SandboxGame implements SceneAnimator.Getter {
 
     private static final Logger logger = LoggerFactory.getLogger(Credits.class);
     
     private SceneAnimator sceneAnimator;
     private AssetManagerX assetManager;
+    
+    private Texture hintergrund;
+    private Texture background;
     
     public Credits() {
     }
@@ -35,6 +40,9 @@ public class Credits extends SandboxGame implements SceneAnimator.Getter {
         } catch (Exception ex) {
             logger.error("Error loading credits", ex);
         }
+        
+        background = assetManager.getTexture("credit_background");
+        
     }
 
 
@@ -66,5 +74,8 @@ public class Credits extends SandboxGame implements SceneAnimator.Getter {
         DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.DARK_GRAY);
         if(sceneAnimator != null)
             sceneAnimator.render();
+        
+        DrawUtil.draw(background, 0, 0);
     }
+    
 }

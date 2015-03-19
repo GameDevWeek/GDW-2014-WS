@@ -25,7 +25,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
     public Entity goal;
     public Entity player;
     public boolean playerAdded = false;
-    float n = 0;
+    float tick = 0;
     public int current_game_time = 0;
 
     public ScoreSystem() {
@@ -42,11 +42,14 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
     @Override
     public void update(float deltaTime) {
         //if(current_game_time < 5){
-        n += deltaTime;
-        if(n>=1.0f){
+        tick += deltaTime;
+        if(tick>=1.0f){
             current_game_time += 1;
-            n-=1.0f;
-            logger.info("Time: " + current_game_time);
+            tick-=1.0f;
+            //if(goal.getComponent(GoalComponent.class).miners_threshold == player.getComponent(PlayerComponent.class).saved_miners){
+            //    goal.getComponent(GoalComponent.class).end_of_level = true;
+            //}
+            //logger.info("Time: " + current_game_time);
         }
         /**
         }

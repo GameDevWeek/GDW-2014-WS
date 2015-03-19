@@ -1,7 +1,11 @@
 package de.hochschuletrier.gdw.ws1415.states;
 
+import com.badlogic.gdx.audio.Music;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
+import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 
 /**
@@ -12,6 +16,7 @@ import de.hochschuletrier.gdw.ws1415.game.Game;
 public class GameplayState extends BaseGameState {
 
     private final Game game;
+    private final Music music = Main.getInstance().getAssetManager().getMusic("menu");
 
     public GameplayState(AssetManagerX assetManager) {
         game = new Game();
@@ -25,6 +30,7 @@ public class GameplayState extends BaseGameState {
 
     @Override
     public void onEnter(BaseGameState previousState) {
+        MusicManager.play(music, 2.0f);
     }
 
     @Override

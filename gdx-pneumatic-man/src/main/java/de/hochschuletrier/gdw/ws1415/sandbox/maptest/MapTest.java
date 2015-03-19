@@ -80,8 +80,8 @@ public class MapTest extends SandboxGame {
     public void init(AssetManagerX assetManager) {
 
         // map = loadMap("data/maps/demo.tmx");
-        MapLoader ml = new MapLoader(engine, physixSystem, "data/maps/demo.tmx");
-        map = ml.getTiledMap();
+        //MapLoader ml = MapLoader.generateWorldFromTileMap(engine, physixSystem, map, cameraSystem);//(engine, physixSystem, "data/maps/demo.tmx");
+        //map = ml.getTiledMap();
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
@@ -93,9 +93,10 @@ public class MapTest extends SandboxGame {
         int tileWidth = map.getTileWidth();
         int tileHeight = map.getTileHeight();
         RectangleGenerator generator = new RectangleGenerator();
+        /*
         generator.generate(map, (Layer layer, TileInfo info) -> info.getBooleanProperty("Invulnerable", false),
                 (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
-
+         */
         // create destroyable world
         for (Layer layer : map.getLayers()) {
             TileInfo[][] tiles = layer.getTiles();

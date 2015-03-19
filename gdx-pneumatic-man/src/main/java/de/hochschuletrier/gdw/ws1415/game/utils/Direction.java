@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public enum Direction{
-    RIGHT(0, Vector2.X), UP(1, Vector2.Y.scl(-1)),
-    LEFT(2, Vector2.X.scl(-1)), DOWN(3, Vector2.Y.scl(-1)); //, EAST(0), NORD(1), WEST(2), SOUTH(3);
+    RIGHT(0, new Vector2(1,0)), UP(1, new Vector2(0,-1)),
+    LEFT(2, new Vector2(-1,0)), DOWN(3, new Vector2(0,1)); //, EAST(0), NORD(1), WEST(2), SOUTH(3);
 
     Direction(int v, Vector2 vector2){
         this.value = v;
@@ -38,7 +38,7 @@ public enum Direction{
     }
 
     public Vector2 toVector2(){
-        return this.vector2;
+        return new Vector2(this.vector2);
     }
 
     public static Direction fromInt(int i){

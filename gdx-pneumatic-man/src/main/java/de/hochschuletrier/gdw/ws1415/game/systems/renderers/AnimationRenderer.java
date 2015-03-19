@@ -26,7 +26,7 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
         if (animation.IsActive)
         {
             animation.stateTime += deltaTime;
-            if (animation.stateTime > animation.animation.animationDuration)
+            if (animation.stateTime >= animation.animation.animationDuration)
             {
                 animation.stateTime %= animation.animation.animationDuration;
                 animation.animationFinished = true;
