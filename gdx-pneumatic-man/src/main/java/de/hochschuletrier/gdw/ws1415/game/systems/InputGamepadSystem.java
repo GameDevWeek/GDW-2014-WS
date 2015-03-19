@@ -35,23 +35,18 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
 			inputComponent.pause = true;
 		}
 		inputComponent.direction = direction;
-		
 	}
 	
     @Override
     public void connected(Controller controller)
     {
-    	
+        // funktioniert sowieso nich
     }
 
     @Override
     public void disconnected(Controller controller)
     {
-        // TODO Auto-generated method stub
-        if(Controllers.getControllers().size == 0)
-        {
-            Settings.GAMEPAD_ENABLED.set(false);
-        }
+        // warum schreibt jemand diese methode wenn se sowieso net funktioniert
     }
 
     @Override
@@ -137,7 +132,4 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
         
         return false;
     }
-
-	
-	
 }
