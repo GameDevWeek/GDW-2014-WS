@@ -89,7 +89,7 @@ public class EntityCreator {
         entity.add(jumpComponent);
 
         MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
-        moveComponent.speed = 10000.0f;
+        moveComponent.speed = 12000.0f;
         entity.add(moveComponent);
 
         DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
