@@ -34,7 +34,6 @@ public class Hud extends SandboxGame
     private ArrayList<Sprite> MinerLeftListe;
     private ArrayList<Sprite> MinerFoundListe;
   
-    private Stage stage;
     private BitmapFont font;
     
     private int time = 0;
@@ -47,7 +46,6 @@ public class Hud extends SandboxGame
       public void init(AssetManagerX assetManager)
       {
           batch = DrawUtil.batch;
-          stage = new Stage();
           font = assetManager.getFont("orbitron");
           timer = new Timer();
           
@@ -84,7 +82,7 @@ public class Hud extends SandboxGame
           MinerLeftListe = new ArrayList<>();
           MinerFoundListe = new ArrayList<>();
           
-          //besser: file aus json datei nehmen
+          //old (without json)
 //          textureMinerLeft = new Texture(Gdx.files.internal("data/Images/KollegeIconNichtGefunden.png"));
 //          textureMinerFound = new Texture(Gdx.files.internal("data/menuImages/KollegeIconGefunden.png"));          
           
@@ -92,7 +90,7 @@ public class Hud extends SandboxGame
           textureMinerLeft = manager.getTexture("miner_notfound");
           
           
-         // allMiners = game.getMinersLeft();
+         // allMiners = game.getMinersLeft();       //oder setVisibleMiners(int miners) die vom level aufgerufen wird
           allMiners = 5;
           
           for (int x = 0; x < allMiners; x++)
@@ -101,7 +99,7 @@ public class Hud extends SandboxGame
           }
           
           //test Changing when Miner is Found
-          minerFound();
+//          minerFound();
       }
     
       
@@ -111,17 +109,13 @@ public class Hud extends SandboxGame
       {
           Main.getInstance().screenCamera.bind();
           
-//          font.draw(batch, "Score: " + score, 0, 20);
           
           font.draw(batch, "Time: " + time, Gdx.graphics.getWidth()/2-40, Gdx.graphics.getHeight()-30);
           
           font.draw(batch, "Destroyed Blocks: " + blocks, 10, Gdx.graphics.getHeight()-30);
           
-//          sprite.draw(batch);
-//          batch.draw(sprite, 200, 200);
           
-          
-          //test Changing when Miner is Found
+          //test Miner found Counter
           if(Gdx.input.isKeyJustPressed(Keys.M))
           {
               minerFound();
@@ -132,10 +126,12 @@ public class Hud extends SandboxGame
               timer.stop();
               
           }
+          //test continue Time
           if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
           {
               timer.start();
           }
+          //test Block destroyed Counter
           if(Gdx.input.isKeyJustPressed(Keys.B))
           {
               addDestroyedBlock();
@@ -156,7 +152,6 @@ public class Hud extends SandboxGame
               x += 70;
           }
 
-
         
       }
     
@@ -167,7 +162,6 @@ public class Hud extends SandboxGame
           textureMinerLeft.dispose();
         
       }
-      
       
       
       
@@ -185,118 +179,5 @@ public class Hud extends SandboxGame
       {
           blocks++;
       }
-      
-    
- /*   
-    
-    protected Main main = Main.getInstance();
-    protected AssetManagerX assetManager;
-//    protected final Skin skin;
-    
-    
-    
-    private int allMiners;
-    
-    private SpriteBatch batch;
-    private Texture texture;
-    private Sprite sprite;
-    
-//    private Stage stage = new Stage();
-    
-    public Hud()
-    {
-//        allMiners = getMinersLeft();
-        allMiners = 5;
-        loadMinersPictures();
-        
-    }
-    
-    
-    public void loadMinersPictures()
-    {
-
-        
-        while (allMiners > 0 )
-        {
-            
-            
-        }
-        
-        batch = new SpriteBatch();
-        
-        sprite = new Sprite(texture);
-        
-        
-    }
-
-
-
-    @Override
-    public void dispose()
-    {
-        batch.dispose();
-        texture.dispose();
-        
-    }
-    
-    public void render() {        
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL11.GL_COLOR_BUFFER_BIT);
-        
-        batch.begin();
-        sprite.draw(batch);
-        batch.end();
-    }
-
-
-
-    @Override
-    public void init(AssetManagerX assetManager)
-    {
-        this.assetManager = assetManager;
-        
-        
-    }
-
-
-
-    @Override
-    public void update(float delta)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-    
- */   
-    
-    
-/*
-    
-    public static void main(String[] args) {
-        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "LibGDX Test";
-        cfg.width = 1920;
-        cfg.height = 1080;
-        cfg.useGL30 = false;
-        cfg.vSyncEnabled = true;
-        cfg.foregroundFPS = 60;
-        cfg.backgroundFPS = 60;
-        
-        
-//        initApplication();
-        
-        new LwjglApplication(getInstance(), cfg);
-    }
-    
-    private static Main instance;
-    
-    public static Main getInstance() {
-        if (instance == null) {
-            instance = new Main(); // hello
-        }
-        return instance;
-    }
-    
-*/
 
 }
