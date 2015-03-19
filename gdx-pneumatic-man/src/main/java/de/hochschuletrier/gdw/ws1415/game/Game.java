@@ -140,25 +140,10 @@ public class Game {
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
-        if(Controllers.getControllers().size > 0)
-        {
-            inputKeyboardSystem.setProcessing(false);
-            inputGamepadSystem.setProcessing(true);
-        }
-        else
-        {
-            inputGamepadSystem.setProcessing(false);
-            inputKeyboardSystem.setProcessing(true);
-        }
+   
         generateWorldFromTileMap();
 
-        if (Controllers.getControllers().size > 0) {
-            inputKeyboardSystem.setProcessing(false);
-            inputGamepadSystem.setProcessing(true);
-        } else {
-            inputGamepadSystem.setProcessing(false);
-            inputKeyboardSystem.setProcessing(true);
-        }
+       
         inputManager.init();
        
     }
