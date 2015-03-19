@@ -70,12 +70,11 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     }
     
     private void onLayerChanged(LayerComponent oldLayer, LayerComponent newLayer) {
-    	cameraSystem.applyParallax(newLayer);
+//    	cameraSystem.applyParallax(newLayer);
     }
     
     @Override
 	public void update (float deltaTime) {
-    	cameraSystem.update(deltaTime);
     	super.update(deltaTime);
     	
     	// rayHandler.updateAndRender() not allowed between begin() and end()

@@ -40,6 +40,7 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ws1415.game.systems.*;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
@@ -53,23 +54,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
-import de.hochschuletrier.gdw.ws1415.game.utils.NoGamepadException;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
-
-
-
-
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-
-
-
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
 
 public class Game {
 
@@ -92,8 +77,12 @@ public class Game {
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
     private final InputGamepadSystem inputGamepadSystem = new InputGamepadSystem();
-    private final AISystem aisystems = new AISystem(GameConstants.PRIORITY_PHYSIX + 1, physixSystem);
     private final LavaFountainSystem lavaFountainSystem = new LavaFountainSystem(GameConstants.PRIORITY_ENTITIES+3);
+    private final DestroyBlocksSystem destroyBlocksSystem = new DestroyBlocksSystem();
+    private final AISystem aisystems = new AISystem(
+            GameConstants.PRIORITY_PHYSIX + 1,
+            physixSystem
+    );
 
     private InputManager inputManager = new InputManager();
     
@@ -112,6 +101,7 @@ public class Game {
 
         EntityCreator.engine = this.engine;
         EntityCreator.physixSystem = this.physixSystem;
+        
     }
 
     public void dispose() {
@@ -121,6 +111,9 @@ public class Game {
 
     public void init(AssetManagerX assetManager) {
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
+    	
+        EntityCreator.assetManager = assetManager;
+                
 
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
@@ -134,7 +127,8 @@ public class Game {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-
+        cameraSystem.adjustToMap(map);
+        
         setupPhysixWorld();
 
         addContactListeners();
@@ -201,11 +195,10 @@ public class Game {
                                 obj.getX() - obj.getWidth()/2, obj.getY() + obj.getHeight()/2,
                                 obj.getWidth(), obj.getHeight(), e);
                     }
-                    else if(obj.getProperty("Name", "").equalsIgnoreCase("Player")) {
-                            
+                    else if(obj.getName().equalsIgnoreCase("Player")) {
+                        EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0);
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("PlayerSpawn")){
-                        cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
                         //TESTS FOR LIGHT
                         EntityCreator.createConeLight(obj.getX(), obj.getY()-500f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
                         //EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}/*new float[]{obj.getX()+20f, obj.getY()-20f,obj.getX()+40f, obj.getY()-20f}*/);
@@ -217,10 +210,6 @@ public class Game {
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("Enemy")){
                         Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.LEFT.name()).toUpperCase());
                         AIType type = AIType.valueOf(obj.getProperty("Type", AIType.CHAMELEON.name()).toUpperCase());
-                            EntityCreator.createAndAddEnemy(obj.getX(), obj.getY(), dir, type);
-                    }
-                    else{
-                        Gdx.app.log("WARNING", "object " + obj.getName() + "does not match any name. No Entity created");
                     }
 
                 }
@@ -251,7 +240,7 @@ public class Game {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map, info, i, j);
+                                    map, info, info.getIntProperty("Hitpoint", 2), i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
                             TileInfo info = tiles[i][j];
@@ -336,6 +325,7 @@ public class Game {
     private void addSystems() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
@@ -345,6 +335,7 @@ public class Game {
         engine.addSystem(_HealthSystem);
         engine.addSystem(_ScoreSystem);
         engine.addSystem(lavaFountainSystem);
+        engine.addSystem(destroyBlocksSystem);
     }
 
     private void addContactListeners() {

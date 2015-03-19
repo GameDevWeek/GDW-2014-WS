@@ -207,7 +207,7 @@ public class MapLoader {
                                                     i * (float)ts.getTileWidth(),
                                                     j * (float)ts.getTileHeight(),
                                                     tiledMap,
-                                                    tiles[i][j], i, j);
+                                                    tiles[i][j], tiles[i][j].getIntProperty("Hitpoint", 0), i, j);
                                             // Lebenspunkte-Komponente anfügen
                                             HealthComponent hp = engine.createComponent(HealthComponent.class);
                                             hp.reset();
