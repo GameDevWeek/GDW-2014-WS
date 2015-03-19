@@ -76,6 +76,12 @@ public class EntityCreator {
                 .shapeBox(width, height);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
+        fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f).restitution(0.1f)
+                .shapeCircle(10, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
+        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        
         entity.add(bodyComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
@@ -375,21 +381,32 @@ public class EntityCreator {
         return createPlatformBlock(x,y, travelDistance, dir, mode);
     }
 
-    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, Direction direction,
+    public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, String direction,
     		TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity entity = engine.createEntity();
 
         addRenderComponents(entity, map, info, tileX, tileY); 
 
         float angle;
-        if (direction == Direction.RIGHT) {
-            angle = (float) Math.PI/2;
-        } else if (direction == Direction.UP) {
+        Vector2 verschiebung;
+        Vector2 rayCastTarget;
+        float rayLength = 50000f;
+        if (direction.equals("SpikeRight")) {
+            angle = (float) Math.PI / 2;
+            verschiebung = new Vector2(width * 0.1f, 0);
+            rayCastTarget = new Vector2(x - rayLength, y);
+        } else if (direction.equals("SpikeTop")) {
             angle = (float) Math.PI;
-        } else if (direction == Direction.DOWN) {
+            verschiebung = new Vector2(0, -height * 0.1f);
+            rayCastTarget = new Vector2(x, y + rayLength);
+        } else if (direction.equals("SpikeDown")) {
             angle = 0;
+            verschiebung = new Vector2(0, height * 0.1f);
+            rayCastTarget = new Vector2(x, y - rayLength);
         } else {
-            angle = (float) Math.PI*3/2;
+            angle = (float) Math.PI * 3 / 2;
+            verschiebung = new Vector2(-width * 0.1f, 0);
+            rayCastTarget = new Vector2(x + rayLength, y);
         }
 
         PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
@@ -400,18 +417,11 @@ public class EntityCreator {
         PhysixFixtureDef fixtureDefSpikeGround = new PhysixFixtureDef(physixSystem)
                 .density(1)
                 .friction(1f)
-                .shapeBox(width, height * 0.8f, new Vector2(0, -height*0.2f), angle)
-                .restitution(0.1f);
+                .shapeBox(width, height * 0.8f, verschiebung, angle)
+                .restitution(0.1f)
+                .sensor(true);
         Fixture fixtureSpikeGround = bodyComponent.createFixture(fixtureDefSpikeGround);
         fixtureSpikeGround.setUserData(bodyComponent);
-
-        PhysixFixtureDef fixtureDefBottomSpike = new PhysixFixtureDef(physixSystem)
-                .density(1)
-                .friction(1f)
-                .shapeBox(width, height * 0.2f, new Vector2(0, height*0.8f), angle)
-                .restitution(0.1f);
-        Fixture fixtureBottomSpike = bodyComponent.createFixture(fixtureDefBottomSpike);
-        fixtureBottomSpike.setUserData(bodyComponent);
 
         entity.add(bodyComponent);
 

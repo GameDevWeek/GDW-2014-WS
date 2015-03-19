@@ -295,7 +295,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.LEFT,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeTop")) {
@@ -306,7 +306,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.UP,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeRight")) {
@@ -317,7 +317,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.RIGHT,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
@@ -328,7 +328,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.DOWN,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
@@ -339,7 +339,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.DOWN,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
