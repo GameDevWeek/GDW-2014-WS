@@ -676,6 +676,15 @@ public class EntityCreator {
     	return entity;
     }
     
+    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY, int frames) {
+        Entity entity = engine.createEntity();
+        
+        addRenderComponents(entity, map, info, tileX, tileY, frames);
+        
+        engine.addEntity(entity);
+        return entity;
+    }
+    
     private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, AnimationExtended animation) {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
@@ -755,7 +764,7 @@ public class EntityCreator {
     	TileSetAnimation animation = new TileSetAnimation(
                 frames,
                 tileset.getFloatProperty("animationDuration", 0),
-                tileset.getIntProperty("animationTileOffset", 0));
+                tileset.getIntProperty("animationOffset", 0));
     	
     	TextureRegion[] regions = new TextureRegion[frames];
     	float[] frameDurations = new float[frames];

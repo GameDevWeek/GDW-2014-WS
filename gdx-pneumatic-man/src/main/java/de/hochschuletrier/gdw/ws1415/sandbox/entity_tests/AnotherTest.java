@@ -83,7 +83,7 @@ public class AnotherTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
-        map = loadMap("data/maps/demo.tmx");
+        map = loadMap("data/maps/Testkarte_19.03.tmx");
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
@@ -153,10 +153,16 @@ public class AnotherTest extends SandboxGame {
     // Go through the map and create the entities based on tile info
     private void createTileEntitiesFromMap() {
         for(Layer layer : map.getLayers()) {
+            if(layer == null)
+                continue;
         	TileInfo[][] tiles = layer.getTiles();
-        	
-            for (int x = 0; x < map.getWidth(); x++) 
-                for (int y = 0; y < map.getHeight(); y++)  {
+        	if( tiles == null)
+        	    continue;
+            for (int x = 0; x < 100; x++) 
+                
+                for (int y = 0; y < 20; y++)  {
+                    if(tiles[x] == null)
+                        continue;
                 	TileInfo info = tiles[x][y];
                 	
                 	if(info == null)
