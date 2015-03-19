@@ -17,27 +17,26 @@ public class LightRenderer extends SortedFamilyRenderSystem.Renderer {
 
     @SuppressWarnings("unchecked")
     public LightRenderer() {
-        super(Family.one(PointLightComponent.class/*, DirectionalLightComponent.class*/, ChainLightComponent.class, ConeLightComponent.class).get());
+        super(Family.one(PointLightComponent.class, ChainLightComponent.class, ConeLightComponent.class).get());
     }
 
     @Override
     public void render(Entity entity, float deltaTime){
         PositionComponent position = ComponentMappers.position.get(entity);
         PointLightComponent pointLight = ComponentMappers.pointLight.get(entity);
-        //DirectionalLightComponent directionalLight = ComponentMappers.directionalLight.get(entity);
         ChainLightComponent chainLight = ComponentMappers.chainLight.get(entity);
         ConeLightComponent coneLight = ComponentMappers.coneLight.get(entity);
         
-        //directionalLight.directionalLight.setPosition(x, y);
+
         
         if(pointLight != null){
-            pointLight.pointLight.setPosition(position.x/GameConstants.BOX2D_SCALE, position.y/GameConstants.BOX2D_SCALE);
+            pointLight.pointLight.setPosition((position.x+pointLight.offsetX)/GameConstants.BOX2D_SCALE, (position.y+pointLight.offsetY)/GameConstants.BOX2D_SCALE);
         }
         if(chainLight != null){
-            chainLight.chainLight.setPosition(position.x/GameConstants.BOX2D_SCALE, position.y/GameConstants.BOX2D_SCALE);
+            chainLight.chainLight.setPosition((position.x+chainLight.offsetX)/GameConstants.BOX2D_SCALE,(position.y+chainLight.offsetY)/GameConstants.BOX2D_SCALE);
         }
         if(coneLight != null){
-            coneLight.coneLight.setPosition(position.x/GameConstants.BOX2D_SCALE, position.y/GameConstants.BOX2D_SCALE);
+            coneLight.coneLight.setPosition((position.x+coneLight.offsetX)/GameConstants.BOX2D_SCALE, (position.y+coneLight.offsetY)/GameConstants.BOX2D_SCALE);
         }
     }
 
