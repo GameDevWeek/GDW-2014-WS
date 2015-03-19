@@ -26,7 +26,7 @@ import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
 
 
-public class Hud extends Sandbox
+public class Hud extends SandboxGame
 {
     
     private int allMiners;
