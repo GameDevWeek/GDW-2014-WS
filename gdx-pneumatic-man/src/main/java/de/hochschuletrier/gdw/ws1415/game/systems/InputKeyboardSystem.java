@@ -6,6 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.states.PauseGameState;
@@ -45,7 +46,6 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
             Main main = Main.getInstance();
             main.changeState(new PauseGameState());
         }
-
     }
 
     @Override
@@ -65,7 +65,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
             right = true;
             break;
         case Input.Keys.ESCAPE:
-        case Input.Keys.P:
+            case Input.Keys.P: Settings.GAMEPAD_ENABLED.set(false); pause = !pause; break;
             pause = !pause;
             break;
         }
@@ -127,5 +127,4 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         // TODO Auto-generated method stub
         return false;
     }
-
 }

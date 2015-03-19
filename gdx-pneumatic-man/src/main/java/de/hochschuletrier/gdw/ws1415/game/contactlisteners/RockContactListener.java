@@ -18,7 +18,6 @@ public class RockContactListener extends PhysixContactAdapter {
         Entity myEntity = contact.getMyComponent().getEntity();
         Entity otherEntity = contact.getOtherComponent().getEntity();
         FallingRockComponent c = ComponentMappers.rockTraps.get(myEntity);
-        if(! c.falling) return;
 
 
         Vector2 d = contact.getMyFixture().getBody().getPosition()
@@ -31,7 +30,6 @@ public class RockContactListener extends PhysixContactAdapter {
         // ja stein kommt von oben:
         if(ComponentMappers.health.has(otherEntity)) {
             HealthComponent h = ComponentMappers.health.get(contact.getOtherComponent().getEntity());
-            h.DecrementByValueNextFrame -= c.damage;
             EntityCreator.engine.removeEntity(myEntity);
         }else if(ComponentMappers.block.has(otherEntity)){
             EntityCreator.engine.removeEntity(myEntity);

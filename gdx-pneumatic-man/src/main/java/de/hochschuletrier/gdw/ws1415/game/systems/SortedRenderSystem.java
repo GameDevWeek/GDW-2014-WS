@@ -1,15 +1,22 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
-
 import java.util.Comparator;
 
+import box2dLight.RayHandler;
+
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Matrix4;
+
+import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
+import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.DestructableBlockRenderer;
+import de.hochschuletrier.gdw.ws1415.game.systems.renderers.LightRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.ParticleRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.TextureRenderer;
 
@@ -20,13 +27,15 @@ import de.hochschuletrier.gdw.ws1415.game.systems.renderers.TextureRenderer;
  *
  */
 public class SortedRenderSystem extends SortedFamilyRenderSystem {
+    
+    public RayHandler rayHandler;
 	private LayerComponent currentLayer = null;
 	private CameraSystem cameraSystem;
+	private Matrix4 scaleMatrix = new Matrix4();
 	
     @SuppressWarnings("unchecked")
-	public SortedRenderSystem(CameraSystem cameraSystem) {
-        super(Family.all(PositionComponent.class, LayerComponent.class).get(), new Comparator<Entity>() {
-
+	public SortedRenderSystem(CameraSystem cameraSystem, RayHandler rayHandler) {
+        super(Family.all(PositionComponent.class, LayerComponent.class).get(), new Comparator<Entity>() { 
             @Override
             public int compare(Entity e1, Entity e2) {
                 LayerComponent ac = ComponentMappers.layer.get(e1);
@@ -37,12 +46,14 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
 
         
         // Order of adding = order of renderer selection for the entity
-        // addRenderer(new ParticleRenderer());
         addRenderer(new AnimationRenderer());
         addRenderer(new DestructableBlockRenderer());
         addRenderer(new TextureRenderer());
         addRenderer(new ParticleRenderer());
+        addRenderer(new LightRenderer());
         
+        this.rayHandler = rayHandler;
+        this.rayHandler.setAmbientLight(0.5f);
         this.cameraSystem = cameraSystem;
     }
     
@@ -63,10 +74,30 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     }
     
     @Override
-	public void update (float deltaTime) {	
+	public void update (float deltaTime) {
     	cameraSystem.update(deltaTime);
-    	super.update(deltaTime);	
+    	super.update(deltaTime);
+    	
+    	// rayHandler.updateAndRender() not allowed between begin() and end()
+    	DrawUtil.batch.end();
+    	updateRayHandler();
+    	DrawUtil.batch.begin();
 	}
+    
+    private void updateRayHandler(){
+        OrthographicCamera camera = cameraSystem.getCamera().getOrthographicCamera();
+        scaleMatrix.set(camera.combined).scl(GameConstants.BOX2D_SCALE);
+        rayHandler.setCombinedMatrix(scaleMatrix , 
+                                     camera.position.x/GameConstants.BOX2D_SCALE, 
+                                     camera.position.y/GameConstants.BOX2D_SCALE, 
+                                     camera.viewportWidth*camera.zoom/GameConstants.BOX2D_SCALE, 
+                                     camera.viewportHeight*camera.zoom/GameConstants.BOX2D_SCALE);
+        rayHandler.updateAndRender(); 
+    }
+
+    public RayHandler getRayHandler(){
+        return this.rayHandler;
+    }
     
     
 }
