@@ -20,15 +20,15 @@ import de.hochschuletrier.gdw.ws1415.Main;
  *
  */
 public class PauseGameState extends BaseGameState implements InputProcessor {
-    private final Game game;
+
     
     InputInterceptor inputProcessor;
 
     private BaseGameState previosGameState;
 
     
-    public PauseGameState(Game game){
-        this.game=game;
+    public PauseGameState(){
+
         System.out.println("PauseGameState");
         inputProcessor = new InputInterceptor(this);
         Main.inputMultiplexer.addProcessor(inputProcessor);

@@ -14,7 +14,7 @@ import de.hochschuletrier.gdw.ws1415.states.PauseGameState;
 
 public class InputKeyboardSystem extends IteratingSystem implements InputProcessor{
 
-    private Game game;
+
     boolean jump = false;
     
     boolean pause = false;
@@ -23,10 +23,10 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
     
     boolean right = false;
     
-    public InputKeyboardSystem(Game game)
+    public InputKeyboardSystem()
     {
         super(Family.all(InputComponent.class).get());
-        this.game =game;
+
     }
 
     
@@ -52,7 +52,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         {
             inputComponent.pause = true;
             Main main = Main.getInstance();
-            main.changeState(new PauseGameState(game));
+            main.changeState(new PauseGameState());
         }
         
     }
