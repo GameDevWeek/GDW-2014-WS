@@ -64,6 +64,7 @@
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Michael Kramer", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Reiko Schroth  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Philipp Rath", "delay": "0" },
+                { "type": "text", "path" : "text", "style" : "text_left", "text": "Heinrich Unrau  ", "delay": "1350" },
                 
                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Input", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Annika Kremer  ", "delay": "1350" },
