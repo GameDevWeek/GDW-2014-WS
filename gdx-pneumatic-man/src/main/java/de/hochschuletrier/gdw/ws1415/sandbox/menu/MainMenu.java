@@ -26,7 +26,8 @@ public class MainMenu extends MenuPage{
     DecoImage optionen = new DecoImage(assetManager.getTexture("optionen_button"));
     DecoImage credits = new DecoImage(assetManager.getTexture("credits_button"));
     DecoImage ende = new DecoImage(assetManager.getTexture("beenden_button"));
-    DecoImage highscore = new DecoImage(assetManager.getTexture("start_button"));
+    DecoImage highscore = new DecoImage(assetManager.getTexture("score_button"));
+    DecoImage levels = new DecoImage(assetManager.getTexture("levels_button"));
     //DecoImage hand=new DecoImage(assetManager.getTexture("zeigefinger"));
     Credits credit = new Credits();
     
@@ -40,12 +41,13 @@ public class MainMenu extends MenuPage{
         super(skin,"background_menu" );
         int x = 960;
         int i = 0;
-        int y = 810;
-        int yStep = 100;
+        int y = 800;
+        int yStep = 110;
         
     		//addPageEntryStart(menuManager,x,y-yStep*1, start);
         	addPageEntryStart(menuManager,x,y-yStep*(i++), start);
-            addPageEntry(menuManager,x,y-yStep*(i++), optionen, new OptionMenu(skin, menuManager));
+        	addPageEntry(menuManager, x, y-yStep*(i++), levels, new LevelMenu(skin, menuManager));
+            addPageEntry(menuManager,x, y-yStep*(i++), optionen, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager, x, y-yStep*(i++), highscore, new ScoreMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));

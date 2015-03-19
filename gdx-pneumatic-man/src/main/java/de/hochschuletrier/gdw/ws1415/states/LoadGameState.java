@@ -3,8 +3,6 @@ package de.hochschuletrier.gdw.ws1415.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;

@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.sandbox.menu;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -7,9 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.graphics.Color;
+
+import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.ws1415.Settings;
 
 public class OptionMenu extends MenuPage
@@ -45,6 +50,10 @@ public class OptionMenu extends MenuPage
        // musicMuteButton.setVisible(false);
        // y -= 50;
         
+        //DrawUtil.fillRect(menuManager.getWidth()/2-160, y, Gdx.graphics.getWidth() - 190.0f, Color.WHITE);
+//        DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, drawWidth, 200, progressUnfillColor);
+//    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, (int) (drawWidth * assetManager.getProgress()), 200, progressFillColor);
+        
        // createLabel(menuManager.getWidth()/2-150, y).setText("GAMEPAD / KEYBOARD");
         y -= 50;
         gamepadButton = addButton(menuManager.getWidth()/2-150, y, 100, 50, "GAMEPAD", this::onGamepadChanged, "toggle");
@@ -54,7 +63,8 @@ public class OptionMenu extends MenuPage
         buttonGroup.add(keyboardButton);
         buttonGroup.setChecked("KEYBOARD");
                 		
-		addCenteredButton(450, 850, 200, 200, "<", () -> menuManager.popPage());
+		//addCenteredButton(450, 850, 100, 100, "<", () -> menuManager.popPage());
+		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
 	}
 	
 	private Label createLabel(int x, int y)
