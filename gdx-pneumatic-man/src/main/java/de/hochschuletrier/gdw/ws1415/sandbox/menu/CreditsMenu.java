@@ -4,13 +4,16 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimator;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimatorActor;
+import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +23,8 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
 //    private final Hotkey increaseSpeed = new Hotkey(this::increaseSpeed, Input.Keys.PAGE_UP, HotkeyModifier.CTRL);
 //    private final Hotkey decreaseSpeed = new Hotkey(this::decreaseSpeed, Input.Keys.PAGE_DOWN, HotkeyModifier.CTRL);
 //    private final Hotkey resetSpeed = new Hotkey(this::resetSpeed, Input.Keys.HOME, HotkeyModifier.CTRL);
+    
+    private Texture background;
 
     private SceneAnimator sceneAnimator;
 
@@ -36,11 +41,14 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
 //    }
 
     public CreditsMenu(Skin skin, MenuManager menuManager) {
-        super(skin, "menu_bg");
+        super(skin, "credit_background");
 
         try {
             sceneAnimator = new SceneAnimator(this, "data/json/credits.json");
             addActor(new SceneAnimatorActor(sceneAnimator));
+            
+//            background = assetManager.getTexture("credit_background");
+//            DrawUtil.draw(background, 0, 0);
 
             // If this is a build jar file, disable hotkeys
 //            if (!Main.IS_RELEASE) {
