@@ -43,8 +43,6 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         }
         if (pause) {
             inputComponent.pause = true;
-            Main main = Main.getInstance();
-            main.changeState(new PauseGameState());
         }
     }
 
