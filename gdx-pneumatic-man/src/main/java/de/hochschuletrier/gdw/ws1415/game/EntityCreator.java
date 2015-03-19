@@ -1,5 +1,8 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import box2dLight.ChainLight;
+import box2dLight.ConeLight;
+import box2dLight.DirectionalLight;
 import box2dLight.PointLight;
 
 import com.badlogic.ashley.core.Entity;
@@ -37,15 +40,18 @@ import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.ChainLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.ConeLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.DirectionalLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
@@ -368,7 +374,7 @@ public class EntityCreator {
     		TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity entity = engine.createEntity();
         
-        addTestParticleAndLightComponent(entity);
+        //addTestParticleAndLightComponent(entity);
         addRenderComponents(entity, map, info, tileX, tileY); 
 
         float angle;
@@ -413,6 +419,118 @@ public class EntityCreator {
 
     }
     
+    // ********** Light section BEGIN **********
+    public static Entity createPointLight(float x, float y, Color color, float distance){
+        Entity e = engine.createEntity();
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.x=x;
+        pc.y=y;
+        LayerComponent lc = engine.createComponent(LayerComponent.class);
+        PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+        plc = engine.createComponent(PointLightComponent.class);
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
+        
+        e.add(pc);
+        e.add(lc);
+        e.add(plc);
+        
+        engine.addEntity(e);
+        
+        return e;
+    }
+    
+    /**
+     * EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
+     * @param x Pos x
+     * @param y Pos y
+     * @param color Color
+     * @param distance Light Range
+     * @param directionDegree Direction of Light
+     * @param coneDegree Degree of the Cone
+     * @return
+     */
+    
+    public static Entity createConeLight(float x, float y, Color color, float distance, float directionDegree, float coneDegree){
+        Entity e = engine.createEntity();
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.x=x;
+        pc.y=y;
+        LayerComponent lc = engine.createComponent(LayerComponent.class);
+        ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
+        clc = engine.createComponent(ConeLightComponent.class);
+        clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, directionDegree, coneDegree);
+        
+        e.add(pc);
+        e.add(lc);
+        e.add(clc);
+        
+        engine.addEntity(e);
+        
+        return e;
+    }
+    
+    /**
+     * Example: EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}); 
+     * @param x Pos x
+     * @param y Pos y
+     * @param color Color
+     * @param distance Distance
+     * @param rayDirection TRUE = unten / FALSE = oben
+     * @param chain Linie von Punkt zu Punkt {x1, y1, x2, y2} realtiv zu Pos x & Pos y
+     * @return
+     */
+    public static Entity createChainLight(float x, float y, Color color, float distance, boolean rayDirection, float[] chain){
+        Entity e = engine.createEntity();
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.x=x;
+        pc.y=y;
+        LayerComponent lc = engine.createComponent(LayerComponent.class);
+        ChainLightComponent clc = engine.createComponent(ChainLightComponent.class);
+        clc = engine.createComponent(ChainLightComponent.class);
+        for(int i = 0; i<chain.length;i++){
+            if(i%2 == 0){
+                chain[i]=(x+chain[i])/GameConstants.BOX2D_SCALE; 
+            } else {
+                chain[i]=(y+chain[i])/GameConstants.BOX2D_SCALE; 
+            }
+        }
+        clc.chainLight = new ChainLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, rayDirection ? 1:-1, chain);
+        
+        e.add(pc);
+        e.add(lc);
+        e.add(clc);
+        
+        engine.addEntity(e);
+        
+        return e;
+    }
+    
+    /**
+     * Example: EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f)
+     * @param x Pos x
+     * @param y Pos y
+     * @param color Color
+     * @param directionDegree Direction of Light
+     * @return
+     */
+    public static Entity createDirectionalLight(float x, float y, Color color, float directionDegree){
+        Entity e = engine.createEntity();
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.x=x;
+        pc.y=y;
+        LayerComponent lc = engine.createComponent(LayerComponent.class);
+        DirectionalLightComponent dlc = engine.createComponent(DirectionalLightComponent.class);
+        dlc = engine.createComponent(DirectionalLightComponent.class);
+        dlc.directionalLight = new DirectionalLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, directionDegree);
+        
+        e.add(pc);
+        e.add(lc);
+        e.add(dlc);
+        
+        engine.addEntity(e);
+        
+        return e;
+    }
     
     // ********** Rendering section BEGIN **********
     
@@ -421,7 +539,7 @@ public class EntityCreator {
         
         pe.particleEffect = new ParticleEffect();
         
-        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/test.p"),Gdx.files.internal("src/main/resources/data/particle/"));
+        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
         pe.loop=true;
         pe.particleEffect.flipY();
         pe.particleEffect.start();
@@ -437,8 +555,8 @@ public class EntityCreator {
     	Entity entity = engine.createEntity();
 
     	// FOR TESTS:
-    	if (info.getBooleanProperty("Invulnerable", false) && info.getProperty("Type", "").equals("Lava"))
-    		addTestParticleAndLightComponent(entity);
+    	//if (info.getBooleanProperty("Invulnerable", false) && info.getProperty("Type", "").equals("Lava"))
+    		//addTestParticleAndLightComponent(entity);
     	
     	addRenderComponents(entity, map, info, tileX, tileY);
     	

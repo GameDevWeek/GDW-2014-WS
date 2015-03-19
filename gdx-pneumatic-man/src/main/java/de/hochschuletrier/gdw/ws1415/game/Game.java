@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
 import box2dLight.RayHandler;
+
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
@@ -9,6 +10,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
@@ -37,7 +39,6 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
@@ -186,6 +187,10 @@ public class Game {
                     }
                     if(obj.getName().equalsIgnoreCase("Player")){
                         cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
+                        //TESTS FOR LIGHT
+                        //EntityCreator.createConeLight(obj.getX(), obj.getY()-500f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
+                        //EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}/*new float[]{obj.getX()+20f, obj.getY()-20f,obj.getX()+40f, obj.getY()-20f}*/);
+                        //EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
                     }
                     if(obj.getName().equalsIgnoreCase("PlayerSpawn")){
                         //TODO: spawn point entity ?!

@@ -112,7 +112,7 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 0.49803922
+colors0: 0.49019608
 colors1: 0.29411766
 colors2: 0.9098039
 timelineCount: 1
@@ -141,4 +141,4 @@ additive: true
 behind: false
 premultipliedAlpha: false
 - Image Path -
-/C:/Users/Stan Dard/Desktop/GDW/sdfsdf.png
+lsr.png
