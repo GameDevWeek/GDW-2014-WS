@@ -41,7 +41,7 @@ public class Credits extends SandboxGame implements SceneAnimator.Getter {
             logger.error("Error loading credits", ex);
         }
         
-        background = assetManager.getTexture("credit_Background");
+        background = assetManager.getTexture("credit_background");
         
     }
 
