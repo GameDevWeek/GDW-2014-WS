@@ -44,4 +44,5 @@ public class GameConstants {
         else TileSizeY = y;
     }
 
+    public static boolean pause = false;
 }
