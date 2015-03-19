@@ -6,6 +6,8 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 
+import net.java.games.input.Mouse;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -46,9 +48,11 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
     public MainMenuState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
         this.assetManager=assetManager;
+        MusicManager.play(music, 2.0f);
+        
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
-        
+       
         //test IngameMenu:
 //        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
         hand = new DecoImage(assetManager.getTexture("zeigefinger2"));

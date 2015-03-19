@@ -36,7 +36,7 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
 //    }
 
     public CreditsMenu(Skin skin, MenuManager menuManager) {
-        super(skin, "menu_bg");
+        super(skin, "background_menu");
 
         try {
             sceneAnimator = new SceneAnimator(this, "data/json/credits.json");
