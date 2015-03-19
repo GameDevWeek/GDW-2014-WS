@@ -1,13 +1,20 @@
     package de.hochschuletrier.gdw.ws1415.states;
 
+import java.awt.Cursor;
 import java.awt.MouseInfo;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
@@ -17,6 +24,7 @@ import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
 import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.commons.utils.Point;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.sandbox.menu.IngameMenu;
 import de.hochschuletrier.gdw.ws1415.sandbox.menu.MainMenu;
@@ -33,30 +41,30 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
     private final MenuManager menuManager = new MenuManager(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, null);
     private final  DecoImage hand;
     private final InputForwarder inputForwarder;
-    private final AssetManagerX assetManager;
+    private final AssetManagerX assetManager;    
+            
     public MainMenuState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
-        MusicManager.play(music, 2.0f);
-        
         this.assetManager=assetManager;
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
         
         //test IngameMenu:
 //        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
-        hand = new DecoImage(assetManager.getTexture("zeigefinger"));
+        hand = new DecoImage(assetManager.getTexture("zeigefinger2"));
+        //hand.setSize(hand.getWidth()/2,hand.getWidth()/2);
         menuManager.addLayer(mainMenu);
         
         menuManager.addLayer(new DecoImage(assetManager.getTexture("background_overlay")));
        // menuManager.addLayer(hand);
         
         menuManager.pushPage(mainMenu);
-        mainMenu.addActor(hand);
+        menuManager.getStage().addActor(hand);
 //        menuManager.getStage().setDebugAll(true);
 
         Main.getInstance().addScreenListener(menuManager);
+       
         
-
         inputForwarder = new InputForwarder() {
             @Override
             public boolean keyUp(int keycode) {
@@ -80,7 +88,12 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
     @Override
     public void update(float delta) {
         menuManager.update(delta);
-        hand.setPosition(MouseInfo.getPointerInfo().getLocation().x-((hand.getWidth()/3)),(MouseInfo.getPointerInfo().getLocation().y*(-1))-(hand.getHeight()/3)); 
+        //hand.setPosition(MouseInfo.getPointerInfo().getLocation().x,(MouseInfo.getPointerInfo().getLocation().y*(-1))); 
+        //hand.setAlign(Align.center);
+        Vector2 vector= menuManager.getStage().screenToStageCoordinates(new Vector2(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y));
+       // hand.setX(MouseInfo.getPointerInfo().getLocation().x);
+        //hand.setY(Main.WINDOW_HEIGHT - MouseInfo.getPointerInfo().getLocation().y);
+        hand.setPosition(vector.x-728,vector.y-1194);
         render();
     }
 

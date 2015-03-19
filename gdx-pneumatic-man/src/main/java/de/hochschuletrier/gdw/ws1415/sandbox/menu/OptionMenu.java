@@ -47,13 +47,13 @@ public class OptionMenu extends MenuPage
         
        // createLabel(menuManager.getWidth()/2-150, y).setText("GAMEPAD / KEYBOARD");
         y -= 50;
-        gamepadButton = addButton(menuManager.getWidth()/2-150, y, 100, 50, "GAMEPAD", this::onSoundVolumeChanged, "toggle");
-        keyboardButton = addButton(menuManager.getWidth()/2-40, y, 100, 50, "KEYBOARD", this::onSoundVolumeChanged, "toggle");
+        gamepadButton = addButton(menuManager.getWidth()/2-150, y, 100, 50, "GAMEPAD", this::onGamepadChanged, "toggle");
+        keyboardButton = addButton(menuManager.getWidth()/2-40, y, 100, 50, "KEYBOARD", this::onKeyboardChanged, "toggle");
         
         buttonGroup.add(gamepadButton);
         buttonGroup.add(keyboardButton);
-        buttonGroup.setChecked("keyboardButton");	
-		
+        buttonGroup.setChecked("KEYBOARD");
+                		
 		addCenteredButton(450, 850, 200, 200, "<", () -> menuManager.popPage());
 	}
 	
@@ -101,6 +101,18 @@ public class OptionMenu extends MenuPage
         musicLabel.setText(pctToString(value));
         MusicManager.setGlobalVolume(value);
     }
+    
+    private void onGamepadChanged()
+    {
+    	Settings.GAMEPAD_ENABLED.set(true);
+    	//System.out.println("Gamepad");
+    }
+    
+    private void onKeyboardChanged()
+    {
+    	Settings.GAMEPAD_ENABLED.set(false);
+    	//System.out.println("Keyboard");
+    }
 
 //    private void onSoundMuteChanged() 
 //    {
@@ -135,7 +147,7 @@ public class OptionMenu extends MenuPage
 
     private void restoreSettings() 
     {
-    	System.out.println("Restore");
+    	//System.out.println("Restore");
         soundSlider.setValue(Settings.SOUND_VOLUME.get());
        // soundMuteButton.setChecked(!Settings.SOUND_MUTE.get());
         musicSlider.setValue(Settings.MUSIC_VOLUME.get());
@@ -145,7 +157,7 @@ public class OptionMenu extends MenuPage
 
     private void storeSettings() 
     {
-    	System.out.println("Store");
+    	//System.out.println("Store");
         Settings.SOUND_VOLUME.set(soundSlider.getValue());
        // Settings.SOUND_MUTE.set(!soundMuteButton.isChecked());
         Settings.MUSIC_VOLUME.set(musicSlider.getValue());
