@@ -19,7 +19,7 @@
         "filename": "data/animations/char_death_2048.png",
         "frames" : 40,
         "frameDuration": [0.05],
-        "playType" : "NORMAL",
+        "playType" : "REVERSED",
         "columns": 8,
         "rows" : 5
     },
