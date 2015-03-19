@@ -129,7 +129,7 @@ public class EntityCreator {
 
         return entityToDie;
     }
-    
+
     public static Entity createAndAddMiner(float x, float y){
         Entity entity = engine.createEntity();
         
