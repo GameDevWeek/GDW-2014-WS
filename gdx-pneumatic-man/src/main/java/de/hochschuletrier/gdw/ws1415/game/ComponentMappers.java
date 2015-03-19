@@ -32,4 +32,7 @@ public class ComponentMappers {
     public static final ComponentMapper<DirectionalLightComponent>  directionalLight = ComponentMapper.getFor(DirectionalLightComponent.class);
     public static final ComponentMapper<ChainLightComponent>  chainLight = ComponentMapper.getFor(ChainLightComponent.class);
     public static final ComponentMapper<ConeLightComponent>  coneLight = ComponentMapper.getFor(ConeLightComponent.class);
+    public static final ComponentMapper<LavaFountainComponent> lavaFountain = ComponentMapper.getFor(LavaFountainComponent.class);
+    public static final ComponentMapper<LavaBallComponent> lavaBall = ComponentMapper.getFor(LavaBallComponent.class);
+
 }
