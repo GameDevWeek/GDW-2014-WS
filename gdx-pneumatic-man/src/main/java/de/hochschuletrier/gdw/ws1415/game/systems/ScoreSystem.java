@@ -25,7 +25,8 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
     public Entity goal;
     public Entity player;
     public boolean playerAdded = false;
-    public float current_game_time = 0;
+    float n = 0;
+    public int current_game_time = 0;
 
     public ScoreSystem() {
         super(1);
@@ -40,7 +41,12 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void update(float deltaTime) {
-        current_game_time += deltaTime;
+        n += deltaTime;
+        if(n>=1.0f){
+            current_game_time += 1;
+            n-=1.0f;
+            logger.info("Time: " + current_game_time);
+        }
     }
 
     @Override
