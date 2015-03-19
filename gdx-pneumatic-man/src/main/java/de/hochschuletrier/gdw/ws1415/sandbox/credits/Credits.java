@@ -42,12 +42,7 @@ public class Credits extends SandboxGame implements SceneAnimator.Getter {
         }
         
         background = assetManager.getTexture("credit_Background");
-//        background.setPosition(0, 0);
         
-//        hintergrund = new Image(assetManager.getTexture("credit_Background"));
-//        hintergrund = assetManager.getTexture("credit_Background");
-        
-//        DrawUtil.draw(background, 0, 0);
     }
 
 
