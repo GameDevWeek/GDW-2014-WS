@@ -52,8 +52,7 @@ public class AnimationExtendedLoader extends
 
     @Override
     public String getFilePrefix() {
-        // TODO Auto-generated method stub
-        return "";
+        return "Anim:";
     }
 
     @Override
@@ -66,7 +65,7 @@ public class AnimationExtendedLoader extends
     @Override
     public AnimationExtended loadSync(AssetManager manager, String fileName,
             FileHandle file, AnimationExtendedParameter parameter) {
-        Texture texture = manager.get(fileName, Texture.class);
+        Texture texture = manager.get(parameter.filename, Texture.class);
         int tileWidth = texture.getWidth() / parameter.columns;
         int tileHeight = texture.getHeight() / parameter.rows;
         TextureRegion[][] tmp = TextureRegion.split(texture, tileWidth, tileHeight);
