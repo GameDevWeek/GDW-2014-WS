@@ -109,8 +109,8 @@ public class EntityCreator {
         moveComponent.speed = 20000.0f;
         entity.add(moveComponent);
 
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
+        //DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
+        //entity.add(blockComp);
 
         engine.addEntity(entity);
         return entity;
@@ -194,16 +194,16 @@ public class EntityCreator {
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(SpawnComponent.class));
 
-        PhysixBodyComponent pbc = new PhysixBodyComponent();
+        PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
         PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
-        pbc.init(pbdy, physixSystem, entity);
+        bodyComponent.init(pbdy, physixSystem, entity);
         PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).restitution(0.1f)
                 .shapeBox(width, height);
-        Fixture fixture = pbc.createFixture(pfx);
-        fixture.setUserData(pbdy);
-        entity.add(pbc);
+        Fixture fixture = bodyComponent.createFixture(pfx);
+        fixture.setUserData(bodyComponent);
+        entity.add(bodyComponent);
         AIComponent ai = new AIComponent();
         ai.type = type;
         entity.add(ai);
@@ -263,7 +263,7 @@ public class EntityCreator {
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(entity);
+        fixture.setUserData(bodyComponent);
         entity.add(bodyComponent);
 
         FallingRockComponent rockComponent = new FallingRockComponent();
@@ -295,7 +295,7 @@ public class EntityCreator {
                 .restitution(0.1f)
                 .sensor(true);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(entity);
+        fixture.setUserData(bodyComponent);
         entity.add(bodyComponent);
 
         FallingRockTriggerComponent rockComponent = new FallingRockTriggerComponent();
@@ -309,7 +309,7 @@ public class EntityCreator {
     /**
      *  Destructable Block
      */
-    public static Entity createAndAddVulnerableFloor(float x, float y, TiledMap map, TileInfo info, int tileX, int tileY) {
+    public static Entity createAndAddVulnerableFloor(float x, float y, TiledMap map, TileInfo info, int health,  int tileX, int tileY) {
         Entity entity = engine.createEntity();
         
         addRenderComponents(entity, map, info, tileX, tileY); // TODO: Change as soon as design team added the animation properties.
@@ -322,7 +322,7 @@ public class EntityCreator {
         entity.add(blockComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 1;
+        Health.Value = health;
         entity.add(Health);
 
         engine.addEntity(entity);
@@ -378,7 +378,7 @@ public class EntityCreator {
                 .density(density).friction(friction).shapeBox(width, height)
                 .restitution(restitution);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(entity);
+        fixture.setUserData(bodyComponent);
         return bodyComponent;
     }
     
@@ -398,7 +398,7 @@ public class EntityCreator {
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(entity);
+        fixture.setUserData(bodyComponent);
         entity.add(bodyComponent);
 
         DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);

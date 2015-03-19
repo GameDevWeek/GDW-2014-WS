@@ -6,12 +6,12 @@ lowMin: 200.0
 lowMax: 200.0
 - Count - 
 min: 0
-max: 3
+max: 50
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 100.0
-highMax: 100.0
+highMin: 250.0
+highMax: 250.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -20,8 +20,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 200.0
-highMax: 200.0
+highMin: 400.0
+highMax: 400.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -32,16 +32,7 @@ timeline0: 0.0
 timeline1: 0.66
 timeline2: 1.0
 - Life Offset - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
+active: false
 - X Offset - 
 active: true
 lowMin: -32.0
@@ -70,9 +61,9 @@ timeline0: 0.0
 - Spawn Height - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 20.0
-highMax: 20.0
-relative: true
+highMin: 0.0
+highMax: 0.0
+relative: false
 scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
@@ -80,9 +71,9 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 64.0
-highMax: 64.0
-relative: true
+highMin: 32.0
+highMax: 32.0
+relative: false
 scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
@@ -121,9 +112,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 0.7607843
-colors1: 0.7019608
-colors2: 0.8
+colors0: 1.0
+colors1: 0.90588236
+colors2: 0.4862745
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -150,4 +141,4 @@ additive: false
 behind: false
 premultipliedAlpha: false
 - Image Path -
-xpl.png
+lv.png
