@@ -5,11 +5,11 @@ import com.badlogic.gdx.utils.Pool;
 
 public class LavaBallComponent extends Component implements Pool.Poolable{
     
-    public float restDistance, startPositionX, startPositionY;
+    public float travelLength, startPositionX, startPositionY;
 
     @Override
     public void reset() {
-        restDistance = 0;
+        travelLength = 0;
         startPositionX = 0;
         startPositionY = 0;
     }

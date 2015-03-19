@@ -21,8 +21,8 @@ public class MovementSystem extends IteratingSystem {
     }
 
     public MovementSystem(int priority) {
-        super(Family.all(PhysixBodyComponent.class, InputComponent.class)
-                .one(MovementComponent.class, JumpComponent.class).get(),
+        super(Family.all(PhysixBodyComponent.class)
+                .one(MovementComponent.class, JumpComponent.class,InputComponent.class).get(),
                 priority);
     }
 
@@ -36,14 +36,10 @@ public class MovementSystem extends IteratingSystem {
 
         if (movement != null) {
 
-            if(input.direction == -1){
-                movement.velocity.set(-movement.speed, movement.velocity.y);
-            }else if(input.direction == 1){
-                movement.velocity.set(movement.speed, movement.velocity.y);
-            }else {
-                movement.velocity.set(0, movement.velocity.y);
+            if(input != null){
+                movement.velocity.set(movement.speed * input.direction, movement.velocity.y);
             }
-            
+
             physix.setLinearVelocity(movement.velocity.x * deltaTime,
                     physix.getLinearVelocity().y
                             + (movement.velocity.y * deltaTime));
@@ -62,7 +58,7 @@ public class MovementSystem extends IteratingSystem {
          */
         if (jump != null) {
             // if jump was called
-            if (input.jump) {
+            if (input != null && input.jump) {
                 jump.doJump = true;
                 // if entity is on the ground and the timeToNextBounce has
                 // surpassed the current restingTime --> jump!
@@ -81,7 +77,7 @@ public class MovementSystem extends IteratingSystem {
                 }else{
                     jump.timeToNextJump = 0;
                 }
-            } 
+            }
         }
     }
 }
