@@ -1,8 +1,8 @@
 {
     "textStyles" : {
-        "title_left": { "color": "F8BB08", "font": "orbitron", "align": "right" },
-        "title_right": { "color": "F8BB08", "font": "orbitron", "align": "left" },
-        "title_center": { "color": "F8BB08", "font": "orbitron", "align": "center" },
+        "title_left": { "color": "FFFFFF", "font": "orbitron", "align": "right" },
+        "title_right": { "color": "FFFFFF", "font": "orbitron", "align": "left" },
+        "title_center": { "color": "FFFFFF", "font": "orbitron", "align": "center" },
         "text_center": { "color": "FFFFFF", "font": "orbitron", "align": "center" },
         "text_left": { "color": "FFFFFF", "font": "orbitron", "align": "right" },
         "text_right": { "color": "FFFFFF", "font": "orbitron", "align": "left" }
@@ -32,26 +32,26 @@
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Tobias Meier", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Thomas Juergensen", "delay": "0" },
-                { "type": "text", "path" : "text", "style" : "text_left", "text": "Sandra Weyland  ", "delay": "1350" },
+                { "type": "text", "path" : "text", "style" : "text_left", "text": "Sandra Weyand  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Physik", "delay": "2500" },
+                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Physik", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "David Neubauer  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Oliver Biwer", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "David Liebemann  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Game Logik", "delay": "2500" },
+                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Game Logik", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Markus Schmieder  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Sebastian Krause", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Sinan Sagunc  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Tobias Thierbach", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Hermann Hockemeier  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Rendering", "delay": "2500" },
+                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Rendering", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Dennis Grass  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Tobias Rogalski", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Wladimir Kroeker  ", "delay": "1350" },
                 
-                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Menu & Hud", "delay": "2500" },
+                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Menu & Hud", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Jeremy Merse  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Yasmin Juncker", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Mira Lorenz  ", "delay": "1350" },
@@ -59,29 +59,31 @@
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Maximilian Furrer  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Niklas Zorell", "delay": "0" },
                 
-                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Level Design", "delay": "2500" },
+                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Level Design", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Michael Kramer", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Reiko Schroth  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Philipp Rath", "delay": "0" },
                 
-                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Input", "delay": "2500" },
+                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Input", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Annika Kremer  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "style" : "text_right", "text": "  Kevin Meßmer", "delay": "0" },
+                { "type": "text", "path" : "text", "style" : "text_right", "text": "  Kevin Messmer", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Hannes Klein  ", "delay": "1350" },
                 
-                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Sound & Musik", "delay": "2500" },
+                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Sound & Musik", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Felix Wishnewsky ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Noah Plingen", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Manuel Neugebauer  ", "delay": "1350" },
                 
-                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Design", "delay": "2500" },
+                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Design", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Julia Wolf  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Michelle Kaufmann", "delay": "0" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Saskia Hohmann  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Hans Boehme", "delay": "0" },
+                { "type": "text", "path" : "text", "style" : "text_left", "text": "Lynn Friedrich  ", "delay": "1350" },
+                { "type": "text", "path" : "text", "style" : "text_right", "text": "  Maxine Hammen", "delay": "0" },
                 
-                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Assets", "delay": "2500" },
+                { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Assets", "delay": "3000" },
                 { "type": "text", "path" : "text", "style" : "text_left", "text": "Tobias Gepp  ", "delay": "1350" },
                 { "type": "text", "path" : "text", "style" : "text_right", "text": "  Dominik Petersdorf", "delay": "0" },
                 
