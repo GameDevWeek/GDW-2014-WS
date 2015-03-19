@@ -11,22 +11,24 @@ import com.badlogic.gdx.utils.Pool;
  * start the first time 
  * length: how long should the fountain shoot of
  * projectiles
- * 
+ * lavaFountainSpeed: How fast should the lavaBalls be shot out
  * @author David
  *
  */
 public class LavaFountainComponent extends Component implements Pool.Poolable {
 
-    public float height, intervall, intervallOffset, length;
+    public float height, intervall, intervallOffset, length, lavaFountainSpeed;
     
     
     
     public float timeToNextFountain = 0;
     public float timeTillFountainStops = 0;
+    public float timeToNextBall = 0;
+    
 
     @Override
     public void reset() {
-        height = intervall = intervallOffset = length = timeToNextFountain = timeTillFountainStops = 0;
+        height = intervall = intervallOffset = length = timeToNextFountain = timeTillFountainStops = lavaFountainSpeed = timeToNextBall = 0;
 
     }
 

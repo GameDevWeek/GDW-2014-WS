@@ -10,6 +10,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 
 public class LavaFountainSystem extends IteratingSystem{
+    
 
     public LavaFountainSystem(int priority) {
         super(Family.all(LavaFountainComponent.class, PositionComponent.class).get(),
@@ -23,11 +24,19 @@ public class LavaFountainSystem extends IteratingSystem{
         PositionComponent position = ComponentMappers.position.get(entity);
         
         if(lavaFountain.intervallOffset <= 0){
+            // if offset is over
             if(lavaFountain.timeToNextFountain <= 0){
+                // if cooldown (aka intervall) of fountain has run down
                 if(lavaFountain.timeTillFountainStops>0){
+                    // if the time a lava fountain runs has run
                     lavaFountain.timeTillFountainStops -= deltaTime;
+                    if(lavaFountain.timeToNextBall <= 0){
+                        
+                        
+                        
+                        //TODO lavaFountain.timeToNextBall = 
+                    }
                     
-                    //TODO Shoot LavaBalls
                 }else{
                     lavaFountain.timeTillFountainStops = lavaFountain.length;
                     lavaFountain.timeToNextFountain = lavaFountain.intervall;

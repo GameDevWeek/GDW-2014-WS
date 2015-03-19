@@ -277,14 +277,23 @@ public class EntityCreator {
     public static Entity createAndAddLava(Rectangle rect) {
         Entity entity = engine.createEntity();
 
+        float scale = 0.9f;
         float width = rect.width * GameConstants.getTileSizeX();
-        float height = rect.height * GameConstants.getTileSizeY();
+        float height = rect.height * GameConstants.getTileSizeY() * scale;
         float x = rect.x * GameConstants.getTileSizeX() + width / 2;
-        float y = rect.y * GameConstants.getTileSizeY() + height / 2;
-
-        entity.add(defineBoxPhysixBodyComponent(entity, x, y,
-               width, height,
-                true, 1f, 1f, 0.1f));
+        float y = rect.y * GameConstants.getTileSizeY() + height / 2 + height * (1-scale);
+        
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1f).friction(1f).shapeBox(width, height)
+                .restitution(0.1f);
+        fixtureDef.sensor(true);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
 
         KillsPlayerOnContactComponent killComponent = engine
                 .createComponent(KillsPlayerOnContactComponent.class);
@@ -414,6 +423,24 @@ public class EntityCreator {
 
     }
     
+    public static void createLavaBall(float x, float y, float lavaBallSpeed){
+        Entity entity = engine.createEntity();
+        
+        float radius = GameConstants.getTileSizeX()/2;
+        
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1f).friction(1f).shapeCircle(radius)
+                .restitution(0.1f);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
+        
+    }
+    
     
     // ********** Rendering section BEGIN **********
     
@@ -526,4 +553,6 @@ public class EntityCreator {
     	addRenderComponents(entity, px, py, 0, 0.2f, anim);
     }
     // ********** Rendering section END **********
+    
+   
 }
