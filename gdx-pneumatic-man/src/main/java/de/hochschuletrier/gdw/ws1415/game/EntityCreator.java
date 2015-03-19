@@ -74,6 +74,8 @@ public class EntityCreator {
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         entity.add(engine.createComponent(PlayerComponent.class));
+
+        addTestParticleAndLightComponent(entity);
         
 //        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
 
@@ -666,13 +668,13 @@ public class EntityCreator {
     public static void addTestParticleAndLightComponent(Entity entity) {
         ParticleComponent pe = engine.createComponent(ParticleComponent.class);
         
-        pe.particleEffect = new ParticleEffect();
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("explosion"));
         
-        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
+        //pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
         pe.loop=true;
         pe.particleEffect.flipY();
         pe.particleEffect.start();
-        
+        pe.offsetY = 100f;
         PointLightComponent pl = engine.createComponent(PointLightComponent.class);
         pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),125,new Color(1f,0f,0f,1f),5f,0,0);
         
