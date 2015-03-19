@@ -150,6 +150,8 @@ public class Gamelogic_Game extends SandboxGame {
             inputGamepadSystem.setProcessing(false);
             inputKeyboardSystem.setProcessing(true);
         }
+        
+        Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
     }
 
     @Override
@@ -170,7 +172,6 @@ public class Gamelogic_Game extends SandboxGame {
                 MovementX += 300.0f;
             }
             playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
-            
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F2))
         {
