@@ -70,6 +70,7 @@ public class MenuPage extends Group {
             @Override
             public void clicked(InputEvent event, float width, float height) {
                 //System.out.println("kjfghkd");
+               
                 runnable.run();
             }
         });
