@@ -10,7 +10,6 @@ import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 public class InputManager implements SettingListener<Boolean>{
 	
 	private void setKeyboard(){
-	    MyControllers.removeListener(EntityCreator.engine.getSystem(InputGamepadSystem.class));
 		EntityCreator.engine.getSystem(InputKeyboardSystem.class).setProcessing(true);
 		EntityCreator.engine.getSystem(InputGamepadSystem.class).setProcessing(false);
 	}

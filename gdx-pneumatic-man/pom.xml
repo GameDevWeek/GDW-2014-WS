@@ -107,7 +107,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>de.hochschuletrier.gdw.ss14.Main</mainClass>
+                            <mainClass>de.hochschuletrier.gdw.ws1415.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
