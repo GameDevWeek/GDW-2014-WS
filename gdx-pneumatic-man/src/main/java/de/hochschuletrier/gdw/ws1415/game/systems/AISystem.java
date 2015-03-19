@@ -34,6 +34,7 @@ public class AISystem extends IteratingSystem {
      */
     private boolean checkInFront(PhysixBodyComponent physix, Vector2 dir, float speed){
         Ray ray = new Ray();
+        if(speed == 0) return false;
         this.physixSystem.getWorld().rayCast(ray, physix.getPosition(),
                 physix.getPosition()
                         .add(dir.scl(speed)));
@@ -54,10 +55,11 @@ public class AISystem extends IteratingSystem {
      */
     private boolean checkBottomFront(PhysixBodyComponent physix, Vector2 dir, float speed){
         Ray ray = new Ray();
+        if(speed == 0) return false;
         this.physixSystem.getWorld().rayCast(ray, physix.getPosition(),
                 physix.getPosition()
                         .add(dir.scl(speed))
-                        .sub(Vector2.Y.scl(physix.getY()))
+                        .add(Vector2.Y.scl(physix.getY()))
         );
 
         if(ray.fraction <= speed) {
@@ -79,7 +81,7 @@ public class AISystem extends IteratingSystem {
         PositionComponent position = ComponentMappers.position.get(entity);
         DirectionComponent direction = entity.getComponent(DirectionComponent.class);
         AIComponent ai = ComponentMappers.AI.get(entity);
-        if(ai.type == AIType.Dog); //TODO: do some stuff based on AIType
+        if(ai.type == AIType.DOG); //TODO: do some stuff based on AIType
 
         Vector2 dir = direction.facingDirection.toVector2();
 

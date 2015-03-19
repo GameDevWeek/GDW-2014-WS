@@ -52,6 +52,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
@@ -77,6 +78,7 @@ public class Gamelogic_Game extends SandboxGame {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     
+    private final ScoreSystem _ScoreSystem = new ScoreSystem();
     private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
@@ -197,6 +199,7 @@ public class Gamelogic_Game extends SandboxGame {
         engine.addSystem(inputGamepadSystem);
         engine.addSystem(aisystems);
         engine.addSystem(_HealthSystem);
+        engine.addSystem(_ScoreSystem);
     }
 
     // TODO: replace by MapLoader class

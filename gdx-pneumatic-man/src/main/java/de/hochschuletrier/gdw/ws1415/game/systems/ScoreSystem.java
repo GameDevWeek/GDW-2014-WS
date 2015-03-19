@@ -28,12 +28,6 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         engine.addEntityListener(Fam, this);
     }
 
-    public void removedfromEngine(Entity entity) {
-        if (MinerFamily.matches(entity)) {
-            goal.getComponent(GoalComponent.class).miners_saved += 1;
-        }
-    }
-
     public void update() {
 
     }
@@ -52,7 +46,8 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityRemoved(Entity entity) {
-        // TODO Auto-generated method stub
-
+        if (MinerFamily.matches(entity)) {
+            
+        }
     }
 }
