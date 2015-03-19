@@ -44,7 +44,7 @@ public class TextureRenderer extends SortedFamilyRenderSystem.Renderer {
         int w = region.getRegionWidth();
         int h = region.getRegionHeight();
         
-    	DrawUtil.batch.draw(tex, x, y, w*0.5f, h*0.5f, w, h, 1f, 1f, rotation, 
+    	DrawUtil.batch.draw(tex, x - w * 0.5f, y - h * 0.5f, w*0.5f, h*0.5f, w, h, 1f, 1f, rotation, 
     			region.getRegionX(), region.getRegionY(), w, h, false, true);
     }
 }

@@ -23,7 +23,16 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
     	AnimationComponent animation = ComponentMappers.animation.get(entity);
         PositionComponent position = ComponentMappers.position.get(entity);
 
-        animation.stateTime += deltaTime;
+        if (animation.IsActive)
+        {
+            animation.stateTime += deltaTime;
+            if (animation.stateTime > animation.animation.animationDuration)
+            {
+                animation.stateTime %= animation.animation.animationDuration;
+                animation.animationFinished = true;
+            }
+        }
+        
         TextureRegion keyFrame = animation.animation.getKeyFrame(animation.stateTime);
         int w = keyFrame.getRegionWidth();
         int h = keyFrame.getRegionHeight();
