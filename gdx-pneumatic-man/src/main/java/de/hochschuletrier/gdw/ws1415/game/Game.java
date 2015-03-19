@@ -34,7 +34,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
@@ -46,13 +45,14 @@ import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.PhysixUtil;
 import de.hochschuletrier.gdw.ws1415.states.DirectionEnum;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 
 
 
-import java.nio.file.AccessDeniedException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
 public class Game {
