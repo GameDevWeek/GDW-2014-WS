@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import box2dLight.RayHandler;
+
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
@@ -9,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
@@ -86,7 +89,8 @@ public class Game {
     private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
-    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
+    private final RayHandler rayHandler = new RayHandler(physixSystem.getWorld());
+    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
@@ -138,11 +142,32 @@ public class Game {
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
 
         setupPhysixWorld();
-        generateWorldFromTileMap();
 
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
+        if(Controllers.getControllers().size > 0)
+        {
+            inputKeyboardSystem.setProcessing(false);
+            inputGamepadSystem.setProcessing(true);
+        }
+        else
+        {
+            inputGamepadSystem.setProcessing(false);
+            inputKeyboardSystem.setProcessing(true);
+        }
+        generateWorldFromTileMap();
+        
+        if(Controllers.getControllers().size > 0)
+        {
+            inputKeyboardSystem.setProcessing(false);
+            inputGamepadSystem.setProcessing(true);
+        }
+        else
+        {
+            inputGamepadSystem.setProcessing(false);
+            inputKeyboardSystem.setProcessing(true);
+        }
         inputManager.init();
        
     }
@@ -205,6 +230,10 @@ public class Game {
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("PlayerSpawn")){
                         cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
+                        //TESTS FOR LIGHT
+                        EntityCreator.createConeLight(obj.getX(), obj.getY()-500f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
+                        //EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}/*new float[]{obj.getX()+20f, obj.getY()-20f,obj.getX()+40f, obj.getY()-20f}*/);
+                        //EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("LevelEnd")){
                         EntityCreator.createAndAddEventBox(obj.getX(), obj.getY());
