@@ -1,9 +1,16 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import box2dLight.ChainLight;
+import box2dLight.ConeLight;
+import box2dLight.DirectionalLight;
+import box2dLight.PointLight;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -32,14 +39,23 @@ import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.ChainLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.ConeLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.DirectionalLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
@@ -84,12 +100,13 @@ public class EntityCreator {
         entity.add(bodyComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
+
         jumpComponent.jumpImpulse = 25000.0f;
-        jumpComponent.restingTime = 0.02f;
+        jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
         MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
-        moveComponent.speed = 12000.0f;
+        moveComponent.speed = 20000.0f;
         entity.add(moveComponent);
 
         //DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
@@ -105,15 +122,6 @@ public class EntityCreator {
         //TODO
         //Loading new Dying-Animation - waiting for Assets
         
-        
-        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
-        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
-        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("data/images/Cowboy small.jpg")));
-        deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
-        
-//        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
-//        animation.IsActive = false;
-//        dyingEntity.add(animation);
         entityToDie.remove(AnimationComponent.class);
         entityToDie.remove(DamageComponent.class);
         entityToDie.remove(InputComponent.class);
@@ -122,11 +130,53 @@ public class EntityCreator {
         entityToDie.remove(PhysixBodyComponent.class);
         entityToDie.remove(MovementComponent.class);
         entityToDie.remove(JumpComponent.class);
+
+        
+        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        TextureRegion region = new TextureRegion(new Texture(Gdx.files.internal("data/animations/char_death_2048.png")));
+        deathAnimation.IsActive = true;
+        deathAnimation.animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, new float[] {300}, region);
+        
+//        AnimationComponent animation = entityToDie.getComponent(AnimationComponent.class);
+//        animation.IsActive = false;
+//        dyingEntity.add(animation);
         
         entityToDie.add(deathAnimation);
         entityToDie.add(deathComponent);
+         // Shifts camera to (0,0)??
+        LayerComponent Layer = engine.createComponent(LayerComponent.class);
+        Layer.layer = 1;
+        entityToDie.add(Layer);
 
         return entityToDie;
+    }
+
+    public static Entity createAndAddMiner(float x, float y){
+        Entity entity = engine.createEntity();
+        
+        entity.add(engine.createComponent(AnimationComponent.class));
+        entity.add(engine.createComponent(PositionComponent.class));
+        entity.add(engine.createComponent(MinerComponent.class));
+        entity.add(engine.createComponent(HealthComponent.class));
+        
+        float width = GameConstants.getTileSizeX() * 0.9f;
+        float height = GameConstants.getTileSizeY() * 0.9f;
+        
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        bodyComponent.getBody().setUserData(bodyComponent);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(0).restitution(0.1f)
+                .shapeBox(width, height);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        entity.add(bodyComponent);
+        
+        engine.addEntity(entity);
+        return entity;
     }
 
     /**
@@ -197,15 +247,6 @@ public class EntityCreator {
         engine.addEntity(entity);
         return entity;
     }
-    
-    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
-    	Entity entity = engine.createEntity();
-
-    	addRenderComponents(entity, map, info, tileX, tileY);
-    	
-    	engine.addEntity(entity);
-    	return entity;
-    }
 
     /**
      * This is the Block who'll fall down onto the player
@@ -215,8 +256,9 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
 
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody, physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
+        bodyComponent.getBody().setActive(false);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
@@ -225,9 +267,14 @@ public class EntityCreator {
         entity.add(bodyComponent);
 
         FallingRockComponent rockComponent = new FallingRockComponent();
-        rockComponent.falling = false;
         rockComponent.id = trapId;
-
+        entity.add(rockComponent);
+        
+        DamageComponent damageComp = engine.createComponent(DamageComponent.class);
+        damageComp.damage = 4;
+        damageComp.damageToPlayer = true;
+        damageComp.damageToTile = true;
+        
         engine.addEntity(entity);
         return entity;
     }
@@ -240,7 +287,7 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
 
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody, physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f)
@@ -253,7 +300,8 @@ public class EntityCreator {
 
         FallingRockTriggerComponent rockComponent = new FallingRockTriggerComponent();
         rockComponent.rockEntity = rock;
-
+        entity.add(rockComponent);
+        
         engine.addEntity(entity);
         return entity;
     }
@@ -285,14 +333,25 @@ public class EntityCreator {
     public static Entity createAndAddLava(Rectangle rect) {
         Entity entity = engine.createEntity();
 
-        float width = rect.width * GameConstants.getTileSizeX();
-        float height = rect.height * GameConstants.getTileSizeY();
-        float x = rect.x * GameConstants.getTileSizeX() + width / 2;
-        float y = rect.y * GameConstants.getTileSizeY() + height / 2;
+        
 
-        entity.add(defineBoxPhysixBodyComponent(entity, x, y,
-               width, height,
-                true, 1f, 1f, 0.1f));
+        float scale = 0.9f;
+        float width = rect.width * GameConstants.getTileSizeX();
+        float height = rect.height * GameConstants.getTileSizeY() * scale;
+        float x = rect.x * GameConstants.getTileSizeX() + width / 2;
+        float y = rect.y * GameConstants.getTileSizeY() + height / 2 + height * (1-scale);
+        
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1f).friction(1f).shapeBox(width, height)
+                .restitution(0.1f);
+        fixtureDef.sensor(true);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
 
         KillsPlayerOnContactComponent killComponent = engine
                 .createComponent(KillsPlayerOnContactComponent.class);
@@ -376,7 +435,8 @@ public class EntityCreator {
 
     public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, String direction, TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity entity = engine.createEntity();
-
+        
+        //addTestParticleAndLightComponent(entity);
         addRenderComponents(entity, map, info, tileX, tileY); 
 
         float angle;
@@ -430,8 +490,217 @@ public class EntityCreator {
 
     }
     
+    // ********** Light section BEGIN **********
+    public static Entity createPointLight(float x, float y, Color color, float distance){
+        Entity e = engine.createEntity();
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.x=x;
+        pc.y=y;
+        LayerComponent lc = engine.createComponent(LayerComponent.class);
+        PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+        plc = engine.createComponent(PointLightComponent.class);
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
+        
+        e.add(pc);
+        e.add(lc);
+        e.add(plc);
+        
+        engine.addEntity(e);
+        
+        return e;
+    }
+    
+    /**
+     * EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
+     * @param x Pos x
+     * @param y Pos y
+     * @param color Color
+     * @param distance Light Range
+     * @param directionDegree Direction of Light
+     * @param coneDegree Degree of the Cone
+     * @return
+     */
+    
+    public static Entity createConeLight(float x, float y, Color color, float distance, float directionDegree, float coneDegree){
+        Entity e = engine.createEntity();
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.x=x;
+        pc.y=y;
+        LayerComponent lc = engine.createComponent(LayerComponent.class);
+        ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
+        clc = engine.createComponent(ConeLightComponent.class);
+        clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, directionDegree, coneDegree);
+        
+        e.add(pc);
+        e.add(lc);
+        e.add(clc);
+        
+        engine.addEntity(e);
+        
+        return e;
+    }
+    
+    /**
+     * Example: EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}); 
+     * @param x Pos x
+     * @param y Pos y
+     * @param color Color
+     * @param distance Distance
+     * @param rayDirection TRUE = unten / FALSE = oben
+     * @param chain Linie von Punkt zu Punkt {x1, y1, x2, y2} realtiv zu Pos x & Pos y
+     * @return
+     */
+    public static Entity createChainLight(float x, float y, Color color, float distance, boolean rayDirection, float[] chain){
+        Entity e = engine.createEntity();
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.x=x;
+        pc.y=y;
+        LayerComponent lc = engine.createComponent(LayerComponent.class);
+        ChainLightComponent clc = engine.createComponent(ChainLightComponent.class);
+        clc = engine.createComponent(ChainLightComponent.class);
+        for(int i = 0; i<chain.length;i++){
+            if(i%2 == 0){
+                chain[i]=(x+chain[i])/GameConstants.BOX2D_SCALE; 
+            } else {
+                chain[i]=(y+chain[i])/GameConstants.BOX2D_SCALE; 
+            }
+        }
+        clc.chainLight = new ChainLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, rayDirection ? 1:-1, chain);
+        
+        e.add(pc);
+        e.add(lc);
+        e.add(clc);
+        
+        engine.addEntity(e);
+        
+        return e;
+    }
+    
+    /**
+     * Example: EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f)
+     * @param x Pos x
+     * @param y Pos y
+     * @param color Color
+     * @param directionDegree Direction of Light
+     * @return
+     */
+    public static Entity createDirectionalLight(float x, float y, Color color, float directionDegree){
+        Entity e = engine.createEntity();
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.x=x;
+        pc.y=y;
+        LayerComponent lc = engine.createComponent(LayerComponent.class);
+        DirectionalLightComponent dlc = engine.createComponent(DirectionalLightComponent.class);
+        dlc = engine.createComponent(DirectionalLightComponent.class);
+        dlc.directionalLight = new DirectionalLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, directionDegree);
+        
+        e.add(pc);
+        e.add(lc);
+        e.add(dlc);
+        
+        engine.addEntity(e);
+        
+        return e;
+    }
+    public static void createLavaFountain(float x, float y, float height, float intervall, 
+            float intervallOffset, float length){
+        Entity entity = engine.createEntity();
+        
+        float lavaBallSpeed = -2000.0f;
+        float lavaBallSpawnIntervall = 0.5f;
+        
+        PositionComponent position = engine.createComponent(PositionComponent.class);
+        position.x = x;
+        position.y = y;
+        entity.add(position);
+        
+        LavaFountainComponent lavaFountain = engine.createComponent(LavaFountainComponent.class);
+        lavaFountain.height = height;
+        lavaFountain.intervall = intervall;
+        lavaFountain.intervallOffset = intervallOffset;
+        lavaFountain.length = length;
+        lavaFountain.lavaBallSpeed = lavaBallSpeed;
+        lavaFountain.lavaBallSpawnIntervall = lavaBallSpawnIntervall;
+        entity.add(lavaFountain);
+        
+        engine.addEntity(entity);
+    }
+    
+    public static void createLavaBall(float x, float y, float lavaBallSpeed, float travelLength){
+        Entity entity = engine.createEntity();
+        
+        float radius = GameConstants.getTileSizeX()/2;
+        
+        float positionX = x + GameConstants.getTileSizeX()/2;
+        float positionY = y + GameConstants.getTileSizeY()/2;
+        
+        PhysixBodyComponent bodyComponent = engine
+                .createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                physixSystem).position(positionX, positionY).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1f).friction(1f).shapeCircle(radius)
+                .restitution(0.1f);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(entity);
+        entity.add(bodyComponent);
+        
+        MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
+        moveComponent.velocity.set(0, lavaBallSpeed);
+        entity.add(moveComponent);
+        
+        DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
+        damageComponent.damage = 1;
+        damageComponent.damageToPlayer = true;
+        entity.add(damageComponent);
+        
+        LavaBallComponent lavaBallComponent = engine.createComponent(LavaBallComponent.class);
+        lavaBallComponent.travelLength = travelLength;
+        lavaBallComponent.startPositionX = positionX;
+        lavaBallComponent.startPositionY = positionY;
+        entity.add(lavaBallComponent);
+        
+        PositionComponent position = engine.createComponent(PositionComponent.class);
+        position.x = positionX;
+        position.y = positionY;
+        entity.add(position);
+        
+        engine.addEntity(entity);
+    }
+    
     
     // ********** Rendering section BEGIN **********
+    
+    public static void addTestParticleAndLightComponent(Entity entity) {
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        
+        pe.particleEffect = new ParticleEffect();
+        
+        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        
+        PointLightComponent pl = engine.createComponent(PointLightComponent.class);
+        pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),125,new Color(1f,0f,0f,1f),5f,0,0);
+        
+        entity.add(pe);
+        entity.add(pl);
+    }
+    
+    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
+    	Entity entity = engine.createEntity();
+
+    	// FOR TESTS:
+    	//if (info.getBooleanProperty("Invulnerable", false) && info.getProperty("Type", "").equals("Lava"))
+    		//addTestParticleAndLightComponent(entity);
+    	
+    	addRenderComponents(entity, map, info, tileX, tileY);
+    	
+    	engine.addEntity(entity);
+    	return entity;
+    }
     
     private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, AnimationExtended animation) {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
@@ -468,6 +737,7 @@ public class EntityCreator {
         entity.add(pos);
         entity.add(entityLayer);
         entity.add(tex);
+
     }
     
     /**
@@ -542,4 +812,6 @@ public class EntityCreator {
     	addRenderComponents(entity, px, py, 0, 0.2f, anim);
     }
     // ********** Rendering section END **********
+    
+   
 }
