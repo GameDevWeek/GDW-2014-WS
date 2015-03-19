@@ -39,6 +39,7 @@ import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
@@ -152,6 +153,11 @@ public class Gamelogic_Game extends SandboxGame {
         }
         
         Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
+        Entity goal = engine.createEntity();
+        GoalComponent goal_component = engine.createComponent(GoalComponent.class);
+        goal_component.miners_threshold = 1;
+        goal.add(goal_component);
+        engine.addEntity(goal);
     }
 
     @Override
