@@ -1,5 +1,8 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
@@ -12,6 +15,8 @@ import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 
 public class ScoreSystem extends EntitySystem implements EntityListener {
 
+    private static final Logger logger = LoggerFactory.getLogger(ScoreSystem.class);
+    
     public int score;
     public int total_miners;
     Family MinerFamily = Family.all(MinerComponent.class).get();
@@ -20,6 +25,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
     public Entity goal;
     public Entity player;
     public boolean playerAdded = false;
+    public float current_game_time = 0;
 
     public ScoreSystem() {
         super(1);
@@ -32,8 +38,9 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         engine.addEntityListener(Fam, this);
     }
 
-    public void update() {
-
+    @Override
+    public void update(float deltaTime) {
+        current_game_time += deltaTime;
     }
 
     @Override
@@ -55,10 +62,18 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
     public void entityRemoved(Entity entity) {
         if (MinerFamily.matches(entity)) {
             player.getComponent(PlayerComponent.class).saved_miners += 1;
+            logger.info("Miners saved: " + player.getComponent(PlayerComponent.class).saved_miners);
         }
     }
     
     public void calculateHighscore(){
-        //TODO
+        int highscore = 1000;
+        int bonus_miners = player.getComponent(PlayerComponent.class).saved_miners - goal.getComponent(GoalComponent.class).miners_threshold;
+        
+        highscore -= current_game_time;
+        highscore += (goal.getComponent(GoalComponent.class).miners_threshold * 10);
+        highscore += (bonus_miners * 20);
+        
+        score = highscore;
     }
 }
