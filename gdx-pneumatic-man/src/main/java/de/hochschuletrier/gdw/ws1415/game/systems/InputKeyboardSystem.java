@@ -7,85 +7,87 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 import de.hochschuletrier.gdw.ws1415.Main;
-import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
-import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 import de.hochschuletrier.gdw.ws1415.states.PauseGameState;
 
-public class InputKeyboardSystem extends IteratingSystem implements InputProcessor{
+public class InputKeyboardSystem extends IteratingSystem implements InputProcessor {
 
 
     boolean jump = false;
-    
+
     boolean pause = false;
-    
+
     boolean left = false;
-    
+
     boolean right = false;
-    
-    public InputKeyboardSystem()
-    {
+
+    public InputKeyboardSystem() {
         super(Family.all(InputComponent.class).get());
 
     }
 
-    
     @Override
-    protected void processEntity(Entity entity, float deltaTime)
-    {
+    protected void processEntity(Entity entity, float deltaTime) {
         InputComponent inputComponent = entity.getComponent(InputComponent.class);
-       
+
         inputComponent.reset();
-        if(jump)
-        {
+        if (jump) {
             inputComponent.jump = true;
         }
-        if(right)
-        {
+        if (right) {
             inputComponent.direction++;
         }
-        if(left)
-        {
+        if (left) {
             inputComponent.direction--;
         }
-        if(pause)
-        {
+        if (pause) {
             inputComponent.pause = true;
             Main main = Main.getInstance();
             main.changeState(new PauseGameState());
         }
-        
+
     }
-    
-    
+
     @Override
     public boolean keyDown(int keycode) {
-        switch(keycode)
-        {
-            case Input.Keys.UP:
-            case Input.Keys.SPACE:
-            case Input.Keys.W: jump = true; break;
-            case Input.Keys.LEFT:
-            case Input.Keys.A: left = true; break;
-            case Input.Keys.RIGHT:
-            case Input.Keys.D: right = true; break;
-            case Input.Keys.ESCAPE:
-            case Input.Keys.P: pause = !pause; break;
+        switch (keycode) {
+        case Input.Keys.UP:
+        case Input.Keys.SPACE:
+        case Input.Keys.W:
+            jump = true;
+            break;
+        case Input.Keys.LEFT:
+        case Input.Keys.A:
+            left = true;
+            break;
+        case Input.Keys.RIGHT:
+        case Input.Keys.D:
+            right = true;
+            break;
+        case Input.Keys.ESCAPE:
+        case Input.Keys.P:
+            pause = !pause;
+            break;
         }
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        switch(keycode)
-        {
-            case Input.Keys.UP:
-            case Input.Keys.SPACE:
-            case Input.Keys.W: jump = false; break;
-            case Input.Keys.LEFT:
-            case Input.Keys.A: left = false; break;
-            case Input.Keys.RIGHT:
-            case Input.Keys.D: right = false; break;
+        switch (keycode) {
+        case Input.Keys.UP:
+        case Input.Keys.SPACE:
+        case Input.Keys.W:
+            jump = false;
+            break;
+        case Input.Keys.LEFT:
+        case Input.Keys.A:
+            left = false;
+            break;
+        case Input.Keys.RIGHT:
+        case Input.Keys.D:
+            right = false;
+            break;
         }
         return false;
     }
@@ -125,6 +127,5 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         // TODO Auto-generated method stub
         return false;
     }
-
 
 }

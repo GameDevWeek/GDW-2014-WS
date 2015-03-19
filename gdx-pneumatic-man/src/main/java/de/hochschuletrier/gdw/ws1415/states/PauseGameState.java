@@ -5,44 +5,41 @@ import com.badlogic.gdx.InputProcessor;
 
 import de.hochschuletrier.gdw.commons.gdx.input.InputInterceptor;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
-import de.hochschuletrier.gdw.ws1415.game.Game;
-import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 import de.hochschuletrier.gdw.ws1415.Main;
 
 /**
  * PauseGameState
  * 
- * @author Tobias Thierbach
- *  19.03.2015
- *  
- *  #keine Ahnung
+ * @author Tobias Thierbach 19.03.2015
+ * 
+
  *
  *
  */
 public class PauseGameState extends BaseGameState implements InputProcessor {
 
-    
     InputInterceptor inputProcessor;
 
     private BaseGameState previosGameState;
 
     
-    public PauseGameState(){
 
+
+    public PauseGameState() {
         System.out.println("PauseGameState");
         inputProcessor = new InputInterceptor(this);
         Main.inputMultiplexer.addProcessor(inputProcessor);
     }
-    
+
     @Override
     public void update(float delta) {
-        //keine updates machen ?
-       //game.update(0);
+        // keine updates machen ?
+        // game.update(0);
     }
 
     @Override
     public void onEnter(BaseGameState previousState) {
-        this.previosGameState=previousState;
+        this.previosGameState = previousState;
         inputProcessor.setActive(true);
         inputProcessor.setBlocking(true);
     }
@@ -55,7 +52,7 @@ public class PauseGameState extends BaseGameState implements InputProcessor {
 
     @Override
     public void dispose() {
-       // game.dispose();
+        // game.dispose();
     }
 
     @Override
@@ -67,14 +64,14 @@ public class PauseGameState extends BaseGameState implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         // TODO Auto-generated method stub
-        
-        switch(keycode){
-            case Input.Keys.ESCAPE: //fallthrough intended
-            case Input.Keys.P:
-                Main main = Main.getInstance();
-                main.changeState(previosGameState);
-                break;
-                
+
+        switch (keycode) {
+        case Input.Keys.ESCAPE: // fallthrough intended
+        case Input.Keys.P:
+            Main main = Main.getInstance();
+            main.changeState(previosGameState);
+            break;
+
         }
         return false;
     }
