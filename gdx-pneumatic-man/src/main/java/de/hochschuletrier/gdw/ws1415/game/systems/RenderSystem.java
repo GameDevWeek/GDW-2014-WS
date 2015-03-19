@@ -23,6 +23,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
  * 
  *
  */
+@Deprecated
 public class RenderSystem extends EntitySystem implements EntityListener {
 
     private static final EntityComparator comparator = new EntityComparator();

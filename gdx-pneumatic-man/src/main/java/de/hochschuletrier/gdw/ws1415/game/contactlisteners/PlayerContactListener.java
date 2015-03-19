@@ -1,13 +1,14 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
-import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 
 /**
  * Handles contacts between player and other entities
@@ -27,15 +28,35 @@ public class PlayerContactListener extends PhysixContactAdapter {
         // Player collides with lava.
         if (otherEntity.getComponent(KillsPlayerOnContactComponent.class) != null) {
             // Player dies and level resets.
+            HealthComponent Health = player.getComponent(HealthComponent.class);
+            Health.DecrementByValueNextFrame = Health.Value;
         }
 
-        if (ComponentMappers.enemy.has(otherEntity)) {
+        if (otherEntity.getComponent(FallingRockTriggerComponent.class) != null){
+            FallingRockTriggerComponent rockTriggerComponent = otherEntity.getComponent(FallingRockTriggerComponent.class);
+            FallingRockComponent rockComponent = ComponentMappers.rockTraps.get(rockTriggerComponent.rockEntity);
+            rockComponent.falling = true;
+            EntityCreator.engine.removeEntity(otherEntity);
+        }
+
+        if (otherEntity.getComponent(DamageComponent.class) != null) {
             // player touched an enemy
             if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
-                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity
-                        .getComponent(DamageComponent.class).damage;
+                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
+        
+        /* Temporäre Lösung - bis Raycast und Stuff fertig */
+        Family VulnerableBlockFamily = Family.all(DestructableBlockComponent.class, HealthComponent.class).get();
+        if(VulnerableBlockFamily.matches(otherEntity))
+        {
+            if(contact.getWorldManifold().getNormal().y > 0)
+            {
+                HealthComponent OtherHealth = otherEntity.getComponent(HealthComponent.class);
+                OtherHealth.Value -= 1;
+            }
+        }
+        
     }
 
         // If the contact was with a tile then nothing happens to the player but
