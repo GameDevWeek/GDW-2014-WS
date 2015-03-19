@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="64" tileheight="64" nextobjectid="31">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="64" tileheight="64" nextobjectid="11">
  <properties>
   <property name="Background" value="Hintergrund1.png"/>
  </properties>
- <tileset firstgid="1" source="tilesets/DummyTileset2.tsx"/>
+ <tileset firstgid="1" name="lava" tilewidth="64" tileheight="64" spacing="64" margin="64">
+  <properties>
+   <property name="animationDuration" value="0.15"/>
+   <property name="animationFrames" value="2"/>
+   <property name="animationOffset" value="1"/>
+  </properties>
+  <image source="tilesets/lava.png" width="320" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Layer" value="2"/>
+    <property name="Light" value="true"/>
+    <property name="Radius" value="3.0"/>
+    <property name="Type" value="Lava"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Layer" value="2"/>
+    <property name="Light" value="true"/>
+    <property name="Radius" value="3.0"/>
+    <property name="Type" value="Lava"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Layer" value="2"/>
+    <property name="Light" value="true"/>
+    <property name="Radius" value="3.0"/>
+    <property name="Type" value="Lava"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Layer" value="2"/>
+    <property name="Light" value="true"/>
+    <property name="Radius" value="3.0"/>
+    <property name="Type" value="Lava"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="5" source="tilesets/destructable_block.tsx"/>
+ <tileset firstgid="11" source="tilesets/rest.tsx"/>
  <objectgroup name="Objektebene 1">
   <object id="1" name="Plattform_Block0" x="2240" y="452" width="64" height="64">
    <properties>
@@ -15,7 +60,7 @@
     <property name="Type" value="Plattform"/>
    </properties>
   </object>
-  <object id="18" name="Plattform_Block6" x="2880" y="380" width="64" height="64">
+  <object id="2" name="Plattform_Block6" x="2880" y="380" width="64" height="64">
    <properties>
     <property name="Direction" value="vertical"/>
     <property name="Distance" value="3.0"/>
@@ -26,7 +71,7 @@
     <property name="Type" value="Plattform"/>
    </properties>
   </object>
-  <object id="21" name="LavaFountain" x="1918" y="1022" width="64" height="64">
+  <object id="3" name="LavaFountain" x="1918" y="1022" width="64" height="64">
    <properties>
     <property name="Height" value="2.0"/>
     <property name="Intervall" value="2.0"/>
@@ -34,38 +79,38 @@
     <property name="Length" value="2.0"/>
    </properties>
   </object>
-  <object id="22" name="Player" x="130" y="1020" width="64" height="64"/>
-  <object id="23" name="RockTriggerX" x="2372" y="704" width="118" height="376">
+  <object id="4" name="Player" x="130" y="1020" width="64" height="64"/>
+  <object id="5" name="RockTriggerX" x="2372" y="704" width="118" height="376">
    <properties>
     <property name="Id" value="1"/>
     <property name="Name" value="RockTrigger"/>
    </properties>
   </object>
-  <object id="25" name="Rock" x="2048" y="635" width="64" height="64">
+  <object id="6" name="Rock" x="2048" y="635" width="64" height="64">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="1"/>
    </properties>
   </object>
-  <object id="26" name="Rock" x="2880" y="766" width="64" height="64">
+  <object id="7" name="Rock" x="2880" y="766" width="64" height="64">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="2"/>
    </properties>
   </object>
-  <object id="27" name="Rock" x="2752" y="766" width="64" height="64">
+  <object id="8" name="Rock" x="2752" y="766" width="64" height="64">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="1"/>
    </properties>
   </object>
-  <object id="29" name="RockTriggerX" x="2564" y="706" width="126" height="378">
+  <object id="9" name="RockTriggerX" x="2564" y="706" width="126" height="378">
    <properties>
     <property name="Id" value="2"/>
     <property name="Name" value="RockTrigger"/>
    </properties>
   </object>
-  <object id="30" name="Rock" x="3010" y="770" width="64" height="64">
+  <object id="10" name="Rock" x="3010" y="770" width="64" height="64">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="3"/>
@@ -74,7 +119,7 @@
  </objectgroup>
  <layer name="Kachelebene 2" width="50" height="20">
   <data encoding="base64" compression="zlib">
-   eJzll40KwyAMhOPWbWzdD937P+wcKEhoTq2mC+7gw5a2thf0Qh0RuUEYQSP6OACsS/LRMp+j/WvS00e6344ADUk+ZqrzxTNjAmhI8sHXBsqDtdw7ATRUus+lnJay+wzQUEteof5zAWhoa//I9dBf5lXNM9b6p7Xv2apSH9Z7e4mP7z2PBIv6t3VlQSj7pH+Sq+cGrvPMeobzO5v7Fci9T+q5rSyed+c5eY16jKX11iDWqMcYjz/YpgS5
+   eJzll4EKgzAMRDOdTtcp/f+v1YFCCcu12maGevAoolYvtBfqiMhVQg2q0ccbYF2Sj5z5HP2/JiV9hPttBGhI8vGhY754ZgwADUk++NpAefAr914ADaXucymnpezuARrKySvUfzqAhs72j1gPvTKvjrxjrX9a+5+zSvVhvben+Pg+MwdY1N3WlQWh7JPOJI+VBtznmeW364nN7Tdi35N6bi7tyrPwnLxGJccrzp97jUqOC08RDAw=
   </data>
  </layer>
 </map>

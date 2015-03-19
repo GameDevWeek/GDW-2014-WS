@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset name="DummyTileset2" tilewidth="64" tileheight="64" spacing="64" margin="64">
- <image source="DummyTileset2.png" width="1024" height="512"/>
- <tile id="0">
+ <image source="DummyTileset2.png" width="980" height="448"/>
+  <tile id="0">
   <properties>
    <property name="Invulnerable" value="true"/>
    <property name="Name" value="Block0"/>
@@ -56,7 +56,7 @@
    <property name="Type" value="Floor"/>
   </properties>
  </tile>
- <tile id="8">
+ <tile id="7">
   <properties>
    <property name="Invulnerable" value="true"/>
    <property name="Layer" value="2"/>
@@ -66,7 +66,7 @@
    <property name="Type" value="Lava"/>
   </properties>
  </tile>
- <tile id="9">
+ <tile id="8">
   <properties>
    <property name="Invulnerable" value="true"/>
    <property name="Layer" value="2"/>
@@ -76,20 +76,19 @@
    <property name="Type" value="Lava"/>
   </properties>
  </tile>
- <tile id="10">
+ <tile id="9">
   <properties>
    <property name="Name" value="Bomb"/>
-   <property name="Type" value="Floor"/>
   </properties>
  </tile>
- <tile id="11">
+ <tile id="10">
   <properties>
    <property name="Invulnerable" value="true"/>
    <property name="Name" value="SpikeLeft"/>
    <property name="Type" value="SpikeLeft"/>
   </properties>
  </tile>
- <tile id="12">
+ <tile id="11">
   <properties>
    <property name="Hitpoint" value="1"/>
    <property name="Invulnerable" value="false"/>
@@ -97,21 +96,21 @@
    <property name="Type" value="SpikeTop"/>
   </properties>
  </tile>
- <tile id="13">
+ <tile id="12">
   <properties>
    <property name="Invulnerable" value="true"/>
    <property name="Name" value="SpikeRight"/>
    <property name="Type" value="SpikeRight"/>
   </properties>
  </tile>
- <tile id="14">
+ <tile id="13">
   <properties>
    <property name="Invulnerable" value="true"/>
    <property name="Name" value="SpikeDown"/>
    <property name="Type" value="SpikeDown"/>
   </properties>
  </tile>
- <tile id="16">
+ <tile id="14">
   <properties>
    <property name="Invulnerable" value="true"/>
    <property name="Layer" value="2"/>
@@ -121,7 +120,7 @@
    <property name="Type" value="Lava"/>
   </properties>
  </tile>
- <tile id="17">
+ <tile id="15">
   <properties>
    <property name="Invulnerable" value="true"/>
    <property name="Layer" value="2"/>

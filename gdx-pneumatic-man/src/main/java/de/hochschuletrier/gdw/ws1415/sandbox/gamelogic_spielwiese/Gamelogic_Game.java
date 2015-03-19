@@ -52,6 +52,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
@@ -77,6 +78,7 @@ public class Gamelogic_Game extends SandboxGame {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     
+    private final ScoreSystem _ScoreSystem = new ScoreSystem();
     private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
@@ -197,6 +199,7 @@ public class Gamelogic_Game extends SandboxGame {
         engine.addSystem(inputGamepadSystem);
         engine.addSystem(aisystems);
         engine.addSystem(_HealthSystem);
+        engine.addSystem(_ScoreSystem);
     }
 
     // TODO: replace by MapLoader class
@@ -295,7 +298,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.LEFT,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeTop")) {
@@ -306,7 +309,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.UP,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeRight")) {
@@ -317,7 +320,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.RIGHT,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
@@ -328,7 +331,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.DOWN,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
@@ -339,7 +342,7 @@ public class Gamelogic_Game extends SandboxGame {
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
                                     Map.getTileWidth(),
                                     Map.getTileHeight(),
-                                    Direction.DOWN,
+                                    tiles[i][j].getProperty("Type", ""),
                                     Map, info, i, j);
                         }
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
