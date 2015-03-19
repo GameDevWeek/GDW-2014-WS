@@ -38,10 +38,10 @@ public class MainMenu extends MenuPage{
     public MainMenu(Skin skin, MenuManager menuManager, Type type)
     {
         super(skin,"background_menu" );
-        int x=960;
-        int i=0;
-        int y=510;
-        int yStep=100;
+        int x = 960;
+        int i = 0;
+        int y = 510;
+        int yStep = 100;
         
             addPageEntryStart(menuManager,x,y-yStep*(i++),start, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
