@@ -40,6 +40,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityAdded(Entity entity) {
+        System.out.println("Entity added "+entity.getId());
         entities.add(entity);
     }
 
