@@ -112,6 +112,7 @@ public class Game {
     }
 
     public void init(AssetManagerX assetManager) {
+        
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
     	
         EntityCreator.assetManager = assetManager;

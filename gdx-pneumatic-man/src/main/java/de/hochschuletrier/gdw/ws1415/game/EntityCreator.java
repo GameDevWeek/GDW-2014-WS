@@ -111,7 +111,7 @@ public class EntityCreator {
         entity.add(jumpComponent);
 
         MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
-        moveComponent.speed = 20000.0f;
+        moveComponent.speed = 12000.0f;
         entity.add(moveComponent);
 
         // ***** temporary *****
@@ -670,7 +670,9 @@ public class EntityCreator {
         
         pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("explosion"));
         
-        //pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
+        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
+        loadParticleEffects( pe,"xpl_prtkl.p" );
+        
         pe.loop=true;
         pe.particleEffect.flipY();
         pe.particleEffect.start();
@@ -699,6 +701,7 @@ public class EntityCreator {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
         entityLayer.parallax = parallax;
+        
         
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.animation = animation;
@@ -806,5 +809,19 @@ public class EntityCreator {
     }
     // ********** Rendering section END **********
     
+    
+    //   Edited by Assets(Tobi) *******
+    /**
+     * 
+     * @param particlefile
+     *          Nur der Dateiname von der .p Datei
+     * @author Tobias Gepp (Assets)
+     */
+    public static void loadParticleEffects( ParticleComponent p , String particlefile )
+    {
+        String path = "src/main/resources/data/particle/";
+        String filePath = path + particlefile;                  // file  in path
+        p.particleEffect.load(Gdx.files.internal(filePath),Gdx.files.internal(path));   // immer die Datei in <path> suchen
+    }
    
 }

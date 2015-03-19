@@ -32,7 +32,7 @@
   <properties>
    <property name="Invulnerable" value="true"/>
    <property name="Name" value="SpawnAndLevelEnd"/>
-   <property name="Typ" value="Floor"/>
+   <property name="Type" value="Floor"/>
   </properties>
  </tile>
  <tile id="5">
