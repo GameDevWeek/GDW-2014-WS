@@ -23,21 +23,27 @@ public class OptionMenu extends MenuPage
 	public OptionMenu(Skin skin, MenuManager menuManager)
 	{ 		
 		super(skin, "background_menu");
-		int y = 400;
+		int y = 600;
 		
-		createLabel(menuManager.getWidth()/2-150, y).setText("SOUND:");
-        soundSlider = createSlider(menuManager.getWidth()/2-20, y, this::onSoundVolumeChanged);
+		createLabel(menuManager.getWidth()/2-75, y).setText("SOUND");
+		y-= 20;
+        soundSlider = createSlider(menuManager.getWidth()/2-160, y, this::onSoundVolumeChanged);
         soundLabel = createLabel(menuManager.getWidth()/2+190, y);
+        soundLabel.setVisible(false);
         soundMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onSoundMuteChanged);
+        soundMuteButton.setVisible(false);
         y -= 50;
 
-        createLabel(menuManager.getWidth()/2-150, y).setText("MUSIK:");
-        musicSlider = createSlider(menuManager.getWidth()/2-20, y, this::onMusicVolumeChanged);
+        createLabel(menuManager.getWidth()/2-75, y).setText("MUSIC");
+        y -= 20;
+        musicSlider = createSlider(menuManager.getWidth()/2-160, y, this::onMusicVolumeChanged);
         musicLabel = createLabel(menuManager.getWidth()/2+190, y);
+        musicLabel.setVisible(false);
         musicMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onMusicMuteChanged);
-        y -= 50;
+        musicMuteButton.setVisible(false);
+       // y -= 50;
         
-        createLabel(menuManager.getWidth()/2-150, y).setText("GAMEPAD / KEYBOARD");
+       // createLabel(menuManager.getWidth()/2-150, y).setText("GAMEPAD / KEYBOARD");
         y -= 50;
        // createToggleButton(x, y, text, runnable)
        // createToggleButton(x, y, text, runnable)
@@ -51,7 +57,7 @@ public class OptionMenu extends MenuPage
         		
         		//CenteredButton(menuManager.getWidth()/2-20, y).setText("GAMEPAD");
 		
-		addCenteredButton(menuManager.getWidth() - 300, 100, 200, 100, "RETURN", () -> menuManager.popPage());
+		addCenteredButton(450, 850, 200, 200, "<", () -> menuManager.popPage());
 	}
 	
 	private Label createLabel(int x, int y)
