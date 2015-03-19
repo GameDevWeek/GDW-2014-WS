@@ -14,6 +14,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
  * Subsystem used by the RenderSystem.
  *
  */
+@Deprecated
 public class DestructableBlockRenderSubsystem {
     
     void render(Entity entity, float deltaTime) {

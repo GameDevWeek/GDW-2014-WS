@@ -37,10 +37,10 @@ public class MovementComponent extends Component implements Pool.Poolable {
 	 * If button to move right was pressed
 	 */
 	public void moveRight() {
-		if (!movingRight) {
+		//if (!movingRight) {
 			movingRight = true;
 			velocity.add(speed, 0);
-		}
+		//}
 	}
 
 	/**
@@ -57,10 +57,10 @@ public class MovementComponent extends Component implements Pool.Poolable {
 	 * If button to move left was pressed
 	 */
 	public void moveLeft() {
-		if (!movingLeft) {
+		//if (!movingLeft) {
 			movingLeft = true;
 			velocity.add(-speed, 0);
-		}
+		//}
 	}
 
 	/**
