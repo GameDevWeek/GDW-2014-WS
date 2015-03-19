@@ -103,6 +103,7 @@ public class Game {
 
         EntityCreator.engine = this.engine;
         EntityCreator.physixSystem = this.physixSystem;
+        
     }
 
     public void dispose() {
@@ -112,6 +113,9 @@ public class Game {
 
     public void init(AssetManagerX assetManager) {
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
+    	
+        EntityCreator.assetManager = assetManager;
+                
 
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
@@ -125,31 +129,17 @@ public class Game {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-
+        cameraSystem.adjustToMap(map);
+        
         setupPhysixWorld();
 
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
-        if(Controllers.getControllers().size > 0)
-        {
-            inputKeyboardSystem.setProcessing(false);
-            inputGamepadSystem.setProcessing(true);
-        }
-        else
-        {
-            inputGamepadSystem.setProcessing(false);
-            inputKeyboardSystem.setProcessing(true);
-        }
+   
         MapLoader.generateWorldFromTileMap(engine, physixSystem, map, cameraSystem);
 
-        if (Controllers.getControllers().size > 0) {
-            inputKeyboardSystem.setProcessing(false);
-            inputGamepadSystem.setProcessing(true);
-        } else {
-            inputGamepadSystem.setProcessing(false);
-            inputKeyboardSystem.setProcessing(true);
-        }
+       
         inputManager.init();
        
     }
@@ -167,6 +157,7 @@ public class Game {
     private void addSystems() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
