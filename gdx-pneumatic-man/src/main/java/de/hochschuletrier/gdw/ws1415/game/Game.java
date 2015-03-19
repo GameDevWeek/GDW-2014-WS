@@ -220,7 +220,7 @@ public class Game {
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    Direction.LEFT,
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeTop")) {
@@ -231,7 +231,7 @@ public class Game {
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    Direction.UP,
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeRight")) {
@@ -242,7 +242,7 @@ public class Game {
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    Direction.RIGHT,
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
@@ -253,7 +253,7 @@ public class Game {
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    Direction.DOWN,
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
@@ -264,7 +264,7 @@ public class Game {
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    Direction.DOWN,
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
                         }
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
