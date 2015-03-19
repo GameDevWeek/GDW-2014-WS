@@ -70,10 +70,11 @@ public class AnimationExtendedLoader extends
         int tileWidth = texture.getWidth() / parameter.columns;
         int tileHeight = texture.getHeight() / parameter.rows;
         TextureRegion[][] tmp = TextureRegion.split(texture, tileWidth, tileHeight);
-        TextureRegion[] frames = new TextureRegion[parameter.columns * parameter.rows];
+        int frameCount = Math.min(parameter.frames, parameter.columns * parameter.rows);
+        TextureRegion[] frames = new TextureRegion[frameCount];
         int index = 0;
-        for (int i = 0; i < parameter.rows; i++) {
-            for (int j = 0; j < parameter.columns; j++) {
+        for (int i = 0; i < parameter.rows && index < frameCount; i++) {
+            for (int j = 0; j < parameter.columns && index < frameCount; j++) {
                 frames[index] = tmp[i][j];
                 frames[index].flip(false, false);
                 index++;
