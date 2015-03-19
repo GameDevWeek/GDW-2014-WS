@@ -87,7 +87,11 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     private void updateRayHandler(){
         OrthographicCamera camera = cameraSystem.getCamera().getOrthographicCamera();
         scaleMatrix.set(camera.combined).scl(GameConstants.BOX2D_SCALE);
-        rayHandler.setCombinedMatrix(scaleMatrix);
+        rayHandler.setCombinedMatrix(scaleMatrix , 
+                                     camera.position.x/GameConstants.BOX2D_SCALE, 
+                                     camera.position.y/GameConstants.BOX2D_SCALE, 
+                                     camera.viewportWidth*camera.zoom/GameConstants.BOX2D_SCALE, 
+                                     camera.viewportHeight*camera.zoom/GameConstants.BOX2D_SCALE);
         rayHandler.updateAndRender(); 
     }
 

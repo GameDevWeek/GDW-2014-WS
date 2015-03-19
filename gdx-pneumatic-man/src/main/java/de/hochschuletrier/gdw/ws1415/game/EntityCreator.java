@@ -427,7 +427,7 @@ public class EntityCreator {
         pe.particleEffect.start();
         
         PointLightComponent pl = engine.createComponent(PointLightComponent.class);
-        pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),360,new Color(1f,0f,0f,1f),10f,0,0);
+        pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),125,new Color(1f,0f,0f,1f),5f,0,0);
         
         entity.add(pe);
         entity.add(pl);
