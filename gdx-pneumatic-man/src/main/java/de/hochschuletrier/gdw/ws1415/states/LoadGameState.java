@@ -16,7 +16,7 @@ public class LoadGameState extends BaseGameState {
     private final AssetManagerX assetManager;
     private final Runnable completeFunc;
     //private final Texture loadScreen = new Texture(Gdx.files.internal("data/images/background_menu.png"));
-    private final Texture overlay = new Texture(Gdx.files.internal("data/images/background_menu.png"));
+    private final Texture overlay = new Texture(Gdx.files.internal("data/images/titel.png"));
 
     public LoadGameState(AssetManagerX assetManager, Runnable completeFunc) {
         this.assetManager = assetManager;
@@ -25,6 +25,7 @@ public class LoadGameState extends BaseGameState {
 
     public void render() 
     {
+    	System.out.println("RENDER LOAD GAME");
     	float drawWidth = Gdx.graphics.getWidth() - 90.0f;
     	float x = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
     	float y = (Gdx.graphics.getWidth() - overlay.getWidth())/2;

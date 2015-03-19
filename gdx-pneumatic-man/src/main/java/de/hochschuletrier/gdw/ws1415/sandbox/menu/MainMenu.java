@@ -40,7 +40,7 @@ public class MainMenu extends MenuPage{
         super(skin,"background_menu" );
         int x = 960;
         int i = 1;
-        int y = 610;
+        int y = 810;
         int yStep = 100;
         
             addPageEntry(menuManager,x,y-yStep*(++i), optionen, new OptionMenu(skin, menuManager));
