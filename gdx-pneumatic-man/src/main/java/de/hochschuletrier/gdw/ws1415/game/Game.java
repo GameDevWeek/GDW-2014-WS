@@ -80,6 +80,8 @@ public class Game {
             physixSystem
     );
 
+    
+    
     private Sound impactSound;
     private AnimationExtended ballAnimation;
 
@@ -123,19 +125,10 @@ public class Game {
         addSystems();
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
-
-        Controllers.addListener(inputGamepadSystem);
         
-        if(Controllers.getControllers().size > 0)
-        {
-            inputKeyboardSystem.setProcessing(false);
-            inputGamepadSystem.setProcessing(true);
-        }
-        else
-        {
-            inputGamepadSystem.setProcessing(false);
-            inputKeyboardSystem.setProcessing(true);
-        }
+        InputManager inputManager = new InputManager();
+
+    
     }
 
     private void generateWorldFromTileMap() {
