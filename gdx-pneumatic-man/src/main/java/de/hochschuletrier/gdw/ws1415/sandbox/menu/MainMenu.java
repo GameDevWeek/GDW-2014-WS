@@ -47,7 +47,7 @@ public class MainMenu extends MenuPage{
             //addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager, x, y-yStep*(++i), highscore, new ScoreMenu(skin, menuManager));
-        	addPageEntryStart(menuManager,x,y-yStep*1, start, new OptionMenu(skin, menuManager));
+        	addPageEntryStart(menuManager,x,y-yStep*1, start);
             addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(++i), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> updateCredits());
             addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(++i),(int)ende.getWidth(),(int)ende.getHeight()/2, ende, ()->System.exit(0));
         //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
@@ -68,8 +68,8 @@ public class MainMenu extends MenuPage{
         
     }
     
-    protected final void addPageEntryStart(MenuManager menuManager, int x, int y, DecoImage image, MenuPage page) {
-        menuManager.addLayer(page);
+    protected final void addPageEntryStart(MenuManager menuManager, int x, int y, DecoImage image) {
+        //menuManager.addLayer(page);
         
         addCenteredImage((int)(x-(image.getWidth()/2)), y, (int)image.getWidth(), (int)image.getHeight(), image, () ->  main.changeState(new GameplayState(assetManager),new SplitHorizontalTransition(500), null));
         
