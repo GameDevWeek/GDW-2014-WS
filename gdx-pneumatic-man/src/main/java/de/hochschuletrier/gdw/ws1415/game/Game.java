@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controllers;
@@ -38,6 +39,7 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
@@ -77,6 +79,8 @@ public class Game {
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
+
+    private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
     private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
@@ -181,28 +185,33 @@ public class Game {
                             EntityCreator.IndestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode);
                         else
                             EntityCreator.DestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode, hitpoints);
-                    }
-                    if(obj.getName().equalsIgnoreCase("RockTrigger")){
-                        int RockId = obj.getIntProperty("RockId", 0);
-                        Entity e = rocks.get(RockId);
+                    }else if(obj.getName().equalsIgnoreCase("Rock")){
+                        // DO NOTHING - rocks are handled prior
+                    }else if(obj.getName().equalsIgnoreCase("RockTrigger")){
+                            int RockId = obj.getIntProperty("RockId", 0);
+                            Entity e = rocks.get(RockId);
                         EntityCreator.createTrapSensor(
                                 obj.getX() - obj.getWidth()/2, obj.getY() - obj.getHeight()/2,
                                 obj.getWidth(), obj.getHeight(), e);
                     }
-                    if(obj.getName().equalsIgnoreCase("Player")){
-                        cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
+                    else if(obj.getName().equalsIgnoreCase("Player")) {
+                            cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
                     }
-                    if(obj.getName().equalsIgnoreCase("PlayerSpawn")){
+                    else if(obj.getName().equalsIgnoreCase("PlayerSpawn")){
                         //TODO: spawn point entity ?!
                     }
-                    if(obj.getName().equalsIgnoreCase("LevelEnd")){
+                    else if(obj.getName().equalsIgnoreCase("LevelEnd")){
                         EntityCreator.createAndAddEventBox(obj.getX(), obj.getY());
                     }
-                    if(obj.getName().equalsIgnoreCase("Enemy")){
+                    else if(obj.getName().equalsIgnoreCase("Enemy")){
                         Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.LEFT.name()).toUpperCase());
                         AIType type = AIType.valueOf(obj.getProperty("Type", AIType.CHAMELEON.name()).toUpperCase());
-                        EntityCreator.createAndAddEnemy(obj.getX(), obj.getY(), dir, type);
+                            EntityCreator.createAndAddEnemy(obj.getX(), obj.getY(), dir, type);
                     }
+                    else{
+                        Gdx.app.log("WARNING", "object " + obj.getName() + "does not match any name. No Entity created");
+                    }
+
                 }
                 continue; // because it was a object layer
             }
@@ -311,16 +320,17 @@ public class Game {
         engine.addSystem(inputKeyboardSystem);
         engine.addSystem(inputGamepadSystem);
         engine.addSystem(aisystems);
+        engine.addSystem(_HealthSystem);
     }
 
     private void addContactListeners() {
         PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
-        physixSystem.getWorld().setContactListener(contactListener);
         contactListener
                 .addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
         contactListener.addListener(FallingRockComponent.class, new RockContactListener());
+        physixSystem.getWorld().setContactListener(contactListener);
     }
 
     private void setupPhysixWorld() {
