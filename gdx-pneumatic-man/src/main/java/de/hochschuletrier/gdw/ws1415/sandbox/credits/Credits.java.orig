@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+<<<<<<< HEAD
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+=======
+>>>>>>> 25971868b1dc06cea1bfdfe2528e86f4667162ce
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
@@ -25,6 +28,8 @@ public class Credits extends SandboxGame implements SceneAnimator.Getter {
     
     private SceneAnimator sceneAnimator;
     private AssetManagerX assetManager;
+    private DecoImage background;
+    
     
     private Texture hintergrund;
     private Texture background;
@@ -41,8 +46,19 @@ public class Credits extends SandboxGame implements SceneAnimator.Getter {
             logger.error("Error loading credits", ex);
         }
         
-        background = assetManager.getTexture("credit_background");
+<<<<<<< HEAD
+        background = assetManager.getTexture("credit_Background");
+//        background.setPosition(0, 0);
         
+//        hintergrund = new Image(assetManager.getTexture("credit_Background"));
+//        hintergrund = assetManager.getTexture("credit_Background");
+        
+//        DrawUtil.draw(background, 0, 0);
+=======
+        background  = new DecoImage(assetManager.getTexture("credit_background"));
+        background.setPosition(0, 0);
+        
+>>>>>>> 25971868b1dc06cea1bfdfe2528e86f4667162ce
     }
 
 
