@@ -17,7 +17,7 @@ public class LoadGameState extends BaseGameState {
     private final AssetManagerX assetManager;
     private final Runnable completeFunc;
     //private final Texture loadScreen = new Texture(Gdx.files.internal("data/images/background_menu.png"));
-    private final Texture overlay = new Texture(Gdx.files.internal("data/images/titel.png"));
+    private final Texture overlay = new Texture(Gdx.files.internal("data/images/background_menu.png"));
 
     public LoadGameState(AssetManagerX assetManager, Runnable completeFunc) {
         this.assetManager = assetManager;

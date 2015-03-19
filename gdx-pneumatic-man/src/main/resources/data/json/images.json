@@ -9,5 +9,6 @@
     "start_button": "data/images/start_button.png",
     "miner_found": "data/images/KollegeIconGefunden.png",
     "miner_notfound": "data/images/KollegeIconNichtGefunden.png",
-    "zeigefinger": "data/images/zeigefinger.png"
+    "zeigefinger": "data/images/zeigefinger.png",
+    "credit_Background": "data/images/Credits_2.png"
 }
