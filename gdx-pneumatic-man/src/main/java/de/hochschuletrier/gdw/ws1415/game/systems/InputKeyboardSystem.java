@@ -6,6 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 
 public class InputKeyboardSystem extends IteratingSystem implements InputProcessor{
@@ -46,9 +47,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         {
             inputComponent.pause = true;
         }
-        
     }
-    
     
     @Override
     public boolean keyDown(int keycode) {
@@ -62,7 +61,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
             case Input.Keys.RIGHT:
             case Input.Keys.D: right = true; break;
             case Input.Keys.ESCAPE:
-            case Input.Keys.P: pause = !pause; break;
+            case Input.Keys.P: Settings.GAMEPAD_ENABLED.set(false); pause = !pause; break;
         }
         return true;
     }
@@ -117,6 +116,4 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         // TODO Auto-generated method stub
         return false;
     }
-
-
 }

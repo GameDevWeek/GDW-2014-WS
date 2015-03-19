@@ -40,7 +40,6 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityAdded(Entity entity) {
-        System.out.println("Entity added "+entity.getId());
         entities.add(entity);
     }
 
@@ -49,7 +48,6 @@ public class HealthSystem extends EntitySystem implements EntityListener {
         entities.remove(entity);
     }
 
-    ArrayList<Entity> AddPostUpdate = new ArrayList<>();
     @Override
     public void update(float deltaTime) {
         for (Entity entity : entities) {
@@ -63,17 +61,14 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DYING;
                     
                     PositionComponent position = entity.getComponent(PositionComponent.class);
-                    AddPostUpdate.add(EntityCreator.createDyingCharacter(entity));
+                    EntityCreator.modifyPlayerToDying(entity);
                 }
-                CurrentEngine.removeEntity(entity);
+                else
+                {
+                    CurrentEngine.removeEntity(entity);
+                }
             }
 
         }
-
-        for(Entity e : AddPostUpdate)
-        {
-             CurrentEngine.addEntity(e);
-        }
-        AddPostUpdate.clear();
     }
 }

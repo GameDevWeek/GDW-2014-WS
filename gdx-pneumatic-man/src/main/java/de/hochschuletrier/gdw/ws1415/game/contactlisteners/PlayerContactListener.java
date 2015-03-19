@@ -7,6 +7,8 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
@@ -26,6 +28,10 @@ public class PlayerContactListener extends PhysixContactAdapter {
 
         // Entity myEntity = contact.getMyComponent().getEntity(); //
         Entity otherEntity = contact.getOtherComponent().getEntity();
+        
+        if(otherEntity.getComponent(MinerComponent.class) != null){
+            player.getComponent(PlayerComponent.class).saved_miners += 1;
+        }
 
         // Player collides with lava.
         if (otherEntity.getComponent(KillsPlayerOnContactComponent.class) != null) {
@@ -36,8 +42,14 @@ public class PlayerContactListener extends PhysixContactAdapter {
 
         if (otherEntity.getComponent(FallingRockTriggerComponent.class) != null){
             FallingRockTriggerComponent rockTriggerComponent = otherEntity.getComponent(FallingRockTriggerComponent.class);
-            FallingRockComponent rockComponent = ComponentMappers.rockTraps.get(rockTriggerComponent.rockEntity);
-            rockComponent.falling = true;
+            //FallingRockComponent rockComponent = ComponentMappers.rockTraps.get(rockTriggerComponent.rockEntity);
+            //rockComponent.falling = true;
+            PhysixBodyComponent bodyComponent = ComponentMappers.physixBody.get(rockTriggerComponent.rockEntity);
+            PhysixModifierComponent modifierComponent = EntityCreator.engine.createComponent(PhysixModifierComponent.class);
+            modifierComponent.schedule(() -> {
+                bodyComponent.setActive(true);
+            });
+            rockTriggerComponent.rockEntity.add(modifierComponent);
             EntityCreator.engine.removeEntity(otherEntity);
         }
 

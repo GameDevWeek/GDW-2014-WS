@@ -1,0 +1,97 @@
+Layer:
+
+	0 — Background Layer
+	1 — Mittellayer (Demo, Lichtquellen etc…)
+	2 — Spielebene (Tiles, Lava …)
+
+	(3) — Objektebene 
+
+Leveleigensachften:
+	
+	Background: example.png  (kein Dateipfad)
+	
+Layereigenschaften:
+	Paarlax: float (zwischen 0 und 1. Spielebene 1)
+
+Regeln:
+
+	-Spikes left/right/down (Invulnerable) nicht in Bombenreichweite
+	-Bomben Nachbarn verhindern keine Weiterzerstörung
+	-Herabfallende Steine verursachen Hälfte der Hitpoints an Schaden
+	-Lava soll von unzerstörbaren Blöcken umgeben sein
+	?Keine PlatformSpikes an zerstörbare Mutterplattform
+
+Tile properties:
+	Invulnerable: true/false
+	Hitpoint: (int)
+	Type: (Lava, Floor, Spike)
+	Name: (Block0, Block1, Block2, Block3, Block4, Block5, Block6, Lava1, Lava2, Lava3, Lava4, Bomb, SpikeLeft, SpikeTop, SpikeDown, SpikeRight, SpawnAndLevelEnd)
+	Light: true, false
+	Radius: float
+	Layer: 0,1,2
+	AnimationFrames: int
+	AnimationDuration: 1
+	AnimationTileOffset: 1
+
+
+Objekte:
+
+	Player:
+		Name: Player
+
+	PlayerSpawn:
+		Name: PlayerSpawn
+		
+
+	LavaFountain:
+		Name: LavaFountain
+		Height: float
+		Intervall: float
+		IntervallOffset: float
+		Length: float
+
+	RockTrigger:
+		Name:RockTrigger
+		Id: int
+
+	Rock:
+		Name: Rock
+		TriggerId: int
+		? Wie wird zugehöriger Block festgelegt
+
+	Platform:
+		Hitpoints: int
+		Name: Platform
+		Mode: OneTime/Always
+		Direction: right/left/up/down
+		Speed: float (Blocks per Second)
+		Distance: float
+		
+
+	LevelEnd:
+		Name: LevelEnd
+		
+	Enemy:
+		Name: Enemy
+		Direction: left/right
+		Type: dog/chameleon
+	
+	Miner:
+		Name: Miner
+
+	Bomb:
+		Name: Bomb
+
+
+
+Noch nicht vorhanden:
+
+	Erze/Pilze Tiles zur Beleuchtung (eigentlich Doku wie Lichtquelle, jedoch keine Tiles vorhanden)
+
+
+
+	
+
+
+
+	
