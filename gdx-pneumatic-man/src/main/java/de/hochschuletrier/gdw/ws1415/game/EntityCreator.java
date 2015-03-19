@@ -73,6 +73,8 @@ public class EntityCreator {
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         entity.add(engine.createComponent(PlayerComponent.class));
+        
+//        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 1;
@@ -221,6 +223,21 @@ public class EntityCreator {
 
         box.add(engine.createComponent(TriggerComponent.class));
         box.add(engine.createComponent(PositionComponent.class));
+        
+        float width = GameConstants.getTileSizeX();
+        float height = GameConstants.getTileSizeY() * 0.2f;
+        
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, box);
+        bodyComponent.getBody().setUserData(bodyComponent);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(0).restitution(0.1f)
+                .shapeBox(width, height);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        box.add(bodyComponent);;
 
         engine.addEntity(box);
         return box;

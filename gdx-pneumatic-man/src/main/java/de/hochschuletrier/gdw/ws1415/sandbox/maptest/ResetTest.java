@@ -1,12 +1,10 @@
-package de.hochschuletrier.gdw.ws1415.sandbox.gamelogic_spielwiese;
+package de.hochschuletrier.gdw.ws1415.sandbox.maptest;
 
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -39,7 +37,6 @@ import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
@@ -60,14 +57,13 @@ import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
-public class Gamelogic_Game extends SandboxGame {
+public class ResetTest extends SandboxGame {
 
     private static final Logger logger = LoggerFactory
-            .getLogger(Gamelogic_Game.class);
+            .getLogger(ResetTest.class);
 
     private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
@@ -85,8 +81,7 @@ public class Gamelogic_Game extends SandboxGame {
     private final HealthSystem _HealthSystem = new HealthSystem();
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
-    private final RayHandler rayHandler = new RayHandler(physixSystem.getWorld());
-    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
+    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
@@ -99,18 +94,25 @@ public class Gamelogic_Game extends SandboxGame {
     TiledMap Map;
     private TiledMapRendererGdx mapRenderer;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
+    
+    
+    public static String levelPath = "data/maps/Testkarte_17.03.tmx";
+    
 
-    public Gamelogic_Game()
+    public ResetTest()
     {
         EntityCreator.engine = engine;
         EntityCreator.physixSystem = physixSystem;
     }
 
     Family PlayerFamily = Family.all(InputComponent.class, PhysixBodyComponent.class).get();
+    AssetManagerX assetManager;
     
     
     @Override
     public void init(AssetManagerX assetManager) {
+                
+        this.assetManager = assetManager;
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
         
         Main.getInstance().console.register(physixDebug);
@@ -120,18 +122,10 @@ public class Gamelogic_Game extends SandboxGame {
 
         // MapLoader erstelt etwas ungültiges
         // Wirft cpp exception/assert
-        //MapLoader mapLoader = new MapLoader(engine, physixSystem, "data/maps/Testkarte_19.03.tmx");
+        //MapLoader mapLoader = new MapLoader(engine, physixSystem, "data/maps/Testkarte_17.03.tmx");
         //Map = mapLoader.getTiledMap();
 
-        Map = Game.loadMap("data/maps/Testkarte_19.03.tmx");
-        for (TileSet tileset : Map.getTileSets()) {
-            TmxImage img = tileset.getImage();
-            String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
-            tilesetImages.put(tileset, new Texture(filename));
-        }
-        /*
-        */
-        mapRenderer = new TiledMapRendererGdx(Map, tilesetImages);
+        startLevel();
 
         physixSystem.setGravity(0, GameConstants.GRAVITY_CONSTANT);
         generateWorldFromTileMap();
@@ -152,11 +146,20 @@ public class Gamelogic_Game extends SandboxGame {
             inputKeyboardSystem.setProcessing(true);
         }
         
-        Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
-        Entity goal = EntityCreator.createAndAddEventBox(900.0f, 900.0f);
-        GoalComponent goal_component = engine.createComponent(GoalComponent.class);
-        goal_component.miners_threshold = 1;
-        goal.add(goal_component);
+//        Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
+    }
+
+    private void startLevel()
+    {
+        Map = Game.loadMap(levelPath);
+        for (TileSet tileset : Map.getTileSets()) {
+            TmxImage img = tileset.getImage();
+            String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
+            tilesetImages.put(tileset, new Texture(filename));
+        }
+        /*
+        */
+        mapRenderer = new TiledMapRendererGdx(Map, tilesetImages);
     }
 
     @Override
@@ -177,6 +180,31 @@ public class Gamelogic_Game extends SandboxGame {
                 MovementX += 300.0f;
             }
             playerBody.setLinearVelocity(MovementX, playerBody.getLinearVelocity().y);
+            
+            
+            // loading other map-paths:
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
+                levelPath = "/gdx-pneumatic-man/src/main/resources/data/maps/Testkarte_17.03.tmx";
+                System.out.println("Level Pfad geändert auf: " + levelPath);
+            }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)){
+                levelPath = "/gdx-pneumatic-man/src/main/resources/data/maps/Testkarte_18.03.tmx";
+                System.out.println("Level Pfad geändert auf: " + levelPath);
+            }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)){
+                levelPath = "/gdx-pneumatic-man/src/main/resources/data/maps/Testkarte_19.03.tmx";
+                System.out.println("Level Pfad geändert auf: " + levelPath);
+            }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)){
+                levelPath = "/gdx-pneumatic-man/src/main/resources/data/maps/demo.tmx";
+                System.out.println("Level Pfad geändert auf: " + levelPath);
+            }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)){
+                System.out.println("Restart Level"); 
+                engine.removeAllEntities();
+                
+                this.startLevel();
+            }
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F2))
         {
@@ -296,7 +324,7 @@ public class Gamelogic_Game extends SandboxGame {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
-                                    Map, info, info.getIntProperty("Hitpoint", 0), i, j);
+                                    Map, info, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) 
                         {
