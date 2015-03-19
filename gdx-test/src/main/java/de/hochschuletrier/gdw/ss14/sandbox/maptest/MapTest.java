@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -29,7 +30,10 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss14.Main;
 import de.hochschuletrier.gdw.ss14.game.GameConstants;
 import de.hochschuletrier.gdw.ss14.sandbox.SandboxGame;
+import de.hochschuletrier.gdw.ss14.sandbox.hud.Hud;
+
 import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +62,7 @@ public class MapTest extends SandboxGame {
     private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
     private float totalMapWidth, totalMapHeight;
 
+    
     private TiledMap map;
     private TiledMapRendererGdx mapRenderer;
     private PhysixBodyComponent playerBody;
