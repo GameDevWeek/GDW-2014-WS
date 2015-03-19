@@ -190,7 +190,7 @@ public class Game {
         // }
         //
         // mapRenderer.update(delta);
-        if(inputGamepadSystem.pause || inputKeyboardSystem.pause)
+        if(inputKeyboardSystem.pause || (inputGamepadSystem.pause && inputGamepadSystem.active))
         {
             renderSystem.update(delta);
         }
