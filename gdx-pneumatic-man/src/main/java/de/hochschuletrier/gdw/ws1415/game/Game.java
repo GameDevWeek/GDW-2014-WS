@@ -71,7 +71,7 @@ public class Game {
     private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
-    private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
+    private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem(this);
     private final InputGamepadSystem inputGamepadSystem = new InputGamepadSystem();
     private final AISystem aisystems = new AISystem(
             GameConstants.PRIORITY_PHYSIX + 1,
