@@ -43,15 +43,16 @@ public class MainMenu extends MenuPage{
         int y = 510;
         int yStep = 100;
         
-            addPageEntryStart(menuManager,x,y-yStep*(i++),start, new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
-            //addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
-            //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
-            addPageEntry(menuManager, x, y-yStep*(i++), highscore, new ScoreMenu(skin, menuManager));
-            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> updateCredits());
-            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2,ende,()->System.exit(0));
-        //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
-            //addGear(hand);
+            
+            addPageEntry(menuManager,x,y-yStep*(++i), optionen, new OptionMenu(skin, menuManager));
+          addPageEntry(menuManager,x,y-yStep*(++i),credits, new OptionMenu(skin, menuManager));
+          //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
+          addPageEntry(menuManager, x, y-yStep*(++i), highscore, new ScoreMenu(skin, menuManager));
+          addPageEntryStart(menuManager,x,y-yStep*1, start, new OptionMenu(skin, menuManager));
+//          addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(++i), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> updateCredits());
+          addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(++i),(int)ende.getWidth(),(int)ende.getHeight()/2, ende, ()->System.exit(0));
+          //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
+          //addGear(hand);
     }
     
     private void updateCredits()
