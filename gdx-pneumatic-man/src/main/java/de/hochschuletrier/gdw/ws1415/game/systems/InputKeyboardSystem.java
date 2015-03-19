@@ -65,8 +65,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
             right = true;
             break;
         case Input.Keys.ESCAPE:
-            case Input.Keys.P: Settings.GAMEPAD_ENABLED.set(false); pause = !pause; break;
-            pause = !pause;
+            case Input.Keys.P: Settings.GAMEPAD_ENABLED.set(false); pause = !pause; 
             break;
         }
         return true;
