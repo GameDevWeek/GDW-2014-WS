@@ -63,9 +63,13 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DYING;
                     
                     PositionComponent position = entity.getComponent(PositionComponent.class);
-                    AddPostUpdate.add(EntityCreator.createDyingCharacter(entity));
+                    EntityCreator.modifyPlayerToDying(entity);
+                    //AddPostUpdate.add(EntityCreator.modifyPlayerToDying(entity));
                 }
-                CurrentEngine.removeEntity(entity);
+                else
+                {
+                    CurrentEngine.removeEntity(entity);
+                }
             }
 
         }
