@@ -64,14 +64,6 @@ public class MapLoader
     public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
     {
         
-        try
-        {
-            for ( String s: MapLoader.loadMapList() ) System.out.println( s ); 
-        } catch( IOException e )
-        {
-            e.printStackTrace();
-        }
-        
         try {
             GameConstants.setTileSizeX(map.getTileWidth());
             GameConstants.setTileSizeY(map.getTileHeight());
