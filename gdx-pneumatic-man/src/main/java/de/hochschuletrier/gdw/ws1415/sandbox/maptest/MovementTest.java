@@ -99,7 +99,7 @@ public class MovementTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
-        map = loadMap("data/maps/Testkarte_17.03.tmx");
+        map = loadMap("data/maps/Testkarte_19.03.tmx");
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
@@ -227,7 +227,7 @@ public class MovementTest extends SandboxGame {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map, info, i, j);
+                                    map, info, 1, i, j);
                         }
                     }
                 }
