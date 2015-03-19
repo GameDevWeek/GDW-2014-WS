@@ -11,6 +11,7 @@
    <property name="Invulnerable" value="true"/>
    <property name="Layer" value="2"/>
    <property name="Light" value="true"/>
+   <property name="Name" value="Lava1"/>
    <property name="Radius" value="3.0"/>
    <property name="Type" value="Lava"/>
   </properties>
@@ -20,6 +21,7 @@
    <property name="Invulnerable" value="true"/>
    <property name="Layer" value="2"/>
    <property name="Light" value="true"/>
+   <property name="Name" value="Lava2"/>
    <property name="Radius" value="3.0"/>
    <property name="Type" value="Lava"/>
   </properties>
@@ -29,6 +31,7 @@
    <property name="Invulnerable" value="true"/>
    <property name="Layer" value="2"/>
    <property name="Light" value="true"/>
+   <property name="Name" value="Lava3"/>
    <property name="Radius" value="3.0"/>
    <property name="Type" value="Lava"/>
   </properties>
@@ -38,6 +41,7 @@
    <property name="Invulnerable" value="true"/>
    <property name="Layer" value="2"/>
    <property name="Light" value="true"/>
+   <property name="Name" value="Lava4"/>
    <property name="Radius" value="3.0"/>
    <property name="Type" value="Lava"/>
   </properties>

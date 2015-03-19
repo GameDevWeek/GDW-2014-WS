@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset name="destructable_block" tilewidth="64" tileheight="64" spacing="64" margin="64">
+ <properties>
+  <property name="animationDuration" value="1"/>
+  <property name="animationFrames" value="6"/>
+  <property name="animationOffset" value="1"/>
+ </properties>
  <image source="destructable_block.png" width="832" height="192"/>
  <tile id="0">
   <properties>
