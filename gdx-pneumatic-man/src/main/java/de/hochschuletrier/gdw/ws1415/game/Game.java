@@ -285,7 +285,13 @@ public class Game {
         // }
         //
         // mapRenderer.update(delta);
-
-        engine.update(delta);
+        if(inputGamepadSystem.pause || inputKeyboardSystem.pause)
+        {
+            renderSystem.update(delta);
+        }
+        else
+        {
+            engine.update(delta);
+        }
     }
 }
