@@ -116,6 +116,7 @@ public class Game {
 
     public void init(AssetManagerX assetManager) {
              
+        EntityCreator.assetManager = assetManager;
         
         loadCurrentlySelectedLevel();
         

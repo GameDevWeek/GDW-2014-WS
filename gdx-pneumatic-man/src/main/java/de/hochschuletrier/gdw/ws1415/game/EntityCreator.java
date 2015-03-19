@@ -116,6 +116,7 @@ public class EntityCreator {
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = true;
         anim.animation = assetManager.getAnimation("char_idle");
+        System.out.println(anim.animation + "*********************************************************");
         entity.add(anim);
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
