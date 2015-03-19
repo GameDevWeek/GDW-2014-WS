@@ -8,6 +8,7 @@ import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
 
+@Deprecated
 public class FallingRockSystem extends IteratingSystem{
 
 

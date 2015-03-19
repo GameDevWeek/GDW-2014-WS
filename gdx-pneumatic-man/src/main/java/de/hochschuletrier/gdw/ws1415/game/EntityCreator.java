@@ -212,8 +212,9 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
 
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody, physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
+        bodyComponent.getBody().setActive(false);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
@@ -222,9 +223,14 @@ public class EntityCreator {
         entity.add(bodyComponent);
 
         FallingRockComponent rockComponent = new FallingRockComponent();
-        rockComponent.falling = false;
         rockComponent.id = trapId;
-
+        entity.add(rockComponent);
+        
+        DamageComponent damageComp = engine.createComponent(DamageComponent.class);
+        damageComp.damage = 4;
+        damageComp.damageToPlayer = true;
+        damageComp.damageToTile = true;
+        
         engine.addEntity(entity);
         return entity;
     }
@@ -237,7 +243,7 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
 
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody, physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f)
@@ -250,7 +256,8 @@ public class EntityCreator {
 
         FallingRockTriggerComponent rockComponent = new FallingRockTriggerComponent();
         rockComponent.rockEntity = rock;
-
+        entity.add(rockComponent);
+        
         engine.addEntity(entity);
         return entity;
     }
