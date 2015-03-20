@@ -8,9 +8,25 @@
         "text_right": { "color": "FFFFFF", "font": "orbitron_32", "align": "left" }
     },
     "paths" : {
-        "text": {
+        "heading": {
             "type": "linear",
             "destinations": [
+                {"x": 950, "y": 200, "speed": 30 },
+                {"x": 950, "y": 1000, "speed": 30 }
+            ]
+        },
+        "textleft": {
+            "type": "linear",
+            "destinations": [
+                {"x": 750, "y": 200, "speed": 100 },
+                {"x": 950, "y": 200, "speed": 30 },
+                {"x": 950, "y": 1000, "speed": 30 }
+            ]
+        },
+        "textright": {
+            "type": "linear",
+            "destinations": [
+                {"x": 1150, "y": 200, "speed": 100 },
                 {"x": 950, "y": 200, "speed": 30 },
                 {"x": 950, "y": 1000, "speed": 30 }
             ]
@@ -29,72 +45,72 @@
             "items" : [
             
                 
-                { "type": "text", "path" : "text", "group" : "startanimation", "style" : "title_left", "text" : "PNEUMATIC MAN", "delay" : "0"},
+                { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text" : "PNEUMATIC MOLE", "delay" : "0"},
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Organisation", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Santo Pfingsten  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Tobias Meier", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Thomas Juergensen", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Sandra Weyand  ", "delay": "1350" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Organisation", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Santo Pfingsten  ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Tobias Meier", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1350" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Thomas Juergensen", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Sandra Weyand  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Physik", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "David Neubauer  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Oliver Biwer", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "David Liebemann  ", "delay": "1350" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Physik", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "David Neubauer  ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Oliver Biwer", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "David Liebemann  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Game Logik", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Markus Schmieder  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Sebastian Krause", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Sinan Sagunc  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Tobias Thierbach", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Hermann Hockemeier  ", "delay": "1350" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Game Logik", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Markus Schmieder  ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Sebastian Krause", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Sinan Sagunc  ", "delay": "1350" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Tobias Thierbach", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Hermann Hockemeier  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Rendering", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Dennis Grass  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Tobias Rogalski", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Wladimir Kroeker  ", "delay": "1350" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Rendering", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Dennis Grass  ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Tobias Rogalski", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Wladimir Kroeker  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Menu & Hud", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Jeremy Merse  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Yasmin Juncker", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Mira Lorenz  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Julia Eiden", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Maximilian Furrer  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Niklas Zorell", "delay": "0" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Menu & Hud", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Jeremy Merse  ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Yasmin Juncker", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Mira Lorenz  ", "delay": "1350" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Julia Eiden", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Maximilian Furrer  ", "delay": "1350" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Niklas Zorell", "delay": "0" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Level Design", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Michael Kramer", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Reiko Schroth  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Philipp Rath", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Heinrich Unrau  ", "delay": "1350" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Level Design", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Michael Kramer", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Reiko Schroth  ", "delay": "1350" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Philipp Rath", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Heinrich Unrau  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Input", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Annika Kremer  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Kevin Messmer", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Hannes Klein  ", "delay": "1350" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Input", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Annika Kremer  ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Kevin Messmer", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Hannes Klein  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Sound & Musik", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Felix Wishnewsky ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Noah Plingen", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Manuel Neugebauer  ", "delay": "1350" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Sound & Musik", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Felix Wishnewsky ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Noah Plingen", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Manuel Neugebauer  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Design", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Julia Wolf  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Michelle Kaufmann", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Saskia Hohmann  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Maxine Hammen", "delay": "0" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Lynn Friedrich  ", "delay": "1350" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Design", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Julia Wolf  ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Michelle Kaufmann", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Saskia Hohmann  ", "delay": "1350" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Maxine Hammen", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Lynn Friedrich  ", "delay": "1350" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Assets", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Tobias Gepp  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Dominik Petersdorf", "delay": "0" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Assets", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Tobias Gepp  ", "delay": "1700" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Dominik Petersdorf", "delay": "0" },
                 
-                 { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Animation", "delay": "3000" },
-                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Hans Boehme  ", "delay": "1350" },
+                 { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Animation", "delay": "6000" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Hans Boehme  ", "delay": "1700" },
                 
-                { "type": "texture", "path" : "text", "group" : "bild", "resource" : "back_button", "delay" : "10000"},
+                { "type": "texture", "path" : "heading", "group" : "bild", "resource" : "back_button", "delay" : "10000"},
                 
                
                 { "type": "text", "path" : "btw", "group" : "btw", "style" : "text_right", "text": "btw..", "delay": "8500" },
@@ -104,18 +120,10 @@
             ],
             "animations": [
             
-                { "time": 0, "animation": "construct", "animationTime": 1000, "group": "title",
-                    "minRadius" : 100, "maxRadius" : 300,
-                    "minAngle" : -45, "maxAngle" : 225,
-                    "minCurveAngle": 45, "maxCurveAngle": 135
-                },
-                { "time": 0, "animation": "untype_instant", "group" : "schrift" },
-                { "time": 1000, "animation": "construct_type", "animationTime": 100,  "group" : "schrift",
-                    "minRadius" : 100, "maxRadius" : 200,
-                    "minAngle" : 300, "maxAngle" : 300,
-                    "minCurveAngle": 25, "maxCurveAngle": 100,
-                    "trailMaxSteps": 20, "trailStepTime": 100
-                },
+                { "time": 0, "animation": "fade_in", "animationTime": 3000, "group": "title" },
+                
+                { "time": 0, "animation": "fade_in", "animationTime": 2000,  "group" : "textleft" },
+                { "time": 0, "animation": "fade_in", "animationTime": 2000,  "group" : "textright" },
                 { "time": 0, "animation": "construct", "animationTime": 1000, "group": "startanimation",
                     "minRadius" : 300, "maxRadius" : 300,
                     "minAngle" : 200, "maxAngle" : 225,
