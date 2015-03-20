@@ -3,11 +3,12 @@ package de.hochschuletrier.gdw.ws1415.game.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class SortedFamilyRenderSystem extends SortedIteratingSystem {
-
+    
     public static abstract class Renderer {
 
         private final Family family;

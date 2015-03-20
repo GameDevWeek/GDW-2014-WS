@@ -1,8 +1,13 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
 import com.badlogic.ashley.core.ComponentMapper;
+
 import de.hochschuletrier.gdw.commons.gdx.physix.components.*;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.ChainLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.ConeLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.DirectionalLightComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
 
 public class ComponentMappers {
     public static final ComponentMapper<PositionComponent> position = ComponentMapper.getFor(PositionComponent.class);
@@ -22,4 +27,12 @@ public class ComponentMappers {
     public static final ComponentMapper<JumpComponent> jump = ComponentMapper.getFor(JumpComponent.class);
     public static final ComponentMapper<InputComponent> input = ComponentMapper.getFor(InputComponent.class);
     public static final ComponentMapper<ParticleComponent> particle = ComponentMapper.getFor(ParticleComponent.class);
+    public static final ComponentMapper<FallingRockComponent> rockTraps = ComponentMapper.getFor(FallingRockComponent.class);
+    public static final ComponentMapper<PointLightComponent>  pointLight = ComponentMapper.getFor(PointLightComponent.class);
+    public static final ComponentMapper<DirectionalLightComponent>  directionalLight = ComponentMapper.getFor(DirectionalLightComponent.class);
+    public static final ComponentMapper<ChainLightComponent>  chainLight = ComponentMapper.getFor(ChainLightComponent.class);
+    public static final ComponentMapper<ConeLightComponent>  coneLight = ComponentMapper.getFor(ConeLightComponent.class);
+    public static final ComponentMapper<LavaFountainComponent> lavaFountain = ComponentMapper.getFor(LavaFountainComponent.class);
+    public static final ComponentMapper<LavaBallComponent> lavaBall = ComponentMapper.getFor(LavaBallComponent.class);
+
 }

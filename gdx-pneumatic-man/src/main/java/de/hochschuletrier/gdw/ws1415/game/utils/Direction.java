@@ -7,14 +7,16 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public enum Direction{
-    RIGHT(0), UP(1), LEFT(2), DOWN(3); //, EAST(0), NORD(1), WEST(2), SOUTH(3);
+    RIGHT(0, new Vector2(1,0)), UP(1, new Vector2(0,-1)),
+    LEFT(2, new Vector2(-1,0)), DOWN(3, new Vector2(0,1)); //, EAST(0), NORD(1), WEST(2), SOUTH(3);
 
-    Direction(int v){
+    Direction(int v, Vector2 vector2){
         this.value = v;
+        this.vector2 = vector2;
     }
 
     int value;
-
+    Vector2 vector2;
 
     /**
      * @return direcction for 90 degrees counter clock wise
@@ -36,13 +38,7 @@ public enum Direction{
     }
 
     public Vector2 toVector2(){
-        switch (this.value){
-            case(0): return Vector2.X;
-            case(1): return Vector2.Y;
-            case(2): return Vector2.X.scl(-1);
-            case(3): return Vector2.Y.scl(-1);
-        }
-        return null;
+        return new Vector2(this.vector2);
     }
 
     public static Direction fromInt(int i){
@@ -55,16 +51,28 @@ public enum Direction{
         return null;
     };
 
+    /**
+     *  USE WITH CAUTION
+     */
     public static Direction fromVector2(Vector2 v){
         float i = v.dot(Vector2.X);
         float j = v.dot(Vector2.Y);
         if(i == 0 && j == 0) return null;
-        if(Math.abs(i) > Math.abs(j))
-            if(i > 0) return RIGHT;
-            else return LEFT;
-        else
-            if(j > 0) return UP;
-            else return DOWN;
+        if(Math.abs(i) > Math.abs(j)) {
+            if (i > 0) {
+                return RIGHT;
+            }
+            else {
+                return LEFT;
+            }
+        }else {
+            if (j > 0) {
+                return DOWN;
+            }
+            else {
+                return UP;
+            }
+        }
     };
 
 }

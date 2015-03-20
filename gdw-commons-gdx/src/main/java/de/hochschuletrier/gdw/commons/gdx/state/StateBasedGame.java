@@ -2,8 +2,11 @@ package de.hochschuletrier.gdw.commons.gdx.state;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.utils.Disposable;
+
+import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.ScreenCamera;
 import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

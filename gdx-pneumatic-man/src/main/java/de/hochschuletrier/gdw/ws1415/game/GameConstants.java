@@ -20,9 +20,13 @@ public class GameConstants {
 
     // Physix parameters
     public static final int POSITION_ITERATIONS = 3;
+    public static final int GRAVITY_CONSTANT = 30;
     public static final int VELOCITY_ITERATIONS = 8;
     public static final int BOX2D_SCALE = 40;
-
+    
+    // Light parameters
+    public static final int LIGHT_RAYS = 125;
+    
     private static int TileSizeX = 0;
     private static int TileSizeY = 0;
 

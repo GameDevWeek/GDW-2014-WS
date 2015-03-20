@@ -1,39 +1,67 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
-import com.badlogic.ashley.core.Entity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.math.Vector2;
+
+import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
-import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 
 /**
  * Handles contacts between player and other entities
  */
 public class PlayerContactListener extends PhysixContactAdapter {
+    private static final Logger logger = LoggerFactory.getLogger(PlayerContactListener.class);
 
     public void beginContact(PhysixContact contact) {
 
         Entity player = contact.getMyComponent().getEntity();
+        AnimationComponent anim = player.getComponent(AnimationComponent.class);
 
         if (contact.getOtherComponent() == null)
             return;
 
         // Entity myEntity = contact.getMyComponent().getEntity(); //
         Entity otherEntity = contact.getOtherComponent().getEntity();
+        
+        if(otherEntity.getComponent(MinerComponent.class) != null){
+            otherEntity.getComponent(HealthComponent.class).Value = 0;
+        }
 
         // Player collides with lava.
         if (otherEntity.getComponent(KillsPlayerOnContactComponent.class) != null) {
             // Player dies and level resets.
+            HealthComponent Health = player.getComponent(HealthComponent.class);
+            Health.DecrementByValueNextFrame = Health.Value;
         }
 
-        if (ComponentMappers.enemy.has(otherEntity)) {
+        if (otherEntity.getComponent(FallingRockTriggerComponent.class) != null){
+            FallingRockTriggerComponent rockTriggerComponent = otherEntity.getComponent(FallingRockTriggerComponent.class);
+            //FallingRockComponent rockComponent = ComponentMappers.rockTraps.get(rockTriggerComponent.rockEntity);
+            //rockComponent.falling = true;
+            PhysixBodyComponent bodyComponent = ComponentMappers.physixBody.get(rockTriggerComponent.rockEntity);
+            PhysixModifierComponent modifierComponent = EntityCreator.engine.createComponent(PhysixModifierComponent.class);
+            modifierComponent.schedule(() -> {
+                bodyComponent.setActive(true);
+            });
+            rockTriggerComponent.rockEntity.add(modifierComponent);
+            EntityCreator.engine.removeEntity(otherEntity);
+        }
+
+        if (otherEntity.getComponent(DamageComponent.class) != null) {
             // player touched an enemy
             if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
-                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity
-                        .getComponent(DamageComponent.class).damage;
+                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
     }
