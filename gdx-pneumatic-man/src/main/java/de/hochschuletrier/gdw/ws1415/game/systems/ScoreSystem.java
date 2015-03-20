@@ -9,6 +9,8 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 
+import de.hochschuletrier.gdw.ws1415.game.Score;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
@@ -17,11 +19,11 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
 
     private static final Logger logger = LoggerFactory.getLogger(ScoreSystem.class);
     
-    public int score;
     public int total_miners;
     Family MinerFamily = Family.all(MinerComponent.class).get();
     Family GoalFamily = Family.all(GoalComponent.class).get();
     Family PlayerFamily = Family.all(PlayerComponent.class).get();
+    Family BlockFamily = Family.all(DestructableBlockComponent.class).get();
     public Entity goal;
     public Entity player;
     public boolean playerAdded = false;
@@ -30,12 +32,13 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
 
     public ScoreSystem() {
         super(1);
-        score = 0;
+        current_game_time = 0;
+        Score.scoreSys = this;
     }
 
     @Override
     public void addedToEngine(Engine engine) {
-        Family Fam = Family.one(PlayerComponent.class, MinerComponent.class, GoalComponent.class).get();
+        Family Fam = Family.one(DestructableBlockComponent.class, PlayerComponent.class, MinerComponent.class, GoalComponent.class).get();
         engine.addEntityListener(Fam, this);
     }
 
@@ -52,6 +55,11 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
                 {
                     if(goal.getComponent(GoalComponent.class).miners_threshold == player.getComponent(PlayerComponent.class).saved_miners){
                         goal.getComponent(GoalComponent.class).end_of_level = true;
+                        int saved_miners = player.getComponent(PlayerComponent.class).saved_miners;
+                        int destroyed_blocks = player.getComponent(PlayerComponent.class).destroyed_blocks;
+                        int miners_threshold = goal.getComponent(GoalComponent.class).miners_threshold;
+                        Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
+                        logger.info("Your score is: " + Score.score);
                     }
                 }
             }
@@ -81,7 +89,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         if(GoalFamily.matches(entity))
         {
             goal = entity;
-            logger.info("Goal was added.");
+            //logger.info("Goal was added.");
         }
         if (MinerFamily.matches(entity)) {
             total_miners += 1;
@@ -94,13 +102,20 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
             player.getComponent(PlayerComponent.class).saved_miners += 1;
             logger.info("Miners saved: " + player.getComponent(PlayerComponent.class).saved_miners);
         }
+        if(BlockFamily.matches(entity)){
+            player.getComponent(PlayerComponent.class).destroyed_blocks += 1;
+            //logger.info("Destroyed blocks: " + destroyed_blocks);
+            //logger.info("A block was destroyed.");
+        }
     }
     
+    /**
     public void calculateHighscore(){
         int highscore = 1000;
         int bonus_miners = player.getComponent(PlayerComponent.class).saved_miners - goal.getComponent(GoalComponent.class).miners_threshold;
         
         highscore -= current_game_time;
+        highscore += destroyed_blocks;
         highscore += (goal.getComponent(GoalComponent.class).miners_threshold * 10);
         if(bonus_miners >= 1){
             highscore += (bonus_miners * 20);
@@ -108,4 +123,5 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         
         score = highscore;
     }
+    **/
 }
