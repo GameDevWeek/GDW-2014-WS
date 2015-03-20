@@ -156,8 +156,8 @@ public class Game {
         switch (selectedLevel)
         {
             case 0: 
-                //levelFilePath = "data/maps/Testkarte_19.03.tmx";
-                levelFilePath = "data/maps/bomb_test.tmx";
+                levelFilePath = "data/maps/Testkarte_19.03.tmx";
+                //levelFilePath = "data/maps/bomb_test.tmx";
                 break;
             default:
                 System.out.println("Warning: Error in Level Selection");

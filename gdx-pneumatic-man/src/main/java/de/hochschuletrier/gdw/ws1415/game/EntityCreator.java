@@ -949,9 +949,8 @@ public class EntityCreator {
     }
     // ********** Rendering section END **********
 
-    public static Entity createAndAddBomb(float x, float y) {
+    public static Entity createAndAddBomb(float x, float y, TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity Bomb = engine.createEntity();
-        
         Bomb.add(engine.createComponent(PositionComponent.class));
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
@@ -961,8 +960,15 @@ public class EntityCreator {
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
         Damage.damage = 3;
         Damage.damageToTile = true;
-        
         Bomb.add(Damage);
+        
+        Bomb.add(defineBoxPhysixBodyComponent(Bomb, x, y,
+                GameConstants.getTileSizeX(), GameConstants.getTileSizeY(),
+                true, 1f, 1f, 0.1f));
+        
+        addRenderComponents(Bomb, map, info, tileX, tileY);
+        
+        engine.addEntity(Bomb);
         return(Bomb);
     }
 
