@@ -152,7 +152,7 @@ public class Game {
         
         MapLoader.generateWorldFromTileMapX(engine, physixSystem, map, cameraSystem);
         // TODO: Move to better place or remove later
-        EntityCreator.createBackground();
+        EntityCreator.createTestBackground();
         inputManager.init();
     }
 
