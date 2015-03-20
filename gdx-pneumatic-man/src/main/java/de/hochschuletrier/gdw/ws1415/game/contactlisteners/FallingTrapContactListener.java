@@ -36,9 +36,12 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         Vector2 d = contact.getMyFixture().getBody().getPosition()
                 .sub(contact.getOtherFixture().getBody().getPosition()); // vector von other nach rock
 
-        // kommt rock von oben?
-        if(d.dot(Vector2.Y) >= 0) return; // nein tut er nicht
+        PhysixBodyComponent mybody = ComponentMappers.physixBody.get(myEntity);
 
+        // kommt rock von oben?
+        Vector2 a = mybody.getBody().getPosition().cpy().sub(contact.getOtherFixture().getBody().getPosition());
+        float dot = a.dot(Direction.DOWN.toVector2());
+        if(dot > 0) return; // nope
 
         // ja stein kommt von oben:
         if(ComponentMappers.health.has(otherEntity)) {
@@ -59,8 +62,8 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         if(dot > 0) return;
 
         mybody.setGravityScale(0.0f);
-        mybody.setLinearVelocity(0,0);
-        mybody.getFixtureList().forEach(f->f.setSensor(true));
+        mybody.setLinearVelocity(0, 0);
+        mybody.getFixtureList().forEach(f -> f.setSensor(true));
 
 
         AnimationComponent animationComponent = ComponentMappers.animation.get(myEntity);

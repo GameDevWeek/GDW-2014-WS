@@ -83,13 +83,13 @@ public class EntityCreator {
         // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0.1f)
-                .shapeCircle(width*0.1f,new Vector2(0,-height * 0.4f));
+                .shapeCircle(width * 0.1f, new Vector2(0, -height * 0.4f));
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1f).friction(0f).restitution(0.1f)
-        .shapeBox(width*0.2f, height*0.5f, new Vector2(0,height * 0.2f), 0);
+        .shapeBox(width * 0.2f, height * 0.5f, new Vector2(0, height * 0.2f), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
 
@@ -110,7 +110,6 @@ public class EntityCreator {
         entity.add(bodyComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-
         jumpComponent.jumpImpulse = 14000.0f;
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
@@ -189,7 +188,7 @@ public class EntityCreator {
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(pbdy, physixSystem, entity);
         PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).restitution(0.1f)
+                .density(1).friction(0f).restitution(0f)
                 .shapeBox(width, height);
         Fixture fixture = bodyComponent.createFixture(pfx);
         fixture.setUserData(bodyComponent);
@@ -198,8 +197,20 @@ public class EntityCreator {
         ai.type = type;
         entity.add(ai);
 
+        MovementComponent movementComponent = engine.createComponent(MovementComponent.class);
+        if(type == AIType.CHAMELEON)
+            movementComponent.speed = 15000.0f;
+        else
+            movementComponent.speed = 17000.0f;
+        entity.add(movementComponent);
+
+        JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
+        jumpComponent.jumpImpulse = 10000.0f;
+        jumpComponent.restingTime = 0.002f;
+        entity.add(jumpComponent);
+
         DirectionComponent d = new DirectionComponent();
-        d.facingDirection = direction;
+        d.facingDirection = Direction.LEFT;
         entity.add(d);
 
         engine.addEntity(entity);
