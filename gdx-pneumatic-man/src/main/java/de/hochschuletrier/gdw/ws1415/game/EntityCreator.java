@@ -423,13 +423,17 @@ public class EntityCreator {
     private static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode) {
         Entity entity = engine.createEntity();
         
+        int boxWidth = GameConstants.getTileSizeX();
+        int boxHeight = GameConstants.getTileSizeY();       
+        
         PhysixBodyComponent bodyComponent = engine
                 .createComponent(PhysixBodyComponent.class);
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody,
-                physixSystem).position(x, y).fixedRotation(true);
+                physixSystem).position(x+0.5f*GameConstants.getTileSizeX(), y+0.5f*GameConstants.getTileSizeY()).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
+        bodyComponent.getBody().setGravityScale(0f);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
+                .density(500).friction(1f).shapeBox(boxWidth, boxHeight)
                 .restitution(0.1f);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);

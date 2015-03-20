@@ -72,6 +72,7 @@ public class MapLoader
      * 
      * @author Renderer
      */
+    @Deprecated
     public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
     {
         
@@ -331,11 +332,11 @@ public class MapLoader
                         // all preloaded Object are not needed to be handled
                         case "rock":
                             break;
-                        case "plattform":
+                        case "platform":
                         {
                             PlatformMode mode = PlatformMode.valueOf(obj.getProperty("Mode", PlatformMode.ALWAYS.name()).toUpperCase());
                             Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.UP.name()).toUpperCase()); // "Direction"
-                            int distance = obj.getIntProperty("Distance", 0);
+                            int distance = (int)obj.getFloatProperty("Distance", 0);
                             int hitpoints = obj.getIntProperty("Hitpoints", 0);
                             float speed = obj.getFloatProperty("Speed", 0);
                             if(hitpoints == 0)
