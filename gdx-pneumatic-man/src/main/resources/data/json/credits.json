@@ -64,11 +64,11 @@
                 { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Niklas Zorell", "delay": "0" },
                 
                  { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Level Design", "delay": "3000" },
-                { "type": "text", "path" : "text", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "style" : "text_right", "text": "  Michael Kramer", "delay": "0" },
-                { "type": "text", "path" : "text", "style" : "text_left", "text": "Reiko Schroth  ", "delay": "1350" },
-                { "type": "text", "path" : "text", "style" : "text_right", "text": "  Philipp Rath", "delay": "0" },
-                { "type": "text", "path" : "text", "style" : "text_left", "text": "Heinrich Unrau  ", "delay": "1350" },
+                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1350" },
+                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Michael Kramer", "delay": "0" },
+                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Reiko Schroth  ", "delay": "1350" },
+                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_right", "text": "  Philipp Rath", "delay": "0" },
+                { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Heinrich Unrau  ", "delay": "1350" },
                 
                  { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Input", "delay": "3000" },
                 { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Annika Kremer  ", "delay": "1350" },
@@ -94,7 +94,7 @@
                  { "type": "text", "path" : "text", "group" : "title", "style" : "title_center", "text": "Animation", "delay": "3000" },
                 { "type": "text", "path" : "text", "group" : "schrift", "style" : "text_left", "text": "Hans Boehme  ", "delay": "1350" },
                 
-                { "type": "texture", "path" : "text", "group" : "bild", "resource" : "back_button", "delay" : "9000"},
+                { "type": "texture", "path" : "text", "group" : "bild", "resource" : "back_button", "delay" : "10000"},
                 
                
                 { "type": "text", "path" : "btw", "group" : "btw", "style" : "text_right", "text": "btw..", "delay": "8500" },
@@ -134,7 +134,9 @@
                 { "time": 6600, "animation": "untype", "animationTime": 50, "group": "git1" },
                 { "time": 7500, "animation": "type", "animationTime": 50, "group": "git1b" },
 
-                { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "schrift" }
+                { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "schrift" },
+                { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "title" },
+                { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "startanimation" }
             ]
         }
     }
