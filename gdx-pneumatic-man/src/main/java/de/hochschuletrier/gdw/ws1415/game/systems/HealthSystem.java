@@ -49,9 +49,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
         entities.remove(entity);
     }
 
+    ArrayList<Entity> PostUpdateRemovals = new ArrayList<Entity>();
     @Override
     public void update(float deltaTime) {
-    	for (Entity entity : entities) {
+        for (Entity entity : entities) {
             HealthComponent Health = ComponentMappers.health.get(entity);
             Health.Value -= Health.DecrementByValueNextFrame;
             Health.DecrementByValueNextFrame = 0;
@@ -66,10 +67,18 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 else
                 {
                     logger.info(entity.getId() + " removed");
-                    CurrentEngine.removeEntity(entity);
+                    PostUpdateRemovals.add(entity);
+
                 }
             }
 
         }
+        for(Entity entity : PostUpdateRemovals)
+        {
+            CurrentEngine.removeEntity(entity);
+        }
+        PostUpdateRemovals.clear();
     }
+        
+
 }

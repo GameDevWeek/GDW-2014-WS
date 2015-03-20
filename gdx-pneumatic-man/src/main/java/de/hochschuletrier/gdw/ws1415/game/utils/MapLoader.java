@@ -368,7 +368,7 @@ public class MapLoader
                             break;
                         case "levelend":
                         {
-                            EntityCreator.createAndAddEventBox(obj.getX(), obj.getY());
+                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));
                         }
                             break;
                         case "enemy":
