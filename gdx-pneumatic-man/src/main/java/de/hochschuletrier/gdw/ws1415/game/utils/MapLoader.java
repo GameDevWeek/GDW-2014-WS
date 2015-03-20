@@ -409,7 +409,7 @@ public class MapLoader
                             String type = tiles[i][j].getProperty("Type", "").toLowerCase();
                             TileInfo tinfo = tiles[i][j];
                             
-                           //System.out.println( type + " " + i + "," + j + " " + tinfo.getProperty("Name", "X") );
+                            System.out.println( type + " " + i + "," + j + " " + tinfo.getProperty("Name", "X") );
                             
                             switch( type )
                             {
