@@ -29,4 +29,8 @@ public class DecoImage extends Image {
     public void setTexture(Texture texture) {
         region.setRegion(texture);
     }
+    
+    public TextureRegion getRegion(){
+        return region;
+    }
 }
