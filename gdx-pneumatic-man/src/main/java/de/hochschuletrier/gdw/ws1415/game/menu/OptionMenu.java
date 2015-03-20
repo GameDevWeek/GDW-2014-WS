@@ -29,7 +29,7 @@ public class OptionMenu extends MenuPage
 		super(skin, "background_menu");
 		int y = 600;
 		
-		createLabel(menuManager.getWidth()/2-75, y).setText("SOUND");
+		createLabel(menuManager.getWidth()/2-75, y).setText("SOUND VOLUME");
 		y-= 20;
         soundSlider = createSlider(menuManager.getWidth()/2-160, y, this::onSoundVolumeChanged);
         soundSlider.setValue(Settings.SOUND_VOLUME.get());
@@ -39,7 +39,7 @@ public class OptionMenu extends MenuPage
         //soundMuteButton.setVisible(false);
         y -= 50;
 
-        createLabel(menuManager.getWidth()/2-75, y).setText("MUSIC");
+        createLabel(menuManager.getWidth()/2-75, y).setText("MUSIC VOLUME");
         y -= 20;
         musicSlider = createSlider(menuManager.getWidth()/2-160, y, this::onMusicVolumeChanged);
         musicSlider.setValue(Settings.MUSIC_VOLUME.get());
