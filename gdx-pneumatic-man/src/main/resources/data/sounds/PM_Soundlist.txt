@@ -85,15 +85,15 @@ Felsen schl�gt auf etwas auf
 ..
 [Gegner]
 
-W�chterchameleon l�uft
-	-guardWalk1
-	-guardWalk2
+W�chterchameleon stirbt
+    -guardDie
 
 W�chterchameleon gibt Laute von sich
-	-guardGrunt1
-	-guardGrunt2
-	-guardGrunt3
-
+	guardGrunt1
+	guardGrunt2
+	guardGrunt3
+    guardGrunt4
+    
 Alienhund stirbt
 	-alienDie
 
