@@ -147,10 +147,11 @@ public class MapLoader
                             EntityCreator.createAndAddEnemy(obj.getX(), obj.getY(), dir, type);
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("Miner")){
+                        EntityCreator.createAndAddMiner(obj.getX(), obj.getY());
                     
                     }
                     else{
-                        Gdx.app.log("WARNING", "object " + obj.getName() + "does not match any name. No Entity created");
+                        Gdx.app.log("WARNING", "object " + obj.getName() + "[" + obj.getProperty("Name", "") + "]" + "does not match any name. No Entity created");
                     }
 
                 }
@@ -367,7 +368,7 @@ public class MapLoader
                             break;
                         case "levelend":
                         {
-                            EntityCreator.createAndAddEventBox(obj.getX(), obj.getY());
+                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));
                         }
                             break;
                         case "enemy":
@@ -387,6 +388,11 @@ public class MapLoader
                             float length = obj.getFloatProperty("Length", 1.0f);
                             EntityCreator.createLavaFountain(positionX, positionY, height, intervall, intervallOffset, length);
                         }
+                            break;
+                        case "miner":
+                            float PositionX = obj.getX();
+                            float PositionY = obj.getY();
+                            EntityCreator.createAndAddMiner(PositionX, PositionY);
                             break;
                         default: 
                         {

@@ -9,6 +9,8 @@ import de.hochschuletrier.gdw.ws1415.Main;
 
 public class ScoreMenu extends MenuPage
 {
+    int[] highscore = new int[4]; //Hier sollen die Highscore gespeichert werden.
+    
 	public ScoreMenu(Skin skin, MenuManager menuManager)
 	{
 		super(skin, "background_menu");

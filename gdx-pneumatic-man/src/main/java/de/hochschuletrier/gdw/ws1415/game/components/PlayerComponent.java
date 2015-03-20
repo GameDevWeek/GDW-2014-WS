@@ -9,9 +9,12 @@ import com.badlogic.gdx.utils.Pool;
 public class PlayerComponent extends Component implements Pool.Poolable {
 
     public int saved_miners;
+    public int destroyed_blocks = 0;
+    
     @Override
     public void reset() {
         saved_miners = 0;
+        destroyed_blocks = 0;
     }
 
 }

@@ -4,7 +4,7 @@
  <tile id="0">
   <properties>
    <property name="Name" value="Bomb"/>
-   <property name="Type" value="Floor"/>
+   <property name="Type" value="Bomb"/>
   </properties>
  </tile>
  <tile id="1">
