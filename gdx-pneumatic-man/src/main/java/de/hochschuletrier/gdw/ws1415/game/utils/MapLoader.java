@@ -360,7 +360,7 @@ public class MapLoader
                         {
                             cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0) );
                             //TESTS FOR LIGHT
-                            EntityCreator.createConeLight(obj.getX(), obj.getY()-500f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
+                            EntityCreator.createConeLight(obj.getX() + 100, obj.getY()-380f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
                             //EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}/*new float[]{obj.getX()+20f, obj.getY()-20f,obj.getX()+40f, obj.getY()-20f}*/);
                             //EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
                         }
