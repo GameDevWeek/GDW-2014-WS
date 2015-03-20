@@ -69,11 +69,21 @@ public class EntityCreator {
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
 
-        entity.add(engine.createComponent(AnimationComponent.class));
-        entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         entity.add(engine.createComponent(PlayerComponent.class));
+        
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("laser"));
+        
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        pe.offsetY = 60f;
+        pe.offsetX = -7f;
+        entity.add(pe);
+
+        //addTestParticleAndLightComponent(entity);
         
 //        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
 
@@ -112,6 +122,12 @@ public class EntityCreator {
         moveComponent.speed = 12000.0f;
         entity.add(moveComponent);
 
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.scaleX = 0.5f;
+        pos.scaleY = 0.5f;
+        
+        entity.add(pos);
+        
         // ***** temporary *****
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = true;
@@ -120,7 +136,7 @@ public class EntityCreator {
         entity.add(anim);
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
-        layer.layer = 1;
+        layer.layer = 10; // TODO: Change later
         entity.add(layer);
 
         engine.addEntity(entity);
@@ -138,6 +154,8 @@ public class EntityCreator {
         entityToDie.remove(PhysixBodyComponent.class);
         entityToDie.remove(MovementComponent.class);
         entityToDie.remove(JumpComponent.class);
+        entityToDie.remove(ParticleComponent.class);
+        entityToDie.remove(PointLightComponent.class);
 
         DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
         entityToDie.add(deathComponent);
@@ -149,10 +167,7 @@ public class EntityCreator {
         
         entityToDie.add(deathAnimation);
         entityToDie.add(deathComponent);
-         // Shifts camera to (0,0)??
-        LayerComponent Layer = engine.createComponent(LayerComponent.class);
-        Layer.layer = 1;
-        entityToDie.add(Layer);
+
         return entityToDie;
     }
 
@@ -233,9 +248,6 @@ public class EntityCreator {
         entity.add(defineBoxPhysixBodyComponent(entity, x, y, width, height,
                 true, 1f, 1f, 0.1f));
 
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
-
         engine.addEntity(entity);
         return entity;
     }
@@ -304,7 +316,7 @@ public class EntityCreator {
     public static Entity createAndAddVulnerableFloor(float x, float y, TiledMap map, TileInfo info, int health,  int tileX, int tileY) {
         Entity entity = engine.createEntity();
         
-        addRenderComponents(entity, map, info, tileX, tileY); // TODO: Change as soon as design team added the animation properties.
+        addRenderComponents(entity, map, info, tileX, tileY, PlayMode.LOOP, true); // TODO: Change as soon as design team added the animation properties.
         
         entity.add(defineBoxPhysixBodyComponent(entity, x, y,
                 GameConstants.getTileSizeX(), GameConstants.getTileSizeY(),
@@ -393,9 +405,6 @@ public class EntityCreator {
         fixture.setUserData(bodyComponent);
         entity.add(bodyComponent);
 
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
-
         PlatformComponent pl = new PlatformComponent();
         pl.travelDistance = travelDistance * GameConstants.getTileSizeX();
         pl.mode = mode;
@@ -474,8 +483,7 @@ public class EntityCreator {
         Damage.damage = 2;
         entity.add(Damage);
 
-        DestructableBlockComponent blockComp = new DestructableBlockComponent();
-        entity.add(blockComp);
+
 
         engine.addEntity(entity);
         return entity;
@@ -667,15 +675,12 @@ public class EntityCreator {
     public static void addTestParticleAndLightComponent(Entity entity) {
         ParticleComponent pe = engine.createComponent(ParticleComponent.class);
         
-        pe.particleEffect = new ParticleEffect();
-        
-        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
-        loadParticleEffects( pe,"xpl_prtkl.p" );
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("explosion"));
         
         pe.loop=true;
         pe.particleEffect.flipY();
         pe.particleEffect.start();
-        
+        pe.offsetY = 100f;
         PointLightComponent pl = engine.createComponent(PointLightComponent.class);
         pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),125,new Color(1f,0f,0f,1f),5f,0,0);
         
@@ -685,10 +690,6 @@ public class EntityCreator {
     
     public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
     	Entity entity = engine.createEntity();
-
-    	// FOR TESTS:
-    	//if (info.getBooleanProperty("Invulnerable", false) && info.getProperty("Type", "").equals("Lava"))
-    		//addTestParticleAndLightComponent(entity);
     	
     	addRenderComponents(entity, map, info, tileX, tileY);
     	
@@ -696,13 +697,26 @@ public class EntityCreator {
     	return entity;
     }
     
-    private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, AnimationExtended animation) {
+    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
+        Entity entity = engine.createEntity();
+        
+        addRenderComponents(entity, map, info, tileX, tileY, playMode, start);
+        
+        engine.addEntity(entity);
+        return entity;
+    }
+    
+    private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, 
+    		AnimationExtended animation, boolean start, float stateTime) {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
         entityLayer.parallax = parallax;
         
         
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
+        anim.IsActive = start;
+        anim.stateTime = stateTime;
+        anim.permanent_stateTime = stateTime;
         anim.animation = animation;
         
         PositionComponent pos = engine.createComponent(PositionComponent.class);
@@ -765,36 +779,40 @@ public class EntityCreator {
     
     /**
      * Extracts information from the map and tile info to add components to the the given entity.
-     * The frame number (param frames) should be greater than 1.
+     * Make sure the property "animationFrames" of the TileSet is set to greater than 1.
      */
-    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, int frames) {
-    	assert(frames > 1);
-    	
+    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
+    	int frames = tileset.getIntProperty("animationFrames", 0);
+    			
+    	assert(frames > 1);
+
     	Texture image = (Texture) tileset.getAttachment();
     	
     	TileSetAnimation animation = new TileSetAnimation(
                 frames,
                 tileset.getFloatProperty("animationDuration", 0),
-                tileset.getIntProperty("animationTileOffset", 0));
+                tileset.getIntProperty("animationOffset", 0));
     	
     	TextureRegion[] regions = new TextureRegion[frames];
     	float[] frameDurations = new float[frames];
     	
     	int tileOffsetY = tileset.getTileHeight() - map.getTileHeight();
     	
-        float px = (tileX * map.getTileWidth());
-        float py = (tileY * map.getTileHeight()) - tileOffsetY;
+        float px = (tileX * map.getTileWidth()) + map.getTileWidth()*0.5f;
+        float py = (tileY * map.getTileHeight()) - tileOffsetY + map.getTileHeight()*0.5f;
+        
+        float stateTime = tileset.getTileX(info.localId) * animation.frameDuration;
         
     	for(int i=0; i<frames; i++) {
-            tileset.updateAnimation(animation.frameDuration*i);
-            
-            int sheetX = tileset.getTileX(info.localId);
+    		tileset.updateAnimation(animation.frameDuration*i);
+
+            int sheetX = tileset.getTileX(0);
             int sheetY = tileset.getTileY(info.localId);
             
             int coordX = (int) (sheetX * tileset.getTileWidth()); 
             coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
-            int coordY = ((int) sheetY * tileset.getTileHeight());
+            int coordY = (int) (sheetY * tileset.getTileHeight());
             coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();  
             
             regions[i] = new TextureRegion(image);
@@ -803,24 +821,12 @@ public class EntityCreator {
     	}
 
     	tileset.updateAnimation(0f);
-    	AnimationExtended anim = new AnimationExtended(PlayMode.LOOP, frameDurations, regions);
-    	addRenderComponents(entity, px, py, 0, 0.2f, anim);
+    	AnimationExtended anim = new AnimationExtended(playMode, frameDurations, regions);
+
+    	addRenderComponents(entity, px, py, 0, 0.2f, anim, start, stateTime);
     }
     // ********** Rendering section END **********
     
-    
-    //   Edited by Assets(Tobi) *******
-    /**
-     * 
-     * @param particlefile
-     *          Nur der Dateiname von der .p Datei
-     * @author Tobias Gepp (Assets)
-     */
-    public static void loadParticleEffects( ParticleComponent p , String particlefile )
-    {
-        String path = "src/main/resources/data/particle/";
-        String filePath = path + particlefile;                  // file  in path
-        p.particleEffect.load(Gdx.files.internal(filePath),Gdx.files.internal(path));   // immer die Datei in <path> suchen
-    }
+
    
 }

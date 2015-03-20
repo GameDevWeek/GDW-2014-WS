@@ -91,10 +91,9 @@ public class MapTest extends SandboxGame {
         int tileWidth = map.getTileWidth();
         int tileHeight = map.getTileHeight();
         RectangleGenerator generator = new RectangleGenerator();
-        /*
         generator.generate(map, (Layer layer, TileInfo info) -> info.getBooleanProperty("Invulnerable", false),
                 (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
-         */
+
         // create destroyable world
         for (Layer layer : map.getLayers()) {
             TileInfo[][] tiles = layer.getTiles();

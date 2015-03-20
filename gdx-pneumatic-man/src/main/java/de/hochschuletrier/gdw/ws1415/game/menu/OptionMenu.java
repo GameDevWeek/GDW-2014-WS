@@ -32,7 +32,7 @@ public class OptionMenu extends MenuPage
 		createLabel(menuManager.getWidth()/2-75, y).setText("SOUND");
 		y-= 20;
         soundSlider = createSlider(menuManager.getWidth()/2-160, y, this::onSoundVolumeChanged);
-        soundSlider.setValue(0.5f);
+        soundSlider.setValue(Settings.SOUND_VOLUME.get());
         soundLabel = createLabel(menuManager.getWidth()/2+190, y);
         soundLabel.setVisible(false);
        // soundMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onSoundMuteChanged);
@@ -42,7 +42,7 @@ public class OptionMenu extends MenuPage
         createLabel(menuManager.getWidth()/2-75, y).setText("MUSIC");
         y -= 20;
         musicSlider = createSlider(menuManager.getWidth()/2-160, y, this::onMusicVolumeChanged);
-        musicSlider.setValue(0.5f);
+        musicSlider.setValue(Settings.MUSIC_VOLUME.get());
         musicLabel = createLabel(menuManager.getWidth()/2+190, y);
         musicLabel.setVisible(false);
        // musicMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onMusicMuteChanged);
@@ -64,6 +64,8 @@ public class OptionMenu extends MenuPage
         buttonGroup.add(gamepadButton);
         buttonGroup.add(keyboardButton);
         buttonGroup.setChecked("KEYBOARD");
+        
+        Settings.GAMEPAD_ENABLED.set(false);
         
    		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
 	}

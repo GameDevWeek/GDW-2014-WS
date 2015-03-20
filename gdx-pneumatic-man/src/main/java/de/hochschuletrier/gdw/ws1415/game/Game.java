@@ -240,9 +240,9 @@ public class Game {
         // }
         //
         // mapRenderer.update(delta);
-        if(inputGamepadSystem.pause || inputKeyboardSystem.pause)
+        if(GameConstants.pause)
         {
-            renderSystem.update(delta);
+            renderSystem.update(0);
         }
         else
         {
