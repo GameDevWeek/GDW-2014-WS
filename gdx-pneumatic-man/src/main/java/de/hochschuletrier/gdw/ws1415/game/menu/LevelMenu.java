@@ -1,10 +1,12 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 //import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.ws1415.Main;
@@ -27,6 +29,11 @@ public class LevelMenu extends MenuPage
 		
 		int[] test = {1, 2, 3, 4, 5};
 		DecoImage[] imageArray = new DecoImage[test.length];
+		TextButton[] buttonArray = new TextButton[test.length];
+		
+		ImageButton tryOut = addImageButton(x + x_step, y + 200, 108, 108, this::levelTest);
+		//tryOut.background("back_button");
+		//tryOut.setBackground("data/images/back_button.png");
 		
 		createLabel(Main.WINDOW_WIDTH/2, Main.WINDOW_HEIGHT/2 + 300).setText("LEVEL");
 		
@@ -37,9 +44,10 @@ public class LevelMenu extends MenuPage
 			else
 				createLabel(x + x_step, y_down).setText("" + test[i]);
 			
+			buttonArray[i] = addButton(x + x_step, y, 108, 108, "Level " + i, this::levelTest, "toggle");
+			buttonGroup.add(buttonArray[i]);
 			imageArray[i] = new DecoImage(assetManager.getTexture("back_button"));
-			//add
-			addCenteredImage(x + x_step, y, 108, 108, imageArray[i], () -> levelTest());
+			//addCenteredImage(x + x_step, y, 108, 108, imageArray[i], () -> levelTest());
 			x_step += 150;
 		}
 		
@@ -59,6 +67,6 @@ public class LevelMenu extends MenuPage
 		//Game.loadLevel();
 		levelSelected = true;
 		//Game.loadSelectedLevel = true;
-		System.out.println("LEVEL AUSGEWÄHLT");
+		System.out.println("LEVEL AUSGEWÄHLT: " + buttonGroup.getChecked().getText());
 	}
 }
