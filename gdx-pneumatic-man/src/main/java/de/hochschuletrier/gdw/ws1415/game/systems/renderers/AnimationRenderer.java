@@ -10,6 +10,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedFamilyRenderSystem;
+import de.hochschuletrier.gdw.ws1415.game.Game;
 
 public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
 
@@ -31,6 +32,10 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
             {
                 animation.stateTime %= animation.animation.animationDuration;
                 animation.animationFinished = true;
+                if(animation.isDyingPlayer)
+                {
+                    Game.loadLevel();
+                }
             }
         }
         

@@ -52,31 +52,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
         entities.remove(entity);
     }
 
+    ArrayList<Entity> PostUpdateRemovals = new ArrayList<Entity>();
     @Override
     public void update(float deltaTime) {
-//        for (Entity entity : entities) {
-//            HealthComponent Health = entity.getComponent(HealthComponent.class);
-//            Health.Value = Health.Value - Health.DecrementByValueNextFrame;
-//            Health.DecrementByValueNextFrame = 0;
-//
-//            if((Health.Value <= 0))
-//            {
-//                if ((entity.getComponent(PlayerComponent.class)!= null)) {
-//                    entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DYING;
-//                    
-//                    PositionComponent position = entity.getComponent(PositionComponent.class);
-//                    EntityCreator.modifyPlayerToDying(entity);
-//                }
-//                else
-//                {
-//                    logger.info(entity.getId() + " removed");
-//                    CurrentEngine.removeEntity(entity);
-//                }
-//            }
-//
-//        }
-    	
-    	for (Entity entity : entities) {
+        for (Entity entity : entities) {
             HealthComponent Health = ComponentMappers.health.get(entity);
             Health.Value -= Health.DecrementByValueNextFrame;
             Health.DecrementByValueNextFrame = 0;
@@ -85,7 +64,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
             {
                 if (ComponentMappers.player.has(entity)) {
                     Health.health = HealthComponent.HealthState.DYING;
-                    //PositionComponent position = entity.getComponent(PositionComponent.class);
+                    
                     EntityCreator.modifyPlayerToDying(entity);
                 }else if(ComponentMappers.block.has(entity)){
                     PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
@@ -116,7 +95,6 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                                 AnimationComponent animationComponent = ComponentMappers.animation.get(bodyComponent.getEntity());
                                 animationComponent.stateTime = animationComponent.animation.animationDuration/3;
                                 animationComponent.permanent_stateTime = animationComponent.animation.animationDuration/3;
-                                System.err.println("test1");
 
                             }
                             return 0;
@@ -127,10 +105,18 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 else
                 {
                     logger.info(entity.getId() + " removed");
-                    CurrentEngine.removeEntity(entity);
+                    PostUpdateRemovals.add(entity);
+
                 }
             }
 
         }
+        for(Entity entity : PostUpdateRemovals)
+        {
+            CurrentEngine.removeEntity(entity);
+        }
+        PostUpdateRemovals.clear();
     }
+        
+
 }

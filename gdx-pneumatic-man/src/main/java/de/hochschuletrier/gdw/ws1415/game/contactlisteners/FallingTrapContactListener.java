@@ -56,10 +56,7 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
 
         Vector2 a = mybody.getBody().getPosition().cpy().sub(contact.getOtherFixture().getBody().getPosition());
         float dot = a.dot(Direction.DOWN.toVector2());
-        System.err.println("down:" + dot);
         if(dot > 0) return;
-
-        System.err.println("test2");
 
         mybody.setGravityScale(0.0f);
         mybody.setLinearVelocity(0,0);

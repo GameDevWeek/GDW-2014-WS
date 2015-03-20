@@ -30,8 +30,8 @@
     "guardGrunt1": "data/sounds/guardGrunt1.wav",
 	"guardGrunt2": "data/sounds/guardGrunt2.wav",
 	"guardGrunt3": "data/sounds/guardGrunt3.wav",
-	"guardWalk1": "data/sounds/guardWalk1.wav",
-	"guardWalk2": "data/sounds/guardWalk2.wav",
+	"guardGrunt4": "data/sounds/guardGrunt4.wav",
+    "guardDie": "data/sounds/guardDie.wav",
 
 	"iron1": "data/sounds/iron1.wav",
     "iron2": "data/sounds/iron2.wav",   
@@ -57,6 +57,6 @@
 	"pneu3": "data/sounds/pneu3.wav",
 	"stoneDrops": "data/sounds/stoneDrop3.wav",
 	"stoneHit1": "data/sounds/stoneHit1.wav",
-	"stoneHit2": "data/sounds/stoneHit2.wav",
+	
 	"stoneHit3": "data/sounds/stoneHit3.wav"
 }

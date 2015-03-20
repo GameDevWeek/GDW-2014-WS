@@ -80,14 +80,30 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.getBody().setUserData(bodyComponent);
         bodyComponent.getBody().setGravityScale(1.75f);
+        // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0.1f)
-                .shapeBox(width, height);
+                .shapeCircle(width*0.1f,new Vector2(0,-height * 0.4f));
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
+
+       fixtureDef = new PhysixFixtureDef(physixSystem)
+        .density(1f).friction(0f).restitution(0.1f)
+        .shapeBox(width*0.2f, height*0.5f, new Vector2(0,height * 0.2f), 0);
+        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+
+        fixtureDef = new PhysixFixtureDef(physixSystem)
+        .density(1).friction(0).restitution(0.1f)
+        .shapeCircle(width*0.4f,new Vector2(0,-height * 0.1f)).sensor(true);
+        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+
+
+        //laser
         fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(10f).restitution(0.1f)
-                .shapeCircle(10, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
+                .shapeCircle(width * 0.09f, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
         
@@ -95,7 +111,7 @@ public class EntityCreator {
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
 
-        jumpComponent.jumpImpulse = 32500.0f;
+        jumpComponent.jumpImpulse = 14000.0f;
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
@@ -142,10 +158,9 @@ public class EntityCreator {
         
         AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
         deathAnimation.animation = assetManager.getAnimation("char_death");
+        deathAnimation.isDyingPlayer = true;
         entityToDie.add(deathAnimation);
-        
-        
-        entityToDie.add(deathAnimation);
+
         entityToDie.add(deathComponent);
 
         return entityToDie;
@@ -160,13 +175,16 @@ public class EntityCreator {
         float width = GameConstants.getTileSizeX();
         float height = GameConstants.getTileSizeY();
 
-        entity.add(engine.createComponent(DamageComponent.class));
+        DamageComponent Damage = engine.createComponent(DamageComponent.class);
+        Damage.damage  = 1;
+        Damage.damageToPlayer = true;
+        entity.add(Damage);
         entity.add(engine.createComponent(AIComponent.class));
         entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(SpawnComponent.class));
 
-        PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(pbdy, physixSystem, entity);
@@ -211,6 +229,32 @@ public class EntityCreator {
 
         engine.addEntity(box);
         return box;
+    }
+
+    public static Entity createAndAddMiner(float x, float y)
+    {
+        Entity Miner = engine.createEntity();
+
+        float width = GameConstants.getTileSizeX();
+        float height = GameConstants.getTileSizeY();
+
+        Miner.add(engine.createComponent(MinerComponent.class));
+        Miner.add(engine.createComponent(PositionComponent.class));
+        Miner.add(engine.createComponent(HealthComponent.class));
+
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+        bodyComponent.init(pbdy, physixSystem, Miner);
+        PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f).restitution(0.1f)
+                .shapeBox(width, height);
+        Fixture fixture = bodyComponent.createFixture(pfx);
+        fixture.setUserData(bodyComponent);
+        Miner.add(bodyComponent);
+
+        engine.addEntity(Miner);
+        return(Miner);
     }
 
     public static Entity createAndAddGoal(float x, float y, int requiredMiners) {
@@ -281,7 +325,10 @@ public class EntityCreator {
         FallingRockComponent rockComponent = new FallingRockComponent();
         rockComponent.id = trapId;
         entity.add(rockComponent);
-        
+
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+
         DamageComponent damageComp = engine.createComponent(DamageComponent.class);
         damageComp.damage = 4;
         damageComp.damageToPlayer = true;
@@ -491,7 +538,7 @@ public class EntityCreator {
 
     public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, String direction, TiledMap map, TileInfo info, int tileX, int tileY) {
     /*    Entity entity = engine.createEntity();
-        
+
         //addTestParticleAndLightComponent(entity);
         addRenderComponents(entity, map, info, tileX, tileY); 
 
