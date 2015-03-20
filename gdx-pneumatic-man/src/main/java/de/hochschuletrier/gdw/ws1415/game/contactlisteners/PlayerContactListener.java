@@ -37,6 +37,12 @@ public class PlayerContactListener extends PhysixContactAdapter {
         if(otherEntity.getComponent(MinerComponent.class) != null){
             otherEntity.getComponent(HealthComponent.class).Value = 0;
         }
+        
+        if(otherEntity.getComponent(GoalComponent.class) != null){
+            if(otherEntity.getComponent(GoalComponent.class).end_of_level){
+                logger.info("Congratulations you saved all miners!");
+            }
+        }
 
         // Player collides with lava.
         if (otherEntity.getComponent(KillsPlayerOnContactComponent.class) != null) {
@@ -64,6 +70,24 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
+        
+        //WiP
+        /*if(otherEntity.getComponent(PlatformComponent.class)!= null) {
+            PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
+            PhysixBodyComponent otherbody = ComponentMappers.physixBody.get(otherEntity);
+            PlatformComponent platform = ComponentMappers.platform.get(otherEntity);
+            
+            PhysixModifierComponent modifierComp = EntityCreator.engine.createComponent(PhysixModifierComponent.class);
+            modifierComp.schedule(() -> {
+                float debug1 = otherbody.getLinearVelocity().x;
+                float debug2 = body.getLinearVelocity().x;
+                float debug3 = (otherbody.getLinearVelocity().cpy().add(body.getLinearVelocity())).x;
+                body.setLinearVelocity(otherbody.getLinearVelocity().cpy().add(body.getLinearVelocity()));
+
+            });
+            player.add(modifierComp);
+            
+            }*/
     }
 
         // If the contact was with a tile then nothing happens to the player but
