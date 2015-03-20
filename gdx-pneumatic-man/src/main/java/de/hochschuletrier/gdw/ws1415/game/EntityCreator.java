@@ -444,37 +444,50 @@ public class EntityCreator {
         return createPlatformBlock(x,y, travelDistance, dir, speed, mode);
     }
 
-    public static Entity createSpike(float x, float y, Direction direction, TileInfo info, TiledMap map){
+    public static Entity createSpike(int x, int y, Direction direction, TileInfo info, TiledMap map){
         Entity entity = engine.createEntity();
 
+        addRenderComponents(entity, map, info, (int)x, (int)y);
+
         PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem)
+                .position((x+0.5f) * GameConstants.getTileSizeX(), (y+0.5f) * GameConstants.getTileSizeY())
+                .fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.getBody().setUserData(bodyComponent);
         bodyComponent.getBody().setGravityScale(0f);
 
+        PhysixFixtureDef fixtureDefSpikeGround = new PhysixFixtureDef(physixSystem)
+                .density(1)
+                .friction(1f)
+                .shapeBox(GameConstants.getTileSizeX() * 0.8f, GameConstants.getTileSizeY() * 0.8f,
+                        direction.toVector2().scl(GameConstants.getTileSizeX() * 0.1f), 0)
+                .restitution(0.1f)
+                .sensor(true);
+        Fixture fixtureSpikeGround = bodyComponent.createFixture(fixtureDefSpikeGround);
+        fixtureSpikeGround.setUserData(bodyComponent);
+
+        entity.add(bodyComponent);
+
         DirectionComponent directionComponent = engine.createComponent(DirectionComponent.class);
         directionComponent.facingDirection = direction;
 
-        entity.add(engine.createComponent(PositionComponent.class));
+        DamageComponent Damage = engine.createComponent(DamageComponent.class);
+        Damage.damageToPlayer = true;
+        Damage.damage = 2;
+        entity.add(Damage);
 
-        TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
-        textureComponent.texture = (Texture)map.findTileSet(info.globalId).getAttachment();
-        textureComponent.region = new TextureRegion(textureComponent.texture);
-        entity.add(textureComponent);
+        entity.add(engine.createComponent(SpikeComponent.class));
 
-        LayerComponent layerComponent = engine.createComponent(LayerComponent.class);
-        layerComponent.layer = 0;
-        layerComponent.parallax = 0.2f;
-        entity.add(layerComponent);
-
+        engine.addEntity(entity);
 
         return entity;
     }
 
     @Deprecated
+
     public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, String direction, TiledMap map, TileInfo info, int tileX, int tileY) {
-        Entity entity = engine.createEntity();
+    /*    Entity entity = engine.createEntity();
         
         //addTestParticleAndLightComponent(entity);
         addRenderComponents(entity, map, info, tileX, tileY); 
@@ -528,9 +541,10 @@ public class EntityCreator {
 
         engine.addEntity(entity);
         return entity;
-
+*/
+        return new Entity();
     }
-    
+
     // ********** Light section BEGIN **********
     public static Entity createPointLight(float x, float y, Color color, float distance){
         Entity e = engine.createEntity();

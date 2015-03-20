@@ -187,9 +187,9 @@ public class MapLoader
                                 info.getProperty("Type", "").substring(0, 5).equalsIgnoreCase("spike")) {
                             Direction dir = Direction.valueOf(info.getProperty("Type", "").substring(5).toUpperCase());
                             EntityCreator.createSpike(
-                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    dir
+                                    i,
+                                    j,
+                                    dir, info, map
                             );
                         }
                         /*
@@ -440,14 +440,12 @@ public class MapLoader
                                     break;
                                 case "spikeleft": case "spiketop": case "spikeright": case "spikedown":
                                 {
-                                    EntityCreator.createAndAddSpike(engine,
-                                            physixSystem,
-                                            i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                            j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                            map.getTileWidth(),
-                                            map.getTileHeight(),
-                                            tinfo.getProperty("Type", ""),
-                                            map, tinfo, i, j);
+                                    TileInfo info = tiles[i][j];
+                                    Direction dir = Direction.valueOf(type.substring(5).toUpperCase());
+                                    EntityCreator.createSpike(
+                                                i,
+                                                j,
+                                                dir, info, map);
                                 }
                                     break;
                                 case "lava":
