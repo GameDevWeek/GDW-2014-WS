@@ -263,9 +263,7 @@ public class EntityCreator {
         
         Miner.add(engine.createComponent(MinerComponent.class));
         Miner.add(engine.createComponent(PositionComponent.class));
-        HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 1;
-        Miner.add(Health);
+        Miner.add(engine.createComponent(HealthComponent.class));
         
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
