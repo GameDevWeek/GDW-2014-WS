@@ -124,6 +124,7 @@
                 
                 { "time": 0, "animation": "fade_in", "animationTime": 2000,  "group" : "textleft" },
                 { "time": 0, "animation": "fade_in", "animationTime": 2000,  "group" : "textright" },
+                
                 { "time": 0, "animation": "construct", "animationTime": 1000, "group": "startanimation",
                     "minRadius" : 300, "maxRadius" : 300,
                     "minAngle" : 200, "maxAngle" : 225,
@@ -142,8 +143,12 @@
                 { "time": 6600, "animation": "untype", "animationTime": 50, "group": "git1" },
                 { "time": 7500, "animation": "type", "animationTime": 50, "group": "git1b" },
 
-                { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "schrift" },
+
                 { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "title" },
+                
+                { "time": 22300, "animation": "fade_out", "animationTime": 2000, "group": "textleft" },
+                { "time": 22300, "animation": "fade_out", "animationTime": 2000, "group": "textright" },
+                
                 { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "startanimation" }
             ]
             
