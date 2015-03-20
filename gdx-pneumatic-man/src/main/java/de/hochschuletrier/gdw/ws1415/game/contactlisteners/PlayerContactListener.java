@@ -7,22 +7,31 @@ import org.slf4j.LoggerFactory;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector2;
 
-import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
+import de.hochschuletrier.gdw.ws1415.game.Score;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
 
 /**
  * Handles contacts between player and other entities
  */
 public class PlayerContactListener extends PhysixContactAdapter {
     private static final Logger logger = LoggerFactory.getLogger(PlayerContactListener.class);
+    PooledEngine engine;
+    
+    public PlayerContactListener(PooledEngine engine){
+        super();
+        this.engine = engine;
+    }
 
     public void beginContact(PhysixContact contact) {
 
@@ -42,6 +51,13 @@ public class PlayerContactListener extends PhysixContactAdapter {
         if(otherEntity.getComponent(GoalComponent.class) != null){
             if(otherEntity.getComponent(GoalComponent.class).end_of_level){
                 logger.info("Congratulations you saved all miners!");
+                ScoreSystem scoreSys = engine.getSystem(ScoreSystem.class);
+                scoreSys.goal.getComponent(GoalComponent.class).end_of_level = true;
+                int saved_miners = scoreSys.player.getComponent(PlayerComponent.class).saved_miners;
+                int destroyed_blocks = scoreSys.player.getComponent(PlayerComponent.class).destroyed_blocks;
+                int miners_threshold = scoreSys.goal.getComponent(GoalComponent.class).miners_threshold;
+                Score.calculate_score(scoreSys.current_game_time, saved_miners, destroyed_blocks, miners_threshold);
+                logger.info("Your score is: " + Score.score);
             }
         }
 
