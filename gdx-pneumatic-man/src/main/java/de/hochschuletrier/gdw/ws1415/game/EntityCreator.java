@@ -133,6 +133,7 @@ public class EntityCreator {
         JumpableAnimationComponent jumpable = engine.createComponent(JumpableAnimationComponent.class);
         jumpable.idle = anim.animation;
         jumpable.jump = assetManager.getAnimation("char_jump");
+        entity.add(jumpable);
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
         layer.layer = 10; // TODO: Change later

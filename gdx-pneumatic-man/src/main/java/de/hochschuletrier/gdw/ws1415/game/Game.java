@@ -49,7 +49,7 @@ public class Game {
 
     private  PhysixSystem physixSystem;
 
-
+    private  JumpAnimationSystem jumpAnimationSystem;
     private  PlatformSystem platformSystem = new PlatformSystem(physixSystem);
     private  ScoreSystem _ScoreSystem;
     private  HealthSystem _HealthSystem;
@@ -96,7 +96,8 @@ public class Game {
     
     // Only called from MainMenu
     public void init(AssetManagerX assetManager) {
-             
+           
+        System.out.println("Init() called");
         EntityCreator.assetManager = assetManager;
         
         this.assetManager = assetManager;
@@ -188,7 +189,8 @@ public class Game {
     }
 
     private void addSystems() {
-
+        
+        jumpAnimationSystem = new JumpAnimationSystem(assetManager, GameConstants.PRIORITY_ANIMATIONS);
         physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE, GameConstants.VELOCITY_ITERATIONS,
             GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX);
         _ScoreSystem = new ScoreSystem();
@@ -209,11 +211,11 @@ public class Game {
                 physixSystem
         );
         
-        
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
+        engine.addSystem(jumpAnimationSystem);
         engine.addSystem(hudRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);

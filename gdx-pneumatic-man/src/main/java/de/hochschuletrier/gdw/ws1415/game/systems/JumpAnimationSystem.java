@@ -23,7 +23,10 @@ public class JumpAnimationSystem extends IteratingSystem {
     public void processEntity(Entity entity, float deltaTime) {
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
         JumpableAnimationComponent jumpable = entity.getComponent(JumpableAnimationComponent.class);
-//
+
+//        
+//        System.out.println("Midair: " + jumpable.midair + "\n Physix: " + Math.abs(physix.getLinearVelocity().y) + ", Body: " + (Math.abs(physix.getBody().getLinearVelocity().y)));
+//        
 //        // Charakter has been in midair, check if on ground again
 //        if(jumpable.midair)
 //            if(Math.abs(physix.getBody().getLinearVelocity().y) < 10)
