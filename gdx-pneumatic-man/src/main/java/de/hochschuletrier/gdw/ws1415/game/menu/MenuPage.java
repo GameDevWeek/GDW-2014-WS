@@ -98,10 +98,21 @@ public class MenuPage extends Group {
                 System.out.println("test");
                 //if(MouseInfo.getPointerInfo().getLocation().x>=image.getX()&&MouseInfo.getPointerInfo().getLocation().x<=image.getWidth()&&MouseInfo.getPointerInfo().getLocation().y>=image.getY()&&MouseInfo.getPointerInfo().getLocation().y<=image.getHeight()){
                     SoundEmitter.playGlobal(assetManager.getSound("click"),false);
+                    changeTextureActive(image);
                 //}
             }
             
         });
+         image.addListener(new InputListener(){
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer,
+                    Actor toActor) {
+                
+                changeTextureNotActive( image);
+            }
+             
+         });
 
         addActor(image);
     }
@@ -132,5 +143,28 @@ public class MenuPage extends Group {
         addActor(button);
         return button;
     }
-
+    
+    protected final  void changeTextureActive(DecoImage image)
+    {
+        if(image.getRegion().getTexture()==assetManager.getTexture("optionen_button"))
+            image.setTexture(assetManager.getTexture("optionen_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("start_button"))
+            image.setTexture(assetManager.getTexture("start_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("levels_button"))
+            image.setTexture(assetManager.getTexture("levels_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("score_button"))
+            image.setTexture(assetManager.getTexture("score_button_active"));
+    }
+    
+    protected final  void changeTextureNotActive(DecoImage image)
+    {
+        if(image.getRegion().getTexture()==assetManager.getTexture("optionen_button_active"))
+            image.setTexture(assetManager.getTexture("optionen_button"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("start_button_active"))
+            image.setTexture(assetManager.getTexture("start_button"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("levels_button_active"))
+            image.setTexture(assetManager.getTexture("levels_button"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("score_button_active"))
+            image.setTexture(assetManager.getTexture("score_button"));
+    }
 }

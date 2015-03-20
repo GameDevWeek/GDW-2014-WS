@@ -99,7 +99,7 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
         Vector2 vector= menuManager.getStage().screenToStageCoordinates(new Vector2(((Main.WINDOW_WIDTH-menuManager.getStage().getWidth())/2)+MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y));
        // hand.setX(MouseInfo.getPointerInfo().getLocation().x);
         //hand.setY(Main.WINDOW_HEIGHT - MouseInfo.getPointerInfo().getLocation().y);
-        hand.setPosition(vector.x-728,vector.y-1194);
+        hand.setPosition(vector.x-728,vector.y-1320);
         render();
     }
 

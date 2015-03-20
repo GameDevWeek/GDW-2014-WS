@@ -13,5 +13,9 @@
     "miner_found": "data/images/KollegeIconGefunden.png",
     "miner_notfound": "data/images/KollegeIconNichtGefunden.png",
     "zeigefinger2": "data/images/Zeigefinger2.png",
-    "credit_background" : "data/images/Credits_3.png"
+    "credit_background" : "data/images/Credits_3.png",
+    "optionen_button_active": "data/images/Butt_Options_Active01.png",
+    "start_button_active": "data/images/Butt_Start_Active01.png",
+    "levels_button_active": "data/images/Butt_Levels_Active01.png",
+    "score_button_active": "data/images/Butt_Highscore_Active01.png"
 }
