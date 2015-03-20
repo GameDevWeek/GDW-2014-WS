@@ -90,7 +90,14 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
+        
+        PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
+        if(contact.getMyFixture().getUserData().equals("jump")){
+            JumpComponent jump = ComponentMappers.jump.get(player);
+            jump.doJump = true;
+        }
 
+        
         //WiP
         /*if(otherEntity.getComponent(PlatformComponent.class)!= null) {
             PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
@@ -109,6 +116,20 @@ public class PlayerContactListener extends PhysixContactAdapter {
             
             }*/
     }
+    public void endContact(PhysixContact contact) {
+        Entity player = contact.getMyComponent().getEntity();
+        
+        PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
+        if(body!= null && contact.getMyFixture().getUserData().equals("jump")){
+           
+            JumpComponent jump = ComponentMappers.jump.get(player);
+            if(jump!= null){
+                jump.doJump = false;
+                jump.inAir = false;
+            }
+            
+        }
+    } 
 
         // If the contact was with a tile then nothing happens to the player but
         // the tile's health
