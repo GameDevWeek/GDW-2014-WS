@@ -113,7 +113,7 @@ public class Main extends StateBasedGame {
         setupDummyLoader();
         loadAssetLists();
         setupGdx();
-
+        
         skin = new Skin(Gdx.files.internal("data/skins/sotf.json"));
         consoleView.init(skin);
         addScreenListener(consoleView);
