@@ -74,7 +74,7 @@ public class MenuPage extends Group {
                 if(image.getRegion().getTexture()!=assetManager.getTexture("back_button")){
                 SoundEmitter.playGlobal(assetManager.getSound("click"),false);
                 }else{
-                    SoundEmitter.playGlobal(assetManager.getSound("helicopter"),false);
+                    SoundEmitter.playGlobal(assetManager.getSound("alienBark2"),false);
                 }
                 runnable.run();
             }
