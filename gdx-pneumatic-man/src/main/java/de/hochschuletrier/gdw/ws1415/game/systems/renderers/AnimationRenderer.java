@@ -42,6 +42,15 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
         TextureRegion keyFrame = animation.animation.getKeyFrame(animation.permanent_stateTime);
         int w = keyFrame.getRegionWidth();
         int h = keyFrame.getRegionHeight();
+        
+        if(!keyFrame.isFlipX()){
+            keyFrame.flip(animation.flipX, false);
+        }
+        
+        if(keyFrame.isFlipY()){
+            keyFrame.flip(false, animation.flipY);
+        }
+        
         DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h, position.scaleX, position.scaleY, position.rotation);
     }
 }
