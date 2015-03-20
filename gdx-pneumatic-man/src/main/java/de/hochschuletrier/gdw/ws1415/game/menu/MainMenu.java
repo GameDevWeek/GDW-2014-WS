@@ -4,7 +4,6 @@ import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -40,7 +39,7 @@ public class MainMenu extends MenuPage{
         super(skin,"background_menu" );
         int x = 960;
         int i = 0;
-        int y = 800;
+        int y = 620;
         int yStep = 110;
         
     		//addPageEntryStart(menuManager,x,y-yStep*1, start);

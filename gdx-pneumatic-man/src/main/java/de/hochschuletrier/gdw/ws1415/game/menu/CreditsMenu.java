@@ -1,20 +1,26 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
+import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimator;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimatorActor;
 import de.hochschuletrier.gdw.ws1415.Main;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
+	
+	private Music music;
 
     private static final Logger logger = LoggerFactory.getLogger(CreditsMenu.class);
     private final Hotkey increaseSpeed = new Hotkey(this::increaseSpeed, Input.Keys.PAGE_UP, HotkeyModifier.CTRL);
@@ -37,10 +43,11 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
 
     public CreditsMenu(Skin skin, MenuManager menuManager) {
         super(skin, "credit_background");
-
+        
         try {
             sceneAnimator = new SceneAnimator(this, "data/json/credits.json");
             addActor(new SceneAnimatorActor(sceneAnimator));
+
 
             // If this is a build jar file, disable hotkeys
             if (!Main.IS_RELEASE) {
@@ -51,6 +58,8 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
         } catch (Exception ex) {
             logger.error("Error loading credits", ex);
         }
+//        music = assetManager.getMusic("menu");
+//        MusicManager.play(music, 2.0f);
 
         addCenteredButton(menuManager.getWidth() - 100, 54, 100, 40, "Zurück", () -> menuManager.popPage());
     }

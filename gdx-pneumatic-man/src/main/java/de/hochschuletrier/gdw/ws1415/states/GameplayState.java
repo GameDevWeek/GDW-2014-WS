@@ -16,7 +16,7 @@ import de.hochschuletrier.gdw.ws1415.game.Game;
 public class GameplayState extends BaseGameState {
 
     private final Game game;
-    private final Music music = Main.getInstance().getAssetManager().getMusic("menu");
+    private final Music music = Main.getInstance().getAssetManager().getMusic("game");
 
     public GameplayState(AssetManagerX assetManager) {
         game = new Game();
