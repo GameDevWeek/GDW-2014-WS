@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
+import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +71,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
-        
+
         //WiP
         /*if(otherEntity.getComponent(PlatformComponent.class)!= null) {
             PhysixBodyComponent body = ComponentMappers.physixBody.get(player);

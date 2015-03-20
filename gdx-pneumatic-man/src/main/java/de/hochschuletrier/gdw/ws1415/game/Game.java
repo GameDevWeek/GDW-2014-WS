@@ -237,7 +237,7 @@ public class Game {
         engine.removeSystem(_ScoreSystem);
         engine.removeSystem(lavaFountainSystem);
         engine.removeSystem(destroyBlocksSystem);
-        
+        engine.removeSystem(aisystems);
         if(renderSystem != null && renderSystem.rayHandler != null)
             renderSystem.rayHandler.removeAll();
 
