@@ -24,80 +24,69 @@ public class CameraSystem extends EntitySystem implements EntityListener {
     
     private static final Logger logger = LoggerFactory.getLogger(CameraSystem.class);
     
-	private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
-	private Vector2 firstCameraPosition;
-	private Vector2 cameraPosDelta = new Vector2();
-	
-	private Vector2 dummyVector = new Vector2();
+    private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
 
-	private Entity toFollow;
-	
-	private Vector2 cameraPos = new Vector2();
-	private boolean firstLayer = true;
-	
-	private final ArrayList<Entity> entities = new ArrayList<>();
-	
-	public CameraSystem() {
-		camera.setDestination(0f, 0f);
+    private Entity toFollow;
+    
+    private Vector2 cameraPos = new Vector2();
+    private boolean firstLayer = true;
+    
+    private final ArrayList<Entity> entities = new ArrayList<>();
+    
+    @Deprecated
+    public CameraSystem() {
+        this(0);
+    }
+    
+    public CameraSystem(int priority) {
+        super(priority);
+        camera.setPosition(0f, 0f);
         camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.updateForced();
-	}
-	
+    }
+    
     @Override
     public void addedToEngine(Engine engine) {
         @SuppressWarnings("unchecked")
         Family family = Family.all(PlayerComponent.class).get();
         engine.addEntityListener(family, this);
     }
-	
-	public LimitedSmoothCamera getCamera() {
-		return camera;
-	}
-
-	void applyParallax(LayerComponent layer) {
-		if(firstCameraPosition == null) {
-			firstCameraPosition = new Vector2(camera.getPosition().x, camera.getPosition().y);
-		}
-		
-		if(firstLayer) {
-			cameraPos.set(camera.getPosition().x, camera.getPosition().y);
-			firstLayer = false;
-		}
-
-        cameraPosDelta.set(cameraPos).sub(firstCameraPosition.x, firstCameraPosition.y);
-        
-        dummyVector.set(firstCameraPosition.x, firstCameraPosition.y);
-        dummyVector.mulAdd(cameraPosDelta, layer.parallax);
-
-        camera.setDestination(dummyVector.x, dummyVector.y);
-        camera.updateForced();
-
-        camera.bind();
-	}
-	
-	@Override
+    
+    public LimitedSmoothCamera getCamera() {
+        return camera;
+    }
+    
+   void applyParallax(LayerComponent layer) {
+       if(firstLayer) {
+           cameraPos.set(camera.getPosition().x, camera.getPosition().y);
+           firstLayer = false;
+       }
+       
+       camera.setPosition(cameraPos.x*layer.parallaxX, cameraPos.y*layer.parallaxY);
+       camera.bind();
+    }
+    
+    @Override
     public void update(float deltaTime) {
-    	// reset camera position to the correct position after parallax
-	    if(!firstLayer) {
-	        camera.setDestination(cameraPos.x, cameraPos.y);
-	        camera.updateForced();
-	        firstLayer = true;
-	    }
-		
-    	if(toFollow != null) {
-    		PositionComponent toFollowPos = ComponentMappers.position.get(toFollow);
-        	if(toFollowPos != null)
-        		camera.setDestination(toFollowPos.x, toFollowPos.y);
-    	}	
+        // reset camera position to the correct position after parallax
+        if(!firstLayer) {
+            camera.setPosition(cameraPos.x, cameraPos.y);
+            firstLayer = true;
+        }
 
-    	camera.updateForced();
-    	camera.update(deltaTime);
-		camera.bind();	
+        if(toFollow != null) {
+            PositionComponent toFollowPos = ComponentMappers.position.get(toFollow);
+            if(toFollowPos != null) {
+                camera.setDestination(toFollowPos.x, toFollowPos.y);
+            }
+        }   
+
+        camera.update(deltaTime);
+        camera.bind();      
     }
     
     public void adjustToMap(TiledMap map) {
-    	assert(map != null);
-    	
+        assert(map != null);
+        
         float totalMapWidth = map.getWidth() * map.getTileWidth();
         float totalMapHeight = map.getHeight() * map.getTileHeight();
         camera.setBounds(0, 0, totalMapWidth, totalMapHeight);
@@ -111,12 +100,12 @@ public class CameraSystem extends EntitySystem implements EntityListener {
      */
     @Deprecated
     public void follow(Entity entity) {
-    	this.toFollow = entity;
+        this.toFollow = entity;
     }
 
     @Override
     public void entityAdded(Entity entity) {
-        entities.add(entity);;
+        entities.add(entity);
 
         if(toFollow == null)
             followEx(entity);
@@ -135,10 +124,6 @@ public class CameraSystem extends EntitySystem implements EntityListener {
     
     private void followEx(Entity entity) {
         toFollow = entity;
-        PositionComponent pos = ComponentMappers.position.get(entity);
-        if(firstCameraPosition == null) {
-            firstCameraPosition = new Vector2();
-        }
-        firstCameraPosition.set(pos.x, pos.y);
+        assert(ComponentMappers.position.get(entity) != null);
     }
 }

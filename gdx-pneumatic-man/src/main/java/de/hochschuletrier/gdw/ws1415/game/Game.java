@@ -151,7 +151,8 @@ public class Game {
         
         
         MapLoader.generateWorldFromTileMapX(engine, physixSystem, map, cameraSystem);
-       
+        // TODO: Move to better place or remove later
+        EntityCreator.createBackground();
         inputManager.init();
     }
 
@@ -202,9 +203,9 @@ public class Game {
         _ScoreSystem = new ScoreSystem();
         _HealthSystem = new HealthSystem();
         physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-        cameraSystem = new CameraSystem();
+        cameraSystem = new CameraSystem(GameConstants.PRIORITY_CAMERA_SYSTEM);
         rayHandler = new RayHandler(physixSystem.getWorld());
-        renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
+        renderSystem = new SortedRenderSystem(cameraSystem, rayHandler, GameConstants.PRIORITY_RENDER_SYSTEM);
         hudRenderSystem = new HudRenderSystem();
         updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
         movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);

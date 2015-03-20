@@ -803,6 +803,32 @@ public class EntityCreator {
     
     // ********** Rendering section BEGIN **********
     
+    public static Entity createBackground() {
+        Entity entity = engine.createEntity();
+        LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
+        entityLayer.layer = -1;
+        entityLayer.parallaxX = 0.1f;
+        
+        TextureComponent tex = engine.createComponent(TextureComponent.class);
+        tex.texture = assetManager.getTexture("background_menu");
+        tex.region = null;
+        
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.x = 0.f;
+        pos.y = 500.f;
+        pos.rotation = 0;
+        pos.scaleX = 1.5f;
+        pos.scaleY = 1.5f;
+        
+        entity.add(pos);
+        entity.add(entityLayer);
+        entity.add(tex);
+        
+        engine.addEntity(entity);
+        
+        return entity;
+    }
+    
     public static void addTestParticleAndLightComponent(Entity entity) {
         ParticleComponent pe = engine.createComponent(ParticleComponent.class);
         
