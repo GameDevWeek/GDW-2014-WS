@@ -65,37 +65,41 @@ public class MovementSystem extends IteratingSystem {
          */
         if (jump != null) {
             // if jump was called
-            if (input != null && input.jump) {
+            if (input != null) {
                 Vector2 p1 = physix.getBody().getPosition();
-                
+
                 Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2()
                         .scl(1.4f));
-                
-                jump.jumpTimer+=deltaTime;
-                
-                if(jump.jumpTimer > 0.1f){
-                EntityCreator.physixSystem
-                        .getWorld()
-                        .rayCast(
-                                (fixture, point, normal, fraction) -> {
-                                    PhysixBodyComponent bodyComponent = fixture.getUserData() instanceof PhysixBodyComponent ? (PhysixBodyComponent) fixture.getUserData()
-                                            : null;
-                                    if (fixture.getBody() == physix.getBody())
-                                        return 1;
-                                    if (bodyComponent != null) {
-                                            if(jump.doJump){
-                                                physix.applyImpulse(0, jump.jumpImpulse); 
-                                                jump.doJump = false;
-                                            }else {
-                                                physix.setLinearVelocityY(0);
-                                                jump.doJump = true;
+
+                jump.jumpTimer += deltaTime;
+
+                if (jump.jumpTimer > 0.1f) {
+                    EntityCreator.physixSystem
+                            .getWorld()
+                            .rayCast(
+                                    (fixture, point, normal, fraction) -> {
+                                        PhysixBodyComponent bodyComponent = fixture.getUserData() instanceof PhysixBodyComponent ? (PhysixBodyComponent) fixture.getUserData()
+                                                : null;
+                                        if (fixture.getBody() == physix.getBody())
+                                            return 1;
+                                        if (bodyComponent != null) {
+                                            jump.inAir = false;
+                                            if (input.jump) {
+                                                if (jump.doJump) {
+                                                    physix.applyImpulse(0,
+                                                            jump.jumpImpulse);
+                                                    jump.inAir = true;
+                                                    jump.doJump = false;
+                                                } else {
+                                                    physix.setLinearVelocityY(0);
+                                                    jump.doJump = true;
+                                                }
                                             }
-                                                                                     
-                                            
+
                                             jump.jumpTimer = 0;
-                                    }
-                                    return 0;
-                                }, p1, p2);
+                                        }
+                                        return 0;
+                                    }, p1, p2);
                 }
 
                 /*
@@ -114,12 +118,8 @@ public class MovementSystem extends IteratingSystem {
                  * = 0; }
                  */
             }
-            
-            
+
         }
     }
-    
-    
+
 }
-
-
