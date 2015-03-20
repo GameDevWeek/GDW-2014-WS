@@ -672,9 +672,6 @@ public class EntityCreator {
         
         pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("explosion"));
         
-        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
-        loadParticleEffects( pe,"xpl_prtkl.p" );
-        
         pe.loop=true;
         pe.particleEffect.flipY();
         pe.particleEffect.start();
@@ -824,20 +821,4 @@ public class EntityCreator {
     	addRenderComponents(entity, px, py, 0, 0.2f, anim, start, stateTime);
     }
     // ********** Rendering section END **********
-    
-    
-    //   Edited by Assets(Tobi) *******
-    /**
-     * 
-     * @param particlefile
-     *          Nur der Dateiname von der .p Datei
-     * @author Tobias Gepp (Assets)
-     */
-    public static void loadParticleEffects( ParticleComponent p , String particlefile )
-    {
-        String path = "src/main/resources/data/particle/";
-        String filePath = path + particlefile;                  // file  in path
-        p.particleEffect.load(Gdx.files.internal(filePath),Gdx.files.internal(path));   // immer die Datei in <path> suchen
-    }
-   
 }
