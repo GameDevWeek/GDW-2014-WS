@@ -82,19 +82,19 @@ public class EntityCreator {
         bodyComponent.getBody().setGravityScale(1.75f);
         // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(0).restitution(0.1f)
+                .density(1).friction(0).restitution(0f)
                 .shapeCircle(width * 0.1f, new Vector2(0, -height * 0.4f));
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
-        .density(1f).friction(0f).restitution(0.1f)
+        .density(1f).friction(0f).restitution(0f)
         .shapeBox(width * 0.2f, height * 0.5f, new Vector2(0, height * 0.2f), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
 
         fixtureDef = new PhysixFixtureDef(physixSystem)
-        .density(1).friction(0).restitution(0.1f)
+        .density(1).friction(0).restitution(0f)
         .shapeCircle(width*0.4f,new Vector2(0,-height * 0.1f)).sensor(true);
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
@@ -102,15 +102,22 @@ public class EntityCreator {
 
         //laser
         fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(10f).restitution(0.1f)
-                .shapeCircle(width * 0.09f, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
+                .density(1).friction(10f).restitution(0f)
+                .shapeCircle(width * 0.1f, new Vector2(0, GameConstants.getTileSizeY()*0.68f));
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
+        
+        //jump contact
+        fixtureDef = new PhysixFixtureDef(physixSystem)
+        .density(1).friction(0f).restitution(0f)
+        .shapeCircle(width * 0.05f, new Vector2(0, GameConstants.getTileSizeY()*0.8f)).sensor(true);
+        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData("jump");
         
         entity.add(bodyComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpImpulse = 14000.0f;
+        jumpComponent.jumpImpulse = 725.0f;
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
