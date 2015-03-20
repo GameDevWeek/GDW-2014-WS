@@ -10,11 +10,13 @@ public class PlayerComponent extends Component implements Pool.Poolable {
 
     public int saved_miners;
     public int destroyed_blocks = 0;
+    public int game_time;
     
     @Override
     public void reset() {
         saved_miners = 0;
         destroyed_blocks = 0;
+        game_time = 0;
     }
 
 }
