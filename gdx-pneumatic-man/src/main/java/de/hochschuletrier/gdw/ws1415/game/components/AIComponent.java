@@ -8,7 +8,11 @@ import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 public class AIComponent extends Component implements Pool.Poolable
 {
     public AIType type;
+    public int AIstate = 0;
+
 
     @Override
-    public void reset() {}
+    public void reset() {
+        type = AIType.DOG;
+    }
 }

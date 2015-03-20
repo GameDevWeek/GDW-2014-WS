@@ -30,19 +30,97 @@ public class AISystem extends IteratingSystem {
     @Override
     public void processEntity(Entity entity, float deltaTime) {
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
-        PositionComponent position = ComponentMappers.position.get(entity);
         MovementComponent movement = ComponentMappers.movement.get(entity);
         DirectionComponent direction = entity.getComponent(DirectionComponent.class);
         AIComponent ai = ComponentMappers.AI.get(entity);
-        if(ai.type == AIType.DOG); //TODO: do some stuff based on AIType
+        if(ai.type == AIType.DOG) //TODO: do some stuff based on AIType
+            DogBehavior(physix, movement, direction);
+        else
+            DogBehavior(physix, movement, direction);
+            //ChameleonBehavior(physix, movement, direction, ai);
 
+    }
+
+    private void ChameleonBehavior(PhysixBodyComponent physix, MovementComponent movement, DirectionComponent direction, AIComponent ai){
         Vector2 dir = direction.facingDirection.toVector2();
         Vector2 p1, p2;
+        final boolean[] clear = {false, false};
+        switch (ai.AIstate){
+            case(0):    // chameleon stands on ground → can jump?
+                p1 = physix.getBody().getPosition();
+                p2 = new Vector2(p1).add(dir.scl(2f)).add(Direction.UP.toVector2().scl(2f)); // FIXME MAGIC NUMBER
 
+                clear[0] = true; //front, ground → used in lambda → needs to be final
+                EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
+                    if(fixture.getUserData() instanceof PhysixBodyComponent)
+                        if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
+                            return 1;
+                    clear[0] = false;
+                    return 0;
+                }, p1, p2);
+                if(clear[0]){
+                    clear[0] = false;
+                    p1 = p2;
+                    p2 = new Vector2(p1).add(dir.scl(2f)).add(Direction.DOWN.toVector2().scl(3f)); // FIXME MAGIC NUMBER
+                    EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
+                        if(fixture.getUserData() instanceof PhysixBodyComponent)
+                            if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
+                                return 1;
+                        if(fraction >= 0.9f) {
+                            clear[0] = true;
+                            return 0;
+                        }
+                        return 0;
+                    }, p1, p2);
+                }
+                if(clear[0]){
+                    System.err.println("raycast 2");
+                    if(Math.random() <= 0.005f){
+                        JumpComponent jump = ComponentMappers.jump.get(physix.getEntity());
+                        physix.applyImpulse(0, jump.jumpImpulse);
+                        jump.doJump = false;
+                        ai.AIstate = 1;
+                    }
+                }else{
+                    ai.AIstate = 3;
+                }
+            break;
+            case(1): // in air → jump start
+            case(2): // in air → landing
+                movement.velocity.set(movement.speed * direction.facingDirection.toVector2().x, movement.velocity.y);
+                p1 = physix.getBody().getPosition();
+                p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(2f)); // FIXME MAGIC NUMBER
+
+                clear[0] = ai.AIstate == 1; // first time true, second time false
+                // first time, check for air under AI (clear true)
+                // second time, check for block under AI (clear false)
+                EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
+                    if(fixture.getUserData() instanceof PhysixBodyComponent)
+                        if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
+                            return 0;
+                    clear[0] = !clear[0];
+                    // 1st time: from true→false if theres a block
+                    // 2nd time: stays false till theres a block
+                    return 0;
+                }, p1, p2);
+                if(clear[0]){
+                    ai.AIstate++;
+                }
+            break;
+            case(3):
+                direction.facingDirection = direction.facingDirection.rotate180();
+                ai.AIstate = 0;
+            break;
+        }
+    }
+
+    private void DogBehavior(PhysixBodyComponent physix, MovementComponent movement, DirectionComponent direction) {
+        Vector2 dir = direction.facingDirection.toVector2();
+        Vector2 p1, p2;
         p1 = physix.getBody().getPosition();
         p2 = new Vector2(p1).add(dir.scl(1.5f)); // FIXME MAGIC NUMBER
-                                //front, ground
-        final boolean[] clear = {true, false};
+
+        final boolean[] clear = {true, false}; //front, ground → used in lambda → needs to be final
         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
             if(fixture.getUserData() instanceof PhysixBodyComponent)
                 if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
@@ -58,33 +136,11 @@ public class AISystem extends IteratingSystem {
             return 0;
         }, p1, p2);
 
-//        if(Math.random() <= 0.005f){
-//            JumpComponent jump = entity.getComponent(JumpComponent.class);
-//            physix.applyImpulse(0, jump.jumpImpulse);
-//            jump.doJump = false;
-//        }
-
         if(clear[0] && clear[1]){
-
-            if(direction.facingDirection == Direction.LEFT) {
-                movement.velocity.set(movement.speed * direction.facingDirection.toVector2().x, movement.velocity.y);
-            }else if(direction.facingDirection == Direction.RIGHT) {
-                movement.velocity.set(movement.speed * direction.facingDirection.toVector2().x, movement.velocity.y);
-            }
+            movement.velocity.set(movement.speed * direction.facingDirection.toVector2().x, movement.velocity.y);
         }
         else{
             direction.facingDirection = direction.facingDirection.rotate180();
         }
-//        if(checkInFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
-//            direction.facingDirection = Direction.fromVector2(dir.scl(-1));
-//        }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
-//            // move forward
-//
-//
-//        }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
-//            // move forward
-//
-//        }
-
     }
 }
