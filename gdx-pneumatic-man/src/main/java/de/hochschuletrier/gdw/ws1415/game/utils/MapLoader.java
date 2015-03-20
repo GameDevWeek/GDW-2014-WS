@@ -36,7 +36,7 @@ public class MapLoader
     {
         ArrayList<String> list = new ArrayList<String>();        
         
-        InputStream fis = new FileInputStream("src/main/resources/data/maps/Test.txt");
+        InputStream fis = new FileInputStream("src/main/resources/data/maps/Maps.txt");
         StringBuffer line = new StringBuffer(80);
         boolean lastWasReturn = false;
         int c = 0;
@@ -302,7 +302,7 @@ public class MapLoader
                 },
                 EntityCreator::createAndAddLava);
         
-        
+        // Liste um fallende Rocks abzuspeichern
         HashMap<Integer, Entity> rocks = new HashMap<>();
         for (Layer layer : map.getLayers()) 
         {
@@ -359,7 +359,7 @@ public class MapLoader
                         {
                             cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0) );
                             //TESTS FOR LIGHT
-                            EntityCreator.createConeLight(obj.getX(), obj.getY()-500f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
+                            EntityCreator.createConeLight(obj.getX() + 100, obj.getY()-380f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
                             //EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}/*new float[]{obj.getX()+20f, obj.getY()-20f,obj.getX()+40f, obj.getY()-20f}*/);
                             //EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
                         }
@@ -412,17 +412,18 @@ public class MapLoader
                             {
                                 case "floor":
                                 {
-                                    if ( tinfo.getIntProperty("Hitpoint", 0) != 0 )
+                                    
+                                    if ( tinfo.getIntProperty("Hitpoints", 0) != 0 )
                                     {  
                                         EntityCreator.createAndAddVulnerableFloor(
                                                 i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                                map, tinfo, 1, i, j);
+                                                map, tinfo, tinfo.getIntProperty("Hitpoints", 0), i, j);
                                     } else
                                     {
                                         if ( tinfo.getBooleanProperty("Invulnerable", false) )
                                         {
-                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                          //  EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                         } else
                                         {
                                            // EntityCreator.createAndAddInvulnerableFloor( new Rectangle( i,j,1,1 ) );
