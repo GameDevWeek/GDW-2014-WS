@@ -13,6 +13,7 @@ public class ConeLightComponent extends Component implements Pool.Poolable
     @Override
     public void reset()
     {
+        coneLight.remove();
         coneLight = null;
         offsetX = 0;
         offsetY = 0;

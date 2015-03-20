@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ws1415.game.components.lights;
 import com.badlogic.ashley.core.Component;
 
 import box2dLight.PointLight;
+import box2dLight.RayHandler;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Pool;
@@ -31,6 +32,7 @@ public class PointLightComponent extends Component implements Pool.Poolable
     @Override
     public void reset()
     {
+        pointLight.remove();
         pointLight = null;
         offsetX = 0;
         offsetY = 0;

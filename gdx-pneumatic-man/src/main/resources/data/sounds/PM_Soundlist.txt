@@ -1,14 +1,16 @@
-Soundliste v0.12
+ï»¿Soundliste v0.23
 
 [Pneumatik Man]
-*Level Startet
-	letsgo
 
-Presslufthammergeräusch
-	pneu1
-	pneu2
-	pneu3
+Presslufthammergerï¿½usch
+	-pneu1
+	-pneu2
+	-pneu3
 
+Presslufthammer auf EisenblÃ¶cken
+    iron1
+    iron2
+    iron3
 
 PM wird getroffen
 	ouch1
@@ -18,37 +20,44 @@ PM wird getroffen
 PM springt
 	jump1
 	jump2
-	jump3
+    jump3
+    jump4
+    jump5
+    jump6
 
 PM stirbt
-	die1
-	die2
-	die3
+    ouch1
+    ouch2
+    ouch3
 
-PM sammelt einen Gegenstand auf
-	item
 
 PM befreit einen Kameraden
-	free1
-	free2
-	free3
+	-free1
+	-free2
+	-free3
 
 Level beendet
-	glory
+	glory1
+	glory2
+	glory3
 
 
 
 ..
 [Environment]
-
+Bombe explodiert
+    -boom
+loop fÃ¼r die Lava
+    magmaLoop
+    
 Lava blubbert
-	magma1
-	magma2
-	magma3
+	-magma1
+	-magma2
+	-magma3
 
-Lava schießt hervor
+Lava schieï¿½t hervor (neu machen)
 	burst1
-	burst2
+	-burst2
 
 *Block3 nimmt Schaden -> wird zu Block2
 *Block2 nimmt Schaden -> wird zu Block1
@@ -57,50 +66,49 @@ Lava schießt hervor
 	cracks3
 	cracks4
 	cracks5
-	cracks6
 
 Block1 nimmt Schaden -> zerbricht
-	*debris1
-	*debris2
-	*debris3
-	*debris4
+	debris1
+	debris2
+	debris3
+	debris4
 
-Felsen fällt herunter
-	stoneDrop1
-	stoneDrop2
-	stoneDrop3
 
-Felsen schlägt auf etwas auf
-	stoneHit1
-	stoneHit2
-	stoneHit3
+Felsen fï¿½llt herunter
+	stoneDrops
+
+Felsen schlï¿½gt auf etwas auf
+	-stoneHit1
+	-stoneHit2
+	-stoneHit3
 
 ..
 [Gegner]
 
-Wächterchameleon läuft
-	guardWalk1
-	guardWalk2
+Wï¿½chterchameleon lï¿½uft
+	-guardWalk1
+	-guardWalk2
 
-Wächterchameleon gibt Laute von sich
-	guardGrunt1
-	guardGrunt2
-	guardGrunt3
+Wï¿½chterchameleon gibt Laute von sich
+	-guardGrunt1
+	-guardGrunt2
+	-guardGrunt3
 
-Alienhund springt
-	alienJump
+Alienhund stirbt
+	-alienDie
 
 Alienhund schreit
 	alienBark1
 	alienBark2
 	alienBark3
+	alienBark4
 
 	
 ..
 [Menu]
 Auswahl
 	pmHover
-Bestätigung
+Bestï¿½tigung
 	pmAccept
 Abbruch
 	pmCancel
