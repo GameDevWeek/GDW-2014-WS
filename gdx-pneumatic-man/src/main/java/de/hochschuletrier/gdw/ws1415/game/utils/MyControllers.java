@@ -44,7 +44,12 @@ public class MyControllers {
      * 
      * @return the connected controllers */
     static public Array<Controller> getControllers () {
-        initialize();
+        initialize(false);
+        return getManager().getControllers();
+    }
+    
+    static public Array<Controller> getControllersUpdated () {
+        initialize(true);
         return getManager().getControllers();
     }
 
@@ -52,14 +57,14 @@ public class MyControllers {
      * invoked on the rendering thread.
      * @param listener */
     static public void addListener (ControllerListener listener) {
-        initialize();
+        initialize(false);
         getManager().addListener(listener);
     }
 
     /** Removes a global {@link ControllerListener}. The method must be called on the rendering thread.
      * @param listener */
     static public void removeListener (ControllerListener listener) {
-        initialize();
+        initialize(false);
         getManager().removeListener(listener);
     }
 
@@ -67,8 +72,9 @@ public class MyControllers {
         return managers.get(Gdx.app);
     }
 
-    static private void initialize () {
-        if (managers.containsKey(Gdx.app)) return;
+    static private void initialize (boolean update) {
+        if(!update)
+            if (managers.containsKey(Gdx.app)) return;
 
         String className = null;
         ApplicationType type = Gdx.app.getType();

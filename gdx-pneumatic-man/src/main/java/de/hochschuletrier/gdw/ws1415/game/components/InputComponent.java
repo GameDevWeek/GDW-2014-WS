@@ -7,15 +7,12 @@ public class InputComponent extends Component implements Pool.Poolable
 {
     public boolean jump = false;
     
-    public float direction = 0; //-1 heißt links, 0 heißt stehenbleiben, 1 heißt rechts
-    
-    public boolean pause = false;
+    public float direction = 0; // negativ heißt links, 0 heißt stehenbleiben, positiv heißt rechts
     
     @Override
     public void reset()
     {
         direction = 0;
-        pause = false;
         jump = false;
     }
 
