@@ -22,6 +22,7 @@ import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
 import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
@@ -73,6 +74,7 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
             @Override
             public boolean keyUp(int keycode) {
                 if (mainProcessor != null && keycode == Input.Keys.ESCAPE) {
+                    SoundEmitter.playGlobal(assetManager.getSound("cracks2"),false);
                     menuManager.popPage();
                     return true;
                 }
