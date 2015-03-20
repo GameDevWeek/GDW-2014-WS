@@ -56,29 +56,26 @@ public class Game {
     private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
 
-    private final PooledEngine engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
+    private  PooledEngine engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
             GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE);
 
-    private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE, GameConstants.VELOCITY_ITERATIONS,
-            GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX);
+    private  PhysixSystem physixSystem;
 
-    private final ScoreSystem _ScoreSystem = new ScoreSystem();
-    private final HealthSystem _HealthSystem = new HealthSystem();
-    private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final CameraSystem cameraSystem = new CameraSystem();
-    private final RayHandler rayHandler = new RayHandler(physixSystem.getWorld());
-    private final SortedRenderSystem renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
-    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
-    private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
-    private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
-    private final InputGamepadSystem inputGamepadSystem = new InputGamepadSystem();
-    private final LavaFountainSystem lavaFountainSystem = new LavaFountainSystem(GameConstants.PRIORITY_ENTITIES+3);
-    private final DestroyBlocksSystem destroyBlocksSystem = new DestroyBlocksSystem();
-    private final AISystem aisystems = new AISystem(
-            GameConstants.PRIORITY_PHYSIX + 1,
-            physixSystem
-    );
 
+    private  PlatformSystem platformSystem = new PlatformSystem(physixSystem);
+    private  ScoreSystem _ScoreSystem;
+    private  HealthSystem _HealthSystem;
+    private  PhysixDebugRenderSystem physixDebugRenderSystem;
+    private  CameraSystem cameraSystem;
+    private  RayHandler rayHandler;
+    private  SortedRenderSystem renderSystem;
+    private  UpdatePositionSystem updatePositionSystem;
+    private  MovementSystem movementSystem;
+    private  InputKeyboardSystem inputKeyboardSystem;
+    private  InputGamepadSystem inputGamepadSystem;
+    private  LavaFountainSystem lavaFountainSystem;
+    private  DestroyBlocksSystem destroyBlocksSystem;
+    private  AISystem aisystems ;
     private InputManager inputManager = new InputManager();
     
     private Sound impactSound;
@@ -130,17 +127,19 @@ public class Game {
         GameConstants.pause = false;
         engine.removeAllEntities();
         removeSystems();
-        Main.getInstance().removeScreenListener(cameraSystem.getCamera());
         Main.inputMultiplexer.removeProcessor(inputKeyboardSystem);
         Main.getInstance().console.unregister(physixDebug);
         
         
-        Main.getInstance().addScreenListener(cameraSystem.getCamera());
-
-        Main.getInstance().console.register(physixDebug);
-        physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
 
         addSystems();
+        EntityCreator.physixSystem = this.physixSystem;
+
+        Main.getInstance().removeScreenListener(cameraSystem.getCamera());
+        Main.getInstance().addScreenListener(cameraSystem.getCamera());
+        
+        Main.getInstance().console.register(physixDebug);
+        physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
         
         // Load Map
         map = loadMap(levelFilePath);
@@ -191,6 +190,27 @@ public class Game {
     }
 
     private void addSystems() {
+
+        physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE, GameConstants.VELOCITY_ITERATIONS,
+            GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX);
+        _ScoreSystem = new ScoreSystem();
+        _HealthSystem = new HealthSystem();
+        physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
+        cameraSystem = new CameraSystem();
+        rayHandler = new RayHandler(physixSystem.getWorld());
+        renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
+        updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
+        movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
+        inputKeyboardSystem = new InputKeyboardSystem();
+        inputGamepadSystem = new InputGamepadSystem();
+        lavaFountainSystem = new LavaFountainSystem(GameConstants.PRIORITY_ENTITIES+3);
+        destroyBlocksSystem = new DestroyBlocksSystem();
+        aisystems = new AISystem(
+                GameConstants.PRIORITY_PHYSIX + 1,
+                physixSystem
+        );
+        
+        
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(cameraSystem);
@@ -204,6 +224,7 @@ public class Game {
         engine.addSystem(_ScoreSystem);
         engine.addSystem(lavaFountainSystem);
         engine.addSystem(destroyBlocksSystem);
+        engine.addSystem(platformSystem);
     }
     private void removeSystems(){
         engine.removeSystem(physixSystem);
@@ -220,7 +241,8 @@ public class Game {
         engine.removeSystem(lavaFountainSystem);
         engine.removeSystem(destroyBlocksSystem);
         
-        renderSystem.rayHandler.removeAll();
+        if(renderSystem != null && renderSystem.rayHandler != null)
+            renderSystem.rayHandler.removeAll();
 
     }
 
