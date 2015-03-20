@@ -42,9 +42,25 @@
     "char_jump": {
         "filename": "data/animations/char_jump_2048.png",
         "frames" : 31,
-        "frameDuration": [0.05],
-        "playType" : "NORMAL",
+        "frameDuration": [0.035],
+        "playType" : "LOOP",
         "columns": 8,
         "rows" : 4
+    },
+    "coworker_idle": {
+	"filename": "data/animations/coworker_idle_1024.png",
+	"frames": 40,
+	"frameDuration": [0.06],
+	"playType": "LOOP",
+	"columns": 4,
+	"rows": 10
+    },
+    "stone_breaking": {
+	"filename": "data/animations/stone_breaking.png",
+	"frames": 4,
+	"frameDuration": [0,5],
+	"playType": "NORMAL",
+	"columns": 4,
+	"rows": 1
     }
 }

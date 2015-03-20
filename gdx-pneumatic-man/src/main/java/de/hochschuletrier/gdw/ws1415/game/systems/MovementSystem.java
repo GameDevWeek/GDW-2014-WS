@@ -11,6 +11,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 //import de.hochschuletrier.gdw.ws1415.game.components.BouncingComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
@@ -66,41 +67,60 @@ public class MovementSystem extends IteratingSystem {
         if (jump != null) {
             // if jump was called
             if (input != null) {
-                Vector2 p1 = physix.getBody().getPosition();
 
-                Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2()
-                        .scl(1.4f));
-
-                jump.jumpTimer += deltaTime;
-
-                if (jump.jumpTimer > 0.1f) {
-                    EntityCreator.physixSystem
-                            .getWorld()
-                            .rayCast(
-                                    (fixture, point, normal, fraction) -> {
-                                        PhysixBodyComponent bodyComponent = fixture.getUserData() instanceof PhysixBodyComponent ? (PhysixBodyComponent) fixture.getUserData()
-                                                : null;
-                                        if (fixture.getBody() == physix.getBody())
-                                            return 1;
-                                        if (bodyComponent != null) {
-                                            jump.inAir = false;
-                                            if (input.jump) {
-                                                if (jump.doJump) {
-                                                    physix.applyImpulse(0,
-                                                            jump.jumpImpulse);
-                                                    jump.inAir = true;
-                                                    jump.doJump = false;
-                                                } else {
-                                                    physix.setLinearVelocityY(0);
-                                                    jump.doJump = true;
-                                                }
-                                            }
-
-                                            jump.jumpTimer = 0;
-                                        }
-                                        return 0;
-                                    }, p1, p2);
+                if (jump.doJump) {
+                    if (input.jump) {
+                        physix.applyImpulse(0, -jump.jumpImpulse);
+                        jump.inAir = true;
+                    }
                 }
+
+                // Vector2 p1 = physix.getBody().getPosition();
+                //
+                // Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2()
+                // .scl(1.45f));
+                //
+                // jump.jumpTimer += deltaTime;
+                // if (jump.jumpTimer > 0.1f) {
+                // EntityCreator.physixSystem
+                // .getWorld()
+                // .rayCast(
+                // (fixture, point, normal, fraction) -> {
+                // PhysixBodyComponent bodyComponent = fixture.getUserData()
+                // instanceof PhysixBodyComponent ? (PhysixBodyComponent)
+                // fixture.getUserData()
+                // : null;
+                // if (fixture.getBody() == physix.getBody())
+                // return 1;
+                // if (bodyComponent != null) {
+                // jump.inAir = false;
+                // if (input.jump) {
+                // if (jump.doJump) {
+                // physix.applyImpulse(0,
+                // jump.jumpImpulse);
+                // jump.inAir = true;
+                // jump.doJump = false;
+                // jump.jumpTimer = 0;
+                //
+                // if (ComponentMappers.block.has(bodyComponent.getEntity())
+                // && ComponentMappers.health.has(bodyComponent.getEntity())) {
+                // HealthComponent healthComponent =
+                // ComponentMappers.health.get(bodyComponent.getEntity());
+                // healthComponent.DecrementByValueNextFrame += 2;
+                // return 0;
+                // }
+                // } else {
+                // physix.setLinearVelocityY(0);
+                // jump.doJump = true;
+                // }
+                // }else{
+                // jump.jumpTimer += deltaTime;
+                // }
+                //
+                // }
+                // return 0;
+                // }, p1, p2);
+                // }
 
                 /*
                  * jump.doJump = true; // if entity is on the ground and the

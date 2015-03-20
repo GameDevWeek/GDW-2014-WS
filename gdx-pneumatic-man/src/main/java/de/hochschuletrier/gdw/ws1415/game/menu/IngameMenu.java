@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
+import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
+import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 
 public class IngameMenu extends MenuPage
 {
@@ -28,8 +30,10 @@ public class IngameMenu extends MenuPage
         int y=800;
         int yStep=100;
         
-            addPageEntry(menumanager,x,y-yStep*(i++),backToGame, new OptionMenu(skin, menumanager));        //Resume Game
-            addPageEntry(menumanager,x,y-yStep*(i++),restart, new OptionMenu(skin, menumanager));           //Restart Level
+//            addPageEntry(menumanager,x,y-yStep*(i++),backToGame, new OptionMenu(skin, menumanager));   //Resume Game
+            addPageEntryStart(menumanager,x,y-yStep*(i++), backToGame);
+//            addPageEntry(menumanager,x,y-yStep*(i++),restart, new OptionMenu(skin, menumanager));           //Restart Level
+            addPageEntryStart(menumanager,x,y-yStep*(i++), restart);
             addPageEntry(menumanager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menumanager));
             addPageEntry(menumanager,x,y-yStep*(i++),mainMenu, new MainMenu(skin, menumanager, MainMenu.Type.MAINMENU));
             addPageEntry(menumanager,x,y-yStep*(i++),quit, new OptionMenu(skin, menumanager));
@@ -40,6 +44,13 @@ public class IngameMenu extends MenuPage
         menuManager.addLayer(page);
         
         addCenteredImage((int)(x-(image.getWidth()/2)), y, (int)image.getWidth(), (int)image.getHeight(), image, () -> menuManager.pushPage(page));
+        
+    }
+    
+    protected final void addPageEntryStart(MenuManager menuManager, int x, int y, DecoImage image) {
+        //menuManager.addLayer(page);
+        
+        addCenteredImage((int)(x-(image.getWidth()/2)), y, (int)image.getWidth(), (int)image.getHeight(), image, () ->  main.changeState(new GameplayState(assetManager),new SplitHorizontalTransition(500), null));
         
     }
 

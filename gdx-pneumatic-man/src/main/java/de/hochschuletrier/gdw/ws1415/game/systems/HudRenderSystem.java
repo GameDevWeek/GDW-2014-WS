@@ -29,7 +29,7 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
         super(Family.all(PlayerComponent.class).get(), GameConstants.PRIORITY_HUD);
         final AssetManagerX assetManager = Main.getInstance().getAssetManager();
         
-        font = assetManager.getFont("orbitron");
+        font = assetManager.getFont("orbitron_32");
         textureMinerFound = assetManager.getTexture("miner_found");
         textureMinerLeft = assetManager.getTexture("miner_notfound");
     }
