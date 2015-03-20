@@ -55,6 +55,7 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         PhysixBodyComponent otherbody = ComponentMappers.physixBody.get(otherEntity);
         otherbody.getBody().setTransform(otherbody.getPosition(), 180);
         otherbody.setGravityScale(0.0f);
+        otherbody.getFixtureList().forEach(f->f.setSensor(true));
     }
 
 }

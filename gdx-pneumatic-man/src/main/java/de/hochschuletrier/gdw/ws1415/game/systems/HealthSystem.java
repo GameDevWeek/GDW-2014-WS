@@ -100,14 +100,17 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                         PhysixBodyComponent bodyComponent = fixture.getUserData() instanceof PhysixBodyComponent ?
                                 (PhysixBodyComponent) fixture.getUserData() : null;
                         if (bodyComponent != null && ComponentMappers.spikes.has(bodyComponent.getEntity())) {
+
+                            bodyComponent.getBody().setGravityScale(1);
+                            bodyComponent.getBody().setAwake(true);
+                            bodyComponent.getBody().setActive(true);
+                            bodyComponent.getBody().getFixtureList().forEach(f->f.setSensor(false));
+
                             PhysixModifierComponent modifierComponent = new PhysixModifierComponent();
                             modifierComponent.schedule(new Runnable() {
                                                            @Override
                                                            public void run() {
-                                                               bodyComponent.getBody().setGravityScale(1);
-                                                               bodyComponent.getBody().setAwake(true);
-                                                               bodyComponent.getBody().setActive(true);
-                                                               bodyComponent.getBody().getFixtureList().forEach(f->f.setSensor(false));
+
                                                            }
                                                        });
                             entity.add(modifierComponent);
