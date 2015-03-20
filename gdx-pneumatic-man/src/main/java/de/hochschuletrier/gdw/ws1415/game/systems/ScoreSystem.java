@@ -99,11 +99,19 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
     @Override
     public void entityRemoved(Entity entity) {
         if (MinerFamily.matches(entity)) {
-            player.getComponent(PlayerComponent.class).saved_miners += 1;
-            logger.info("Miners saved: " + player.getComponent(PlayerComponent.class).saved_miners);
+            if(player != null){
+                if(player.getComponent(PlayerComponent.class) != null){
+                    player.getComponent(PlayerComponent.class).saved_miners += 1;
+                    logger.info("Miners saved: " + player.getComponent(PlayerComponent.class).saved_miners);
+                }
+            }
         }
         if(BlockFamily.matches(entity)){
-            player.getComponent(PlayerComponent.class).destroyed_blocks += 1;
+            if (player != null){
+                if(player.getComponent(PlayerComponent.class) != null){
+                    player.getComponent(PlayerComponent.class).destroyed_blocks += 1;
+                }
+            }
             //logger.info("Destroyed blocks: " + destroyed_blocks);
             //logger.info("A block was destroyed.");
         }
