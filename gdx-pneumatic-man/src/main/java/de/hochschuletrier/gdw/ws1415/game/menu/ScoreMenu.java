@@ -14,6 +14,18 @@ public class ScoreMenu extends MenuPage
 		super(skin, "background_menu");
 		createLabel(Main.WINDOW_WIDTH/2, Main.WINDOW_HEIGHT/2 + 300).setText("HIGHSCORE");
 		
+		int x = Main.WINDOW_WIDTH/2 - 50;
+		int y = 700; 
+		int y_step = 0;
+		
+		int[] testScore = {7890, 3566, 1000, 245, 10, 1};
+		
+		for (int i = 0; i < testScore.length; i++)
+		{
+			createLabel(x, y - y_step).setText("" + testScore[i]);
+			y_step += 50;
+		}
+		
 		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
 	}
 	
