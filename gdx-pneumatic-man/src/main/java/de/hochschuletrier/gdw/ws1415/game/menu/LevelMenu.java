@@ -15,7 +15,10 @@ import de.hochschuletrier.gdw.ws1415.Main;
 public class LevelMenu extends MenuPage 
 {
 	boolean levelSelected = false;
-    private final ButtonGroup<TextButton> buttonGroup = new ButtonGroup<TextButton>();
+    private final ButtonGroup<ImageButton> buttonGroup = new ButtonGroup<ImageButton>();
+    int[] test = {1, 2, 3, 4, 5};
+	DecoImage[] imageArray = new DecoImage[test.length];
+	ImageButton[] buttonArray = new ImageButton[test.length];
 
 	public LevelMenu(Skin skin, MenuManager menuManager)
 	{
@@ -27,13 +30,10 @@ public class LevelMenu extends MenuPage
 		int y_up = y + 100;
 		int y_down = y - 20;
 		
-		int[] test = {1, 2, 3, 4, 5};
-		DecoImage[] imageArray = new DecoImage[test.length];
-		TextButton[] buttonArray = new TextButton[test.length];
-		
-		ImageButton tryOut = addImageButton(x + x_step, y + 200, 108, 108, this::levelTest);
+		//ImageButton tryOut = addImageButton(x + x_step, y + 200, 108, 108, this::levelTest);
 		//tryOut.background("back_button");
 		//tryOut.setBackground("data/images/back_button.png");
+		//tryOut.setBackground("back_button");
 		
 		createLabel(Main.WINDOW_WIDTH/2, Main.WINDOW_HEIGHT/2 + 300).setText("LEVEL");
 		
@@ -44,7 +44,7 @@ public class LevelMenu extends MenuPage
 			else
 				createLabel(x + x_step, y_down).setText("" + test[i]);
 			
-			buttonArray[i] = addButton(x + x_step, y, 108, 108, "Level " + i, this::levelTest, "toggle");
+			buttonArray[i] = addImageButton(x + x_step, y, 108, 108, this::levelTest);
 			buttonGroup.add(buttonArray[i]);
 			imageArray[i] = new DecoImage(assetManager.getTexture("back_button"));
 			//addCenteredImage(x + x_step, y, 108, 108, imageArray[i], () -> levelTest());
@@ -67,6 +67,13 @@ public class LevelMenu extends MenuPage
 		//Game.loadLevel();
 		levelSelected = true;
 		//Game.loadSelectedLevel = true;
-		System.out.println("LEVEL AUSGEWÄHLT: " + buttonGroup.getChecked().getText());
+		
+		for(int i = 0; i < buttonArray.length; i++)
+		{
+			if(buttonArray[i].equals(buttonGroup.getChecked()))
+			{
+				System.out.println("Level ausgewählt: " + (i+1));
+			}
+		}
 	}
 }
