@@ -50,12 +50,26 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
     }
 
     private void handleSpikes (PhysixContact contact, Entity myEntity, Entity otherEntity){
-        if(! ComponentMappers.block.has(otherEntity)) return; //just handle if the spike hits a block
+        //if(! ComponentMappers.block.has(otherEntity)) return; //just handle if the spike hits a block
+        if(myEntity.getComponent(DirectionComponent.class).facingDirection != Direction.TOP) return;
+        PhysixBodyComponent mybody = ComponentMappers.physixBody.get(myEntity);
 
-        PhysixBodyComponent otherbody = ComponentMappers.physixBody.get(otherEntity);
-        otherbody.getBody().setTransform(otherbody.getPosition(), 180);
-        otherbody.setGravityScale(0.0f);
-        otherbody.getFixtureList().forEach(f->f.setSensor(true));
+        Vector2 a = mybody.getBody().getPosition().cpy().sub(contact.getOtherFixture().getBody().getPosition());
+        float dot = a.dot(Direction.DOWN.toVector2());
+        System.err.println("down:" + dot);
+        if(dot > 0) return;
+
+        System.err.println("test2");
+
+        mybody.setGravityScale(0.0f);
+        mybody.setLinearVelocity(0,0);
+        mybody.getFixtureList().forEach(f->f.setSensor(true));
+
+
+        AnimationComponent animationComponent = ComponentMappers.animation.get(myEntity);
+        animationComponent.stateTime = animationComponent.animation.animationDuration ;
+        animationComponent.permanent_stateTime = animationComponent.animation.animationDuration ;
+
     }
 
 }

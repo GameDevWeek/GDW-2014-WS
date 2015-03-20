@@ -446,7 +446,10 @@ public class EntityCreator {
     public static Entity createSpike(int x, int y, Direction direction, TileInfo info, TiledMap map){
         Entity entity = engine.createEntity();
 
-        addRenderComponents(entity, map, info, (int)x, (int)y);
+        if(direction == Direction.TOP)
+            addRenderComponents(entity, map, info, (int)x, (int)y, PlayMode.NORMAL, false);
+        else
+            addRenderComponents(entity, map, info, (int)x, (int)y);
 
         PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem)
@@ -461,7 +464,7 @@ public class EntityCreator {
                 .friction(1f)
                 .shapeBox(GameConstants.getTileSizeX() * 0.8f, GameConstants.getTileSizeY() * 0.8f,
                         direction.toVector2().scl(GameConstants.getTileSizeX() * 0.1f), 0)
-                .restitution(0.1f)
+                .restitution(0f)
                 .sensor(true);
         Fixture fixtureSpikeGround = bodyComponent.createFixture(fixtureDefSpikeGround);
         fixtureSpikeGround.setUserData(bodyComponent);
@@ -470,6 +473,7 @@ public class EntityCreator {
 
         DirectionComponent directionComponent = engine.createComponent(DirectionComponent.class);
         directionComponent.facingDirection = direction;
+        entity.add(directionComponent);
 
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
         Damage.damageToPlayer = true;

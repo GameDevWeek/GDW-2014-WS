@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
-import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +19,6 @@ import com.badlogic.ashley.core.Family;
 
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 
 public class HealthSystem extends EntitySystem implements EntityListener {
 
@@ -93,35 +90,39 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }else if(ComponentMappers.block.has(entity)){
                     PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
                     DestructableBlockComponent block = ComponentMappers.block.get(entity);
+
+
                     Vector2 p1 = physix.getBody().getPosition();
                     Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(1.5f)); // FIXME MAGIC NUMBER
 
-                    EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
-                        PhysixBodyComponent bodyComponent = fixture.getUserData() instanceof PhysixBodyComponent ?
-                                (PhysixBodyComponent) fixture.getUserData() : null;
-                        if (bodyComponent != null && ComponentMappers.spikes.has(bodyComponent.getEntity())) {
-
-                            bodyComponent.getBody().setGravityScale(1);
-                            bodyComponent.getBody().setAwake(true);
-                            bodyComponent.getBody().setActive(true);
-                            bodyComponent.getBody().getFixtureList().forEach(f->f.setSensor(false));
-
-                            PhysixModifierComponent modifierComponent = new PhysixModifierComponent();
-                            modifierComponent.schedule(new Runnable() {
-                                                           @Override
-                                                           public void run() {
-
-                                                           }
-                                                       });
-                            entity.add(modifierComponent);
-                        }
-                        return 0;
-                    }, p1, p2);
-
-                    if(block.deathTimer <= 0)
-                        CurrentEngine.removeEntity(entity);
-                    else
+                    if(block.deathTimer <= 0) {
+                        Health.health = HealthComponent.HealthState.DEAD;
+                    }else {
+                        Health.health = HealthComponent.HealthState.DYING;
                         block.deathTimer -= deltaTime;
+                    }
+
+                    if(Health.health == HealthComponent.HealthState.DEAD) {
+                        EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
+                            PhysixBodyComponent bodyComponent = fixture.getUserData() instanceof PhysixBodyComponent ?
+                                    (PhysixBodyComponent) fixture.getUserData() : null;
+                            if (bodyComponent != null && ComponentMappers.spikes.has(bodyComponent.getEntity())) {
+
+                                bodyComponent.getBody().setGravityScale(1);
+                                bodyComponent.getBody().setAwake(true);
+                                bodyComponent.getBody().setActive(true);
+                                bodyComponent.getBody().getFixtureList().forEach(f -> f.setSensor(false));
+
+                                AnimationComponent animationComponent = ComponentMappers.animation.get(bodyComponent.getEntity());
+                                animationComponent.stateTime = animationComponent.animation.animationDuration/3;
+                                animationComponent.permanent_stateTime = animationComponent.animation.animationDuration/3;
+                                System.err.println("test1");
+
+                            }
+                            return 0;
+                        }, p1, p2);
+                        CurrentEngine.removeEntity(entity);
+                    }
                 }
                 else
                 {

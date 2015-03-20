@@ -27,10 +27,7 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
-import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.FallingTrapContactListener;
@@ -256,6 +253,7 @@ public class Game {
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
         contactListener.addListener(FallingRockComponent.class, new FallingTrapContactListener());
+        contactListener.addListener(SpikeComponent.class, new FallingTrapContactListener());
         physixSystem.getWorld().setContactListener(contactListener);
     }
 
