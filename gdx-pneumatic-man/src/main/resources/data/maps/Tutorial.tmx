@@ -4,62 +4,15 @@
   <property name="Background" value="Hintergrund1.png"/>
  </properties>
  <tileset firstgid="1" source="tilesets/destructable_block.tsx"/>
- <tileset firstgid="7" name="lava" tilewidth="64" tileheight="64" spacing="64" margin="64">
-  <properties>
-   <property name="animationDuration" value="0.15"/>
-   <property name="animationFrames" value="2"/>
-   <property name="animationOffset" value="1"/>
-  </properties>
-  <image source="tilesets/lava.png" width="320" height="320"/>
-  <tile id="0">
-   <properties>
-    <property name="Invulnerable" value="true"/>
-    <property name="Layer" value="2"/>
-    <property name="Light" value="true"/>
-    <property name="Name" value="Lava1"/>
-    <property name="Radius" value="3.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="1">
-   <properties>
-    <property name="Invulnerable" value="true"/>
-    <property name="Layer" value="2"/>
-    <property name="Light" value="true"/>
-    <property name="Name" value="Lava2"/>
-    <property name="Radius" value="3.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="2">
-   <properties>
-    <property name="Invulnerable" value="true"/>
-    <property name="Layer" value="2"/>
-    <property name="Light" value="true"/>
-    <property name="Name" value="Lava3"/>
-    <property name="Radius" value="3.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="3">
-   <properties>
-    <property name="Invulnerable" value="true"/>
-    <property name="Layer" value="2"/>
-    <property name="Light" value="true"/>
-    <property name="Name" value="Lava4"/>
-    <property name="Radius" value="3.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="11" source="tilesets/zacken.tsx"/>
- <tileset firstgid="14" source="tilesets/rest.tsx"/>
+ <tileset firstgid="7" source="tilesets/zacken.tsx"/>
+ <tileset firstgid="10" source="tilesets/lava.tsx"/>
+ <tileset firstgid="18" source="tilesets/rest.tsx"/>
  <layer name="Mittellayer" width="100" height="100">
   <properties>
    <property name="Parallax" value="0.5"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt1zENwEAMBEGTMH+qjyFKXtliRjKB28o7M3vxeObtbjp8y3YterTo0aJHix4terTo0aJHi/+tRYsWPVr0aNGjRY8WPVr0aNGjRY8WPVr0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4E8Hy0UEWg==
+   eJzt170KwyAYhlHn/nfM/d9oVRrokAwlEd/hHPgGN/EhEpdSyjJw+M/Rc9PhXM4uix5Z9MiiRxY9suiRpfW41LnO3ghd6/Go85y9EbrW41XnPXsjdHvfx3qH3ercv2vG++2xfid7a8bzf5VFjyx6ZNEjix5Z9MhyZo+tN8vWmn1n9vCOOc59BQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwEwf4YsHYA==
   </data>
  </layer>
  <layer name="Spielebene" width="100" height="100">
@@ -67,7 +20,7 @@
    <property name="Parallax" value="1.0"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt2G1rgzAUBtAwtpaxT5v2///VTaaQpje+RLd+8By4UBqrcJ8mUbuUUveEItat+Bx5W3nOlvEza8mjXxiXR7uhN7exhs9fP3VJ6/LoZ865dE1iZR5Dvabj8pgy3rIWnlmZx8tYUc+mHJb25vy7j6yice6VeVxSfb3q02MmtXPu2V/OrMxj7riJ/fzvDL25jlX2/JYds6WHa+YPsaE372PlfSr3+C2ZmB/tojz2PleXv5myzceJlXlMdQ0q3+/zfb/sbzTPauPcy/NYqtq97WdR05xI6XEP8v5q3t73gC3rmjzqntEbedT9R2/KeSOPuqN6M3ce91frtaz9S/dUa65J7IjebL0nkEfdkXlEzyy15xhiLb2p/ef3PMfwq2WtOaIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg8A39wxUw
+   eJzt2IFqgzAUBdAwNvcFm/b/f3QTKmj6ojG6FuY58KCoNfBuk1j7lFL/giLWV3yOfFTes+X8lbXkMWycl0e7sTe3e42fv3+rS3V5DCv33BqTWJ7HWO/pvDymjPeshVeW5/F2r6hnUw5be/P82OesovMs5Xl0qbxeDekxk9I9j+wvV5bnsXbdxH7+d0rr+tjz2+z4nh7WzB9ipTzyPX5PJuZHuyiPo/+r8+9M2UZjspTnsbXOdFlF10fzrHSepb37QnTsK6tpTqT0uAd5f7Xu6HvAlnVNHmWv6I08yp7Rm3zeyKPsrN6s3cfzVb2WtX/rmapmTGJn9GbvM4E8ys7M45lj/lctvTn6m5dHWctac0YBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADA6Acn2xfT
   </data>
  </layer>
  <objectgroup name="Objektebene">
