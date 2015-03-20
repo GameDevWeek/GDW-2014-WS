@@ -4,7 +4,6 @@ import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -25,7 +24,7 @@ public class MainMenu extends MenuPage{
     DecoImage start = new DecoImage(assetManager.getTexture("start_button"));
     DecoImage optionen = new DecoImage(assetManager.getTexture("optionen_button"));
     DecoImage credits = new DecoImage(assetManager.getTexture("credits_button"));
-    DecoImage ende = new DecoImage(assetManager.getTexture("beenden_button"));
+    DecoImage ende = new DecoImage(assetManager.getTexture("back_button"));
     DecoImage highscore = new DecoImage(assetManager.getTexture("score_button"));
     DecoImage levels = new DecoImage(assetManager.getTexture("levels_button"));
     //DecoImage hand=new DecoImage(assetManager.getTexture("zeigefinger"));
@@ -40,7 +39,7 @@ public class MainMenu extends MenuPage{
         super(skin,"background_menu" );
         int x = 960;
         int i = 0;
-        int y = 800;
+        int y = 620;
         int yStep = 110;
         
     		//addPageEntryStart(menuManager,x,y-yStep*1, start);
@@ -52,7 +51,8 @@ public class MainMenu extends MenuPage{
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
             //addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> menuManager.pushPage(n));
             addPageEntry(menuManager, x, y-yStep*(i++), credits, new CreditsMenu(skin, menuManager));
-            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2, ende, ()->System.exit(0));
+            //addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2, ende, ()->System.exit(0));
+            addCenteredImage(450, 750, 108, 108, ende, () -> System.exit(0));
             //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
             //addGear(hand);
     }

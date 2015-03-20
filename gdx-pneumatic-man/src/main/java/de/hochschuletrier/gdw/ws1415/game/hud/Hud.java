@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ws1415.sandbox.hud;
+package de.hochschuletrier.gdw.ws1415.game.hud;
 
 import java.util.ArrayList;
 

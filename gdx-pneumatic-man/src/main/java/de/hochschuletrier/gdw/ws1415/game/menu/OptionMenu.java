@@ -7,13 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.graphics.Color;
-import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
-import de.hochschuletrier.gdw.commons.gdx.utils.ScreenUtil;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
+import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
 
 public class OptionMenu extends MenuPage
@@ -21,7 +19,7 @@ public class OptionMenu extends MenuPage
 	private final Label soundLabel, musicLabel;
     private final Slider soundSlider, musicSlider;
     private final ButtonGroup<TextButton> buttonGroup = new ButtonGroup<TextButton>();
-    private final TextButton gamepadButton, keyboardButton, fullscreenButton;
+    private final TextButton gamepadButton, keyboardButton;
    // private final TextButton soundMuteButton, musicMuteButton;
 	
 	public OptionMenu(Skin skin, MenuManager menuManager)
@@ -29,7 +27,14 @@ public class OptionMenu extends MenuPage
 		super(skin, "background_menu");
 		int y = 600;
 		
-		createLabel(menuManager.getWidth()/2-75, y).setText("SOUND");
+		DecoImage overlay = new DecoImage(assetManager.getTexture("options_overlay"));
+		
+		addImage(Main.WINDOW_WIDTH/5+10, Main.WINDOW_HEIGHT/5-15, (int)overlay.getWidth(),(int) overlay.getHeight(), overlay);
+
+		createLabel(Main.WINDOW_WIDTH/2, Main.WINDOW_HEIGHT/2 + 300).setText("OPTIONS");
+
+		
+		//createLabel(menuManager.getWidth()/2-75, y).setText("SOUND VOLUME");
 		y-= 20;
         soundSlider = createSlider(menuManager.getWidth()/2-160, y, this::onSoundVolumeChanged);
         soundSlider.setValue(Settings.SOUND_VOLUME.get());
@@ -39,7 +44,7 @@ public class OptionMenu extends MenuPage
         //soundMuteButton.setVisible(false);
         y -= 50;
 
-        createLabel(menuManager.getWidth()/2-75, y).setText("MUSIC");
+        //createLabel(menuManager.getWidth()/2-75, y).setText("MUSIC VOLUME");
         y -= 20;
         musicSlider = createSlider(menuManager.getWidth()/2-160, y, this::onMusicVolumeChanged);
         musicSlider.setValue(Settings.MUSIC_VOLUME.get());
@@ -59,7 +64,7 @@ public class OptionMenu extends MenuPage
         keyboardButton = addButton(menuManager.getWidth()/2-50, y, 100, 50, "KEYBOARD", this::onKeyboardChanged, "toggle");
         y -= 75;
         
-        fullscreenButton = addButton(menuManager.getWidth()/2-160, y, 100, 50, "FULLSCREEN", this::onFullscreenChanged, "toggle");
+       // fullscreenButton = addButton(menuManager.getWidth()/2-160, y, 100, 50, "FULLSCREEN", this::onFullscreenChanged, "toggle");
         
         buttonGroup.add(gamepadButton);
         buttonGroup.add(keyboardButton);
@@ -179,27 +184,27 @@ public class OptionMenu extends MenuPage
         Settings.flush();
     }
     
-    private void onFullscreenChanged() {
-        boolean fullscreenOn = fullscreenButton.isChecked();
-        fullscreenButton.setText(fullscreenOn ? "An" : "Aus");
-
-        ScreenUtil.setFullscreen(fullscreenOn);
-    }
+//    private void onFullscreenChanged() {
+//        boolean fullscreenOn = fullscreenButton.isChecked();
+//        fullscreenButton.setText(fullscreenOn ? "An" : "Aus");
+//
+//        ScreenUtil.setFullscreen(fullscreenOn);
+//    }
     
-    private TextButton createToggleButton(int x, int y, String text, Runnable runnable) 
-    {
-        TextButton button = new TextButton(text, skin, "toggle");
-        button.setBounds(x, y, 100, 30);
-        addActor(button);
-
-        button.addListener(new ChangeListener() 
-        {
-            @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) 
-            {
-                runnable.run();
-            }
-        });
-        return button;
-    }
+//    private TextButton createToggleButton(int x, int y, String text, Runnable runnable) 
+//    {
+//        TextButton button = new TextButton(text, skin, "toggle");
+//        button.setBounds(x, y, 100, 30);
+//        addActor(button);
+//
+//        button.addListener(new ChangeListener() 
+//        {
+//            @Override
+//            public void changed(ChangeListener.ChangeEvent event, Actor actor) 
+//            {
+//                runnable.run();
+//            }
+//        });
+//        return button;
+//    }
 }
