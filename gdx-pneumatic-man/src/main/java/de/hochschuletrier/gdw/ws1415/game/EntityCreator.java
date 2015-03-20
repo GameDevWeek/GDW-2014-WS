@@ -215,14 +215,14 @@ public class EntityCreator {
 
         MovementComponent movementComponent = engine.createComponent(MovementComponent.class);
         if(type == AIType.CHAMELEON)
-            movementComponent.speed = 15000.0f;
+            movementComponent.speed = 10000.0f;
         else
             movementComponent.speed = 17000.0f;
         entity.add(movementComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpImpulse = 10000.0f;
-        jumpComponent.restingTime = 0.002f;
+        jumpComponent.jumpImpulse = 12000.0f;
+        jumpComponent.restingTime = 0.003f;
         entity.add(jumpComponent);
 
         DirectionComponent d = new DirectionComponent();

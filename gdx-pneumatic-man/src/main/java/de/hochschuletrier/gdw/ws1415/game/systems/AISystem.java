@@ -38,7 +38,7 @@ public class AISystem extends IteratingSystem {
         }else {
             if(ai.AItimer <= 0f){
                 ChameleonBehavior(physix, movement, direction, ai);
-                ai.AItimer = 0.2f;
+                ai.AItimer = 0.2f + (float)Math.random()/20f;
             }
             else{
                 ai.AItimer -= deltaTime;
