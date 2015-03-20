@@ -389,7 +389,7 @@ public class MapLoader
                             break;
                         default: 
                         {
-                            Gdx.app.log("WARNING", "object " + name + "does not match any name. No Entity created");
+                            Gdx.app.log("WARNING", "object " + name + " does not match any name. No Entity created");
                         }
                     }
                 }
@@ -447,10 +447,12 @@ public class MapLoader
                                     break;
                                 case "lava":
                                 {
-                 //               if (tiles[i][j].getBooleanProperty("Invulnerable", false)
-                  //                      && tiles[i][j].getProperty("Type", "").equals("Lava")) {
-                  //                  TileInfo info = tiles[i][j];
-                                    EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                    if (tiles[i][j].getBooleanProperty("Invulnerable", false)
+                                            && tiles[i][j].getProperty("Type", "").equals("Lava")) 
+                                    {
+                                        TileInfo info = tiles[i][j];
+                                        EntityCreator.createAndAddVisualEntity(map, info, i, j, PlayMode.LOOP, true);
+                                    }
                                 }
                                     break;
                                 default :
