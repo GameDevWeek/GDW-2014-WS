@@ -967,6 +967,8 @@ public class EntityCreator {
                 GameConstants.getTileSizeX(), GameConstants.getTileSizeY(),
                 true, 1f, 1f, 0.1f));
         
+        Bomb.add(engine.createComponent(DestructableBlockComponent.class));
+        
         addRenderComponents(Bomb, map, info, tileX, tileY);
         
         engine.addEntity(Bomb);

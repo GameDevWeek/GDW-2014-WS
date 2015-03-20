@@ -44,8 +44,9 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
         int h = keyFrame.getRegionHeight();
         
         
-        keyFrame.flip(keyFrame.isFlipX() != animation.flipX, keyFrame.isFlipY() != !animation.flipY);
+        // ???????? versteh ich nicht siehe Unten! <(orig)- keyFrame.flip(keyFrame.isFlipX() != animation.flipX, keyFrame.isFlipY() != !animation.flipY);
         
-        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h, position.scaleX, position.scaleY, position.rotation);
+        float CalculatedPositionScaleX = (animation.flipX?-1:1) * position.scaleX;
+        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h,  CalculatedPositionScaleX, position.scaleY, position.rotation);
     }
 }
