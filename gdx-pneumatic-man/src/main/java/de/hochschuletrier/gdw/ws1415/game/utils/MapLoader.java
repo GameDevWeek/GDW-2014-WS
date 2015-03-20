@@ -326,6 +326,7 @@ public class MapLoader
                 for(LayerObject obj : layer.getObjects())
                 {
                     String name = obj.getName().toLowerCase();
+                    System.out.println( name );
                     switch( name )
                     {
                         // all preloaded Object are not needed to be handled
@@ -458,7 +459,7 @@ public class MapLoader
                                 }
                                     break;
                                 default :
-                                    // TODO Warnung
+                                    Gdx.app.log("WARNING", "tile " + type + " does not match any name. No Entity created");
                                     break;
                             }
                         }
