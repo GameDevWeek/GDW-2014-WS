@@ -48,6 +48,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.LavaFountainSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.PlatformSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
@@ -86,6 +87,7 @@ public class Game {
             physixSystem
     );
 
+    private final PlatformSystem platformSystem = new PlatformSystem(physixSystem);
     private InputManager inputManager = new InputManager();
     
     private Sound impactSound;
@@ -145,7 +147,6 @@ public class Game {
        
     }
 
-    
 
     public static TiledMap loadMap(String filename) {
         try {
@@ -169,6 +170,7 @@ public class Game {
         engine.addSystem(_ScoreSystem);
         engine.addSystem(lavaFountainSystem);
         engine.addSystem(destroyBlocksSystem);
+        engine.addSystem(platformSystem);
     }
 
     private void addContactListeners() {
