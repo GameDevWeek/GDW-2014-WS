@@ -72,13 +72,18 @@ public class MenuPage extends Group {
             public void clicked(InputEvent event, float width, float height) {
                 //System.out.println("kjfghkd");
                 if(image.getRegion().getTexture()!=assetManager.getTexture("back_button")){
-                SoundEmitter.playGlobal(assetManager.getSound("click"),false);
+                    SoundEmitter.updateGlobal();
+                    SoundEmitter.playGlobal(assetManager.getSound("click"),false);
                 }else{
-                    SoundEmitter.playGlobal(assetManager.getSound("alienBark2"),false);
+                    SoundEmitter.updateGlobal();
+                    SoundEmitter.playGlobal(assetManager.getSound("cracks2"),false); 
                 }
+               
                 runnable.run();
             }
+            
         });
+       
         addActor(image);
     }
     protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable, String style) {
