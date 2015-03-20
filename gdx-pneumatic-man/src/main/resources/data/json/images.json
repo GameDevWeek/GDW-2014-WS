@@ -13,5 +13,10 @@
     "miner_found": "data/images/KollegeIconGefunden.png",
     "miner_notfound": "data/images/KollegeIconNichtGefunden.png",
     "zeigefinger2": "data/images/Zeigefinger2.png",
-    "credit_background" : "data/images/Credits_2.png"
+    "credit_background" : "data/images/Credits_2.png",
+    "bg1": "data/backgrounds/Hintergrund1.png",
+    "bg2": "data/backgrounds/Hintergrund2.png",
+    "bg3": "data/backgrounds/Hintergrund3.png",
+    "bg_oben": "data/backgrounds/Hintergrund_oben.png",
+    "bg_zwischenstueck": "data/backgrounds/Hintergrund_zwischenstueck.png"
 }
