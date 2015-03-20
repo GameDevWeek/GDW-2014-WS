@@ -70,8 +70,10 @@ public class MovementSystem extends IteratingSystem {
                 
                 Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2()
                         .scl(1.4f));
-                jump.doJump = true;
-
+                
+                jump.jumpTimer+=deltaTime;
+                
+                if(jump.jumpTimer > 0.1f){
                 EntityCreator.physixSystem
                         .getWorld()
                         .rayCast(
@@ -81,12 +83,20 @@ public class MovementSystem extends IteratingSystem {
                                     if (fixture.getBody() == physix.getBody())
                                         return 1;
                                     if (bodyComponent != null) {
-                                       
-                                            physix.applyImpulse(0, jump.jumpImpulse);                                          
-                                            jump.doJump = false;
+                                            if(jump.doJump){
+                                                physix.applyImpulse(0, jump.jumpImpulse); 
+                                                jump.doJump = false;
+                                            }else {
+                                                physix.setLinearVelocityY(0);
+                                                jump.doJump = true;
+                                            }
+                                                                                     
+                                            
+                                            jump.jumpTimer = 0;
                                     }
                                     return 0;
                                 }, p1, p2);
+                }
 
                 /*
                  * jump.doJump = true; // if entity is on the ground and the

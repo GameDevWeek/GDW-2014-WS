@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Pool;
 public class JumpComponent extends Component implements Pool.Poolable {
 
 	public float jumpImpulse;
-	public float restingTime, timeToNextJump;
+	public float restingTime, timeToNextJump, jumpTimer;
 	
 	public boolean doJump;
 	
