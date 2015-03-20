@@ -23,24 +23,24 @@ public class JumpAnimationSystem extends IteratingSystem {
     public void processEntity(Entity entity, float deltaTime) {
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
         JumpableAnimationComponent jumpable = entity.getComponent(JumpableAnimationComponent.class);
-
-        // Charakter has been in midair, check if on ground again
-        if(jumpable.midair)
-            if(Math.abs(physix.getBody().getLinearVelocity().y) < 10)
-            {
-                // Charakter now on the ground, switch to idle-animation
-                jumpable.midair = false;
-                AnimationComponent animation = ComponentMappers.animation.get(entity);
-                entity.getComponent(AnimationComponent.class).animation = jumpable.idle;
-            }
-        // Charakter has been on the ground - check if falling or acending
-        else if (Math.abs(physix.getBody().getLinearVelocity().y) > 10)
-        {
-            // Charakter in midair -> switch to jump-animation
-            jumpable.midair = true;
-            AnimationComponent animation = ComponentMappers.animation.get(entity);
-            entity.getComponent(AnimationComponent.class).animation = jumpable.jump;
-        }
+//
+//        // Charakter has been in midair, check if on ground again
+//        if(jumpable.midair)
+//            if(Math.abs(physix.getBody().getLinearVelocity().y) < 10)
+//            {
+//                // Charakter now on the ground, switch to idle-animation
+//                jumpable.midair = false;
+//                AnimationComponent animation = ComponentMappers.animation.get(entity);
+//                entity.getComponent(AnimationComponent.class).animation = jumpable.idle;
+//            }
+//        // Charakter has been on the ground - check if falling or acending
+//        else if (Math.abs(physix.getBody().getLinearVelocity().y) > 10)
+//        {
+//            // Charakter in midair -> switch to jump-animation
+//            jumpable.midair = true;
+//            AnimationComponent animation = ComponentMappers.animation.get(entity);
+//            entity.getComponent(AnimationComponent.class).animation = jumpable.jump;
+//        }
        
     }
 }
