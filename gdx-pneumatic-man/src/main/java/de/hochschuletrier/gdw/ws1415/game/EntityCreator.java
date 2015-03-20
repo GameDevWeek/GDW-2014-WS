@@ -377,7 +377,9 @@ public class EntityCreator {
         trapBlock.animation = assetManager.getAnimation("stone_breaking");
         
         entity.add(trapBlock);
-        
+        LayerComponent layer = engine.createComponent(LayerComponent.class);
+        layer.layer = 10; // TODO: Change later
+        entity.add(layer);
         engine.addEntity(entity);
         return entity;
     }
