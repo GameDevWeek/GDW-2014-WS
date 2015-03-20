@@ -52,7 +52,7 @@ import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 public class Game {
 
     private static boolean loadSelectedLevel = false;
-    private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
+    private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
 
     private  PooledEngine engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
@@ -60,6 +60,8 @@ public class Game {
 
     private  PhysixSystem physixSystem;
 
+
+    private  PlatformSystem platformSystem = new PlatformSystem(physixSystem);
     private  ScoreSystem _ScoreSystem;
     private  HealthSystem _HealthSystem;
     private  PhysixDebugRenderSystem physixDebugRenderSystem;
@@ -102,7 +104,7 @@ public class Game {
     }
 
     
-    // Only when called from MainMenu
+    // Only called from MainMenu
     public void init(AssetManagerX assetManager) {
              
         EntityCreator.assetManager = assetManager;
@@ -136,6 +138,7 @@ public class Game {
         
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
+        physixDebugRenderSystem.setProcessing(physixDebug.get());
         
         // Load Map
         map = loadMap(levelFilePath);
@@ -152,7 +155,7 @@ public class Game {
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
         
-        MapLoader.generateWorldFromTileMap(engine, physixSystem, map, cameraSystem);
+        MapLoader.generateWorldFromTileMapX(engine, physixSystem, map, cameraSystem);
 
        
         inputManager.init();
@@ -230,6 +233,7 @@ public class Game {
         engine.addSystem(_ScoreSystem);
         engine.addSystem(lavaFountainSystem);
         engine.addSystem(destroyBlocksSystem);
+        engine.addSystem(platformSystem);
     }
     private void removeSystems(){
         engine.removeSystem(physixSystem);

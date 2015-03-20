@@ -26,7 +26,11 @@ public class GameConstants {
     
     // Light parameters
     public static final int LIGHT_RAYS = 125;
-    public static final float AMBIENT_LIGHT = 1.0f;
+    public static final float LIGHT_AMBIENT = 0.9f;
+    public static final boolean LIGHT_BLUR = true;
+    public static final int LIGHT_BLURNUM = 3;
+    public static final boolean LIGHT_SHADOW = false;
+    public static final boolean LIGHT_DIFFUSE = false;
     
     private static int TileSizeX = 0;
     private static int TileSizeY = 0;

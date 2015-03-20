@@ -21,15 +21,16 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
 		// TODO Auto-generated constructor stub
 	}
 
-	public boolean jump;
-	public float direction;
+	private float jump = -1;
+	private float direction;
 	
 	protected void processEntity(Entity entity, float deltaTime) {
 		InputComponent inputComponent = entity.getComponent(InputComponent.class);
 		
 		inputComponent.reset();
-		if(jump){
+		if(jump > 0){
 			inputComponent.jump = true;
+			jump -= deltaTime;
 		}
 		inputComponent.direction = direction;
 	}
@@ -53,7 +54,7 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
         case 0:
         case 1:
         case 2: 
-        case 3: jump = true; break;
+        case 3: jump = 0.2f; break;
         case 7: GameConstants.pause = !GameConstants.pause; break;
         }
         return false;
@@ -62,14 +63,6 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
     @Override
     public boolean buttonUp(Controller controller, int buttonCode)
     {
-    	switch(buttonCode){
-        case 0:
-        case 1:
-        case 2:
-        case 3: jump = false; break;
-        
-        }
-      
         return false;
     }
 

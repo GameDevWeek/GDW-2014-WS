@@ -100,14 +100,31 @@ public class EntityCreator {
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.getBody().setUserData(bodyComponent);
+        bodyComponent.getBody().setGravityScale(1.75f);
+        // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0.1f)
-                .shapeBox(width, height);
+                .shapeCircle(width*0.1f,new Vector2(0,-height * 0.4f));
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
+        
+       fixtureDef = new PhysixFixtureDef(physixSystem)
+        .density(1f).friction(0f).restitution(0.1f)
+        .shapeBox(width*0.2f, height*0.5f, new Vector2(0,height * 0.2f), 0);
+        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        
         fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).restitution(0.1f)
-                .shapeCircle(10, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
+        .density(1).friction(0).restitution(0.1f)
+        .shapeCircle(width*0.4f,new Vector2(0,-height * 0.1f)).sensor(true);
+        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        
+        
+        //laser 
+        fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(10f).restitution(0.1f)
+                .shapeCircle(width * 0.09f, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
         
@@ -115,7 +132,7 @@ public class EntityCreator {
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
 
-        jumpComponent.jumpImpulse = 25000.0f;
+        jumpComponent.jumpImpulse = 14000.0f;
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
@@ -418,7 +435,7 @@ public class EntityCreator {
     /**
      *  Moveable Platform
      */
-    private static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, PlatformMode mode) {
+    private static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode) {
         Entity entity = engine.createEntity();
         
         PhysixBodyComponent bodyComponent = engine
@@ -437,6 +454,7 @@ public class EntityCreator {
         pl.travelDistance = travelDistance * GameConstants.getTileSizeX();
         pl.mode = mode;
         pl.startPos = new Vector2(x, y);
+        pl.platformSpeed = speed;
 
         DirectionComponent d = new DirectionComponent();
         d.facingDirection = dir;
@@ -449,7 +467,7 @@ public class EntityCreator {
     }
 
     public static Entity DestructablePlattformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode, int hitpoints) {
-        Entity e = createPlatformBlock(x,y, travelDistance, dir, mode);
+        Entity e = createPlatformBlock(x,y, travelDistance, dir, speed, mode);
         HealthComponent h = new HealthComponent();
         h.Value = hitpoints;
         e.add(h);
@@ -459,7 +477,7 @@ public class EntityCreator {
     }
 
     public static Entity IndestructablePlattformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode) {
-        return createPlatformBlock(x,y, travelDistance, dir, mode);
+        return createPlatformBlock(x,y, travelDistance, dir, speed, mode);
     }
 
     public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, String direction, TiledMap map, TileInfo info, int tileX, int tileY) {
