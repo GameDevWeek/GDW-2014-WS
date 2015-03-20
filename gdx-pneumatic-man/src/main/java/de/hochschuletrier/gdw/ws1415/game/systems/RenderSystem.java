@@ -17,6 +17,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
+import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
 
 /**
  * Renders all renderable components by using the Renderers.
@@ -30,7 +31,8 @@ public class RenderSystem extends EntitySystem implements EntityListener {
     private final ArrayList<Entity> entities = new ArrayList<>();
     private boolean resort;
 
-    private AnimationRenderSubsystem animationRenderSystem = new AnimationRenderSubsystem();
+    private AnimationRenderer animationRenderSystem = new AnimationRenderer();
+    //private AnimationRenderSubsystem animationRenderSystem = new AnimationRenderSubsystem();
     private DestructableBlockRenderSubsystem destructableBlockRenderSystem = new DestructableBlockRenderSubsystem();
     private TextureRenderSubsystem textureSystem = new TextureRenderSubsystem();
     private CameraSystem cameraSystem = new CameraSystem();

@@ -70,6 +70,8 @@ public class OptionMenu extends MenuPage
         buttonGroup.add(keyboardButton);
         buttonGroup.setChecked("KEYBOARD");
         
+        Settings.GAMEPAD_ENABLED.set(false);
+        
    		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
 	}
 	

@@ -11,6 +11,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 
+import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
@@ -50,17 +51,39 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void update(float deltaTime) {
-        for (Entity entity : entities) {
-            HealthComponent Health = entity.getComponent(HealthComponent.class);
-            Health.Value = Health.Value - Health.DecrementByValueNextFrame;
+//        for (Entity entity : entities) {
+//            HealthComponent Health = entity.getComponent(HealthComponent.class);
+//            Health.Value = Health.Value - Health.DecrementByValueNextFrame;
+//            Health.DecrementByValueNextFrame = 0;
+//
+//            if((Health.Value <= 0))
+//            {
+//                if ((entity.getComponent(PlayerComponent.class)!= null)) {
+//                    entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DYING;
+//                    
+//                    PositionComponent position = entity.getComponent(PositionComponent.class);
+//                    EntityCreator.modifyPlayerToDying(entity);
+//                }
+//                else
+//                {
+//                    logger.info(entity.getId() + " removed");
+//                    CurrentEngine.removeEntity(entity);
+//                }
+//            }
+//
+//        }
+    	
+    	for (Entity entity : entities) {
+            HealthComponent Health = ComponentMappers.health.get(entity);
+            Health.Value -= Health.DecrementByValueNextFrame;
             Health.DecrementByValueNextFrame = 0;
 
             if((Health.Value <= 0))
             {
-                if ((entity.getComponent(PlayerComponent.class)!= null)) {
-                    entity.getComponent(HealthComponent.class).health = HealthComponent.HealthState.DYING;
+                if (ComponentMappers.player.has(entity)) {
+                    Health.health = HealthComponent.HealthState.DYING;
                     
-                    PositionComponent position = entity.getComponent(PositionComponent.class);
+                    //PositionComponent position = entity.getComponent(PositionComponent.class);
                     EntityCreator.modifyPlayerToDying(entity);
                 }
                 else

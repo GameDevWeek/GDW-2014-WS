@@ -8,19 +8,17 @@ import com.badlogic.gdx.InputProcessor;
 
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.states.PauseGameState;
 
 public class InputKeyboardSystem extends IteratingSystem implements InputProcessor {
 
+    private float jump = -1;
 
-    boolean jump = false;
+    private boolean left = false;
 
-    public boolean pause = false;
-
-    boolean left = false;
-
-    boolean right = false;
+    private boolean right = false;
 
     public InputKeyboardSystem() {
         super(Family.all(InputComponent.class).get());
@@ -32,8 +30,9 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         InputComponent inputComponent = entity.getComponent(InputComponent.class);
 
         inputComponent.reset();
-        if (jump) {
+        if (jump > 0) {
             inputComponent.jump = true;
+            jump -= deltaTime;
         }
         if (right) {
             inputComponent.direction++;
@@ -41,32 +40,34 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         if (left) {
             inputComponent.direction--;
         }
-        if (pause) {
-            inputComponent.pause = true;
-            Main main = Main.getInstance();
-            main.changeState(new PauseGameState());
-        }
     }
 
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
-        case Input.Keys.UP:
-        case Input.Keys.SPACE:
-        case Input.Keys.W:
-            jump = true;
-            break;
-        case Input.Keys.LEFT:
-        case Input.Keys.A:
-            left = true;
-            break;
-        case Input.Keys.RIGHT:
-        case Input.Keys.D:
-            right = true;
-            break;
-        case Input.Keys.ESCAPE:
-            case Input.Keys.P: Settings.GAMEPAD_ENABLED.set(false); pause = !pause; 
-            break;
+            case Input.Keys.UP:
+            case Input.Keys.SPACE:
+            case Input.Keys.W:
+                jump = 0.2f;
+                break;
+            case Input.Keys.LEFT:
+            case Input.Keys.A:
+                left = true;
+                break;
+            case Input.Keys.RIGHT:
+            case Input.Keys.D:
+                right = true;
+                break;
+            case Input.Keys.ESCAPE:
+            case Input.Keys.P: GameConstants.pause = !GameConstants.pause; break;
+        }
+        if(!Main.IS_RELEASE){  // nur für Testzwecke
+            if(keycode == Input.Keys.C){
+                Settings.GAMEPAD_ENABLED.set(true);
+            }
+            else if(keycode == Input.Keys.K){
+                Settings.GAMEPAD_ENABLED.set(false);
+            }
         }
         return true;
     }
@@ -74,11 +75,11 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
     @Override
     public boolean keyUp(int keycode) {
         switch (keycode) {
-        case Input.Keys.UP:
-        case Input.Keys.SPACE:
-        case Input.Keys.W:
-            jump = false;
-            break;
+//        case Input.Keys.UP:
+//        case Input.Keys.SPACE:
+//        case Input.Keys.W:
+//            jump = false;
+//            break;
         case Input.Keys.LEFT:
         case Input.Keys.A:
             left = false;

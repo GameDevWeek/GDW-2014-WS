@@ -29,7 +29,7 @@ public class ParticleRenderer extends SortedFamilyRenderSystem.Renderer
                pe.durationTimer=0;
            }
         }
-        particle.particleEffect.setPosition(position.x, position.y);
+        particle.particleEffect.setPosition(position.x+particle.offsetX, position.y+particle.offsetY);
         particle.particleEffect.update(deltaTime);
         particle.particleEffect.draw(DrawUtil.batch);
     }

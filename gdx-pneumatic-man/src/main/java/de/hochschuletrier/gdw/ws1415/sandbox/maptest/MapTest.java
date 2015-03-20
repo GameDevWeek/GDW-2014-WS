@@ -79,9 +79,7 @@ public class MapTest extends SandboxGame {
     @Override
     public void init(AssetManagerX assetManager) {
 
-        // map = loadMap("data/maps/demo.tmx");
-        MapLoader ml = new MapLoader(engine, physixSystem, "data/maps/demo.tmx");
-        map = ml.getTiledMap();
+        map = loadMap("data/maps/Testkarte_19.03.tmx");
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());

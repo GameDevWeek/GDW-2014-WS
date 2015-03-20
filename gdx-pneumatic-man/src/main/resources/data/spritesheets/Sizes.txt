@@ -1,0 +1,50 @@
+Alle Spritesheets haben oben, links und rechts keinen Offset, aber ggf. unten.
+
+
+Idle:
+-----
+
+128 x 340px
+
+8/Reihe (horizontal)
+letzte Reihe nur 4
+
+4 Reihen insgesamt (vertikal)
+
+ 
+
+
+Jump:
+------
+
+256 x 256px
+
+8/Reihe (horizontal)
+letzte Reihe nur 7
+
+4 Reihen (vertikal)
+
+
+
+Death:
+-------
+
+256 x 320px
+
+8/Reihe (horizontal)
+letzte Reihe nur 2
+
+5 Reihen (vertikal)
+
+(ist nur 1600 px hoch, wenn das probleme macht, Bescheid geben)
+
+
+
+
+Coworker Idle:
+--------------
+
+256 x 128px
+
+4/Reihe (horizontal)
+10 Reihen (vertikal)
