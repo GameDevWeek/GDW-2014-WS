@@ -11,10 +11,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Json;
 
+import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
-import de.hochschuletrier.gdw.commons.jackson.JacksonReader;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
@@ -235,7 +234,7 @@ public class MapLoader
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
                                 && tiles[i][j].getProperty("Type", "").equals("Lava")) {
                             TileInfo info = tiles[i][j];
-                            EntityCreator.createAndAddVisualEntity(map, info, i, j);
+                            EntityCreator.createAndAddVisualEntity(map, info, i, j, PlayMode.LOOP, true);
                         }
                     }
                 }
