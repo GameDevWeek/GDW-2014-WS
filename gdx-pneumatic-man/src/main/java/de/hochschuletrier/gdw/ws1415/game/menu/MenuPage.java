@@ -1,8 +1,11 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
+import java.awt.MouseInfo;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -68,6 +71,7 @@ public class MenuPage extends Group {
     {
         image.setPosition(x,y);
         image.setTouchable(Touchable.enabled);
+       
         image.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float width, float height) {
@@ -84,7 +88,21 @@ public class MenuPage extends Group {
             }
             
         });
-       
+        
+        image.addListener(new InputListener(){
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer,
+                    Actor fromActor) {
+                // TODO Auto-generated method stub
+                System.out.println("test");
+                //if(MouseInfo.getPointerInfo().getLocation().x>=image.getX()&&MouseInfo.getPointerInfo().getLocation().x<=image.getWidth()&&MouseInfo.getPointerInfo().getLocation().y>=image.getY()&&MouseInfo.getPointerInfo().getLocation().y<=image.getHeight()){
+                    SoundEmitter.playGlobal(assetManager.getSound("click"),false);
+                //}
+            }
+            
+        });
+
         addActor(image);
     }
     protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable, String style) {
