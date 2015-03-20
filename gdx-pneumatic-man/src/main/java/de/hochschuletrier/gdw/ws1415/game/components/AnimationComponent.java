@@ -18,6 +18,8 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
  */
 public class AnimationComponent extends Component implements Pool.Poolable {
 
+    public boolean flipX = false;
+    public boolean flipY = false;
     public boolean IsActive = true;
     public boolean isDyingPlayer = false;
     public AnimationExtended animation;
@@ -27,6 +29,8 @@ public class AnimationComponent extends Component implements Pool.Poolable {
 
     @Override
     public void reset() {
+        flipX = false;
+        flipY = false;
         IsActive = true;
         animation = null;
         stateTime = 0;
