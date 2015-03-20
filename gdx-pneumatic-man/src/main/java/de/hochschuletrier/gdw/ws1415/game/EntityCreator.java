@@ -266,7 +266,10 @@ public class EntityCreator {
         float height = GameConstants.getTileSizeY();
         
         Miner.add(engine.createComponent(MinerComponent.class));
-        Miner.add(engine.createComponent(PositionComponent.class));
+        final PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.scaleX = 0.5f;
+        pos.scaleY = 0.5f;
+        Miner.add(pos);
         Miner.add(engine.createComponent(HealthComponent.class));
         AnimationComponent ac = engine.createComponent(AnimationComponent.class);
         ac.animation = assetManager.getAnimation("coworker_idle");
@@ -282,6 +285,10 @@ public class EntityCreator {
         Fixture fixture = bodyComponent.createFixture(pfx);
         fixture.setUserData(bodyComponent);
         Miner.add(bodyComponent);
+        
+        LayerComponent layer = engine.createComponent(LayerComponent.class);
+        layer.layer = 10; // TODO: Change later
+        Miner.add(layer);
         
         engine.addEntity(Miner);
         return(Miner);

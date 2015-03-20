@@ -50,7 +50,7 @@
     "coworker_idle": {
 	"filename": "data/animations/coworker_idle_1024.png",
 	"frames": 40,
-	"frameDuration": [0,1],
+	"frameDuration": [0.06],
 	"playType": "LOOP",
 	"columns": 4,
 	"rows": 10
