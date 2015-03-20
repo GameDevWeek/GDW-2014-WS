@@ -253,7 +253,7 @@ public class EntityCreator {
         Miner.add(engine.createComponent(PositionComponent.class));
         Miner.add(engine.createComponent(HealthComponent.class));
         AnimationComponent ac = engine.createComponent(AnimationComponent.class);
-        ac.animation = assetManager.getAnimation("char_idle");
+        ac.animation = assetManager.getAnimation("coworker_idle");
         ac.IsActive = true;
         Miner.add(ac);
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
@@ -347,6 +347,11 @@ public class EntityCreator {
         damageComp.damage = 4;
         damageComp.damageToPlayer = true;
         damageComp.damageToTile = true;
+        
+        AnimationComponent trapBlock = engine.createComponent(AnimationComponent.class);
+        trapBlock.animation = assetManager.getAnimation("stone_breaking");
+        
+        entity.add(trapBlock);
         
         engine.addEntity(entity);
         return entity;
