@@ -163,10 +163,10 @@ public class Game {
 
     private void selectPathFromSettings()
     {
-        int selectedLevel = Settings.CURRENTLY_SELECTED_LEVEL;
+        int selectedLevel = Settings.CURRENTLY_SELECTED_LEVEL.get();
         switch (selectedLevel)
         {
-            case 1: 
+            case 0: 
                 levelFilePath = "data/maps/Testkarte_19.03.tmx";
                 break;
             default:

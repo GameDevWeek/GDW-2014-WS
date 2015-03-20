@@ -40,6 +40,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.JumpableAnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
@@ -151,8 +152,12 @@ public class EntityCreator {
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = true;
         anim.animation = assetManager.getAnimation("char_idle");
-        System.out.println(anim.animation + "*********************************************************");
+//        System.out.println(anim.animation + "*********************************************************");
         entity.add(anim);
+        
+        JumpableAnimationComponent jumpable = engine.createComponent(JumpableAnimationComponent.class);
+        jumpable.idle = anim.animation;
+        jumpable.jump = assetManager.getAnimation("char_jump");
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
         layer.layer = 10; // TODO: Change later
