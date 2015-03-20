@@ -42,6 +42,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.LavaFountainSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.PlatformSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
