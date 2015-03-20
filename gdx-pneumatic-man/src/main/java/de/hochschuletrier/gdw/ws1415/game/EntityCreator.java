@@ -261,6 +261,7 @@ public class EntityCreator {
         float width = GameConstants.getTileSizeX();
         float height = GameConstants.getTileSizeY();
         
+        
         Miner.add(engine.createComponent(MinerComponent.class));
         Miner.add(engine.createComponent(PositionComponent.class));
         Miner.add(engine.createComponent(HealthComponent.class));

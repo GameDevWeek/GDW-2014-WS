@@ -46,5 +46,21 @@
         "playType" : "NORMAL",
         "columns": 8,
         "rows" : 4
+    },
+    "coworker_idle_1024": {
+	"filename": "data/animations/coworker_idle_1024.png",
+	"frames": 40,
+	"frameDuration": [0,1],
+	"playType": "LOOP",
+	"columns": 4,
+	"rows": 10
+    },
+    "stone_breaking": {
+	"filename": "data/animations/stone_breaking.png",
+	"frames": 4,
+	"frameDuration": [0,5],
+	"playType": "NORMAL",
+	"columns": 4,
+	"rows": 1
     }
 }
