@@ -77,14 +77,14 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
     public boolean axisMoved(Controller controller, int axisCode, float value)
     {
         if(axisCode == 1){
-        	if(value > 0.5){
+        	if(value > 0.4){
         		direction = value;
-        		
+        		System.out.println("Gewschwindigkeit " + value);
         	}
         
-        	else if(value < -0.5){
+        	else if(value < -0.4){
         		direction = value;
-        		
+                System.out.println("Gewschwindigkeit " + value);
         	}
         	else {
         		direction = 0;
