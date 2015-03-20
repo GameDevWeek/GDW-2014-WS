@@ -5,5 +5,7 @@
     "verdana_32": "data/fonts/verdana_32.fnt",
     "verdana_46": "data/fonts/verdana_46.fnt",
     "verdana_90": "data/fonts/verdana_90.fnt",
-    "orbitron" : "data/fonts/OrbitronBlack_Size32.fnt"
+    "orbitron_32" : "data/fonts/OrbitronBlack_Size32.fnt",
+    "orbitron_150" : "data/fonts/OrbitronBlack_Size150.fnt",
+    "orbitron_75" : "data/fonts/OrbitronBlack_Size150.fnt"
 }

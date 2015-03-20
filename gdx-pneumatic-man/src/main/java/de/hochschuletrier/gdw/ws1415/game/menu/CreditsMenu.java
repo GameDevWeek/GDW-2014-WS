@@ -45,7 +45,7 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
             sceneAnimator = new SceneAnimator(this, "data/json/credits.json");
             addActor(new SceneAnimatorActor(sceneAnimator));
 
-            // If this is a build jar file, disable hotkeys
+//             If this is a build jar file, disable hotkeys
 //            if (!Main.IS_RELEASE) {
 //                increaseSpeed.register();
 //                decreaseSpeed.register();
