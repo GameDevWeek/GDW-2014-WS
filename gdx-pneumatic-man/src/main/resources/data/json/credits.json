@@ -7,6 +7,7 @@
         "text_left": { "color": "FFFFFF", "font": "orbitron_32", "align": "right" },
         "text_right": { "color": "FFFFFF", "font": "orbitron_32", "align": "left" }
     },
+    "timeFactor" : 1.6,
     "paths" : {
         "heading": {
             "type": "linear",

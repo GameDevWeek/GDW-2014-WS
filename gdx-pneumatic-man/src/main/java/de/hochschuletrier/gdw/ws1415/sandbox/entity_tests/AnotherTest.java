@@ -67,9 +67,9 @@ public class AnotherTest extends SandboxGame {
 
     private TiledMap map;
     private PhysixBodyComponent playerBody;
-    private final CameraSystem cameraSystem = new CameraSystem();
+    private final CameraSystem cameraSystem = new CameraSystem(GameConstants.PRIORITY_CAMERA_SYSTEM);
     private final RayHandler rayHandler = new RayHandler(physixSystem.getWorld());
-    private final SortedRenderSystem  renderSystem = new SortedRenderSystem(cameraSystem,rayHandler);
+    private final SortedRenderSystem  renderSystem = new SortedRenderSystem(cameraSystem,rayHandler, GameConstants.PRIORITY_RENDER_SYSTEM);
     
     private Entity player;
     
@@ -133,7 +133,7 @@ public class AnotherTest extends SandboxGame {
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
         layer.layer = 5;
-        layer.parallax = 1f;
+        layer.parallaxX = 1f;
         player.add(layer);
         
         engine.addEntity(player);
@@ -208,7 +208,8 @@ public class AnotherTest extends SandboxGame {
     private void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, AnimationExtended animation) {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
-        entityLayer.parallax = parallax;
+        entityLayer.parallaxX = parallax;
+        entityLayer.parallaxY = parallax;
         
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.animation = animation;
@@ -226,7 +227,8 @@ public class AnotherTest extends SandboxGame {
     private void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, Texture texture, TextureRegion region) {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
-        entityLayer.parallax = parallax;
+        entityLayer.parallaxX = parallax;
+        entityLayer.parallaxY = parallax;
         
         TextureComponent tex = engine.createComponent(TextureComponent.class);
         tex.texture = texture;
@@ -357,7 +359,8 @@ public class AnotherTest extends SandboxGame {
     	
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
-        entityLayer.parallax = parallax;
+        entityLayer.parallaxX = parallax;
+        entityLayer.parallaxY = parallax;
         
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.animation = animation;
@@ -379,7 +382,8 @@ public class AnotherTest extends SandboxGame {
     	
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
-        entityLayer.parallax = parallax;
+        entityLayer.parallaxX = parallax;
+        entityLayer.parallaxY = parallax;
         
         TextureComponent tex = engine.createComponent(TextureComponent.class);
         tex.texture = texture;
@@ -401,7 +405,8 @@ public class AnotherTest extends SandboxGame {
         Entity backgroundEntity = engine.createEntity();
         LayerComponent backgroundLayer = engine.createComponent(LayerComponent.class);
         backgroundLayer.layer = layer;
-        backgroundLayer.parallax = parallax;
+        backgroundLayer.parallaxX = parallax;
+        backgroundLayer.parallaxY = parallax;
         
         TextureComponent backgroundTex = engine.createComponent(TextureComponent.class);
         backgroundTex.texture = assetManager.getTexture("logo");

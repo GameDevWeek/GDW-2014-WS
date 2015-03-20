@@ -26,5 +26,10 @@
     "start_button_active": "data/images/Butt_Start_Active01.png",
     "levels_button_active": "data/images/Butt_Levels_Active01.png",
     "score_button_active": "data/images/Butt_Highscore_Active01.png",
-    "injava_jones": "data/images/Injava_Jones.jpg"
+    "injava_jones": "data/images/Injava_Jones.jpg",
+    "bg1": "data/backgrounds/Hintergrund1.png",
+    "bg2": "data/backgrounds/Hintergrund2.png",
+    "bg3": "data/backgrounds/Hintergrund3.png",
+    "bg_oben": "data/backgrounds/Hintergrund_oben.png",
+    "bg_zwischenstueck": "data/backgrounds/Hintergrund_zwischenstueck.png"
 }
