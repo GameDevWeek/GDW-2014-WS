@@ -4,6 +4,8 @@ import java.awt.Toolkit;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Scaling;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
@@ -23,24 +25,24 @@ public class LoadGameState extends BaseGameState {
 
     public void render() 
     {
-    	float drawWidth = Gdx.graphics.getWidth() - 90.0f;  	
-    	
     	Color progressUnfillColor = new Color(Color.rgb888(255, 247, 126));
     	Color progressFillColor = new Color(Color.rgb888(255, 239, 1));
 
     	Main.getInstance().screenCamera.bind();
-    	    	    	
-    	DrawUtil.fillRect(50, Toolkit.getDefaultToolkit().getScreenSize().height/4, drawWidth, 300, progressUnfillColor);
-    	DrawUtil.fillRect(50, Toolkit.getDefaultToolkit().getScreenSize().height/4, (int) (drawWidth * assetManager.getProgress()), 300, progressFillColor);
-    	DrawUtil.draw(overlay, 0, 0, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
-    	
-    	
-    	 /* Main.getInstance().screenCamera.bind();
-        DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.BLACK);
-
-        float drawWidth = Gdx.graphics.getWidth() - 100.0f;
-        DrawUtil.fillRect(50, Gdx.graphics.getHeight() / 2 - 25, (int) (drawWidth * assetManager.getProgress()), 50, Color.GREEN);
-        DrawUtil.drawRect(50, Gdx.graphics.getHeight() / 2 - 25, drawWidth, 50, Color.GREEN);*/
+        
+        final int width = Gdx.graphics.getWidth();
+        final int height = Gdx.graphics.getHeight();
+        Vector2 scaled = Scaling.fit.apply(overlay.getWidth(), overlay.getHeight(), width, height);
+        final float left = (width - scaled.x)/2;
+        final float top = (height - scaled.y)/2;
+        final float barLeft = left + scaled.x*0.11f;
+        final float barTop = top + scaled.y * 0.3f;
+        final float barWidth = scaled.x * 0.78f;
+        final float barHeight = scaled.y * 0.6f;
+        
+    	DrawUtil.fillRect(barLeft, barTop, barWidth, barHeight, progressUnfillColor);
+    	DrawUtil.fillRect(barLeft, barTop, (int) (barWidth * assetManager.getProgress()), barHeight, progressFillColor);
+    	DrawUtil.draw(overlay, left, top, scaled.x, scaled.y);
     }
 
     @Override
