@@ -862,7 +862,7 @@ public class EntityCreator {
      */
     private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
-    	int frames = tileset.getIntProperty("animationFrames", 0);
+    	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
     			
     	assert(frames > 1);
 
@@ -870,7 +870,7 @@ public class EntityCreator {
     	
     	TileSetAnimation animation = new TileSetAnimation(
                 frames,
-                tileset.getFloatProperty("animationDuration", 0),
+                tileset.getFloatProperty("animationDuration", 1),  /// default set to 1 from 0 : editet by asset to load bomb
                 tileset.getIntProperty("animationOffset", 0));
     	
     	TextureRegion[] regions = new TextureRegion[frames];

@@ -390,9 +390,11 @@ public class MapLoader
                         }
                             break;
                         case "miner":
+                        {
                             float PositionX = obj.getX();
                             float PositionY = obj.getY();
                             EntityCreator.createAndAddMiner(PositionX, PositionY);
+                        }
                             break;
                         default: 
                         {
@@ -414,7 +416,8 @@ public class MapLoader
                             String type = tiles[i][j].getProperty("Type", "").toLowerCase();
                             TileInfo tinfo = tiles[i][j];
                             
-                            System.out.println( type + " " + i + "," + j + " " + tinfo.getProperty("Name", "X") );
+                            //System.out.println( type + " " + i + "," + j + " " + tinfo.getProperty("Name", "X") );
+                            
                             
                             switch( type )
                             {
@@ -458,7 +461,6 @@ public class MapLoader
                                     break;
                                 case "bomb":
                                 {
-                                    System.out.println("bombe vorhanden");
                                     EntityCreator.createAndAddVulnerableFloor(
                                             i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                             j * map.getTileHeight() + 0.5f * map.getTileHeight(),
