@@ -389,6 +389,11 @@ public class MapLoader
                             EntityCreator.createLavaFountain(positionX, positionY, height, intervall, intervallOffset, length);
                         }
                             break;
+                        case "miner":
+                            float PositionX = obj.getX();
+                            float PositionY = obj.getY();
+                            EntityCreator.createAndAddMiner(PositionX, PositionY);
+                            break;
                         default: 
                         {
                             Gdx.app.log("WARNING", "object " + name + " does not match any name. No Entity created");
