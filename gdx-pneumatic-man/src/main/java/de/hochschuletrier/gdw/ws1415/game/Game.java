@@ -44,12 +44,10 @@ public class Game {
     private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
 
-    private  PooledEngine engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
-            GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE);
-
+    private  PooledEngine engine;
     private  PhysixSystem physixSystem;
 
-
+    private  JumpAnimationSystem jumpAnimationSystem;
     private  PlatformSystem platformSystem = new PlatformSystem(physixSystem);
     private  ScoreSystem _ScoreSystem;
     private  HealthSystem _HealthSystem;
@@ -96,7 +94,8 @@ public class Game {
     
     // Only called from MainMenu
     public void init(AssetManagerX assetManager) {
-             
+           
+        System.out.println("Init called");
         EntityCreator.assetManager = assetManager;
         
         this.assetManager = assetManager;
@@ -113,14 +112,16 @@ public class Game {
     private void loadCurrentlySelectedLevel()
     {
         GameConstants.pause = false;
-        engine.removeAllEntities();
-        removeSystems();
+        if(engine != null)
+        {
+            engine.removeAllEntities();
+            removeSystems();
+        }
         Main.inputMultiplexer.removeProcessor(inputKeyboardSystem);
         Main.getInstance().console.unregister(physixDebug);
-        
-        
 
         addSystems();
+        EntityCreator.engine = engine;
         EntityCreator.physixSystem = this.physixSystem;
 
         Main.getInstance().removeScreenListener(cameraSystem.getCamera());
@@ -156,11 +157,12 @@ public class Game {
 
     private void selectPathFromSettings()
     {
-        int selectedLevel = Settings.CURRENTLY_SELECTED_LEVEL;
+        int selectedLevel = Settings.CURRENTLY_SELECTED_LEVEL.get();
         switch (selectedLevel)
         {
-            case 1: 
+            case 0: 
                 levelFilePath = "data/maps/Testkarte_19.03.tmx";
+                //levelFilePath = "data/maps/bomb_test.tmx";
                 break;
             default:
                 System.out.println("Warning: Error in Level Selection");
@@ -193,6 +195,9 @@ public class Game {
 
     private void addSystems() {
 
+        jumpAnimationSystem = new JumpAnimationSystem(assetManager, GameConstants.PRIORITY_ANIMATIONS);
+        engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
+                GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE);
         physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE, GameConstants.VELOCITY_ITERATIONS,
             GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX);
         _ScoreSystem = new ScoreSystem();
@@ -213,11 +218,11 @@ public class Game {
                 physixSystem
         );
         
-        
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
+        engine.addSystem(jumpAnimationSystem);
         engine.addSystem(hudRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
@@ -247,7 +252,6 @@ public class Game {
         engine.removeSystem(aisystems);
         if(renderSystem != null && renderSystem.rayHandler != null)
             renderSystem.rayHandler.removeAll();
-
     }
 
     private void addContactListeners() {
