@@ -238,11 +238,13 @@ public class EntityCreator {
         float width = GameConstants.getTileSizeX();
         float height = GameConstants.getTileSizeY();
         
-        
         Miner.add(engine.createComponent(MinerComponent.class));
         Miner.add(engine.createComponent(PositionComponent.class));
         Miner.add(engine.createComponent(HealthComponent.class));
-
+        AnimationComponent ac = engine.createComponent(AnimationComponent.class);
+        ac.animation = assetManager.getAnimation("char_idle");
+        ac.IsActive = true;
+        Miner.add(ac);
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
@@ -253,7 +255,7 @@ public class EntityCreator {
         Fixture fixture = bodyComponent.createFixture(pfx);
         fixture.setUserData(bodyComponent);
         Miner.add(bodyComponent);
-
+        
         engine.addEntity(Miner);
         return(Miner);
     }

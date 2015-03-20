@@ -47,7 +47,7 @@
         "columns": 8,
         "rows" : 4
     },
-    "coworker_idle_1024": {
+    "coworker_idle": {
 	"filename": "data/animations/coworker_idle_1024.png",
 	"frames": 40,
 	"frameDuration": [0,1],
