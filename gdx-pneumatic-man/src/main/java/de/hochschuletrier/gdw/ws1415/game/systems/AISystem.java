@@ -9,10 +9,8 @@ import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
-import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 
@@ -29,86 +27,64 @@ public class AISystem extends IteratingSystem {
         this.physixSystem = physixSystem;
     }
 
-    /**
-     * @return  True if theres no block in front of the entity, and false if there is a block so the entity cant move on
-     */
-    private boolean checkInFront(PhysixBodyComponent physix, Vector2 dir, float speed){
-        Ray ray = new Ray();
-        if(speed == 0) return false;
-        this.physixSystem.getWorld().rayCast(ray, physix.getPosition(),
-                physix.getPosition()
-                        .add(dir.scl(speed)));
-
-        if(ray.fraction <= speed) {
-            if(ray.fixture.getBody().getUserData() != null &&
-                    ray.fixture.getBody().getUserData() instanceof PhysixBodyComponent){
-                PhysixBodyComponent other = (PhysixBodyComponent)ray.fixture.getBody().getUserData();
-                if(ComponentMappers.block.has(other.getEntity())){ return false; }
-            }
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @return  True if theres a block to walk on
-     */
-    private boolean checkBottomFront(PhysixBodyComponent physix, Vector2 dir, float speed){
-        Ray ray = new Ray();
-        if(speed == 0) return false;
-        this.physixSystem.getWorld().rayCast(ray, physix.getPosition(),
-                physix.getPosition()
-                        .add(dir.scl(speed))
-                        .add(Vector2.Y.scl(physix.getY()))
-        );
-
-        if(ray.fraction <= speed) {
-            if(ray.fixture.getBody().getUserData() != null &&
-                    ray.fixture.getBody().getUserData() instanceof PhysixBodyComponent){
-                PhysixBodyComponent other = (PhysixBodyComponent)ray.fixture.getBody().getUserData();
-                if(ComponentMappers.block.has(other.getEntity())){
-                    if(other.getEntity().getComponent(KillsPlayerOnContactComponent.class) == null)
-                        return true;
-                }
-            }
-        }
-        return false;
-    }
-
     @Override
     public void processEntity(Entity entity, float deltaTime) {
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
         PositionComponent position = ComponentMappers.position.get(entity);
+        MovementComponent movement = ComponentMappers.movement.get(entity);
         DirectionComponent direction = entity.getComponent(DirectionComponent.class);
         AIComponent ai = ComponentMappers.AI.get(entity);
         if(ai.type == AIType.DOG); //TODO: do some stuff based on AIType
 
         Vector2 dir = direction.facingDirection.toVector2();
+        Vector2 p1, p2;
 
-        if(checkInFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
-            direction.facingDirection = Direction.fromVector2(dir.scl(-1));
-        }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
-            // move forward
-            
-
-        }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
-            // move forward
-            
-        }
-
-    }
-
-    private class Ray implements RayCastCallback{
-
-        Fixture fixture;
-        float fraction;
-
-        @Override
-        public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-            this.fixture = fixture;
-            this.fraction = fraction;
+        p1 = physix.getBody().getPosition();
+        p2 = new Vector2(p1).add(dir.scl(1.5f)); // FIXME MAGIC NUMBER
+                                //front, ground
+        final boolean[] clear = {true, false};
+        EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
+            if(fixture.getUserData() instanceof PhysixBodyComponent)
+                if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
+                    return 0;
+            clear[0] = false;
             return 0;
+        }, p1, p2);
+
+        p2 = new Vector2(p2).add(Direction.DOWN.toVector2().scl(1.5f)); // FIXME MAGIC NUMBER
+
+        EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
+            clear[1] = true;
+            return 0;
+        }, p1, p2);
+
+//        if(Math.random() <= 0.005f){
+//            JumpComponent jump = entity.getComponent(JumpComponent.class);
+//            physix.applyImpulse(0, jump.jumpImpulse);
+//            jump.doJump = false;
+//        }
+
+        if(clear[0] && clear[1]){
+
+            if(direction.facingDirection == Direction.LEFT) {
+                movement.velocity.set(movement.speed * direction.facingDirection.toVector2().x, movement.velocity.y);
+            }else if(direction.facingDirection == Direction.RIGHT) {
+                movement.velocity.set(movement.speed * direction.facingDirection.toVector2().x, movement.velocity.y);
+            }
         }
+        else{
+            direction.facingDirection = direction.facingDirection.rotate180();
+        }
+//        if(checkInFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
+//            direction.facingDirection = Direction.fromVector2(dir.scl(-1));
+//        }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
+//            // move forward
+//
+//
+//        }else if(checkBottomFront(physix, dir, 0)){ // TODO: replace 0 with jump-width (movement component)
+//            // move forward
+//
+//        }
 
     }
 }
