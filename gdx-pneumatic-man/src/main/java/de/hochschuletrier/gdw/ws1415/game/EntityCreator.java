@@ -70,7 +70,6 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
 
         entity.add(engine.createComponent(AnimationComponent.class));
-        entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         entity.add(engine.createComponent(PlayerComponent.class));
@@ -114,6 +113,12 @@ public class EntityCreator {
         moveComponent.speed = 12000.0f;
         entity.add(moveComponent);
 
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.scaleX = 0.5f;
+        pos.scaleY = 0.5f;
+        
+        entity.add(pos);
+        
         // ***** temporary *****
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = true;
@@ -121,7 +126,7 @@ public class EntityCreator {
         entity.add(anim);
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
-        layer.layer = 1;
+        layer.layer = 10; // TODO: Change later
         entity.add(layer);
 
         engine.addEntity(entity);
@@ -150,10 +155,7 @@ public class EntityCreator {
         
         entityToDie.add(deathAnimation);
         entityToDie.add(deathComponent);
-         // Shifts camera to (0,0)??
-        LayerComponent Layer = engine.createComponent(LayerComponent.class);
-        Layer.layer = 1;
-        entityToDie.add(Layer);
+
         return entityToDie;
     }
 

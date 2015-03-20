@@ -25,26 +25,26 @@ public class TextureRenderer extends SortedFamilyRenderSystem.Renderer {
         PositionComponent position = ComponentMappers.position.get(entity);
 
         if(textureComponent.region == null)
-        	render(textureComponent.texture, position.x, position.y, position.rotation);
+        	render(textureComponent.texture, position.x, position.y, position.rotation, position.scaleX, position.scaleY);
         else
-        	render(textureComponent.region, position.x, position.y, position.rotation);
+        	render(textureComponent.region, position.x, position.y, position.rotation, position.scaleX, position.scaleY);
     }
     
-    private void render(Texture tex, float x, float y, float rotation) {
+    private void render(Texture tex, float x, float y, float rotation, float scaleX, float scaleY) {
         int w = tex.getWidth();
         int h = tex.getHeight();
         
-    	DrawUtil.batch.draw(tex, x, y, w*0.5f, h*0.5f, w, h, 1f, 1f, rotation, 
+    	DrawUtil.batch.draw(tex, x, y, w*0.5f, h*0.5f, w, h, scaleX, scaleY, rotation, 
     			(int)0, (int)0, (int)w, (int)h, false, true);
     }
     
-    private void render(TextureRegion region, float x, float y, float rotation) {
+    private void render(TextureRegion region, float x, float y, float rotation, float scaleX, float scaleY) {
     	Texture tex = region.getTexture();
     	
         int w = region.getRegionWidth();
         int h = region.getRegionHeight();
         
-    	DrawUtil.batch.draw(tex, x - w * 0.5f, y - h * 0.5f, w*0.5f, h*0.5f, w, h, 1f, 1f, rotation, 
+    	DrawUtil.batch.draw(tex, x - w * 0.5f, y - h * 0.5f, w*0.5f, h*0.5f, w, h, scaleX, scaleY, rotation, 
     			region.getRegionX(), region.getRegionY(), w, h, false, true);
     }
 }
