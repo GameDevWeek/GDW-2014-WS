@@ -313,7 +313,7 @@ public class MapLoader
         
         generator.generate(map,
                 (Layer layer, TileInfo info) -> {
-                    return info.getBooleanProperty("Invulnerable", false)
+                     return info.getBooleanProperty("Invulnerable", false)
                             && info.getProperty("Type", "").equals("Lava");
                 },
                 EntityCreator::createAndAddLava);

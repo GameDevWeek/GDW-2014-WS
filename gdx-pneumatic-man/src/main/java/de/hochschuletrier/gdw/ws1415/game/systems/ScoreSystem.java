@@ -45,7 +45,13 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         //if(current_game_time < 5){
         tick += deltaTime;
         if(tick>=1.0f){
+            if(player != null)
+            {
+                if(player.getComponent(PlayerComponent.class) != null)
+                {
             player.getComponent(PlayerComponent.class).game_time += 1;
+                }
+            }
             tick-=1.0f;
             if(goal != null && player != null)
             {
