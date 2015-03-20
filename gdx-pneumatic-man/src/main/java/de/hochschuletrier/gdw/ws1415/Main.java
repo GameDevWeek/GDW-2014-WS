@@ -12,6 +12,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.hochschuletrier.gdw.commons.devcon.DevConsole;
@@ -88,6 +89,7 @@ public class Main extends StateBasedGame {
         assetManager.loadAssetList("data/json/images.json", Texture.class, param);
         assetManager.loadAssetList("data/json/sounds.json", Sound.class, null);
         assetManager.loadAssetList("data/json/music.json", Music.class, null);
+        assetManager.loadAssetList("data/json/particles.json", ParticleEffect.class, null);
         assetManager.loadAssetListWithParam("data/json/animations.json", AnimationExtended.class,
                 AnimationExtendedLoader.AnimationExtendedParameter.class);
         BitmapFontParameter fontParam = new BitmapFontParameter();

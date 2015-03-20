@@ -26,6 +26,7 @@ public class GameConstants {
     
     // Light parameters
     public static final int LIGHT_RAYS = 125;
+    public static final float AMBIENT_LIGHT = 1.0f;
     
     private static int TileSizeX = 0;
     private static int TileSizeY = 0;
@@ -43,4 +44,5 @@ public class GameConstants {
         else TileSizeY = y;
     }
 
+    public static boolean pause = false;
 }

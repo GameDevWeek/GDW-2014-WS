@@ -23,6 +23,14 @@
         "columns": 8,
         "rows" : 5
     },
+    "char_spawn": {
+        "filename": "data/animations/char_death_2048.png",
+        "frames" : 40,
+        "frameDuration": [0.05],
+        "playType" : "REVERSED",
+        "columns": 8,
+        "rows" : 5
+    },
     "char_idle": {
         "filename": "data/animations/char_idle_1024.png",
         "frames" : 20,
