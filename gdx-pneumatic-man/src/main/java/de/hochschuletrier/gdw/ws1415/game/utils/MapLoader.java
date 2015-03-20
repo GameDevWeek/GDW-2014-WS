@@ -59,6 +59,7 @@ public class MapLoader
         if ( list.equals("") == false ) list.add( line.toString() );
         
         return list;
+    
     }
     
     /**
@@ -72,8 +73,18 @@ public class MapLoader
      * 
      * @author Renderer
      */
-    @Deprecated
-    public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
+    //public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
+    //@Deprecated
+    //public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
+    //public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem)
+    //{
+        /**
+         * See old_generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem)
+         * Use generateWorldFromTileMapX(...) instead
+         */
+    //}
+    
+    public static void old_generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
     {
         
         try {

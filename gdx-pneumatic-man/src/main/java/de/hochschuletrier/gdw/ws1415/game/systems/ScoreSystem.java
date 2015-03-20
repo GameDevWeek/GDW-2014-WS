@@ -55,11 +55,11 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
                 {
                     if(goal.getComponent(GoalComponent.class).miners_threshold == player.getComponent(PlayerComponent.class).saved_miners){
                         goal.getComponent(GoalComponent.class).end_of_level = true;
-                        int saved_miners = player.getComponent(PlayerComponent.class).saved_miners;
-                        int destroyed_blocks = player.getComponent(PlayerComponent.class).destroyed_blocks;
-                        int miners_threshold = goal.getComponent(GoalComponent.class).miners_threshold;
-                        Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
-                        logger.info("Your score is: " + Score.score);
+                        //int saved_miners = player.getComponent(PlayerComponent.class).saved_miners;
+                        //int destroyed_blocks = player.getComponent(PlayerComponent.class).destroyed_blocks;
+                        //int miners_threshold = goal.getComponent(GoalComponent.class).miners_threshold;
+                        //Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
+                        //logger.info("Your score is: " + Score.score);
                     }
                 }
             }
