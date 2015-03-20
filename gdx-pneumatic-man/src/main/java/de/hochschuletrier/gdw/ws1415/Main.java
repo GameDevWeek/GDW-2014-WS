@@ -249,29 +249,24 @@ public class Main extends StateBasedGame {
         CommandLineParser cmdLineParser = new PosixParser();
 
         Options options = new Options();
-        options.addOption(OptionBuilder.withLongOpt("sandbox")
-                .withDescription("Start a Sandbox Game")
-                .withType(String.class)
-                .hasArg()
-                .withArgName("Sandbox Classname")
-                .create());
-        options.addOption(OptionBuilder.withLongOpt("width")
-                .withDescription("Window width override")
-                .withType(String.class)
-                .hasArg()
-                .withArgName("Width in Pixels")
-                .create());
-        options.addOption(OptionBuilder.withLongOpt("height")
-                .withDescription("Window height override")
-                .withType(String.class)
-                .hasArg()
-                .withArgName("Height in Pixels")
-                .create());
+        createOption(options, "sandbox", "Start a Sandbox Game", "Sandbox Classname");
+        createOption(options, "width", "Window width override", "Width in Pixels");
+        createOption(options, "height", "Window height override", "Height in Pixels");
+        createOption(options, "map", "Map override", "Map file without path and extension");
 
         try {
             cmdLine = cmdLineParser.parse(options, args);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void createOption(Options options, String name, String description, String argName) throws IllegalArgumentException {
+        options.addOption(OptionBuilder.withLongOpt(name)
+                .withDescription(description)
+                .withType(String.class)
+                .hasArg()
+                .withArgName(argName)
+                .create());
     }
 }

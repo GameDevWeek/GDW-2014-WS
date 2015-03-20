@@ -131,7 +131,11 @@ public class Game {
         physixDebugRenderSystem.setProcessing(physixDebug.get());
         
         // Load Map
-        map = loadMap(levelFilePath);
+        String file = levelFilePath;
+        if(Main.cmdLine.hasOption("map")) {
+            file = "data/maps/" + Main.cmdLine.getOptionValue("map") + ".tmx";
+        }
+        map = loadMap(file);
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
