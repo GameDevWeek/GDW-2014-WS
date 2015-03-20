@@ -34,7 +34,7 @@
     "char_idle": {
         "filename": "data/animations/char_idle_1024.png",
         "frames" : 20,
-        "frameDuration": [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05],
+        "frameDuration": [0.02],
         "playType" : "LOOP",
         "columns": 8,
         "rows" : 3
