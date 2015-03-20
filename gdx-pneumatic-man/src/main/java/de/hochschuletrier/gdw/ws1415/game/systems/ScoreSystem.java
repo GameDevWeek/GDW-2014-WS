@@ -28,11 +28,9 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
     public Entity player;
     public boolean playerAdded = false;
     float tick = 0;
-    public int current_game_time = 0;
 
     public ScoreSystem() {
         super(1);
-        current_game_time = 0;
         Score.scoreSys = this;
     }
 
@@ -47,7 +45,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         //if(current_game_time < 5){
         tick += deltaTime;
         if(tick>=1.0f){
-            current_game_time += 1;
+            player.getComponent(PlayerComponent.class).game_time += 1;
             tick-=1.0f;
             if(goal != null && player != null)
             {
