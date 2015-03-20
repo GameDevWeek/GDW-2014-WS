@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="64" tileheight="64" nextobjectid="14">
+ <properties>
+  <property name="Background" value="Hintergrund1.png"/>
+ </properties>
+ <tileset firstgid="1" source="tilesets/destructable_block.tsx"/>
+ <tileset firstgid="7" name="lava" tilewidth="64" tileheight="64" spacing="64" margin="64">
+  <properties>
+   <property name="animationDuration" value="0.15"/>
+   <property name="animationFrames" value="2"/>
+   <property name="animationOffset" value="1"/>
+  </properties>
+  <image source="tilesets/lava.png" width="320" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Layer" value="2"/>
+    <property name="Light" value="true"/>
+    <property name="Name" value="Lava1"/>
+    <property name="Radius" value="3.0"/>
+    <property name="Type" value="Lava"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Layer" value="2"/>
+    <property name="Light" value="true"/>
+    <property name="Name" value="Lava2"/>
+    <property name="Radius" value="3.0"/>
+    <property name="Type" value="Lava"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Layer" value="2"/>
+    <property name="Light" value="true"/>
+    <property name="Name" value="Lava3"/>
+    <property name="Radius" value="3.0"/>
+    <property name="Type" value="Lava"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Layer" value="2"/>
+    <property name="Light" value="true"/>
+    <property name="Name" value="Lava4"/>
+    <property name="Radius" value="3.0"/>
+    <property name="Type" value="Lava"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="11" source="tilesets/zacken.tsx"/>
+ <tileset firstgid="14" source="tilesets/rest.tsx"/>
+ <layer name="Mittellayer" width="100" height="100">
+  <properties>
+   <property name="Parallax" value="0.5"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1zENwEAMBEGTMH+qjyFKXtliRjKB28o7M3vxeObtbjp8y3YterTo0aJHix4terTo0aJHi/+tRYsWPVr0aNGjRY8WPVr0aNGjRY8WPVr0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4E8Hy0UEWg==
+  </data>
+ </layer>
+ <layer name="Spielebene" width="100" height="100">
+  <properties>
+   <property name="Parallax" value="1.0"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt2G1rgzAUBtAwtpaxT5v2///VTaaQpje+RLd+8By4UBqrcJ8mUbuUUveEItat+Bx5W3nOlvEza8mjXxiXR7uhN7exhs9fP3VJ6/LoZ865dE1iZR5Dvabj8pgy3rIWnlmZx8tYUc+mHJb25vy7j6yice6VeVxSfb3q02MmtXPu2V/OrMxj7riJ/fzvDL25jlX2/JYds6WHa+YPsaE372PlfSr3+C2ZmB/tojz2PleXv5myzceJlXlMdQ0q3+/zfb/sbzTPauPcy/NYqtq97WdR05xI6XEP8v5q3t73gC3rmjzqntEbedT9R2/KeSOPuqN6M3ce91frtaz9S/dUa65J7IjebL0nkEfdkXlEzyy15xhiLb2p/ef3PMfwq2WtOaIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg8A39wxUw
+  </data>
+ </layer>
+ <objectgroup name="Objektebene">
+  <object id="1" name="Player" x="256" y="128" width="64" height="64">
+   <properties>
+    <property name="Name" value="Player"/>
+   </properties>
+  </object>
+  <object id="3" name="LavaFountain" x="64" y="512" width="128" height="64">
+   <properties>
+    <property name="Height" value="7.0"/>
+    <property name="Intervall" value="2.0"/>
+    <property name="IntervallOffset" value="2.0"/>
+    <property name="Length" value="2.0"/>
+    <property name="Name" value="LavaFountain"/>
+   </properties>
+  </object>
+  <object id="4" name="RockTrigger" x="1408" y="448" width="192" height="64">
+   <properties>
+    <property name="Id" value="1"/>
+    <property name="Name" value="RockTrigger"/>
+   </properties>
+  </object>
+  <object id="5" name="Platform" x="704" y="1088" width="64" height="64">
+   <properties>
+    <property name="Direction" value="left"/>
+    <property name="Distance" value="4.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="0.5"/>
+   </properties>
+  </object>
+  <object id="6" name="Rock" x="1280" y="64" width="64" height="64">
+   <properties>
+    <property name="Name" value="Rock"/>
+    <property name="TriggerId" value="1"/>
+   </properties>
+  </object>
+  <object id="8" name="LevelEnd" x="1600" y="192" width="64" height="64">
+   <properties>
+    <property name="Name" value="LevelEnd"/>
+   </properties>
+  </object>
+  <object id="9" name="PlayerSpawn" x="256" y="128" width="64" height="64">
+   <properties>
+    <property name="Name" value="PlayerSpawn"/>
+   </properties>
+  </object>
+  <object id="10" name="Enemy" x="1600" y="1088" width="64" height="62">
+   <properties>
+    <property name="Direction" value="left"/>
+    <property name="Name" value="Enemy"/>
+    <property name="Type" value="dog"/>
+   </properties>
+  </object>
+  <object id="11" name="Miner" x="64" y="1024" width="64" height="64">
+   <properties>
+    <property name="Name" value="Miner"/>
+   </properties>
+  </object>
+  <object id="12" name="Platform" x="640" y="1088" width="64" height="64">
+   <properties>
+    <property name="Direction" value="left"/>
+    <property name="Distance" value="4.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="0.5"/>
+   </properties>
+  </object>
+  <object id="13" name="Platform" x="576" y="1088" width="64" height="64">
+   <properties>
+    <property name="Direction" value="left"/>
+    <property name="Distance" value="4.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="0.5"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

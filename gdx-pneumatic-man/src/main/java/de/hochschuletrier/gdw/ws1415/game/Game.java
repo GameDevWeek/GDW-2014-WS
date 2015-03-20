@@ -154,7 +154,7 @@ public class Game {
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
         
-        MapLoader.generateWorldFromTileMap(engine, physixSystem, map, cameraSystem);
+        MapLoader.generateWorldFromTileMapX(engine, physixSystem, map, cameraSystem);
 
        
         inputManager.init();
