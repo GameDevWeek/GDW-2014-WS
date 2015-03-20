@@ -44,9 +44,7 @@ public class Game {
     private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
 
-    private  PooledEngine engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
-            GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE);
-
+    private  PooledEngine engine;
     private  PhysixSystem physixSystem;
 
     private  JumpAnimationSystem jumpAnimationSystem;
@@ -97,7 +95,7 @@ public class Game {
     // Only called from MainMenu
     public void init(AssetManagerX assetManager) {
            
-        System.out.println("Init() called");
+        System.out.println("Init called");
         EntityCreator.assetManager = assetManager;
         
         this.assetManager = assetManager;
@@ -114,14 +112,16 @@ public class Game {
     private void loadCurrentlySelectedLevel()
     {
         GameConstants.pause = false;
-        engine.removeAllEntities();
-        removeSystems();
+        if(engine != null)
+        {
+            engine.removeAllEntities();
+            removeSystems();
+        }
         Main.inputMultiplexer.removeProcessor(inputKeyboardSystem);
         Main.getInstance().console.unregister(physixDebug);
-        
-        
 
         addSystems();
+        EntityCreator.engine = engine;
         EntityCreator.physixSystem = this.physixSystem;
 
         Main.getInstance().removeScreenListener(cameraSystem.getCamera());
@@ -189,8 +189,10 @@ public class Game {
     }
 
     private void addSystems() {
-        
+
         jumpAnimationSystem = new JumpAnimationSystem(assetManager, GameConstants.PRIORITY_ANIMATIONS);
+        engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
+                GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE);
         physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE, GameConstants.VELOCITY_ITERATIONS,
             GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX);
         _ScoreSystem = new ScoreSystem();
@@ -245,7 +247,6 @@ public class Game {
         engine.removeSystem(aisystems);
         if(renderSystem != null && renderSystem.rayHandler != null)
             renderSystem.rayHandler.removeAll();
-
     }
 
     private void addContactListeners() {

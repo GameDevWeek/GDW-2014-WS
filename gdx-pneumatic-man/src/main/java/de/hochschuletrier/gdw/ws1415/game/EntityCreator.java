@@ -38,7 +38,6 @@ import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
-import javafx.geometry.Pos;
 
 public class EntityCreator {
 
@@ -950,6 +949,24 @@ public class EntityCreator {
     	addRenderComponents(entity, px, py, 0, 0.2f, anim, start, stateTime);
     }
     // ********** Rendering section END **********
+
+    public static Entity createAndAddBomb(float x, float y) {
+        Entity Bomb = engine.createEntity();
+        
+        Bomb.add(engine.createComponent(PositionComponent.class));
+
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        Bomb.add(Health);
+        
+        DamageComponent Damage = engine.createComponent(DamageComponent.class);
+        Damage.damage = 3;
+        Damage.damageToTile = true;
+        
+        Bomb.add(Damage);
+        return(Bomb);
+    }
+
     
 
    
