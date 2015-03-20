@@ -79,12 +79,10 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
         if(axisCode == 1){
         	if(value > 0.4){
         		direction = value;
-        		System.out.println("Gewschwindigkeit " + value);
         	}
         
         	else if(value < -0.4){
         		direction = value;
-                System.out.println("Gewschwindigkeit " + value);
         	}
         	else {
         		direction = 0;
