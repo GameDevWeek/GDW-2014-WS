@@ -7,10 +7,10 @@
     "credits_button": "data/images/credits_button.png",
     "optionen_button": "data/images/optionen_button.png",
     "options_overlay": "data/images/options_overlay.png",
-    "soundUp" : "data/images/Butt_Audio_AddSub01.png",
-    "gamepad_active" : "data/images/Butt_Gamepad_Active01.png",
-    "gamepad_inactive" : "data/images/Butt_Gamepad_Inactive01.png",
-    "keyboard_active" : "data/images/Butt_Keyboard_Active01.png",
+    "soundUp": "data/images/Butt_Audio_AddSub01.png",
+    "gamepad_active": "data/images/Butt_Gamepad_Active01.png",
+    "gamepad_inactive": "data/images/Butt_Gamepad_Inactive01.png",
+    "keyboard_active": "data/images/Butt_Keyboard_Active01.png",
     "keyboard_inactive": "data/images/Butt_Keyboard_Inactive01.png",
     "slider_active": "data/images/Slider_Audio_Active02.png",
     "slider_inactive": "data/images/Slider_Audio_Inactive01.png",
@@ -21,6 +21,6 @@
     "miner_found": "data/images/KollegeIconGefunden.png",
     "miner_notfound": "data/images/KollegeIconNichtGefunden.png",
     "zeigefinger2": "data/images/Zeigefinger2.png",
-    "credit_background" : "data/images/Credits_3.png",
-    "injava_jones" : "data/images/Injava_Jones.jpg"
+    "credit_background": "data/images/Credits_3.png",
+    "injava_jones": "data/images/Injava_Jones.jpg"
 }
