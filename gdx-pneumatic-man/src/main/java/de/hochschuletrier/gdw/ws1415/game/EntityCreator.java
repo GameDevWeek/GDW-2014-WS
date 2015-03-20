@@ -181,7 +181,10 @@ public class EntityCreator {
         float width = GameConstants.getTileSizeX();
         float height = GameConstants.getTileSizeY();
 
-        entity.add(engine.createComponent(DamageComponent.class));
+        DamageComponent Damage = engine.createComponent(DamageComponent.class);
+        Damage.damage  = 1;
+        Damage.damageToPlayer = true;
+        entity.add(Damage);
         entity.add(engine.createComponent(AIComponent.class));
         entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
@@ -302,6 +305,9 @@ public class EntityCreator {
         FallingRockComponent rockComponent = new FallingRockComponent();
         rockComponent.id = trapId;
         entity.add(rockComponent);
+        
+//        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
         
         DamageComponent damageComp = engine.createComponent(DamageComponent.class);
         damageComp.damage = 4;
