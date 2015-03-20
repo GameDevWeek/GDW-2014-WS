@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -86,6 +87,21 @@ public class MenuPage extends Group {
         button.setBounds(x, y, width, height);
         button.addListener(new ClickListener() {
             @Override
+            public void clicked(InputEvent event, float x, float y) {
+                runnable.run();
+            }
+        });
+        addActor(button);
+        return button;
+    }
+    
+    protected final ImageButton addImageButton(int x, int y, int width, int height, Runnable runnable)
+    {
+    	ImageButton button = new ImageButton(skin);
+    	button.setBounds(x, y, width, height);
+    	button.addListener(new ClickListener()
+    	{
+    		@Override
             public void clicked(InputEvent event, float x, float y) {
                 runnable.run();
             }
