@@ -124,7 +124,7 @@ public class EntityCreator {
         //laser 
         fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(10f).restitution(0.1f)
-                .shapeCircle(width * 0.1f, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
+                .shapeCircle(width * 0.09f, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
         
