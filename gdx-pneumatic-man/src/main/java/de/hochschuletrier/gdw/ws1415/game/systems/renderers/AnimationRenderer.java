@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
+import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedFamilyRenderSystem;
-import de.hochschuletrier.gdw.ws1415.game.Game;
 
 public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
 
@@ -42,6 +42,10 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
         TextureRegion keyFrame = animation.animation.getKeyFrame(animation.permanent_stateTime);
         int w = keyFrame.getRegionWidth();
         int h = keyFrame.getRegionHeight();
+        
+        
+        keyFrame.flip(keyFrame.isFlipX() != animation.flipX, keyFrame.isFlipY() != !animation.flipY);
+        
         DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h, position.scaleX, position.scaleY, position.rotation);
     }
 }

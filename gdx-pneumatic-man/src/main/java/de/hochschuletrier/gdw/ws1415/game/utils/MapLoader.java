@@ -59,6 +59,7 @@ public class MapLoader
         if ( list.equals("") == false ) list.add( line.toString() );
         
         return list;
+    
     }
     
     /**
@@ -72,8 +73,18 @@ public class MapLoader
      * 
      * @author Renderer
      */
-    @Deprecated
-    public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
+    //public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
+    //@Deprecated
+    //public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
+    //public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem)
+    //{
+        /**
+         * See old_generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem)
+         * Use generateWorldFromTileMapX(...) instead
+         */
+    //}
+    
+    public static void old_generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
     {
         
         try {
@@ -331,6 +342,7 @@ public class MapLoader
                 for(LayerObject obj : layer.getObjects())
                 {
                     String name = obj.getName().toLowerCase();
+                    //System.out.println( name );
                     switch( name )
                     {
                         // all preloaded Object are not needed to be handled
@@ -340,7 +352,7 @@ public class MapLoader
                         {
                             PlatformMode mode = PlatformMode.valueOf(obj.getProperty("Mode", PlatformMode.ALWAYS.name()).toUpperCase());
                             Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.UP.name()).toUpperCase()); // "Direction"
-                            int distance = (int)obj.getFloatProperty("Distance", 0);
+                            int distance = (int)obj.getDoubleProperty("Distance", 0.0);
                             int hitpoints = obj.getIntProperty("Hitpoints", 0);
                             float speed = obj.getFloatProperty("Speed", 0);
                             if(hitpoints == 0)
@@ -394,9 +406,11 @@ public class MapLoader
                         }
                             break;
                         case "miner":
+                        {
                             float PositionX = obj.getX();
                             float PositionY = obj.getY();
                             EntityCreator.createAndAddMiner(PositionX, PositionY);
+                        }
                             break;
                         default: 
                         {
@@ -425,34 +439,41 @@ public class MapLoader
                                     
                                     if ( tinfo.getIntProperty("Hitpoints", 0) != 0 )
                                     {  
+                                        // entities with Hitpoints
                                         EntityCreator.createAndAddVulnerableFloor(
                                                 i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                                 map, tinfo, tinfo.getIntProperty("Hitpoints", 0), i, j);
                                     } else
                                     {
-                                        if ( tinfo.getBooleanProperty("Invulnerable", false) )
+                                        
+                                        if ( tinfo.getBooleanProperty("Invulnerable", false) == true )
                                         {
-                                          //  EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                            // Unverwundbare  are already loaded only visual is needed
+                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                            
                                         } else
                                         {
-                                           // EntityCreator.createAndAddInvulnerableFloor( new Rectangle( i,j,1,1 ) );
+                                            // verwundbare
                                         }
                                     }
-                                    if ( tinfo.getBooleanProperty("Invulnerable", false) )
-                                    {
-                                        EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
-                                    }
+                                }
+                                    break;
+                                case "bomb":
+                                {
+                                    EntityCreator.createAndAddVulnerableFloor(
+                                            i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                            j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                            map, tinfo, 1, i, j);
                                 }
                                     break;
                                 case "spikeleft": case "spiketop": case "spikeright": case "spikedown":
                                 {
-                                    TileInfo info = tiles[i][j];
                                     Direction dir = Direction.valueOf(type.substring(5).toUpperCase());
                                     EntityCreator.createSpike(
                                                 i,
                                                 j,
-                                                dir, info, map);
+                                                dir, tinfo, map);
                                 }
                                     break;
                                 case "lava":
@@ -466,7 +487,7 @@ public class MapLoader
                                 }
                                     break;
                                 default :
-                                    // TODO Warnung
+                                    Gdx.app.log("WARNING", "tile " + type + " does not match any name. No Entity created");
                                     break;
                             }
                         }

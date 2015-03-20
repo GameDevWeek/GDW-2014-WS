@@ -76,8 +76,8 @@
   </object>
   <object id="35" name="LevelEnd" x="1216" y="448" width="65" height="64">
    <properties>
-    <property name="MinMiner" value="1"/>
     <property name="Name" value="LevelEnd"/>
+    <property name="RequiredMiners" value="1"/>
    </properties>
   </object>
   <object id="37" name="PlayerSpawn" x="128" y="1024" width="63" height="61">
