@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
@@ -70,7 +71,11 @@ public class MenuPage extends Group {
             @Override
             public void clicked(InputEvent event, float width, float height) {
                 //System.out.println("kjfghkd");
-               
+                if(image.getRegion().getTexture()!=assetManager.getTexture("back_button")){
+                SoundEmitter.playGlobal(assetManager.getSound("click"),false);
+                }else{
+                    SoundEmitter.playGlobal(assetManager.getSound("helicopter"),false);
+                }
                 runnable.run();
             }
         });
