@@ -259,7 +259,7 @@ public class Game {
         PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
         contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
-        contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
+        contactListener.addListener(PlayerComponent.class, new PlayerContactListener(engine));
         contactListener.addListener(FallingRockComponent.class, new RockContactListener());
         physixSystem.getWorld().setContactListener(contactListener);
     }
