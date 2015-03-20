@@ -675,7 +675,6 @@ public class EntityCreator {
         
         pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("explosion"));
         
-        
         pe.loop=true;
         pe.particleEffect.flipY();
         pe.particleEffect.start();
