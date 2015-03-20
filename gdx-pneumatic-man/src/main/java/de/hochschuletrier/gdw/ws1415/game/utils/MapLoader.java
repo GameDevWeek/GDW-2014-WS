@@ -126,7 +126,8 @@ public class MapLoader
                         //EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("LevelEnd")){
-                        EntityCreator.createAndAddEventBox(obj.getX(), obj.getY());
+                        EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));
+                        //EntityCreator.createAndAddEventBox(obj.getX(), obj.getY());
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("Enemy")){
                         Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.LEFT.name()).toUpperCase());
@@ -168,7 +169,7 @@ public class MapLoader
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map, info, 1, i, j);
+                                    map, info, Integer.parseInt(info.getProperty("Hitpoint", "")), i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
                             TileInfo info = tiles[i][j];
