@@ -281,35 +281,27 @@ public class Game {
         //
         // mapRenderer.update(delta);
         
-        if(loadSelectedLevel==false)
+        if(GameConstants.pause)
         {
-            if(GameConstants.pause)
-            {
-                renderSystem.update(0);
-            }
-            else
-            {
-                engine.update(delta);
-            }
-                
-            
-            // Level reset Testing    
-            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
-                System.out.println("Restart Level"); 
-                
-                // Level Reset
-                loadCurrentlySelectedLevel();
-                // Controls work now
-                //
-                // Light cannot be reseted
-                // Render-Team is on it
-            }
+            renderSystem.update(0);
         }
         else
         {
-            loadSelectedLevel = false;
-            loadCurrentlySelectedLevel();
+            engine.update(delta);
         }
-        
+
+
+        // Level reset Testing    
+        if(loadSelectedLevel || Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
+            loadSelectedLevel = false;
+            System.out.println("Restart Level"); 
+
+            // Level Reset
+            loadCurrentlySelectedLevel();
+            // Controls work now
+            //
+            // Light cannot be reseted
+            // Render-Team is on it
+        }
     }
 }
