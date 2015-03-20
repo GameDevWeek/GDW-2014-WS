@@ -126,7 +126,8 @@ public class MapLoader
                         //EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("LevelEnd")){
-                        EntityCreator.createAndAddEventBox(obj.getX(), obj.getY());
+                        EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));
+                        //EntityCreator.createAndAddEventBox(obj.getX(), obj.getY());
                     }
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("Enemy")){
                         Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.LEFT.name()).toUpperCase());
