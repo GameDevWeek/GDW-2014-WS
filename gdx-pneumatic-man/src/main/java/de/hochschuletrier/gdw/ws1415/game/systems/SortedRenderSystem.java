@@ -34,7 +34,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
 	private Matrix4 scaleMatrix = new Matrix4();
 	
     @SuppressWarnings("unchecked")
-	public SortedRenderSystem(CameraSystem cameraSystem, RayHandler rayHandler) {
+	public SortedRenderSystem(CameraSystem cameraSystem, RayHandler rayHandler, int priority) {
         super(Family.all(PositionComponent.class, LayerComponent.class).get(), new Comparator<Entity>() { 
             @Override
             public int compare(Entity e1, Entity e2) {
@@ -42,7 +42,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
                 LayerComponent bc = ComponentMappers.layer.get(e2);
                 return ac.layer > bc.layer ? 1 : (ac.layer == bc.layer) ? 0 : -1;
             }
-        });
+        }, priority);
 
         
         // Order of adding = order of renderer selection for the entity
@@ -59,6 +59,11 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         this.rayHandler.setShadows(GameConstants.LIGHT_SHADOW);
         this.rayHandler.useDiffuseLight(GameConstants.LIGHT_DIFFUSE);
         this.cameraSystem = cameraSystem;
+    }
+    
+    @Deprecated
+    public SortedRenderSystem(CameraSystem cameraSystem, RayHandler rayHandler) {
+        this(cameraSystem, rayHandler, 0);
     }
     
 	@Override
@@ -80,7 +85,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     }
     
     private void onLayerChanged(LayerComponent oldLayer, LayerComponent newLayer) {
-//    	cameraSystem.applyParallax(newLayer);
+    	cameraSystem.applyParallax(newLayer);
     }
     
     @Override

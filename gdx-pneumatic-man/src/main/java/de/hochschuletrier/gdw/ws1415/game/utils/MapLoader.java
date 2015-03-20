@@ -59,7 +59,6 @@ public class MapLoader
         if ( list.equals("") == false ) list.add( line.toString() );
         
         return list;
-    
     }
     
     /**
@@ -73,18 +72,7 @@ public class MapLoader
      * 
      * @author Renderer
      */
-    //public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
-    //@Deprecated
-    //public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
-    //public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem)
-    //{
-        /**
-         * See old_generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem)
-         * Use generateWorldFromTileMapX(...) instead
-         */
-    //}
-    
-    public static void old_generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
+    public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
     {
         
         try {
@@ -187,82 +175,79 @@ public class MapLoader
             TileInfo[][] tiles = layer.getTiles();
             for (int i = 0; i < map.getWidth(); i++) {
                 for (int j = 0; j < map.getHeight(); j++) {
-                    TileInfo info = tiles[i][j];
-                    if (tiles != null && tiles[i] != null && info != null) {
-                        if (info.getIntProperty("Hitpoint", 0) != 0
-                                && info.getProperty("Type", "").equals("Floor")) {
+                    if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
+                        if (tiles[i][j].getIntProperty("Hitpoint", 0) != 0
+                                && tiles[i][j].getProperty("Type", "").equals("Floor")) {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map, info, Integer.parseInt(info.getProperty("Hitpoint", "")), i, j);
                         }
-                        if (info.getProperty("Type", "").length() >= 5 &&
-                                info.getProperty("Type", "").substring(0, 5).equalsIgnoreCase("spike")) {
-                            Direction dir = Direction.valueOf(info.getProperty("Type", "").substring(5).toUpperCase());
-                            EntityCreator.createSpike(
-                                    i,
-                                    j,
-                                    dir, info, map
-                            );
-                        }
-                        /*
-                        if (info.getProperty("Type", "").equals("SpikeLeft")) {
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    info.getProperty("Type", ""),
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
                         }
-                        if (info.getProperty("Type", "").equals("SpikeTop")) {
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeTop")) {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    info.getProperty("Type", ""),
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
                         }
-                        if (info.getProperty("Type", "").equals("SpikeRight")) {
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeRight")) {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    info.getProperty("Type", ""),
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
                         }
-                        if (info.getProperty("Type", "").equals("SpikeDown")) {
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    info.getProperty("Type", ""),
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
                         }
-                        if (info.getProperty("Type", "").equals("SpikeDown")) {
+                        if (tiles[i][j].getProperty("Type", "").equals("SpikeDown")) {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddSpike(engine,
                                     physixSystem,
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                     map.getTileWidth(),
                                     map.getTileHeight(),
-                                    info.getProperty("Type", ""),
+                                    tiles[i][j].getProperty("Type", ""),
                                     map, info, i, j);
-                        }*/
-                        if (info.getBooleanProperty("Invulnerable", false)
-                                && info.getProperty("Type", "").equals("Floor")) {
+                        }
+                        if (tiles[i][j].getBooleanProperty("Invulnerable", false)
+                                && tiles[i][j].getProperty("Type", "").equals("Floor")) {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddVisualEntity(map, info, i, j);
                         }
                         
-                        if (info.getBooleanProperty("Invulnerable", false)
-                                && info.getProperty("Type", "").equals("Lava")) {
+                        if (tiles[i][j].getBooleanProperty("Invulnerable", false)
+                                && tiles[i][j].getProperty("Type", "").equals("Lava")) {
+                            TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddVisualEntity(map, info, i, j, PlayMode.LOOP, true);
                         }
                     }
@@ -313,7 +298,7 @@ public class MapLoader
         
         generator.generate(map,
                 (Layer layer, TileInfo info) -> {
-                    return info.getBooleanProperty("Invulnerable", false)
+                     return info.getBooleanProperty("Invulnerable", false)
                             && info.getProperty("Type", "").equals("Lava");
                 },
                 EntityCreator::createAndAddLava);
@@ -342,17 +327,16 @@ public class MapLoader
                 for(LayerObject obj : layer.getObjects())
                 {
                     String name = obj.getName().toLowerCase();
-                    //System.out.println( name );
                     switch( name )
                     {
                         // all preloaded Object are not needed to be handled
                         case "rock":
                             break;
-                        case "platform":
+                        case "plattform":
                         {
                             PlatformMode mode = PlatformMode.valueOf(obj.getProperty("Mode", PlatformMode.ALWAYS.name()).toUpperCase());
                             Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.UP.name()).toUpperCase()); // "Direction"
-                            int distance = (int)obj.getDoubleProperty("Distance", 0.0);
+                            int distance = obj.getIntProperty("Distance", 0);
                             int hitpoints = obj.getIntProperty("Hitpoints", 0);
                             float speed = obj.getFloatProperty("Speed", 0);
                             if(hitpoints == 0)
@@ -406,11 +390,9 @@ public class MapLoader
                         }
                             break;
                         case "miner":
-                        {
                             float PositionX = obj.getX();
                             float PositionY = obj.getY();
                             EntityCreator.createAndAddMiner(PositionX, PositionY);
-                        }
                             break;
                         default: 
                         {
@@ -439,41 +421,36 @@ public class MapLoader
                                     
                                     if ( tinfo.getIntProperty("Hitpoints", 0) != 0 )
                                     {  
-                                        // entities with Hitpoints
                                         EntityCreator.createAndAddVulnerableFloor(
                                                 i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                                 map, tinfo, tinfo.getIntProperty("Hitpoints", 0), i, j);
                                     } else
                                     {
-                                        
-                                        if ( tinfo.getBooleanProperty("Invulnerable", false) == true )
+                                        if ( tinfo.getBooleanProperty("Invulnerable", false) )
                                         {
-                                            // Unverwundbare  are already loaded only visual is needed
-                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
-                                            
+                                          //  EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                         } else
                                         {
-                                            // verwundbare
+                                           // EntityCreator.createAndAddInvulnerableFloor( new Rectangle( i,j,1,1 ) );
                                         }
                                     }
-                                }
-                                    break;
-                                case "bomb":
-                                {
-                                    EntityCreator.createAndAddVulnerableFloor(
-                                            i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                            j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                            map, tinfo, 1, i, j);
+                                    if ( tinfo.getBooleanProperty("Invulnerable", false) )
+                                    {
+                                        EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                    }
                                 }
                                     break;
                                 case "spikeleft": case "spiketop": case "spikeright": case "spikedown":
                                 {
-                                    Direction dir = Direction.valueOf(type.substring(5).toUpperCase());
-                                    EntityCreator.createSpike(
-                                                i,
-                                                j,
-                                                dir, tinfo, map);
+                                    EntityCreator.createAndAddSpike(engine,
+                                            physixSystem,
+                                            i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                            j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                            map.getTileWidth(),
+                                            map.getTileHeight(),
+                                            tinfo.getProperty("Type", ""),
+                                            map, tinfo, i, j);
                                 }
                                     break;
                                 case "lava":
@@ -486,8 +463,13 @@ public class MapLoader
                                     }
                                 }
                                     break;
+                                    
+                                case "bomb":
+                                    EntityCreator.createAndAddBomb(i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                                j * map.getTileHeight() + 0.5f * map.getTileHeight(), map, tinfo, i, j);
+                                    break;
                                 default :
-                                    Gdx.app.log("WARNING", "tile " + type + " does not match any name. No Entity created");
+                                    Gdx.app.log("WARNING", "layer-type " + type + " does not match any name. No Entity created");
                                     break;
                             }
                         }

@@ -3,11 +3,14 @@ package de.hochschuletrier.gdw.ws1415.game.systems;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
+
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent.HealthState;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,24 +65,34 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
             if((Health.Value <= 0))
             {
-                if (ComponentMappers.player.has(entity)) {
-                    Health.health = HealthComponent.HealthState.DYING;
-                    
-                    EntityCreator.modifyPlayerToDying(entity);
-                }else if(ComponentMappers.block.has(entity)){
-                    PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
+                if(ComponentMappers.block.has(entity))
+                {
                     DestructableBlockComponent block = ComponentMappers.block.get(entity);
-
-
-                    Vector2 p1 = physix.getBody().getPosition();
-                    Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(1.5f)); // FIXME MAGIC NUMBER
-
                     if(block.deathTimer <= 0) {
                         Health.health = HealthComponent.HealthState.DEAD;
                     }else {
                         Health.health = HealthComponent.HealthState.DYING;
                         block.deathTimer -= deltaTime;
                     }
+                }
+                
+
+                if (ComponentMappers.player.has(entity)) {
+                    Health.health = HealthComponent.HealthState.DYING;
+                    
+                    EntityCreator.modifyPlayerToDying(entity);
+                    
+                }
+                else if(ComponentMappers.bomb.has(entity) && Health.health == HealthState.DEAD)
+                {
+                    EntityCreator.modifyBombToExplode(entity);
+
+                    
+                }else if(ComponentMappers.block.has(entity)){
+                    PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
+
+                    Vector2 p1 = physix.getBody().getPosition();
+                    Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(1.5f)); // FIXME MAGIC NUMBER
 
                     if(Health.health == HealthComponent.HealthState.DEAD) {
                         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
@@ -99,7 +112,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                             }
                             return 0;
                         }, p1, p2);
-                        CurrentEngine.removeEntity(entity);
+                        PostUpdateRemovals.add(entity);
                     }
                 }
                 else
