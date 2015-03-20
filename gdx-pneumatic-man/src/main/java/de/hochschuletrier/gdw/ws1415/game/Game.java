@@ -128,8 +128,6 @@ public class Game {
         removeSystems();
         Main.inputMultiplexer.removeProcessor(inputKeyboardSystem);
         Main.getInstance().console.unregister(physixDebug);
-        
-        
 
         addSystems();
         EntityCreator.physixSystem = this.physixSystem;

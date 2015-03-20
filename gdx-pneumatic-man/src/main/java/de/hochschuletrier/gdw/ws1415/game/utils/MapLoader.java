@@ -450,7 +450,10 @@ public class MapLoader
                                     }
                                 }
                                     break;
-                                case "spikeleft": case "spiketop": case "spikeright": case "spikedown":
+                                case "spikeleft": 
+                                case "spiketop":
+                                case "spikeright":
+                                case "spikedown":
                                 {
                                     EntityCreator.createAndAddSpike(engine,
                                             physixSystem,
@@ -472,8 +475,11 @@ public class MapLoader
                                     }
                                 }
                                     break;
+                                    
+                                case "bomb":
+                                    break;
                                 default :
-                                    // TODO Warnung
+                                    Gdx.app.log("WARNING", "layer-type " + type + " does not match any name. No Entity created");
                                     break;
                             }
                         }
