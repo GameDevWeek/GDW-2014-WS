@@ -36,7 +36,7 @@ public class MapLoader
     {
         ArrayList<String> list = new ArrayList<String>();        
         
-        InputStream fis = new FileInputStream("src/main/resources/data/maps/Test.txt");
+        InputStream fis = new FileInputStream("src/main/resources/data/maps/Maps.txt");
         StringBuffer line = new StringBuffer(80);
         boolean lastWasReturn = false;
         int c = 0;
@@ -305,7 +305,7 @@ public class MapLoader
                 },
                 EntityCreator::createAndAddLava);
         
-        
+        // Liste um fallende Rocks abzuspeichern
         HashMap<Integer, Entity> rocks = new HashMap<>();
         for (Layer layer : map.getLayers()) 
         {
@@ -415,17 +415,18 @@ public class MapLoader
                             {
                                 case "floor":
                                 {
-                                    if ( tinfo.getIntProperty("Hitpoint", 0) != 0 )
+                                    
+                                    if ( tinfo.getIntProperty("Hitpoints", 0) != 0 )
                                     {  
                                         EntityCreator.createAndAddVulnerableFloor(
                                                 i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                                map, tinfo, 1, i, j);
+                                                map, tinfo, tinfo.getIntProperty("Hitpoints", 0), i, j);
                                     } else
                                     {
                                         if ( tinfo.getBooleanProperty("Invulnerable", false) )
                                         {
-                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                          //  EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                         } else
                                         {
                                            // EntityCreator.createAndAddInvulnerableFloor( new Rectangle( i,j,1,1 ) );
