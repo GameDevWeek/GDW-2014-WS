@@ -33,7 +33,6 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         if (jump > 0) {
             inputComponent.jump = true;
             jump -= deltaTime;
-            System.out.println(deltaTime);
         }
         if (right) {
             inputComponent.direction++;
