@@ -113,27 +113,13 @@ public class Game {
         
         this.assetManager = assetManager;
         
-        Main.getInstance().addScreenListener(cameraSystem.getCamera());
-
-        Main.getInstance().console.register(physixDebug);
-        physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
-
-        addSystems();
+        
         
         selectPathFromSettings();
         
         loadCurrentlySelectedLevel();
         
-        setupPhysixWorld();
-
-        addContactListeners();
-        Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
-   
-        MapLoader.generateWorldFromTileMap(engine, physixSystem, map, cameraSystem);
-
-       
-        inputManager.init();
        
     }
 
@@ -142,6 +128,18 @@ public class Game {
     private void loadCurrentlySelectedLevel()
     {
         engine.removeAllEntities();
+        removeSystems();
+        Main.getInstance().removeScreenListener(cameraSystem.getCamera());
+        Main.inputMultiplexer.removeProcessor(inputKeyboardSystem);
+        Main.getInstance().console.unregister(physixDebug);
+        
+        
+        Main.getInstance().addScreenListener(cameraSystem.getCamera());
+
+        Main.getInstance().console.register(physixDebug);
+        physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
+
+        addSystems();
         
         // Load Map
         map = loadMap(levelFilePath);
@@ -150,7 +148,18 @@ public class Game {
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
             tilesetImages.put(tileset, new Texture(filename));
         }
+        
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
+        setupPhysixWorld();
+
+        addContactListeners();
+        Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
+        
+        
+        MapLoader.generateWorldFromTileMap(engine, physixSystem, map, cameraSystem);
+
+       
+        inputManager.init();
     }
 
     private void selectPathFromSettings()
@@ -195,6 +204,21 @@ public class Game {
         engine.addSystem(lavaFountainSystem);
         engine.addSystem(destroyBlocksSystem);
     }
+    private void removeSystems(){
+        engine.removeSystem(physixSystem);
+        engine.removeSystem(physixDebugRenderSystem);
+        engine.removeSystem(cameraSystem);
+        engine.removeSystem(renderSystem);
+        engine.removeSystem(updatePositionSystem);
+        engine.removeSystem(movementSystem);
+        engine.removeSystem(inputKeyboardSystem);
+        engine.removeSystem(inputGamepadSystem);
+        engine.removeSystem(aisystems);
+        engine.removeSystem(_HealthSystem);
+        engine.removeSystem(_ScoreSystem);
+        engine.removeSystem(lavaFountainSystem);
+        engine.removeSystem(destroyBlocksSystem);
+    }
 
     private void addContactListeners() {
         PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
@@ -237,8 +261,9 @@ public class Game {
 //            engine.removeAllEntities();
             
             // Level Reset
-            Main.getInstance().changeState(new GameplayState(assetManager));
-            // Controls fail to work after reset
+            loadCurrentlySelectedLevel();
+            // Controls work
+            // Light cannot be reseted
         }
     }
 }
