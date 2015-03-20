@@ -2,19 +2,16 @@ package de.hochschuletrier.gdw.ws1415.game.menu;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 
 public class ScoreMenu extends MenuPage
 {
-    int[] highscore = new int[4]; //Hier sollen die Highscore gespeichert werden.
-    
 	public ScoreMenu(Skin skin, MenuManager menuManager)
 	{
 		super(skin, "background_menu");
 		createLabel(menuManager.getWidth()/2, menuManager.getHeight()/2).setText("HIGHSCORE");
-		
 		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
 	}
 	
