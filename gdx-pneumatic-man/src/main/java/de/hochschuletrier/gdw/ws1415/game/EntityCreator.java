@@ -14,7 +14,9 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
@@ -152,11 +154,10 @@ public class EntityCreator {
     public static Entity modifyPlayerToDying(Entity entityToDie) {
         //Entity dyingEntity = engine.createEntity();
         
-        entityToDie.remove(AnimationComponent.class);
         entityToDie.remove(DamageComponent.class);
-        entityToDie.remove(InputComponent.class);
         entityToDie.remove(PlayerComponent.class);
         entityToDie.remove(HealthComponent.class);
+        entityToDie.remove(InputComponent.class);
         entityToDie.remove(PhysixBodyComponent.class);
         entityToDie.remove(MovementComponent.class);
         entityToDie.remove(JumpComponent.class);
@@ -170,6 +171,10 @@ public class EntityCreator {
         AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
         deathAnimation.animation = assetManager.getAnimation("char_death");
         deathAnimation.isDyingPlayer = true;
+
+        deathAnimation.flipX = entityToDie.getComponent(AnimationComponent.class).flipX;
+
+        entityToDie.remove(AnimationComponent.class);
         entityToDie.add(deathAnimation);
 
 
@@ -960,11 +965,12 @@ public class EntityCreator {
 
     public static Entity createAndAddBomb(float x, float y, TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity Bomb = engine.createEntity();
-        Bomb.add(engine.createComponent(PositionComponent.class));
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 1;
         Bomb.add(Health);
+
+        Bomb.add(engine.createComponent(BombComponent.class));
         
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
         Damage.damage = 3;
@@ -975,7 +981,9 @@ public class EntityCreator {
                 GameConstants.getTileSizeX(), GameConstants.getTileSizeY(),
                 true, 1f, 1f, 0.1f));
         
-        Bomb.add(engine.createComponent(DestructableBlockComponent.class));
+        DestructableBlockComponent DestructableComp = engine.createComponent(DestructableBlockComponent.class);
+        DestructableComp.deathTimer = 3.0f;
+        Bomb.add(DestructableComp);
         
         addRenderComponents(Bomb, map, info, tileX, tileY);
         
@@ -983,7 +991,43 @@ public class EntityCreator {
         return(Bomb);
     }
 
+    public static void modifyBombToExplode(Entity entity) {
+        entity.remove(HealthComponent.class);
+        entity.remove(DestructableBlockComponent.class);
+        entity.remove(TextureComponent.class);
+        entity.remove(LayerComponent.class);
+        
+        entity.getComponent(DamageComponent.class).damageToPlayer = true;
+        /* Create explosion Physics */
+        PhysixBodyComponent PhysixOld = entity.getComponent(PhysixBodyComponent.class);
+        PhysixBodyComponent PhysixBody = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(PhysixOld.getPosition());
+        PhysixBody.init(bDef, physixSystem, entity);
+        PhysixFixtureDef fDef = new PhysixFixtureDef(physixSystem)
+                                       .shapeCircle(128)
+                                       .sensor(true);
+        
+        PhysixBody.createFixture(fDef);
+        PhysixBody.setGravityScale(0.0f);
+        
+        entity.remove(PhysixBodyComponent.class);
+        entity.add(PhysixBody);
+        
+        
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        Health.DecrementByValueNextFrame = 1;
+        entity.add(Health);
+        
+    }
+
     
+
+
+
+
+
+
 
    
 }
