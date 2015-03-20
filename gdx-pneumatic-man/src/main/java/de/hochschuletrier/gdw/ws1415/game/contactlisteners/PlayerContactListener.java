@@ -92,9 +92,9 @@ public class PlayerContactListener extends PhysixContactAdapter {
         }
         
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
-        if(contact.getMyFixture().getUserData().equals("jump")){
+        if("jump".equals(contact.getMyFixture().getUserData())){
             JumpComponent jump = ComponentMappers.jump.get(player);
-            jump.doJump = true;
+            jump.groundContacts++;
         }
 
         
@@ -120,12 +120,11 @@ public class PlayerContactListener extends PhysixContactAdapter {
         Entity player = contact.getMyComponent().getEntity();
         
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
-        if(body!= null && contact.getMyFixture().getUserData().equals("jump")){
+        if(body!= null && "jump".equals(contact.getMyFixture().getUserData())){
            
             JumpComponent jump = ComponentMappers.jump.get(player);
             if(jump!= null){
-                jump.doJump = false;
-                jump.inAir = false;
+                jump.groundContacts--;
             }
             
         }

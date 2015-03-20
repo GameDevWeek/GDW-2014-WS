@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -59,8 +60,9 @@ public class AISystem extends IteratingSystem {
 
                 clear[0] = true; //front, ground → used in lambda → needs to be final
                 EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
-                    if(fixture.getUserData() instanceof PhysixBodyComponent)
-                        if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
+                    Object bodyUserData = fixture.getBody().getUserData();
+                    if(bodyUserData instanceof PhysixBodyComponent)
+                        if(ComponentMappers.player.has(((PhysixBodyComponent)bodyUserData).getEntity()) )
                             return 1;
                     clear[0] = false;
                     return 0;
@@ -70,13 +72,14 @@ public class AISystem extends IteratingSystem {
                     p1 = p2;
                     p2 = new Vector2(p1).add(dir.scl(2f)).add(Direction.DOWN.toVector2().scl(3f)); // FIXME MAGIC NUMBER
                     EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
-                        if(fixture.getUserData() instanceof PhysixBodyComponent)
-                            if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
+                        Object bodyUserData = fixture.getBody().getUserData();
+                        if(bodyUserData instanceof PhysixBodyComponent)
+                            if(ComponentMappers.player.has(((PhysixBodyComponent)bodyUserData).getEntity()) )
                                 return 1;
                         if(fraction >= 0.9f ) {
-                            if( fixture.getUserData() instanceof PhysixBodyComponent && (
-                                    ComponentMappers.iblock.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) || //indestructabl
-                                ComponentMappers.block.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()))) //destructable
+                            if( bodyUserData instanceof PhysixBodyComponent && (
+                                    ComponentMappers.iblock.has(((PhysixBodyComponent)bodyUserData).getEntity()) || //indestructabl
+                                ComponentMappers.block.has(((PhysixBodyComponent)bodyUserData).getEntity()))) //destructable
                             clear[0] = true;
                             return 0;
                         }
@@ -86,7 +89,6 @@ public class AISystem extends IteratingSystem {
                 if(clear[0]){
                     JumpComponent jump = ComponentMappers.jump.get(physix.getEntity());
                     physix.applyImpulse(0, jump.jumpImpulse);
-                    jump.doJump = false;
                     ai.AIstate = 1;
                 }else{
                     ai.AIstate = 3;
@@ -101,8 +103,9 @@ public class AISystem extends IteratingSystem {
                 // first time, check for air under AI (clear true)
                 // second time, check for block under AI (clear false)
                 EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
-                    if(fixture.getUserData() instanceof PhysixBodyComponent)
-                        if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
+                    Object bodyUserData = fixture.getBody().getUserData();
+                    if(bodyUserData instanceof PhysixBodyComponent)
+                        if(ComponentMappers.player.has(((PhysixBodyComponent)bodyUserData).getEntity()) )
                             return 0;
                     clear[0] = !clear[0];
                     // 1st time: from true→false if theres a block
@@ -128,8 +131,9 @@ public class AISystem extends IteratingSystem {
 
         final boolean[] clear = {true, false}; //front, ground → used in lambda → needs to be final
         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
-            if(fixture.getUserData() instanceof PhysixBodyComponent)
-                if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
+            Object bodyUserData = fixture.getBody().getUserData();
+            if(bodyUserData instanceof PhysixBodyComponent)
+                if(ComponentMappers.player.has(((PhysixBodyComponent)bodyUserData).getEntity()) )
                     return 0;
             clear[0] = false;
             return 0;
