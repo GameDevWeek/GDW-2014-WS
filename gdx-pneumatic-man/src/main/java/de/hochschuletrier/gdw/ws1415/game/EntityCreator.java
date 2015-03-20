@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
-import javafx.geometry.Pos;
 import box2dLight.ChainLight;
 import box2dLight.ConeLight;
 import box2dLight.DirectionalLight;
@@ -18,8 +17,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
-import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
+import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -37,6 +36,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockTriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
@@ -44,7 +44,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactCompone
 import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
@@ -71,11 +70,23 @@ public class EntityCreator {
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
 
-        entity.add(engine.createComponent(AnimationComponent.class));
-        entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         entity.add(engine.createComponent(PlayerComponent.class));
+        
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("laser"));
+        
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        pe.offsetY = 60f;
+        pe.offsetX = -7f;
+        entity.add(pe);
+
+        //addTestParticleAndLightComponent(entity);
+        
+//        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 1;
@@ -89,14 +100,31 @@ public class EntityCreator {
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.getBody().setUserData(bodyComponent);
+        bodyComponent.getBody().setGravityScale(1.75f);
+        // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0.1f)
-                .shapeBox(width, height);
+                .shapeCircle(width*0.1f,new Vector2(0,-height * 0.4f));
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
+        
+       fixtureDef = new PhysixFixtureDef(physixSystem)
+        .density(1f).friction(0f).restitution(0.1f)
+        .shapeBox(width*0.2f, height*0.5f, new Vector2(0,height * 0.2f), 0);
+        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        
         fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).restitution(0.1f)
-                .shapeCircle(10, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
+        .density(1).friction(0).restitution(0.1f)
+        .shapeCircle(width*0.4f,new Vector2(0,-height * 0.1f)).sensor(true);
+        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        
+        
+        //laser 
+        fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(10f).restitution(0.1f)
+                .shapeCircle(width * 0.09f, new Vector2(0, GameConstants.getTileSizeY()*0.7f));
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
         
@@ -104,7 +132,7 @@ public class EntityCreator {
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
 
-        jumpComponent.jumpImpulse = 25000.0f;
+        jumpComponent.jumpImpulse = 14000.0f;
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
@@ -112,14 +140,21 @@ public class EntityCreator {
         moveComponent.speed = 20000.0f;
         entity.add(moveComponent);
 
+        PositionComponent pos = engine.createComponent(PositionComponent.class);
+        pos.scaleX = 0.5f;
+        pos.scaleY = 0.5f;
+        
+        entity.add(pos);
+        
         // ***** temporary *****
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = true;
-        anim.animation = assetManager.getAnimation("walking");
+        anim.animation = assetManager.getAnimation("char_idle");
+        System.out.println(anim.animation + "*********************************************************");
         entity.add(anim);
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
-        layer.layer = 1;
+        layer.layer = 10; // TODO: Change later
         entity.add(layer);
 
         engine.addEntity(entity);
@@ -137,6 +172,8 @@ public class EntityCreator {
         entityToDie.remove(PhysixBodyComponent.class);
         entityToDie.remove(MovementComponent.class);
         entityToDie.remove(JumpComponent.class);
+        entityToDie.remove(ParticleComponent.class);
+        entityToDie.remove(PointLightComponent.class);
 
         DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
         entityToDie.add(deathComponent);
@@ -148,10 +185,7 @@ public class EntityCreator {
         
         entityToDie.add(deathAnimation);
         entityToDie.add(deathComponent);
-         // Shifts camera to (0,0)??
-        LayerComponent Layer = engine.createComponent(LayerComponent.class);
-        Layer.layer = 1;
-        entityToDie.add(Layer);
+
         return entityToDie;
     }
 
@@ -197,11 +231,54 @@ public class EntityCreator {
 
         box.add(engine.createComponent(TriggerComponent.class));
         box.add(engine.createComponent(PositionComponent.class));
+        
+        float width = GameConstants.getTileSizeX();
+        float height = GameConstants.getTileSizeY() * 0.4f;
+        
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, box);
+        bodyComponent.getBody().setUserData(bodyComponent);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(0).restitution(0.1f)
+                .shapeBox(width, height).sensor(true);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        box.add(bodyComponent);;
 
         engine.addEntity(box);
         return box;
     }
 
+    public static Entity createAndAddGoal(float x, float y, int requiredMiners) {
+        Entity goal = engine.createEntity();
+
+        goal.add(engine.createComponent(TriggerComponent.class));
+        goal.add(engine.createComponent(PositionComponent.class));
+        goal.add(engine.createComponent(GoalComponent.class));
+        
+        goal.getComponent(GoalComponent.class).reset();
+        goal.getComponent(GoalComponent.class).miners_threshold = requiredMiners;
+        
+        float width = GameConstants.getTileSizeX();
+        float height = GameConstants.getTileSizeY() * 0.4f;
+        
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
+                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, goal);
+        bodyComponent.getBody().setUserData(bodyComponent);
+        PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(0).restitution(0.1f)
+                .shapeBox(width, height).sensor(true);
+        Fixture fixture = bodyComponent.createFixture(fixtureDef);
+        fixture.setUserData(bodyComponent);
+        goal.add(bodyComponent);;
+
+        engine.addEntity(goal);
+        return goal;
+    }
 
     /**
      *  Indestructable Block
@@ -216,9 +293,6 @@ public class EntityCreator {
 
         entity.add(defineBoxPhysixBodyComponent(entity, x, y, width, height,
                 true, 1f, 1f, 0.1f));
-
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
 
         engine.addEntity(entity);
         return entity;
@@ -288,7 +362,7 @@ public class EntityCreator {
     public static Entity createAndAddVulnerableFloor(float x, float y, TiledMap map, TileInfo info, int health,  int tileX, int tileY) {
         Entity entity = engine.createEntity();
         
-        addRenderComponents(entity, map, info, tileX, tileY); // TODO: Change as soon as design team added the animation properties.
+        addRenderComponents(entity, map, info, tileX, tileY, PlayMode.LOOP, true); // TODO: Change as soon as design team added the animation properties.
         
         entity.add(defineBoxPhysixBodyComponent(entity, x, y,
                 GameConstants.getTileSizeX(), GameConstants.getTileSizeY(),
@@ -362,7 +436,7 @@ public class EntityCreator {
     /**
      *  Moveable Platform
      */
-    private static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, PlatformMode mode) {
+    private static Entity createPlatformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode) {
         Entity entity = engine.createEntity();
         
         PhysixBodyComponent bodyComponent = engine
@@ -377,13 +451,11 @@ public class EntityCreator {
         fixture.setUserData(bodyComponent);
         entity.add(bodyComponent);
 
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
-
         PlatformComponent pl = new PlatformComponent();
         pl.travelDistance = travelDistance * GameConstants.getTileSizeX();
         pl.mode = mode;
         pl.startPos = new Vector2(x, y);
+        pl.platformSpeed = speed;
 
         DirectionComponent d = new DirectionComponent();
         d.facingDirection = dir;
@@ -396,7 +468,7 @@ public class EntityCreator {
     }
 
     public static Entity DestructablePlattformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode, int hitpoints) {
-        Entity e = createPlatformBlock(x,y, travelDistance, dir, mode);
+        Entity e = createPlatformBlock(x,y, travelDistance, dir, speed, mode);
         HealthComponent h = new HealthComponent();
         h.Value = hitpoints;
         e.add(h);
@@ -406,7 +478,7 @@ public class EntityCreator {
     }
 
     public static Entity IndestructablePlattformBlock(float x, float y, int travelDistance, Direction dir, float speed, PlatformMode mode) {
-        return createPlatformBlock(x,y, travelDistance, dir, mode);
+        return createPlatformBlock(x,y, travelDistance, dir, speed, mode);
     }
 
     public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, String direction, TiledMap map, TileInfo info, int tileX, int tileY) {
@@ -458,8 +530,7 @@ public class EntityCreator {
         Damage.damage = 2;
         entity.add(Damage);
 
-        DestructableBlockComponent blockComp = new DestructableBlockComponent();
-        entity.add(blockComp);
+
 
         engine.addEntity(entity);
         return entity;
@@ -651,13 +722,12 @@ public class EntityCreator {
     public static void addTestParticleAndLightComponent(Entity entity) {
         ParticleComponent pe = engine.createComponent(ParticleComponent.class);
         
-        pe.particleEffect = new ParticleEffect();
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("explosion"));
         
-        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
         pe.loop=true;
         pe.particleEffect.flipY();
         pe.particleEffect.start();
-        
+        pe.offsetY = 100f;
         PointLightComponent pl = engine.createComponent(PointLightComponent.class);
         pl.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(),125,new Color(1f,0f,0f,1f),5f,0,0);
         
@@ -667,10 +737,6 @@ public class EntityCreator {
     
     public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
     	Entity entity = engine.createEntity();
-
-    	// FOR TESTS:
-    	//if (info.getBooleanProperty("Invulnerable", false) && info.getProperty("Type", "").equals("Lava"))
-    		//addTestParticleAndLightComponent(entity);
     	
     	addRenderComponents(entity, map, info, tileX, tileY);
     	
@@ -678,12 +744,26 @@ public class EntityCreator {
     	return entity;
     }
     
-    private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, AnimationExtended animation) {
+    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
+        Entity entity = engine.createEntity();
+        
+        addRenderComponents(entity, map, info, tileX, tileY, playMode, start);
+        
+        engine.addEntity(entity);
+        return entity;
+    }
+    
+    private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, 
+    		AnimationExtended animation, boolean start, float stateTime) {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
         entityLayer.parallax = parallax;
         
+        
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
+        anim.IsActive = start;
+        anim.stateTime = stateTime;
+        anim.permanent_stateTime = stateTime;
         anim.animation = animation;
         
         PositionComponent pos = engine.createComponent(PositionComponent.class);
@@ -746,36 +826,40 @@ public class EntityCreator {
     
     /**
      * Extracts information from the map and tile info to add components to the the given entity.
-     * The frame number (param frames) should be greater than 1.
+     * Make sure the property "animationFrames" of the TileSet is set to greater than 1.
      */
-    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, int frames) {
-    	assert(frames > 1);
-    	
+    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
+    	int frames = tileset.getIntProperty("animationFrames", 0);
+    			
+    	assert(frames > 1);
+
     	Texture image = (Texture) tileset.getAttachment();
     	
     	TileSetAnimation animation = new TileSetAnimation(
                 frames,
                 tileset.getFloatProperty("animationDuration", 0),
-                tileset.getIntProperty("animationTileOffset", 0));
+                tileset.getIntProperty("animationOffset", 0));
     	
     	TextureRegion[] regions = new TextureRegion[frames];
     	float[] frameDurations = new float[frames];
     	
     	int tileOffsetY = tileset.getTileHeight() - map.getTileHeight();
     	
-        float px = (tileX * map.getTileWidth());
-        float py = (tileY * map.getTileHeight()) - tileOffsetY;
+        float px = (tileX * map.getTileWidth()) + map.getTileWidth()*0.5f;
+        float py = (tileY * map.getTileHeight()) - tileOffsetY + map.getTileHeight()*0.5f;
+        
+        float stateTime = tileset.getTileX(info.localId) * animation.frameDuration;
         
     	for(int i=0; i<frames; i++) {
-            tileset.updateAnimation(animation.frameDuration*i);
-            
-            int sheetX = tileset.getTileX(info.localId);
+    		tileset.updateAnimation(animation.frameDuration*i);
+
+            int sheetX = tileset.getTileX(0);
             int sheetY = tileset.getTileY(info.localId);
             
             int coordX = (int) (sheetX * tileset.getTileWidth()); 
             coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
-            int coordY = ((int) sheetY * tileset.getTileHeight());
+            int coordY = (int) (sheetY * tileset.getTileHeight());
             coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();  
             
             regions[i] = new TextureRegion(image);
@@ -784,10 +868,12 @@ public class EntityCreator {
     	}
 
     	tileset.updateAnimation(0f);
-    	AnimationExtended anim = new AnimationExtended(PlayMode.LOOP, frameDurations, regions);
-    	addRenderComponents(entity, px, py, 0, 0.2f, anim);
+    	AnimationExtended anim = new AnimationExtended(playMode, frameDurations, regions);
+
+    	addRenderComponents(entity, px, py, 0, 0.2f, anim, start, stateTime);
     }
     // ********** Rendering section END **********
     
+
    
 }

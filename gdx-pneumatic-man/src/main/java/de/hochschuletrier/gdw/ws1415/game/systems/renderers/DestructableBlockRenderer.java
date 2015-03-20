@@ -25,7 +25,7 @@ public class DestructableBlockRenderer extends SortedFamilyRenderSystem.Renderer
         PositionComponent position = ComponentMappers.position.get(entity);
         HealthComponent health = ComponentMappers.health.get(entity);
         
-        TextureRegion keyFrame = animation.animation.getKeyFrame(health.Value < 0 ? 0 : health.Value);
+        TextureRegion keyFrame = animation.animation.getKeyFrame(health.Value < 0 ? 0 : health.Value-1);
         int w = keyFrame.getRegionWidth();
         int h = keyFrame.getRegionHeight();
         DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h, 1, 1, position.rotation);

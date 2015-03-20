@@ -10,6 +10,7 @@ import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 
 import de.hochschuletrier.gdw.ws1415.Settings;
+import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 
 
@@ -20,19 +21,16 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
 		// TODO Auto-generated constructor stub
 	}
 
-	public boolean jump;
-	public float direction;
-	public boolean pause;
+	private float jump = -1;
+	private float direction;
 	
 	protected void processEntity(Entity entity, float deltaTime) {
 		InputComponent inputComponent = entity.getComponent(InputComponent.class);
 		
 		inputComponent.reset();
-		if(jump){
+		if(jump > 0){
 			inputComponent.jump = true;
-		}
-		if(pause){
-			inputComponent.pause = true;
+			jump -= deltaTime;
 		}
 		inputComponent.direction = direction;
 	}
@@ -56,8 +54,8 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
         case 0:
         case 1:
         case 2: 
-        case 3: jump = true; break;
-        case 7: pause = true;break;
+        case 3: jump = 0.2f; break;
+        case 7: GameConstants.pause = !GameConstants.pause; break;
         }
         return false;
     }
@@ -65,14 +63,6 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
     @Override
     public boolean buttonUp(Controller controller, int buttonCode)
     {
-    	switch(buttonCode){
-        case 0:
-        case 1:
-        case 2:
-        case 3: jump = false; break;
-        case 7: pause = false; break;
-        }
-      
         return false;
     }
 
@@ -80,14 +70,12 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
     public boolean axisMoved(Controller controller, int axisCode, float value)
     {
         if(axisCode == 1){
-        	if(value > 0.5){
+        	if(value > 0.4){
         		direction = value;
-        		
         	}
         
-        	else if(value < -0.5){
+        	else if(value < -0.4){
         		direction = value;
-        		
         	}
         	else {
         		direction = 0;

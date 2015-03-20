@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.states;
 
+import java.awt.Toolkit;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,7 +14,6 @@ public class LoadGameState extends BaseGameState {
     private boolean isDone;
     private final AssetManagerX assetManager;
     private final Runnable completeFunc;
-    //private final Texture loadScreen = new Texture(Gdx.files.internal("data/images/background_menu.png"));
     private final Texture overlay = new Texture(Gdx.files.internal("data/images/titel.png"));
 
     public LoadGameState(AssetManagerX assetManager, Runnable completeFunc) {
@@ -23,18 +23,16 @@ public class LoadGameState extends BaseGameState {
 
     public void render() 
     {
-    	float drawWidth = Gdx.graphics.getWidth() - 90.0f;
-    	float x = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
-    	float y = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
+    	float drawWidth = Gdx.graphics.getWidth() - 90.0f;  	
     	
     	Color progressUnfillColor = new Color(Color.rgb888(255, 247, 126));
     	Color progressFillColor = new Color(Color.rgb888(255, 239, 1));
 
     	Main.getInstance().screenCamera.bind();
     	    	    	
-    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, drawWidth, 200, progressUnfillColor);
-    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, (int) (drawWidth * assetManager.getProgress()), 200, progressFillColor);
-    	DrawUtil.draw(overlay, x, y);
+    	DrawUtil.fillRect(50, Toolkit.getDefaultToolkit().getScreenSize().height/4, drawWidth, 300, progressUnfillColor);
+    	DrawUtil.fillRect(50, Toolkit.getDefaultToolkit().getScreenSize().height/4, (int) (drawWidth * assetManager.getProgress()), 300, progressFillColor);
+    	DrawUtil.draw(overlay, 0, 0, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
     	
     	
     	 /* Main.getInstance().screenCamera.bind();

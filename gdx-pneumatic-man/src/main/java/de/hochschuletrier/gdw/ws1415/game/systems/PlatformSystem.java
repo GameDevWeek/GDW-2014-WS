@@ -22,10 +22,11 @@ public class PlatformSystem extends IteratingSystem {
     private PhysixSystem physixSystem;
 
     public PlatformSystem(int priority, PhysixSystem physixSystem) {
-        super(Family.all(AIComponent.class).get(), priority);
+        super(Family.all(PhysixBodyComponent.class, DirectionComponent.class, PlatformComponent.class).get(), priority);
         this.physixSystem = physixSystem;
     }
 
+    
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
@@ -33,11 +34,19 @@ public class PlatformSystem extends IteratingSystem {
         DirectionComponent direction = entity.getComponent(DirectionComponent.class);
         PlatformComponent platform = entity.getComponent(PlatformComponent.class);
 
-        if(physix.getPosition().sub(platform.startPos).len2() <= platform.travelDistance*platform.travelDistance){
-            physix.setLinearVelocity(direction.facingDirection.toVector2().scl(platform.platformSpeed));
+        platform.traveledDistanceVector.set(physix.getPosition().x, physix.getPosition().y);
+        platform.traveledDistanceVector.sub(platform.startPos).len2();
+        
+        if(platform.traveledDistanceVector.len2() <= platform.travelDistance*platform.travelDistance){
+            
         }else{
-            platform.startPos = platform.startPos.add(direction.facingDirection.toVector2().scl(platform.travelDistance));
+            platform.startPos.add(platform.traveledDistanceVector);
             direction.facingDirection = direction.facingDirection.rotate180();
         }
+        
+        platform.velocity.set(direction.facingDirection.toVector2().x, direction.facingDirection.toVector2().y);
+        platform.velocity.scl(platform.platformSpeed * 64);
+        
+        physix.setLinearVelocity(platform.velocity);
     }
 }
