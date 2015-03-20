@@ -1,3 +1,5 @@
 {
-    "menu": "data/music/menu.ogg"
+    "menu": "data/music/menu.ogg",
+    "game": "data/music/game.ogg",
+    "credits": "data/music/credits.ogg"
 }

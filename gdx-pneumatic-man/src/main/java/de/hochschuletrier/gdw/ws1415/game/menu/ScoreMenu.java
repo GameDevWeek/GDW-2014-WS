@@ -8,6 +8,8 @@ import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 
 public class ScoreMenu extends MenuPage
 {
+    int[] highscore = new int[4]; //Hier sollen die Highscore gespeichert werden.
+    
 	public ScoreMenu(Skin skin, MenuManager menuManager)
 	{
 		super(skin, "background_menu");

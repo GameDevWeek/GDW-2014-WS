@@ -46,7 +46,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
-import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
+import de.hochschuletrier.gdw.ws1415.game.contactlisteners.FallingTrapContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
@@ -409,7 +409,7 @@ public class ResetTest extends SandboxGame {
                 .addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
-        contactListener.addListener(FallingRockComponent.class, new RockContactListener());
+        contactListener.addListener(FallingRockComponent.class, new FallingTrapContactListener());
 
         physixSystem.getWorld().setContactListener(contactListener);
     }
