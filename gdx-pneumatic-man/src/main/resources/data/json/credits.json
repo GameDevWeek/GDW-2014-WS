@@ -138,6 +138,7 @@
                 { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "title" },
                 { "time": 22000, "animation": "fade_out", "animationTime": 2000, "group": "startanimation" }
             ]
+            
         }
     }
 }
