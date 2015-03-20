@@ -32,9 +32,6 @@
         "mainMenu": {"down": null, "up": null, "font": "mainMenu-font", "fontColor": "gray", "downFontColor": "cyan", "overFontColor": "softOrange"},
         "error": {"down": "default-round-down", "up": "default-round", "font": "default-font", "fontColor": "red"},
     },
-    "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
-        "default": {"down": "default-round-down", "up": "default-round", "checked" : "default-round-down"}
-    },
     "com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle": {
         "default": {"vScroll": "default-scroll", "hScrollKnob": "default-round-large", "background": "default-rect", "hScroll": "default-scroll", "vScrollKnob": "default-round-large"},
         "transparent": {"vScroll": "default-scroll", "hScrollKnob": "default-round-large", "background": null, "hScroll": "default-scroll", "vScrollKnob": "default-round-large"}
