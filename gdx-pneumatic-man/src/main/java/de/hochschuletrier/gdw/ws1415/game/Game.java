@@ -60,7 +60,7 @@ import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class Game {
 
-    private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
+    private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
 
     private final PooledEngine engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
