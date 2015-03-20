@@ -26,11 +26,7 @@ import de.hochschuletrier.gdw.ws1415.sandbox.SandboxGame;
 
 
 
-<<<<<<< .merge_file_a13504
-public class Hud extends Game
-=======
 public class Hud extends SandboxGame
->>>>>>> .merge_file_a08676
 {
     
     private int allMiners;

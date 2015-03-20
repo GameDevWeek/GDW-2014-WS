@@ -54,7 +54,6 @@ import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 public class Game {
 
     private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
-    private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
     private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
 
