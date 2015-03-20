@@ -162,10 +162,9 @@ public class EntityCreator {
         
         AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
         deathAnimation.animation = assetManager.getAnimation("char_death");
+        deathAnimation.isPlayer = true;
         entityToDie.add(deathAnimation);
-        
-        
-        entityToDie.add(deathAnimation);
+      
         entityToDie.add(deathComponent);
 
         return entityToDie;
