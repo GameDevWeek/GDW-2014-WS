@@ -217,16 +217,31 @@ public class Main extends StateBasedGame {
     }
 
     public static void main(String[] args) {
+        parseOptions(args);
+        
         appCfg = new LwjglApplicationConfiguration();
         appCfg.title = "LibGDX Test";
         appCfg.width = WINDOW_WIDTH;
         appCfg.height = WINDOW_HEIGHT;
+        if (cmdLine.hasOption("width")) {
+            try {
+                appCfg.width = Integer.parseInt(cmdLine.getOptionValue("width"));
+            } catch(NumberFormatException e) {
+                System.out.println("Width must be of type integer");
+            }
+        }
+        if (cmdLine.hasOption("height")) {
+            try {
+                appCfg.height = Integer.parseInt(cmdLine.getOptionValue("height"));
+            } catch(NumberFormatException e) {
+                System.out.println("Height must be of type integer");
+            }
+        }
         appCfg.useGL30 = false;
         appCfg.vSyncEnabled = false;
         appCfg.foregroundFPS = -1;
         appCfg.backgroundFPS = -1;
 
-        parseOptions(args);
         new LwjglApplication(getInstance(), appCfg);
     }
 
@@ -239,6 +254,18 @@ public class Main extends StateBasedGame {
                 .withType(String.class)
                 .hasArg()
                 .withArgName("Sandbox Classname")
+                .create());
+        options.addOption(OptionBuilder.withLongOpt("width")
+                .withDescription("Window width override")
+                .withType(String.class)
+                .hasArg()
+                .withArgName("Width in Pixels")
+                .create());
+        options.addOption(OptionBuilder.withLongOpt("height")
+                .withDescription("Window height override")
+                .withType(String.class)
+                .hasArg()
+                .withArgName("Height in Pixels")
                 .create());
 
         try {
