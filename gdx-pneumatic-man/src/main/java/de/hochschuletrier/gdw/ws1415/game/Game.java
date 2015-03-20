@@ -127,6 +127,7 @@ public class Game {
 
     private void loadCurrentlySelectedLevel()
     {
+        GameConstants.pause = false;
         engine.removeAllEntities();
         removeSystems();
         Main.getInstance().removeScreenListener(cameraSystem.getCamera());
@@ -218,6 +219,9 @@ public class Game {
         engine.removeSystem(_ScoreSystem);
         engine.removeSystem(lavaFountainSystem);
         engine.removeSystem(destroyBlocksSystem);
+        
+        renderSystem.rayHandler.removeAll();
+
     }
 
     private void addContactListeners() {
