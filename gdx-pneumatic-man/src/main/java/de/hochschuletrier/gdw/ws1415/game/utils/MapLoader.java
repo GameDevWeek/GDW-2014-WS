@@ -424,10 +424,10 @@ public class MapLoader
                                     {
                                         if ( tinfo.getBooleanProperty("Invulnerable", false) )
                                         {
-                                          //  EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                         } else
                                         {
-                                           // EntityCreator.createAndAddInvulnerableFloor( new Rectangle( i,j,1,1 ) );
+                                            EntityCreator.createAndAddInvulnerableFloor( new Rectangle( i,j,1,1 ) );
                                         }
                                     }
                                     if ( tinfo.getBooleanProperty("Invulnerable", false) )
