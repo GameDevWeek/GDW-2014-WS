@@ -57,6 +57,7 @@ public class Game {
     private  CameraSystem cameraSystem;
     private  RayHandler rayHandler;
     private  SortedRenderSystem renderSystem;
+    private  HudRenderSystem hudRenderSystem;
     private  UpdatePositionSystem updatePositionSystem;
     private  MovementSystem movementSystem;
     private  InputKeyboardSystem inputKeyboardSystem;
@@ -196,6 +197,7 @@ public class Game {
         cameraSystem = new CameraSystem();
         rayHandler = new RayHandler(physixSystem.getWorld());
         renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
+        hudRenderSystem = new HudRenderSystem();
         updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
         movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
         inputKeyboardSystem = new InputKeyboardSystem();
@@ -212,6 +214,7 @@ public class Game {
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
+        engine.addSystem(hudRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
         engine.addSystem(inputKeyboardSystem);
