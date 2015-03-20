@@ -25,7 +25,7 @@ public class MainMenu extends MenuPage{
     DecoImage start = new DecoImage(assetManager.getTexture("start_button"));
     DecoImage optionen = new DecoImage(assetManager.getTexture("optionen_button"));
     DecoImage credits = new DecoImage(assetManager.getTexture("credits_button"));
-    DecoImage ende = new DecoImage(assetManager.getTexture("beenden_button"));
+    DecoImage ende = new DecoImage(assetManager.getTexture("back_button"));
     DecoImage highscore = new DecoImage(assetManager.getTexture("score_button"));
     DecoImage levels = new DecoImage(assetManager.getTexture("levels_button"));
     //DecoImage hand=new DecoImage(assetManager.getTexture("zeigefinger"));
@@ -52,7 +52,8 @@ public class MainMenu extends MenuPage{
             //addPageEntry(menuManager,x,y-yStep*(i++),ende, new OptionMenu(skin, menuManager));
             //addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++), (int)credits.getWidth(), (int)credits.getHeight()/2, credits, ()-> menuManager.pushPage(n));
             addPageEntry(menuManager, x, y-yStep*(i++), credits, new CreditsMenu(skin, menuManager));
-            addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2, ende, ()->System.exit(0));
+            //addCenteredImage((int)(x-(ende.getWidth()/2)), y-yStep*(i++),(int)ende.getWidth(),(int)ende.getHeight()/2, ende, ()->System.exit(0));
+            addCenteredImage(450, 750, 108, 108, ende, () -> System.exit(0));
             //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
             //addGear(hand);
     }
