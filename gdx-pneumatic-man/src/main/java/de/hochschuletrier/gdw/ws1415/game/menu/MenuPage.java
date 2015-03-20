@@ -154,8 +154,15 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("levels_button_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("score_button"))
             image.setTexture(assetManager.getTexture("score_button_active"));
+    	
     }
     
+    protected final void addImage(int x, int y, int width, int height, DecoImage dI){
+        DecoImage image = dI;
+    	image.setBounds(x, y, width, height);
+    	addActor(image);
+    }
+
     protected final  void changeTextureNotActive(DecoImage image)
     {
         if(image.getRegion().getTexture()==assetManager.getTexture("optionen_button_active"))

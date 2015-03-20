@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
+import org.lwjgl.input.Mouse;
+
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 //import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -19,6 +21,8 @@ public class LevelMenu extends MenuPage
     int[] test = {1, 2, 3, 4, 5};
 	DecoImage[] imageArray = new DecoImage[test.length];
 	ImageButton[] buttonArray = new ImageButton[test.length];
+	DecoImage pointer = new DecoImage(assetManager.getTexture("back_button"));
+
 
 	public LevelMenu(Skin skin, MenuManager menuManager)
 	{
@@ -29,13 +33,15 @@ public class LevelMenu extends MenuPage
 		int y = Main.WINDOW_HEIGHT/2;
 		int y_up = y + 100;
 		int y_down = y - 20;
-		
+				
 		//ImageButton tryOut = addImageButton(x + x_step, y + 200, 108, 108, this::levelTest);
 		//tryOut.background("back_button");
 		//tryOut.setBackground("data/images/back_button.png");
 		//tryOut.setBackground("back_button");
 		
 		createLabel(Main.WINDOW_WIDTH/2, Main.WINDOW_HEIGHT/2 + 300).setText("LEVEL");
+		
+		addCenteredImage(x + x_step, y + 120, 108, 108, pointer, ()-> System.exit(0));
 		
 		for(int i = 0; i < test.length; i++)
 		{
@@ -44,10 +50,11 @@ public class LevelMenu extends MenuPage
 			else
 				createLabel(x + x_step, y_down).setText("" + test[i]);
 			
-			buttonArray[i] = addImageButton(x + x_step, y, 108, 108, this::levelTest);
-			buttonGroup.add(buttonArray[i]);
+			//buttonArray[i] = addImageButton(x + x_step, y, 108, 108, this::levelTest);
+			//buttonGroup.add(buttonArray[i]);
 			imageArray[i] = new DecoImage(assetManager.getTexture("back_button"));
-			//addCenteredImage(x + x_step, y, 108, 108, imageArray[i], () -> levelTest());
+			final int d = i;
+			addCenteredImage(x + x_step, y, 108, 108, imageArray[i], () -> levelTest(d));
 			x_step += 150;
 		}
 		
@@ -62,18 +69,15 @@ public class LevelMenu extends MenuPage
 	    return label;
 	}
 	
-	private void levelTest()
+	private void levelTest(int s)
 	{
 		//Game.loadLevel();
 		levelSelected = true;
 		//Game.loadSelectedLevel = true;
 		
-		for(int i = 0; i < buttonArray.length; i++)
-		{
-			if(buttonArray[i].equals(buttonGroup.getChecked()))
-			{
-				System.out.println("Level ausgewählt: " + (i+1));
-			}
-		}
+		pointer.setX(imageArray[s].getX());
+		pointer.setY(imageArray[s].getY()+20);
+
+		System.out.println("Level ausgewählt: " + (s+1));
 	}
 }
