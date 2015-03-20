@@ -24,15 +24,21 @@ public class RockContactListener extends PhysixContactAdapter {
                 .sub(contact.getOtherFixture().getBody().getPosition()); // vector von other nach rock
 
         // kommt rock von oben?
-        if(d.dot(Vector2.Y) >= 0) return; // nein tut er nicht
-
-
         // ja stein kommt von oben:
-        if(ComponentMappers.health.has(otherEntity)) {
-            HealthComponent h = ComponentMappers.health.get(contact.getOtherComponent().getEntity());
-            EntityCreator.engine.removeEntity(myEntity);
-        }else if(ComponentMappers.block.has(otherEntity)){
-            EntityCreator.engine.removeEntity(myEntity);
+        if(contact.getWorldManifold().getNormal().y < 0)
+        {
+            if(ComponentMappers.health.has(otherEntity)) {
+                HealthComponent h = ComponentMappers.health.get(otherEntity);
+                h.DecrementByValueNextFrame = 1;
+                /*
+                HealthComponent MyHealth = myEntity.getComponent(HealthComponent.class);
+                MyHealth.Value = 0;
+                */
+                //h.Value = 0;
+                //h.Value -= myEntity.getComponent(DamageComponent.class).damage;
+            }else if(ComponentMappers.block.has(otherEntity)){
+            }
+            
         }
     }
 
