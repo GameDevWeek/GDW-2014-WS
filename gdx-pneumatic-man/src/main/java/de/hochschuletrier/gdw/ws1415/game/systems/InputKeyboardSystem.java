@@ -16,8 +16,6 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
 
     boolean jump = false;
 
-    public boolean pause = false;
-
     boolean left = false;
 
     boolean right = false;
@@ -61,8 +59,14 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
                 break;
             case Input.Keys.ESCAPE:
             case Input.Keys.P: GameConstants.pause = !GameConstants.pause; break;
-            case Input.Keys.C: Settings.GAMEPAD_ENABLED.set(true); break; // nur für Testzwecke
-            case Input.Keys.K: Settings.GAMEPAD_ENABLED.set(false); break; //
+        }
+        if(!Main.IS_RELEASE){  // nur für Testzwecke
+            if(keycode == Input.Keys.C){
+                Settings.GAMEPAD_ENABLED.set(true);
+            }
+            else if(keycode == Input.Keys.K){
+                Settings.GAMEPAD_ENABLED.set(false);
+            }
         }
         return true;
     }
