@@ -217,16 +217,31 @@ public class Main extends StateBasedGame {
     }
 
     public static void main(String[] args) {
+        parseOptions(args);
+        
         appCfg = new LwjglApplicationConfiguration();
         appCfg.title = "LibGDX Test";
         appCfg.width = WINDOW_WIDTH;
         appCfg.height = WINDOW_HEIGHT;
+        if (cmdLine.hasOption("width")) {
+            try {
+                appCfg.width = Integer.parseInt(cmdLine.getOptionValue("width"));
+            } catch(NumberFormatException e) {
+                System.out.println("Width must be of type integer");
+            }
+        }
+        if (cmdLine.hasOption("height")) {
+            try {
+                appCfg.height = Integer.parseInt(cmdLine.getOptionValue("height"));
+            } catch(NumberFormatException e) {
+                System.out.println("Height must be of type integer");
+            }
+        }
         appCfg.useGL30 = false;
         appCfg.vSyncEnabled = false;
         appCfg.foregroundFPS = -1;
         appCfg.backgroundFPS = -1;
 
-        parseOptions(args);
         new LwjglApplication(getInstance(), appCfg);
     }
 
@@ -234,17 +249,24 @@ public class Main extends StateBasedGame {
         CommandLineParser cmdLineParser = new PosixParser();
 
         Options options = new Options();
-        options.addOption(OptionBuilder.withLongOpt("sandbox")
-                .withDescription("Start a Sandbox Game")
-                .withType(String.class)
-                .hasArg()
-                .withArgName("Sandbox Classname")
-                .create());
+        createOption(options, "sandbox", "Start a Sandbox Game", "Sandbox Classname");
+        createOption(options, "width", "Window width override", "Width in Pixels");
+        createOption(options, "height", "Window height override", "Height in Pixels");
+        createOption(options, "map", "Map override", "Map file without path and extension");
 
         try {
             cmdLine = cmdLineParser.parse(options, args);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void createOption(Options options, String name, String description, String argName) throws IllegalArgumentException {
+        options.addOption(OptionBuilder.withLongOpt(name)
+                .withDescription(description)
+                .withType(String.class)
+                .hasArg()
+                .withArgName(argName)
+                .create());
     }
 }

@@ -298,7 +298,7 @@ public class MapLoader
         
         generator.generate(map,
                 (Layer layer, TileInfo info) -> {
-                    return info.getBooleanProperty("Invulnerable", false)
+                     return info.getBooleanProperty("Invulnerable", false)
                             && info.getProperty("Type", "").equals("Lava");
                 },
                 EntityCreator::createAndAddLava);
@@ -463,8 +463,13 @@ public class MapLoader
                                     }
                                 }
                                     break;
+                                    
+                                case "bomb":
+                                    EntityCreator.createAndAddBomb(i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                                j * map.getTileHeight() + 0.5f * map.getTileHeight(), map, tinfo, i, j);
+                                    break;
                                 default :
-                                    // TODO Warnung
+                                    Gdx.app.log("WARNING", "layer-type " + type + " does not match any name. No Entity created");
                                     break;
                             }
                         }
