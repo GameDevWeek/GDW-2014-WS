@@ -25,7 +25,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
     public Entity goal;
     public Entity player;
     public boolean playerAdded = false;
-    float n = 0;
+    float tick = 0;
     public int current_game_time = 0;
 
     public ScoreSystem() {
@@ -41,12 +41,29 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void update(float deltaTime) {
-        n += deltaTime;
-        if(n>=1.0f){
+        //if(current_game_time < 5){
+        tick += deltaTime;
+        if(tick>=1.0f){
             current_game_time += 1;
-            n-=1.0f;
-            logger.info("Time: " + current_game_time);
+            tick-=1.0f;
+            //if(goal.getComponent(GoalComponent.class).miners_threshold == player.getComponent(PlayerComponent.class).saved_miners){
+            //    goal.getComponent(GoalComponent.class).end_of_level = true;
+            //}
+            //logger.info("Time: " + current_game_time);
         }
+        /**
+        }
+        
+        if(goal.getComponent(GoalComponent.class).miners_threshold == player.getComponent(PlayerComponent.class).saved_miners)
+            goal.getComponent(GoalComponent.class).end_of_level = true;
+        
+        if(current_game_time == 5){
+            if(goal.getComponent(GoalComponent.class).end_of_level){
+                this.calculateHighscore();
+                logger.info("Your highscore is: " + score);
+            }
+        }
+        **/
     }
 
     @Override
@@ -58,6 +75,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         if(GoalFamily.matches(entity))
         {
             goal = entity;
+            logger.info("Goal was added.");
         }
         if (MinerFamily.matches(entity)) {
             total_miners += 1;
@@ -78,7 +96,9 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         
         highscore -= current_game_time;
         highscore += (goal.getComponent(GoalComponent.class).miners_threshold * 10);
-        highscore += (bonus_miners * 20);
+        if(bonus_miners >= 1){
+            highscore += (bonus_miners * 20);
+        }
         
         score = highscore;
     }

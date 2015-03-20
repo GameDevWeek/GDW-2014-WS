@@ -39,6 +39,7 @@ import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
@@ -152,6 +153,10 @@ public class Gamelogic_Game extends SandboxGame {
         }
         
         //Entity miner = EntityCreator.createAndAddMiner(300.0f, 900.0f);
+        Entity goal = EntityCreator.createAndAddEventBox(600.0f, 1050.0f);
+        GoalComponent goal_component = engine.createComponent(GoalComponent.class);
+        goal_component.miners_threshold = 1;
+        goal.add(goal_component);
     }
 
     @Override
@@ -291,7 +296,7 @@ public class Gamelogic_Game extends SandboxGame {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
-                                    Map, info, i, j);
+                                    Map, info, info.getIntProperty("Hitpoint", 0), i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) 
                         {

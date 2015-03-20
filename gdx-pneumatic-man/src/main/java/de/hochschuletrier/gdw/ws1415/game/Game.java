@@ -22,6 +22,7 @@ import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
 import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
@@ -32,6 +33,7 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
@@ -40,38 +42,14 @@ import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.LavaFountainSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.*;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
 import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
-import de.hochschuletrier.gdw.ws1415.game.utils.NoGamepadException;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
+import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 
-
-
-
-
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-
-
-
-
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
 
 public class Game {
 
@@ -94,8 +72,12 @@ public class Game {
     private final MovementSystem movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
     private final InputKeyboardSystem inputKeyboardSystem = new InputKeyboardSystem();
     private final InputGamepadSystem inputGamepadSystem = new InputGamepadSystem();
-    private final AISystem aisystems = new AISystem(GameConstants.PRIORITY_PHYSIX + 1, physixSystem);
     private final LavaFountainSystem lavaFountainSystem = new LavaFountainSystem(GameConstants.PRIORITY_ENTITIES+3);
+    private final DestroyBlocksSystem destroyBlocksSystem = new DestroyBlocksSystem();
+    private final AISystem aisystems = new AISystem(
+            GameConstants.PRIORITY_PHYSIX + 1,
+            physixSystem
+    );
 
     private InputManager inputManager = new InputManager();
     
@@ -105,6 +87,9 @@ public class Game {
     private TiledMap map;
     private TiledMapRendererGdx mapRenderer;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
+    
+    private String levelFilePath = "data/maps/Testkarte_19.03.tmx";
+    private AssetManagerX assetManager;
 
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -114,6 +99,7 @@ public class Game {
 
         EntityCreator.engine = this.engine;
         EntityCreator.physixSystem = this.physixSystem;
+        
     }
 
     public void dispose() {
@@ -122,6 +108,31 @@ public class Game {
     }
 
     public void init(AssetManagerX assetManager) {
+             
+        EntityCreator.assetManager = assetManager;
+        
+        this.assetManager = assetManager;
+        
+        
+        
+        selectPathFromSettings();
+        
+        loadCurrentlySelectedLevel();
+        
+        
+       
+    }
+
+    
+
+    private void loadCurrentlySelectedLevel()
+    {
+        engine.removeAllEntities();
+        removeSystems();
+        Main.getInstance().removeScreenListener(cameraSystem.getCamera());
+        Main.inputMultiplexer.removeProcessor(inputKeyboardSystem);
+        Main.getInstance().console.unregister(physixDebug);
+        
         
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
 
@@ -129,56 +140,59 @@ public class Game {
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
 
         addSystems();
-
-        map = loadMap("data/maps/Testkarte_19.03.tmx");
+        
+        // Load Map
+        map = loadMap(levelFilePath);
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
             tilesetImages.put(tileset, new Texture(filename));
         }
+        
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-
         setupPhysixWorld();
 
         addContactListeners();
         Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
-        if(Controllers.getControllers().size > 0)
-        {
-            inputKeyboardSystem.setProcessing(false);
-            inputGamepadSystem.setProcessing(true);
-        }
-        else
-        {
-            inputGamepadSystem.setProcessing(false);
-            inputKeyboardSystem.setProcessing(true);
-        }
+        
         MapLoader.generateWorldFromTileMap(engine, physixSystem, map, cameraSystem);
 
-        if (Controllers.getControllers().size > 0) {
-            inputKeyboardSystem.setProcessing(false);
-            inputGamepadSystem.setProcessing(true);
-        } else {
-            inputGamepadSystem.setProcessing(false);
-            inputKeyboardSystem.setProcessing(true);
-        }
-        inputManager.init();
        
+        inputManager.init();
     }
 
-    
+    private void selectPathFromSettings()
+    {
+        String levelName = Settings.CURRENTLY_SELECTED_LEVEL;
+        System.out.println("CurrentlySelectedLevel: " + levelName);
+        switch (levelName)
+        {
+            case "Test":
+                levelFilePath = "data/maps/Testkarte_19.03.tmx";
+                break;
+            case "Test2":
+                levelFilePath = "data/maps/Testkarte_19.03.tmx";
+                break;
+            default:
+                System.out.println("No Level has been set");
+        }
+    }
 
     public static TiledMap loadMap(String filename) {
         try {
             return new TiledMap(filename, LayerObject.PolyMode.ABSOLUTE);
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Map konnte nicht geladen werden: " + filename);
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Map konnte nicht geladen werden: ");
+            
         }
     }
 
     private void addSystems() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
@@ -188,6 +202,22 @@ public class Game {
         engine.addSystem(_HealthSystem);
         engine.addSystem(_ScoreSystem);
         engine.addSystem(lavaFountainSystem);
+        engine.addSystem(destroyBlocksSystem);
+    }
+    private void removeSystems(){
+        engine.removeSystem(physixSystem);
+        engine.removeSystem(physixDebugRenderSystem);
+        engine.removeSystem(cameraSystem);
+        engine.removeSystem(renderSystem);
+        engine.removeSystem(updatePositionSystem);
+        engine.removeSystem(movementSystem);
+        engine.removeSystem(inputKeyboardSystem);
+        engine.removeSystem(inputGamepadSystem);
+        engine.removeSystem(aisystems);
+        engine.removeSystem(_HealthSystem);
+        engine.removeSystem(_ScoreSystem);
+        engine.removeSystem(lavaFountainSystem);
+        engine.removeSystem(destroyBlocksSystem);
     }
 
     private void addContactListeners() {
@@ -217,6 +247,23 @@ public class Game {
         else
         {
             engine.update(delta);
+        }
+        
+        // Level reset Testing
+        if(inputKeyboardSystem.keyTyped('1'))
+        {
+            
+        }
+        
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
+            System.out.println("Restart Level"); 
+            Settings.CURRENTLY_SELECTED_LEVEL = "Test2";
+//            engine.removeAllEntities();
+            
+            // Level Reset
+            loadCurrentlySelectedLevel();
+            // Controls work
+            // Light cannot be reseted
         }
     }
 }

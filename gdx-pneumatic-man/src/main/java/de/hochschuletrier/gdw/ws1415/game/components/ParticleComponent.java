@@ -15,11 +15,15 @@ public class ParticleComponent extends Component implements Pool.Poolable
 { 
     public ParticleEffect particleEffect;
     public boolean loop = false; 
+    public float offsetX = 0;
+    public float offsetY = 0;
     
     @Override
     public void reset()
     {
         this.particleEffect = null;
         this.loop = false;
+        offsetX = 0;
+        offsetY = 0;
     }
 }

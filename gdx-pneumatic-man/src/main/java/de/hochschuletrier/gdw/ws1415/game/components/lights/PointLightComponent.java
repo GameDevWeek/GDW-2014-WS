@@ -25,10 +25,14 @@ import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 public class PointLightComponent extends Component implements Pool.Poolable
 { 
     public PointLight pointLight;
+    public float offsetX = 0;
+    public float offsetY = 0;
 
     @Override
     public void reset()
     {
-        pointLight = null; 
+        pointLight = null;
+        offsetX = 0;
+        offsetY = 0;
     }
 }
