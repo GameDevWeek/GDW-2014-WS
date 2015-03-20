@@ -44,6 +44,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactCompone
 import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
@@ -197,13 +198,16 @@ public class EntityCreator {
         float width = GameConstants.getTileSizeX();
         float height = GameConstants.getTileSizeY();
 
-        entity.add(engine.createComponent(DamageComponent.class));
+        DamageComponent Damage = engine.createComponent(DamageComponent.class);
+        Damage.damage  = 1;
+        Damage.damageToPlayer = true;
+        entity.add(Damage);
         entity.add(engine.createComponent(AIComponent.class));
         entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(SpawnComponent.class));
 
-        PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(pbdy, physixSystem, entity);
@@ -250,6 +254,31 @@ public class EntityCreator {
         return box;
     }
 
+    public static Entity createAndAddMiner(float x, float y)
+    {
+        Entity Miner = engine.createEntity();
+        
+        float width = GameConstants.getTileSizeX();
+        float height = GameConstants.getTileSizeY();
+        
+        Miner.add(engine.createComponent(MinerComponent.class));
+        Miner.add(engine.createComponent(PositionComponent.class));
+        
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
+        PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+        bodyComponent.init(pbdy, physixSystem, Miner);
+        PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
+                .density(1).friction(1f).restitution(0.1f)
+                .shapeBox(width, height);
+        Fixture fixture = bodyComponent.createFixture(pfx);
+        fixture.setUserData(bodyComponent);
+        Miner.add(bodyComponent);
+        
+        engine.addEntity(Miner);
+        return(Miner);
+    }
+    
     public static Entity createAndAddGoal(float x, float y, int requiredMiners) {
         Entity goal = engine.createEntity();
 
@@ -318,6 +347,9 @@ public class EntityCreator {
         FallingRockComponent rockComponent = new FallingRockComponent();
         rockComponent.id = trapId;
         entity.add(rockComponent);
+
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
         
         DamageComponent damageComp = engine.createComponent(DamageComponent.class);
         damageComp.damage = 4;
