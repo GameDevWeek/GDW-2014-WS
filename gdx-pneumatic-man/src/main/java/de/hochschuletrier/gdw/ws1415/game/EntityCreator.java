@@ -69,12 +69,21 @@ public class EntityCreator {
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
 
-        entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         entity.add(engine.createComponent(PlayerComponent.class));
+        
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("laser"));
+        
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        pe.offsetY = 60f;
+        pe.offsetX = -7f;
+        entity.add(pe);
 
-        addTestParticleAndLightComponent(entity);
+        //addTestParticleAndLightComponent(entity);
         
 //        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
 
@@ -144,6 +153,7 @@ public class EntityCreator {
         entityToDie.remove(PhysixBodyComponent.class);
         entityToDie.remove(MovementComponent.class);
         entityToDie.remove(JumpComponent.class);
+        entityToDie.remove(ParticleComponent.class);
 
         DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
         entityToDie.add(deathComponent);
@@ -235,9 +245,6 @@ public class EntityCreator {
 
         entity.add(defineBoxPhysixBodyComponent(entity, x, y, width, height,
                 true, 1f, 1f, 0.1f));
-
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
 
         engine.addEntity(entity);
         return entity;
@@ -396,9 +403,6 @@ public class EntityCreator {
         fixture.setUserData(bodyComponent);
         entity.add(bodyComponent);
 
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
-
         PlatformComponent pl = new PlatformComponent();
         pl.travelDistance = travelDistance * GameConstants.getTileSizeX();
         pl.mode = mode;
@@ -477,8 +481,7 @@ public class EntityCreator {
         Damage.damage = 2;
         entity.add(Damage);
 
-        DestructableBlockComponent blockComp = new DestructableBlockComponent();
-        entity.add(blockComp);
+
 
         engine.addEntity(entity);
         return entity;
@@ -821,4 +824,7 @@ public class EntityCreator {
     	addRenderComponents(entity, px, py, 0, 0.2f, anim, start, stateTime);
     }
     // ********** Rendering section END **********
+    
+
+   
 }
