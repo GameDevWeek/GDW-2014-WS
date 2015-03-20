@@ -57,6 +57,12 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         this.cameraSystem = cameraSystem;
     }
     
+	@Override
+	public void entityRemoved (Entity entity) {
+		super.entityRemoved(entity);
+		forceSort(); // sort is needed after an entity is removed!
+	}
+	
     @Override
     public void processEntity(Entity entity, float deltaTime) {
     	LayerComponent layerComponent = ComponentMappers.layer.get(entity);
@@ -65,7 +71,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     		onLayerChanged(currentLayer, layerComponent);
     		currentLayer = layerComponent;
     	}
-    	
+
     	super.processEntity(entity, deltaTime);
     }
     
