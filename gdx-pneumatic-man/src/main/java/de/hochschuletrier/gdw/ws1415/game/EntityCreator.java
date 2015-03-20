@@ -155,6 +155,7 @@ public class EntityCreator {
         entityToDie.remove(JumpComponent.class);
         entityToDie.remove(ParticleComponent.class);
         entityToDie.remove(PointLightComponent.class);
+        entityToDie.remove(JumpableAnimationComponent.class);
 
         DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
         entityToDie.add(deathComponent);

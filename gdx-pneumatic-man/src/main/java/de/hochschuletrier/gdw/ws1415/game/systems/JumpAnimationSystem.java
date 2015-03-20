@@ -12,8 +12,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.JumpableAnimationComponent;
 
 public class JumpAnimationSystem extends IteratingSystem {
     
-    AnimationComponent idle;
-    AnimationComponent jump;
    
     public JumpAnimationSystem(AssetManagerX assetManager, int priority) {
         super(Family.all(JumpableAnimationComponent.class).get(), priority);
@@ -24,26 +22,29 @@ public class JumpAnimationSystem extends IteratingSystem {
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
         JumpableAnimationComponent jumpable = entity.getComponent(JumpableAnimationComponent.class);
 
-//        
-//        System.out.println("Midair: " + jumpable.midair + "\n Physix: " + Math.abs(physix.getLinearVelocity().y) + ", Body: " + (Math.abs(physix.getBody().getLinearVelocity().y)));
-//        
-//        // Charakter has been in midair, check if on ground again
-//        if(jumpable.midair)
-//            if(Math.abs(physix.getBody().getLinearVelocity().y) < 10)
-//            {
-//                // Charakter now on the ground, switch to idle-animation
-//                jumpable.midair = false;
-//                AnimationComponent animation = ComponentMappers.animation.get(entity);
-//                entity.getComponent(AnimationComponent.class).animation = jumpable.idle;
-//            }
-//        // Charakter has been on the ground - check if falling or acending
-//        else if (Math.abs(physix.getBody().getLinearVelocity().y) > 10)
-//        {
-//            // Charakter in midair -> switch to jump-animation
-//            jumpable.midair = true;
-//            AnimationComponent animation = ComponentMappers.animation.get(entity);
-//            entity.getComponent(AnimationComponent.class).animation = jumpable.jump;
-//        }
+        // Charakter has been in midair, check if on ground again
+        if(jumpable.midair)
+        {
+            if(Math.abs(physix.getLinearVelocity().y - jumpable.pastFrameYVelocity) <= 1f)
+            {
+                // Charakter now on the ground, switch to idle-animation
+                jumpable.midair = false;
+                AnimationComponent animation = ComponentMappers.animation.get(entity);
+                entity.getComponent(AnimationComponent.class).animation = jumpable.idle;
+                entity.getComponent(AnimationComponent.class).permanent_stateTime = 0;
+            }
+        }
+        // Charakter has been on the ground - check if falling or acending
+        else if (Math.abs(physix.getLinearVelocity().y - jumpable.pastFrameYVelocity) > 40)
+        {
+            // Charakter in midair -> switch to jump-animation
+            jumpable.midair = true;
+            AnimationComponent animation = ComponentMappers.animation.get(entity);
+            entity.getComponent(AnimationComponent.class).animation = jumpable.jump;
+            entity.getComponent(AnimationComponent.class).permanent_stateTime= 0;
+
+            
+        }
        
     }
 }
