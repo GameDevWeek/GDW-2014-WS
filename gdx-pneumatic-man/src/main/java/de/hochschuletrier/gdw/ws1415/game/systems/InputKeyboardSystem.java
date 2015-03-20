@@ -14,11 +14,11 @@ import de.hochschuletrier.gdw.ws1415.states.PauseGameState;
 
 public class InputKeyboardSystem extends IteratingSystem implements InputProcessor {
 
-    boolean jump = false;
+    private float jump = -1;
 
-    boolean left = false;
+    private boolean left = false;
 
-    boolean right = false;
+    private boolean right = false;
 
     public InputKeyboardSystem() {
         super(Family.all(InputComponent.class).get());
@@ -30,8 +30,9 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         InputComponent inputComponent = entity.getComponent(InputComponent.class);
 
         inputComponent.reset();
-        if (jump) {
+        if (jump > 0) {
             inputComponent.jump = true;
+            jump -= deltaTime;
         }
         if (right) {
             inputComponent.direction++;
@@ -47,7 +48,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
             case Input.Keys.UP:
             case Input.Keys.SPACE:
             case Input.Keys.W:
-                jump = true;
+                jump = 0.2f;
                 break;
             case Input.Keys.LEFT:
             case Input.Keys.A:
@@ -74,11 +75,11 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
     @Override
     public boolean keyUp(int keycode) {
         switch (keycode) {
-        case Input.Keys.UP:
-        case Input.Keys.SPACE:
-        case Input.Keys.W:
-            jump = false;
-            break;
+//        case Input.Keys.UP:
+//        case Input.Keys.SPACE:
+//        case Input.Keys.W:
+//            jump = false;
+//            break;
         case Input.Keys.LEFT:
         case Input.Keys.A:
             left = false;
