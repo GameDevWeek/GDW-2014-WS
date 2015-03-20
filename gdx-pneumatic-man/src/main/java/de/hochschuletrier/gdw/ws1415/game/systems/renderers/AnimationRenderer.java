@@ -45,6 +45,18 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
         
         
         // ???????? versteh ich nicht siehe Unten! <(orig)- keyFrame.flip(keyFrame.isFlipX() != animation.flipX, keyFrame.isFlipY() != !animation.flipY);
+        if(ComponentMappers.input.has(entity))
+        {
+            if(ComponentMappers.input.get(entity).direction>0)
+            {
+                animation.flipX = false;
+            }
+            else if(ComponentMappers.input.get(entity).direction<0) // nötig da 0 ignoriert werden soll ohne guckrichtung zu ändern
+            {
+                animation.flipX = true;
+            }
+        }
+        
         
         float CalculatedPositionScaleX = (animation.flipX?-1:1) * position.scaleX;
         DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h,  CalculatedPositionScaleX, position.scaleY, position.rotation);
