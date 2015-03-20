@@ -132,5 +132,12 @@ public class MenuPage extends Group {
         addActor(button);
         return button;
     }
+    
+    protected final void addImage(int x, int y, int width, int height, DecoImage dI)
+    {
+    	DecoImage image = dI;
+    	image.setBounds(x, y, width, height);
+    	addActor(image);
+    }
 
 }

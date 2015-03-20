@@ -53,7 +53,8 @@ public class LevelMenu extends MenuPage
 			//buttonArray[i] = addImageButton(x + x_step, y, 108, 108, this::levelTest);
 			//buttonGroup.add(buttonArray[i]);
 			imageArray[i] = new DecoImage(assetManager.getTexture("back_button"));
-			addCenteredImage(x + x_step, y, 108, 108, imageArray[i], () -> levelTest());
+			final int d = i;
+			addCenteredImage(x + x_step, y, 108, 108, imageArray[i], () -> levelTest(d));
 			x_step += 150;
 		}
 		
@@ -68,21 +69,15 @@ public class LevelMenu extends MenuPage
 	    return label;
 	}
 	
-	private void levelTest()
+	private void levelTest(int s)
 	{
 		//Game.loadLevel();
 		levelSelected = true;
 		//Game.loadSelectedLevel = true;
 		
-		//pointer.setX();
-		//pointer.setY();
-		
-		for(int i = 0; i < buttonArray.length; i++)
-		{
-			if(imageArray[i].getX() == pointer.getX() && imageArray[i].getY() == pointer.getY())
-			{
-				System.out.println("Level ausgewählt: " + (i+1));
-			}
-		}
+		pointer.setX(imageArray[s].getX());
+		pointer.setY(imageArray[s].getY()+20);
+
+		System.out.println("Level ausgewählt: " + (s+1));
 	}
 }
