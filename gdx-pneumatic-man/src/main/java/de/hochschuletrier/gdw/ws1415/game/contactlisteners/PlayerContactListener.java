@@ -120,10 +120,14 @@ public class PlayerContactListener extends PhysixContactAdapter {
         Entity player = contact.getMyComponent().getEntity();
         
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
-        if(contact.getMyFixture().getUserData().equals("jump")){
+        if(body!= null && contact.getMyFixture().getUserData().equals("jump")){
+           
             JumpComponent jump = ComponentMappers.jump.get(player);
-            jump.doJump = false;
-            jump.inAir = false;
+            if(jump!= null){
+                jump.doJump = false;
+                jump.inAir = false;
+            }
+            
         }
     } 
 
