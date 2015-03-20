@@ -34,8 +34,8 @@ public class JumpAnimationSystem extends IteratingSystem {
                 // Charakter now on the ground, switch to idle-animation
                 jumpable.midair = false;
                 AnimationComponent animation = ComponentMappers.animation.get(entity);
+                entity.getComponent(AnimationComponent.class).reset();
                 entity.getComponent(AnimationComponent.class).animation = jumpable.idle;
-                entity.getComponent(AnimationComponent.class).permanent_stateTime = 0;
                 
 //                System.out.println("Time for Jump: " + (System.currentTimeMillis() - startTimeForJump));
             }
@@ -46,8 +46,8 @@ public class JumpAnimationSystem extends IteratingSystem {
             // Charakter in midair -> switch to jump-animation
             jumpable.midair = true;
             AnimationComponent animation = ComponentMappers.animation.get(entity);
+            entity.getComponent(AnimationComponent.class).reset();
             entity.getComponent(AnimationComponent.class).animation = jumpable.jump;
-            entity.getComponent(AnimationComponent.class).permanent_stateTime= 0;
 
             startTimeForJump = System.currentTimeMillis();
         }

@@ -16,6 +16,8 @@ package de.hochschuletrier.gdw.ws1415.game.utils;
  * limitations under the License.
  ******************************************************************************/
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -39,6 +41,8 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 public class MyControllers {
     private static final String TAG = "Controllers";
     static final ObjectMap<Application, ControllerManager> managers = new ObjectMap<Application, ControllerManager>();
+    
+    private static ArrayList<ControllerListener> listenerList = new ArrayList<>();
 
     /** Returns an array of connected {@link Controller} instances. This method should only be called on the rendering thread.
      * 
@@ -59,6 +63,7 @@ public class MyControllers {
     static public void addListener (ControllerListener listener) {
         initialize(false);
         getManager().addListener(listener);
+        listenerList.add(listener);
     }
 
     /** Removes a global {@link ControllerListener}. The method must be called on the rendering thread.
@@ -125,5 +130,13 @@ public class MyControllers {
             }
         });
         Gdx.app.log(TAG, "added manager for application, " + managers.size + " managers active");
+    }
+    public static void reset()
+    {
+        for(int i = 0; i < listenerList.size(); i++)
+        {
+            removeListener(listenerList.get(i));
+            listenerList.remove(i);
+        }
     }
 }

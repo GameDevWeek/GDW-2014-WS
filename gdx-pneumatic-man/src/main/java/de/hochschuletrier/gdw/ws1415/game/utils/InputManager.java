@@ -16,7 +16,7 @@ public class InputManager implements SettingListener<Boolean>{
 	}
 	
 	private void setGamepad() throws NoGamepadException{
-	    MyControllers.removeListener(EntityCreator.engine.getSystem(InputGamepadSystem.class));
+	    MyControllers.reset();
 		if(MyControllers.getControllersUpdated().size == 0){
 			throw new NoGamepadException();
 		}
