@@ -94,7 +94,7 @@
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Sound & Musik", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Felix Wishnewsky ", "delay": "1700" },
                 { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Noah Plingen", "delay": "0" },
-                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Manuel Neugebauer  ", "delay": "1350" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Manuel Neugebauer ", "delay": "1350" },
                 
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Design", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Julia Wolf  ", "delay": "1700" },
@@ -110,10 +110,10 @@
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Animation", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Hans Boehme  ", "delay": "1700" },
                 
-                { "type": "texture", "path" : "heading", "group" : "bild", "resource" : "back_button", "delay" : "10000"},
+                { "type": "texture", "path" : "heading", "group" : "bild", "resource" : "injava_jones", "delay" : "7000"},
                 
                
-                { "type": "text", "path" : "btw", "group" : "btw", "style" : "text_right", "text": "btw..", "delay": "8500" },
+                { "type": "text", "path" : "btw", "group" : "btw", "style" : "text_right", "text": "btw..", "delay": "10000" },
                 { "type": "text", "path" : "btw", "group" : "git1", "style" : "text_right", "text": "I hate libgdx!", "delay": "1500" },
                 { "type": "text", "path" : "btw", "group" : "git1b", "style" : "text_right", "text": "Nevermind, I need to learn to live with it..", "delay": "0" },
                 { "type": "text", "path" : "btw", "group" : "git2", "style" : "text_right", "text": "... there, I said it!", "delay": "1500" }

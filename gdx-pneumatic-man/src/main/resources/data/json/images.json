@@ -21,5 +21,6 @@
     "miner_found": "data/images/KollegeIconGefunden.png",
     "miner_notfound": "data/images/KollegeIconNichtGefunden.png",
     "zeigefinger2": "data/images/Zeigefinger2.png",
-    "credit_background" : "data/images/Credits_3.png"
+    "credit_background" : "data/images/Credits_3.png",
+    "injava_jones" : "data/images/Injava_Jones.jpg"
 }
