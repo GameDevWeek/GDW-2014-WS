@@ -14,6 +14,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -94,12 +95,10 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
     @Override
     public void update(float delta) {
         menuManager.update(delta);
-        //hand.setPosition(MouseInfo.getPointerInfo().getLocation().x,(MouseInfo.getPointerInfo().getLocation().y*(-1))); 
-        //hand.setAlign(Align.center);
-        Vector2 vector= menuManager.getStage().screenToStageCoordinates(new Vector2(((Main.WINDOW_WIDTH-menuManager.getStage().getWidth())/2)+MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y));
-       // hand.setX(MouseInfo.getPointerInfo().getLocation().x);
-        //hand.setY(Main.WINDOW_HEIGHT - MouseInfo.getPointerInfo().getLocation().y);
-        hand.setPosition(vector.x-728,vector.y-1320);
+        final Stage stage = menuManager.getStage();
+        Vector2 vector = new Vector2( Gdx.input.getX(), Gdx.input.getY() );
+        stage.screenToStageCoordinates(vector);
+        hand.setPosition((stage.getWidth() - Main.WINDOW_WIDTH)/2 + Main.WINDOW_WIDTH * 0.5f,vector.y-1150);
         render();
     }
 
