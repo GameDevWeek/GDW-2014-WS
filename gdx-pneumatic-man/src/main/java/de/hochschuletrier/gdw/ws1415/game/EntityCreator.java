@@ -111,7 +111,7 @@ public class EntityCreator {
         //jump contact
         fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1).friction(0f).restitution(0f)
-        .shapeCircle(width * 0.05f, new Vector2(0, GameConstants.getTileSizeY()*0.8f)).sensor(true);
+        .shapeCircle(width * 0.05f, new Vector2(0, GameConstants.getTileSizeY() * 0.8f)).sensor(true);
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData("jump");
         
@@ -336,6 +336,8 @@ public class EntityCreator {
 
         entity.add(defineBoxPhysixBodyComponent(entity, x, y, width, height,
                 true, 1f, 1f, 0.1f));
+
+        entity.add(engine.createComponent(IndestructableBlockComponent.class));
 
         engine.addEntity(entity);
         return entity;

@@ -33,11 +33,18 @@ public class AISystem extends IteratingSystem {
         MovementComponent movement = ComponentMappers.movement.get(entity);
         DirectionComponent direction = entity.getComponent(DirectionComponent.class);
         AIComponent ai = ComponentMappers.AI.get(entity);
-        if(ai.type == AIType.DOG) //TODO: do some stuff based on AIType
+        if(ai.type == AIType.DOG) {
             DogBehavior(physix, movement, direction);
-        else
-            DogBehavior(physix, movement, direction);
-            //ChameleonBehavior(physix, movement, direction, ai);
+        }else {
+            if(ai.AItimer <= 0f){
+                ChameleonBehavior(physix, movement, direction, ai);
+                ai.AItimer = 0.2f;
+            }
+            else{
+                ai.AItimer -= deltaTime;
+            }
+            //DogBehavior(physix, movement, direction);
+        }
 
     }
 
@@ -66,7 +73,10 @@ public class AISystem extends IteratingSystem {
                         if(fixture.getUserData() instanceof PhysixBodyComponent)
                             if(ComponentMappers.player.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) )
                                 return 1;
-                        if(fraction >= 0.9f) {
+                        if(fraction >= 0.9f ) {
+                            if( fixture.getUserData() instanceof PhysixBodyComponent && (
+                                    ComponentMappers.iblock.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()) || //indestructabl
+                                ComponentMappers.block.has(((PhysixBodyComponent)fixture.getUserData()).getEntity()))) //destructable
                             clear[0] = true;
                             return 0;
                         }
@@ -74,23 +84,19 @@ public class AISystem extends IteratingSystem {
                     }, p1, p2);
                 }
                 if(clear[0]){
-                    System.err.println("raycast 2");
-                    if(Math.random() <= 0.005f){
-                        JumpComponent jump = ComponentMappers.jump.get(physix.getEntity());
-                        physix.applyImpulse(0, jump.jumpImpulse);
-                        jump.doJump = false;
-                        ai.AIstate = 1;
-                    }
+                    JumpComponent jump = ComponentMappers.jump.get(physix.getEntity());
+                    physix.applyImpulse(0, jump.jumpImpulse);
+                    jump.doJump = false;
+                    ai.AIstate = 1;
                 }else{
                     ai.AIstate = 3;
                 }
             break;
-            case(1): // in air → jump start
             case(2): // in air → landing
                 movement.velocity.set(movement.speed * direction.facingDirection.toVector2().x, movement.velocity.y);
+            case(1): // in air → jump start
                 p1 = physix.getBody().getPosition();
                 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(2f)); // FIXME MAGIC NUMBER
-
                 clear[0] = ai.AIstate == 1; // first time true, second time false
                 // first time, check for air under AI (clear true)
                 // second time, check for block under AI (clear false)
