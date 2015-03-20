@@ -77,6 +77,7 @@ public class MapLoader
     {
         /**
          * See old_generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem)
+         * Use generateWorldFromTileMapX(...) instead
          */
     }
     
