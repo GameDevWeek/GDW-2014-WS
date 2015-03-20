@@ -53,7 +53,6 @@ public class LoadGameState extends BaseGameState {
                 isDone = true;
             }
         }
-
         render();
     }
 
