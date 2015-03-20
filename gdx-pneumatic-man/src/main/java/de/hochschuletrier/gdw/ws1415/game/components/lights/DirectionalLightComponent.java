@@ -14,6 +14,7 @@ public class DirectionalLightComponent extends Component implements Pool.Poolabl
     @Override
     public void reset()
     {
+        directionalLight.remove();
         directionalLight = null;
         offsetX = 0;
         offsetY = 0;

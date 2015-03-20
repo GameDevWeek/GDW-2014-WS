@@ -13,6 +13,7 @@ public class ChainLightComponent extends Component implements Pool.Poolable
     @Override
     public void reset()
     {
+        chainLight.remove();
         chainLight = null;
         offsetX = 0;
         offsetY = 0;
