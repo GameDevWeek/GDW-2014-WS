@@ -21,6 +21,7 @@ public class AnimationComponent extends Component implements Pool.Poolable {
     public boolean IsActive = true;
     public AnimationExtended animation;
     public float stateTime;
+    public float permanent_stateTime;
     public boolean animationFinished;
 
     @Override
@@ -28,6 +29,7 @@ public class AnimationComponent extends Component implements Pool.Poolable {
         IsActive = true;
         animation = null;
         stateTime = 0;
+        permanent_stateTime = 0;
         animationFinished = false;
     }
 }

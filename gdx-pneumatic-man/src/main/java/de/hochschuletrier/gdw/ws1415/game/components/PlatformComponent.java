@@ -14,6 +14,8 @@ public class PlatformComponent extends Component implements Pool.Poolable {
     public float travelDistance;
     public Vector2 startPos;
     public float platformSpeed;
+    public Vector2 traveledDistanceVector = new Vector2();
+    public Vector2 velocity = new Vector2();
 
     @Override
     public void reset() {

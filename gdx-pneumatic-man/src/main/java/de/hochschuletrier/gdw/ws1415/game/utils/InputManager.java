@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ws1415.game.utils;
 
-import com.badlogic.gdx.controllers.Controllers;
-
 import de.hochschuletrier.gdw.commons.gdx.settings.Setting;
 import de.hochschuletrier.gdw.commons.gdx.settings.SettingListener;
 import de.hochschuletrier.gdw.ws1415.Settings;
@@ -12,15 +10,17 @@ import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
 public class InputManager implements SettingListener<Boolean>{
 	
 	private void setKeyboard(){
+	    MyControllers.removeListener(EntityCreator.engine.getSystem(InputGamepadSystem.class));
 		EntityCreator.engine.getSystem(InputKeyboardSystem.class).setProcessing(true);
 		EntityCreator.engine.getSystem(InputGamepadSystem.class).setProcessing(false);
 	}
 	
 	private void setGamepad() throws NoGamepadException{
-		if(Controllers.getControllers().size == 0){
+	    MyControllers.removeListener(EntityCreator.engine.getSystem(InputGamepadSystem.class));
+		if(MyControllers.getControllersUpdated().size == 0){
 			throw new NoGamepadException();
 		}
-		Controllers.addListener(EntityCreator.engine.getSystem(InputGamepadSystem.class));
+		MyControllers.addListener(EntityCreator.engine.getSystem(InputGamepadSystem.class));
 		EntityCreator.engine.getSystem(InputGamepadSystem.class).setProcessing(true);
 		EntityCreator.engine.getSystem(InputKeyboardSystem.class).setProcessing(false);
 	}
