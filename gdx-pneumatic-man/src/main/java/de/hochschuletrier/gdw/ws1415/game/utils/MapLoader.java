@@ -436,25 +436,12 @@ public class MapLoader
                                         
                                         if ( tinfo.getBooleanProperty("Invulnerable", false) == true )
                                         {
-                                            // Unverwundbare
-                                        /*  
-                                         * EntityCreator.createAndAddVulnerableFloor(
-                                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                                    map, tinfo, 1, i, j);
-                                                    */
+                                            // Unverwundbare  are already loaded only visual is needed
                                             EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                             
                                         } else
                                         {
                                             // verwundbare
-                                            /*
-                                            EntityCreator.createAndAddVulnerableFloor(
-                                                    i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                                    map, tinfo, 1, i, j);
-                                                    */
-                                           // EntityCreator.createAndAddInvulnerableFloor( new Rectangle( i,j,1,1 ) );
                                         }
                                     }
                                 }
