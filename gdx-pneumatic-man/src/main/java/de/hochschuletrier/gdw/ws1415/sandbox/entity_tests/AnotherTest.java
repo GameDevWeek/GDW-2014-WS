@@ -29,6 +29,7 @@ import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
@@ -95,8 +96,8 @@ public class AnotherTest extends SandboxGame {
         //Create a SpawnPoint
         Entity spawn = engine.createEntity();
         PositionComponent spawnPoint = engine.createComponent(PositionComponent.class);
-        spawnPoint.x = 200;
-        spawnPoint.y = 100;
+        spawnPoint.x = 600;
+        spawnPoint.y = 1000;
         SpawnComponent spawnflag = engine.createComponent(SpawnComponent.class);
         spawnflag.reset();
         spawn.add(spawnflag);
@@ -146,8 +147,6 @@ public class AnotherTest extends SandboxGame {
         // Setup camera
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
         cameraSystem.adjustToMap(map);
-        
-        cameraSystem.follow(player);
     }
     
     // Go through the map and create the entities based on tile info
@@ -158,9 +157,9 @@ public class AnotherTest extends SandboxGame {
         	TileInfo[][] tiles = layer.getTiles();
         	if( tiles == null)
         	    continue;
-            for (int x = 0; x < 100; x++) 
+            for (int x = 0; x < map.getWidth(); x++) 
                 
-                for (int y = 0; y < 20; y++)  {
+                for (int y = 0; y < map.getHeight(); y++)  {
                     if(tiles[x] == null)
                         continue;
                 	TileInfo info = tiles[x][y];
@@ -252,7 +251,7 @@ public class AnotherTest extends SandboxGame {
     	TileSetAnimation animation = new TileSetAnimation(
                 frames,
                 tileset.getFloatProperty("animationDuration", 0),
-                tileset.getIntProperty("animationTileOffset", 0));
+                tileset.getIntProperty("animationOffset", 0));
     	
     	TextureRegion[] regions = new TextureRegion[frames];
     	float[] frameDurations = new float[frames];
@@ -311,14 +310,20 @@ public class AnotherTest extends SandboxGame {
     private void createAnimatedTileEntity(TileInfo info, int tileX, int tileY, int frames) {
     	assert(frames > 1);
     	
+    	if (info.getBooleanProperty("Invulnerable", false)
+                && info.getProperty("Type", "").equals("Lava")) {
+
+    		System.out.println("tedst");
+        }
+    	
     	TileSet tileset = map.findTileSet(info.globalId);
     	Texture image = (Texture) tileset.getAttachment();
     	
     	TileSetAnimation animation = new TileSetAnimation(
                 frames,
                 tileset.getFloatProperty("animationDuration", 0),
-                tileset.getIntProperty("animationTileOffset", 0));
-    	
+                tileset.getIntProperty("animationOffset", 0));
+
     	TextureRegion[] regions = new TextureRegion[frames];
     	float[] frameDurations = new float[frames];
     	
@@ -328,14 +333,14 @@ public class AnotherTest extends SandboxGame {
         float py = (tileY * map.getTileHeight()) - tileOffsetY;
         
     	for(int i=0; i<frames; i++) {
-            tileset.updateAnimation(animation.frameDuration*i);
-            
-            int sheetX = tileset.getTileX(info.localId);
+    		tileset.updateAnimation(animation.frameDuration*i);
+
+            int sheetX = tileset.getTileX(0);
             int sheetY = tileset.getTileY(info.localId);
             
             int coordX = (int) (sheetX * tileset.getTileWidth()); 
             coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
-            int coordY = ((int) sheetY * tileset.getTileHeight());
+            int coordY = (int) (sheetY * tileset.getTileHeight());
             coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();  
             
             regions[i] = new TextureRegion(image);
@@ -343,7 +348,6 @@ public class AnotherTest extends SandboxGame {
             frameDurations[i] = animation.frameDuration;
     	}
 
-    	tileset.updateAnimation(0f);
     	AnimationExtended anim = new AnimationExtended(PlayMode.LOOP, frameDurations, regions);
     	createAnimatedTileEntity(px, py, 0, 0.2f, anim);
     }
@@ -434,7 +438,7 @@ public class AnotherTest extends SandboxGame {
         engine.update(delta);
 
         if (playerBody != null) {
-            float speed = 10000.0f;
+            float speed = 30000.0f;
             float velX = 0, velY = 0;
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 velX -= delta * speed;
