@@ -19,7 +19,7 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 public class AnimationComponent extends Component implements Pool.Poolable {
 
     public boolean IsActive = true;
-    public boolean isPlayer = false;
+    public boolean isDyingPlayer = false;
     public AnimationExtended animation;
     public float stateTime;
     public float permanent_stateTime;

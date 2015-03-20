@@ -4,9 +4,6 @@ import java.util.HashMap;
 
 import box2dLight.RayHandler;
 
-import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.core.Family.Builder;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -267,7 +264,7 @@ public class Game {
         physixSystem.setGravity(0, GameConstants.GRAVITY_CONSTANT);
     }
     
-    private static void loadLevel()
+    public static void loadLevel()
     {
         loadSelectedLevel = true;
     }
@@ -280,7 +277,7 @@ public class Game {
         //
         // mapRenderer.update(delta);
         
-        if(loadSelectedLevel=false)
+        if(loadSelectedLevel==false)
         {
             if(GameConstants.pause)
             {
@@ -290,12 +287,9 @@ public class Game {
             {
                 engine.update(delta);
             }
-            
-            
-            // Check for Dead Player
                 
             
-            // Level reset Testingl      
+            // Level reset Testing    
             if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
                 System.out.println("Restart Level"); 
                 
