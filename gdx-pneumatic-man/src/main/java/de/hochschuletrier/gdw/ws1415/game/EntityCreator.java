@@ -28,30 +28,7 @@ import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DeathComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.FallingRockTriggerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.ChainLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.ConeLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.DirectionalLightComponent;
@@ -59,7 +36,9 @@ import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
+import javafx.geometry.Pos;
 
 public class EntityCreator {
 
@@ -465,6 +444,35 @@ public class EntityCreator {
         return createPlatformBlock(x,y, travelDistance, dir, speed, mode);
     }
 
+    public static Entity createSpike(float x, float y, Direction direction, TileInfo info, TiledMap map){
+        Entity entity = engine.createEntity();
+
+        PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem).position(x, y).fixedRotation(true);
+        bodyComponent.init(bodyDef, physixSystem, entity);
+        bodyComponent.getBody().setUserData(bodyComponent);
+        bodyComponent.getBody().setGravityScale(0f);
+
+        DirectionComponent directionComponent = engine.createComponent(DirectionComponent.class);
+        directionComponent.facingDirection = direction;
+
+        entity.add(engine.createComponent(PositionComponent.class));
+
+        TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
+        textureComponent.texture = (Texture)map.findTileSet(info.globalId).getAttachment();
+        textureComponent.region = new TextureRegion(textureComponent.texture);
+        entity.add(textureComponent);
+
+        LayerComponent layerComponent = engine.createComponent(LayerComponent.class);
+        layerComponent.layer = 0;
+        layerComponent.parallax = 0.2f;
+        entity.add(layerComponent);
+
+
+        return entity;
+    }
+
+    @Deprecated
     public static Entity createAndAddSpike(PooledEngine engine, PhysixSystem physixSystem, float x, float y, float width, float height, String direction, TiledMap map, TileInfo info, int tileX, int tileY) {
         Entity entity = engine.createEntity();
         
@@ -494,14 +502,15 @@ public class EntityCreator {
         }
 
         PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y).fixedRotation(true);
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.getBody().setUserData(bodyComponent);
+        bodyComponent.getBody().setGravityScale(0f);
 
         PhysixFixtureDef fixtureDefSpikeGround = new PhysixFixtureDef(physixSystem)
                 .density(1)
                 .friction(1f)
-                .shapeBox(width, height * 0.8f, verschiebung, angle)
+                .shapeBox(width*0.8f, height * 0.8f, verschiebung, angle)
                 .restitution(0.1f)
                 .sensor(true);
         Fixture fixtureSpikeGround = bodyComponent.createFixture(fixtureDefSpikeGround);
@@ -514,6 +523,7 @@ public class EntityCreator {
         Damage.damage = 2;
         entity.add(Damage);
 
+        entity.add(engine.createComponent(SpikeComponent.class));
 
 
         engine.addEntity(entity);

@@ -2,16 +2,12 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import box2dLight.RayHandler;
 
-import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
@@ -25,13 +21,10 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
 import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
-import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
-import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
-import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
@@ -40,9 +33,19 @@ import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
-import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
+import de.hochschuletrier.gdw.ws1415.game.contactlisteners.FallingTrapContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ws1415.game.systems.*;
+import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.LavaFountainSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
@@ -251,7 +254,7 @@ public class Game {
         contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
-        contactListener.addListener(FallingRockComponent.class, new RockContactListener());
+        contactListener.addListener(FallingRockComponent.class, new FallingTrapContactListener());
         physixSystem.getWorld().setContactListener(contactListener);
     }
 
