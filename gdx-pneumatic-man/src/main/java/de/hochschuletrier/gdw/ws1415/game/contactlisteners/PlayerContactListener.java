@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
+import javax.print.attribute.standard.MediaSize.Other;
+
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 
@@ -39,13 +41,28 @@ public class PlayerContactListener extends PhysixContactAdapter {
     public void beginContact(PhysixContact contact) {
 
         Entity player = contact.getMyComponent().getEntity();
+        Entity otherEntity = contact.getOtherComponent().getEntity();
         AnimationComponent anim = player.getComponent(AnimationComponent.class);
 
+        if(player.getComponent(PlayerComponent.class) == null) // swap player
+        {
+            Entity tmp = otherEntity;
+            otherEntity = player;
+            player = tmp;
+        }
+
+        PositionComponent PlayerPosComp = player.getComponent(PositionComponent.class);
+        Vector2 PlayerPos = new Vector2(PlayerPosComp.x, PlayerPosComp.y);
+        
+        PositionComponent OtherPosComp = player.getComponent(PositionComponent.class);
+        Vector2 OtherPos = new Vector2(OtherPosComp.x, OtherPosComp.y);
+        
+        //boolean IsFromAbove 
+        
         if (contact.getOtherComponent() == null)
             return;
 
         // Entity myEntity = contact.getMyComponent().getEntity(); //
-        Entity otherEntity = contact.getOtherComponent().getEntity();
         
         if(otherEntity.getComponent(MinerComponent.class) != null){
             otherEntity.getComponent(HealthComponent.class).Value = 0;
@@ -60,10 +77,13 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 int saved_miners = scoreSys.player.getComponent(PlayerComponent.class).saved_miners;
                 int destroyed_blocks = scoreSys.player.getComponent(PlayerComponent.class).destroyed_blocks;
                 int miners_threshold = scoreSys.goal.getComponent(GoalComponent.class).miners_threshold;
-                Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
-                logger.info("Your score is: " + Score.score);
-                Settings.HIGHSCORE.set(""+Score.score);
-                Game.loadLevel();
+                if(scoreSys.scoreCanBeRegistered){
+                    Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
+                    logger.info("Your score is: " + Score.score);
+                    scoreSys.timeSinceLastCalculation = 0;
+                    scoreSys.scoreCanBeRegistered = false;
+                    Game.loadLevel();
+                }
             }
         }
 
@@ -84,12 +104,17 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 EntityCreator.engine.removeEntity(otherEntity);
             }
         }
+        
 
-        if (ComponentMappers.enemy.has(otherEntity) ||  // enemys + lava
+        
+        if ((ComponentMappers.enemy.has(otherEntity) ||  // enemys + lava
                 ComponentMappers.spikes.has(otherEntity) ||
-                ComponentMappers.lavaBall.has(otherEntity)) {
+                ComponentMappers.lavaBall.has(otherEntity)
+                ) && 
+                contact.getWorldManifold().getNormal().y > 0) {
             // player touched an enemy
             if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
+                logger.info(contact.getWorldManifold().getNormal().toString());
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
@@ -97,7 +122,10 @@ public class PlayerContactListener extends PhysixContactAdapter {
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
         if("jump".equals(contact.getMyFixture().getUserData())){
             JumpComponent jump = ComponentMappers.jump.get(player);
-            jump.previousContacts = jump.groundContacts;
+            if(jump.groundContacts==0)
+            {
+                jump.justLanded = true;
+            }
             jump.groundContacts++;
             if(otherEntity.getComponent(PlatformComponent.class) != null) {
                 player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
@@ -135,7 +163,6 @@ public class PlayerContactListener extends PhysixContactAdapter {
             JumpComponent jump = ComponentMappers.jump.get(player);
             
             if(jump!= null){
-                jump.previousContacts = jump.groundContacts;
                 jump.groundContacts--;
             }
             if(otherPlatformComp != null && playerComp != null) {
