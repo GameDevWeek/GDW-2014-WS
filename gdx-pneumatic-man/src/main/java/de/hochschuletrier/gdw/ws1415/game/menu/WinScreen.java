@@ -35,8 +35,12 @@ public class WinScreen extends MenuPage
         font_18 = assetManager.getFont("orbitron_18");
         
         
-        
+        for(int i = 0; i < 5; i++)
+        {
+            System.out.println(names[(int)(Math.random()*100)%names.length]);
+        }
          
+        
         
         
         //fuck off!
