@@ -110,5 +110,54 @@
         "playType": "NORMAL",
         "columns" : 5,
         "rows" : 1
+    },
+    "enemy1_death" : {
+        "filename" : "data/animations/enemy1_death_2048.png",
+        "frames" : 20,
+        "frameDuration": [0.1],
+        "playType": "NORMAL",
+        "columns" : 8,
+        "rows" : 3
+    },
+    "enemy1_walk" : {
+        "filename" : "data/animations/enemy1_walk_2048.png",
+        "frames" : 40,
+        "frameDuration": [0.1],
+        "playType": "LOOP",
+        "columns" : 8,
+        "rows" : 5
+    },
+    "enemy2_death" : {
+        "filename" : "data/animations/enemy2_death_2048.png",
+        "frames" : 15,
+        "frameDuration": [0.07],
+        "playType": "NORMAL",
+        "columns" : 4,
+        "rows" : 3
+    },
+    "enemy2_idle" : {
+        "filename" : "data/animations/enemy2_idle_1024.png",
+        "frames" : 32,
+        "frameDuration": [0.1],
+        "playType": "LOOP",
+        "columns" : 4,
+        "rows" : 8
+    },
+    "enemy2_jump" : {
+        "filename" : "data/animations/enemy2_jump_2048.png",
+        "frames" : 25,
+        "frameDuration": [0.1],
+        "playType": "LOOP",
+        "columns" : 8,
+        "rows" : 4
+    },
+    "enemy2_walk" : {
+        "filename" : "data/animations/enemy2_walk_1024.png",
+        "frames" : 32,
+        "frameDuration": [0.1],
+        "playType": "LOOP",
+        "columns" : 4,
+        "rows" : 8
     }
+
 }
