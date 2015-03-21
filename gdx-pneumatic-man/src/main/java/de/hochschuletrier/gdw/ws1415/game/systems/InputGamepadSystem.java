@@ -30,7 +30,7 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
 		inputComponent.reset();
 		if(jump > 0){
 			inputComponent.jump = true;
-			jump -= deltaTime;
+//			jump -= deltaTime; // einkommentieren wenn man möchte, dass man dauerspringen kann
 		}
 		inputComponent.direction = direction;
 	}
@@ -62,7 +62,13 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
 
     @Override
     public boolean buttonUp(Controller controller, int buttonCode)
-    {
+    { // alles auskommentieren wenn man nicht möchte, dass man durch halten der Sprung-Taste dauerhaft springen kann
+        switch(buttonCode){
+            case 0:
+            case 1:
+            case 2: 
+            case 3: jump = -0.5f; break;
+            }
         return false;
     }
 

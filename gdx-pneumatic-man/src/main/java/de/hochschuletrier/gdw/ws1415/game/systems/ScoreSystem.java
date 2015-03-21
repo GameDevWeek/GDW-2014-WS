@@ -28,6 +28,8 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
     public Entity player;
     public boolean playerAdded = false;
     float tick = 0;
+    public int timeSinceLastCalculation;
+    public boolean scoreCanBeRegistered = true;
 
     public ScoreSystem() {
         super(1);
@@ -49,8 +51,12 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
             {
                 if(player.getComponent(PlayerComponent.class) != null)
                 {
-            player.getComponent(PlayerComponent.class).game_time += 1;
+                    player.getComponent(PlayerComponent.class).game_time += 1;
                 }
+            }
+            timeSinceLastCalculation += 1;
+            if(timeSinceLastCalculation >= 2){
+                scoreCanBeRegistered = true;
             }
             tick-=1.0f;
             if(goal != null && player != null)
