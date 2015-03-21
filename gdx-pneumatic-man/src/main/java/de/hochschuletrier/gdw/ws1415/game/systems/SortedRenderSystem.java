@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Matrix4;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
+import de.hochschuletrier.gdw.ws1415.game.Shaders;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
@@ -53,6 +54,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         addRenderer(new LightRenderer());
         
         this.rayHandler = rayHandler;
+  
         this.rayHandler.setAmbientLight(GameConstants.LIGHT_AMBIENT);
         this.rayHandler.setBlur(GameConstants.LIGHT_BLUR);
         this.rayHandler.setBlurNum(GameConstants.LIGHT_BLURNUM);
@@ -86,11 +88,14 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     
     private void onLayerChanged(LayerComponent oldLayer, LayerComponent newLayer) {
     	cameraSystem.applyParallax(newLayer);
+    	DrawUtil.batch.setShader(newLayer.layer >= 0 && GameConstants.useShader ? Shaders.BLUR_SHADER : null);
     }
     
     @Override
 	public void update (float deltaTime) {
+        DrawUtil.batch.setShader(GameConstants.useShader ? Shaders.BLUR_SHADER : null);
     	super.update(deltaTime);
+        cameraSystem.undoParallax();
     	
     	// rayHandler.updateAndRender() not allowed between begin() and end()
     	DrawUtil.batch.end();
