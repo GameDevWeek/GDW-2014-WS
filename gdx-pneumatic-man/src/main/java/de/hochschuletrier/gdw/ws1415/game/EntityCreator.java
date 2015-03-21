@@ -1056,7 +1056,7 @@ public class EntityCreator {
      */
     private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
-    	int frames = tileset.getIntProperty("AnimationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
+    	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
         
     	assert(frames > 1);
 
