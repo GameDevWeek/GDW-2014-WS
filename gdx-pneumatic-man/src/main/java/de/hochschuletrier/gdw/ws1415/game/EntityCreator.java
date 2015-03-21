@@ -1126,6 +1126,10 @@ public class EntityCreator {
         deathTimer.deathTimer = 1.5f;
         Bomb.add(deathTimer);
         
+        // ***** Sound *****
+
+        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bombTicks"), false);
+        
         //addRenderComponents(Bomb, map, info, tileX, tileY);
         addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
         
@@ -1151,6 +1155,10 @@ public class EntityCreator {
         PhysixFixtureDef fDef = new PhysixFixtureDef(physixSystem)
                                        .shapeCircle(RadiusInWorld)
                                        .sensor(true);
+        
+        // ***** Sound *****
+
+        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"), false);
         
         PhysixBody.createFixture(fDef);
         PhysixBody.setGravityScale(0.0f);
