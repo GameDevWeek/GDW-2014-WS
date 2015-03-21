@@ -120,7 +120,7 @@ public class AISystem extends IteratingSystem {
                             EntityCreator.assetManager.getSound("alienBark" + (((int) ((Math.random() * 10)) % 4) + 1)),
                             false);
                 }
-                aiComponent.AItimer = 5.0f + (float) Math.random() / 20f;
+                aiComponent.AItimer = 2.0f + ((float)Math.random() * 5f);
             }
             if (directionComponent.facingDirection.equals(Direction.RIGHT)
                     && (aiComponent.rightBlocked
@@ -149,7 +149,7 @@ public class AISystem extends IteratingSystem {
                 // jump
                 movementComponent.setVelocity(Vector2.Zero);
                 physicBodyComponent.applyImpulse(0, jumpComponent.jumpSpeed);
-                aiComponent.AItimer = 5.0f + (float) Math.random() / 20f;
+                aiComponent.AItimer = 2.0f + ((float)Math.random() * 5f);
             } else {
 
                 if (directionComponent.facingDirection.equals(Direction.RIGHT)
