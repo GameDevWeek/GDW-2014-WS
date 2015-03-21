@@ -14,6 +14,7 @@ import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 //import de.hochschuletrier.gdw.ws1415.game.components.BouncingComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
@@ -31,7 +32,7 @@ public class MovementSystem extends IteratingSystem {
         super(Family
                 .all(PhysixBodyComponent.class)
                 .one(MovementComponent.class, JumpComponent.class,
-                        InputComponent.class, PlayerComponent.class).get(), priority);
+                        InputComponent.class, PlayerComponent.class,LavaBallComponent.class).get(), priority);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class MovementSystem extends IteratingSystem {
         // BouncingComponent bouncing = ComponentMappers.bouncing.get(entity);
         JumpComponent jump = ComponentMappers.jump.get(entity);
         PlayerComponent playerComp = ComponentMappers.player.get(entity);
-        
+        LavaBallComponent lavaBall = ComponentMappers.lavaBall.get(entity);
         if (movement != null) {
             
             if (input != null) {
@@ -59,9 +60,15 @@ public class MovementSystem extends IteratingSystem {
                 }
                 
             }
-            physix.setLinearVelocity(movement.velocity.x  + lowestPlatformVelocity.x,
-                    physix.getLinearVelocity().y
-                            + (movement.velocity.y ) );
+            if(lavaBall != null){
+                physix.setLinearVelocity(movement.velocity.x  + lowestPlatformVelocity.x,
+                        (movement.velocity.y ) );
+            }else {
+                physix.setLinearVelocity(movement.velocity.x  + lowestPlatformVelocity.x,
+                        physix.getLinearVelocity().y
+                                + (movement.velocity.y ) );
+            }
+            
             
             
         }

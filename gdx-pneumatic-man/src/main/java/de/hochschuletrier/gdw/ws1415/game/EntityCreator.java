@@ -77,10 +77,10 @@ public class EntityCreator {
         .shapeBox(width * 0.18f, height * 0.825f, new Vector2(0, 0), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
 
-        fixtureDef = new PhysixFixtureDef(physixSystem)
+        /*fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1).friction(0).restitution(0f)
         .shapeCircle(width*0.4f,new Vector2(0,-height * 0.1f)).sensor(true);
-        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture = bodyComponent.createFixture(fixtureDef);*/
 
 
         //laser
@@ -840,7 +840,7 @@ public class EntityCreator {
             float intervallOffset, float length){
         Entity entity = engine.createEntity();
         
-        float lavaBallSpeed = -10.0f;
+        float lavaBallSpeed = -200.0f;
         float lavaBallSpawnIntervall = 0.25f;
         
         PositionComponent position = engine.createComponent(PositionComponent.class);
@@ -870,11 +870,11 @@ public class EntityCreator {
         
         PhysixBodyComponent bodyComponent = engine
                 .createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody,
                 physixSystem).position(positionX, positionY).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1f).friction(1f).shapeCircle(radius)
+                .density(0).friction(0).shapeCircle(radius)
                 .restitution(0).sensor(true);
         bodyComponent.createFixture(fixtureDef);
         bodyComponent.setGravityScale(0);
@@ -916,9 +916,11 @@ public class EntityCreator {
         pe.offsetY=40f;
         entity.add(pe);
         
+        int soundInstance = (int)(Math.random() * 10 % 1)+1;
+        
         SoundEmitterComponent sec = engine.createComponent(SoundEmitterComponent.class);
         
-        SoundInstance si = sec.emitter.play(assetManager.getSound("burst1"), false);
+        SoundInstance si = sec.emitter.play(assetManager.getSound("burst" + soundInstance), false);
         si.setReferenceDistance(100f);
         sec.emitter.setPosition(positionX, positionY, 0);
         
