@@ -67,7 +67,8 @@
         "connectionError": {"font": "mainMenu-Small-font", "fontColor": "red"},
         "inputLabel": {"font": "mainMenu-Small-font", "fontColor": "white"},
         "helpTitle": {"font": "mainMenu-font", "fontColor": "black"},
-        "helpText": {"font": "mainMenu-Small-font", "fontColor": "black"}
+        "helpText": {"font": "mainMenu-Small-font", "fontColor": "black"},
+        "highscore": {"font": "orbitron_32"}
     },
     "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
         "default": {"selection": "selection", "background": "textfield", "font": "default-font", "fontColor": "white", "cursor": "cursor"},
