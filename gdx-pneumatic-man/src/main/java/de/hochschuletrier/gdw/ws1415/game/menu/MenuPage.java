@@ -146,6 +146,8 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("score_button_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("credits_button"))
             image.setTexture(assetManager.getTexture("credits_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("exit_button"))
+            image.setTexture(assetManager.getTexture("exit_button_active"));
         
         //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_inactive"))
@@ -178,6 +180,8 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("score_button"));
         if(image.getRegion().getTexture()==assetManager.getTexture("credits_button_active"))
             image.setTexture(assetManager.getTexture("credits_button"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("exit_button_active"))
+            image.setTexture(assetManager.getTexture("exit_button"));
         
       //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_active"))
