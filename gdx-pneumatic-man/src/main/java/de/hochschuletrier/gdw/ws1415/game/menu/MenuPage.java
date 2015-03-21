@@ -148,6 +148,12 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("credits_button_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("exit_button"))
             image.setTexture(assetManager.getTexture("exit_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("back_button"))
+            image.setTexture(assetManager.getTexture("back_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("soundUp"))
+            image.setTexture(assetManager.getTexture("butt_audio_add_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("soundDown"))
+            image.setTexture(assetManager.getTexture("butt_audio_sub_active"));
         
         //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_inactive"))
@@ -158,6 +164,7 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("mainmenu_button_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("quit_button_inactive"))
             image.setTexture(assetManager.getTexture("quit_button_active"));
+        
     	
     }
     
@@ -182,6 +189,12 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("credits_button"));
         if(image.getRegion().getTexture()==assetManager.getTexture("exit_button_active"))
             image.setTexture(assetManager.getTexture("exit_button"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("back_button_active"))
+            image.setTexture(assetManager.getTexture("back_button"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("butt_audio_sub_active"))
+            image.setTexture(assetManager.getTexture("soundDown"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("butt_audio_add_active"))
+            image.setTexture(assetManager.getTexture("soundUp"));
         
       //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_active"))

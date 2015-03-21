@@ -5,7 +5,6 @@ import java.util.HashMap;
 import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
@@ -28,15 +27,32 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
-import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.components.ExplosionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SpikeComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ExplosionContactListener;
+import de.hochschuletrier.gdw.ws1415.game.contactlisteners.FallingTrapContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
-import de.hochschuletrier.gdw.ws1415.game.contactlisteners.FallingTrapContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ws1415.game.systems.*;
-import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
-import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.DestroyBlocksSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.HudRenderSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.JumpAnimationSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.LavaFountainSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.PlatformSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.UpdateSoundEmitterSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
 import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 
@@ -47,6 +63,7 @@ public class Game {
     private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
     private final Hotkey toggleReload = new Hotkey(() -> loadSelectedLevel = true, Input.Keys.NUM_0);
+    private final Hotkey toggleLight = new Hotkey(() -> Settings.LIGHTS.set(!Settings.LIGHTS.get()), Input.Keys.L);
 
     private  PooledEngine engine;
     private  PhysixSystem physixSystem;
@@ -86,6 +103,8 @@ public class Game {
             togglePhysixDebug.register();
             toggleReload.register();
         }
+        
+        toggleLight.register();
 
         EntityCreator.engine = this.engine;
         EntityCreator.physixSystem = this.physixSystem;
@@ -157,7 +176,7 @@ public class Game {
         
         MapLoader.generateWorldFromTileMapX(engine, physixSystem, map, cameraSystem);
         // TODO: Move to better place or remove later
-        EntityCreator.createTestBackground();
+        EntityCreator.createTestBackground(map.getWidth()* map.getTileWidth(), map.getHeight() * map.getTileHeight());
         inputManager.init();
     }
 
