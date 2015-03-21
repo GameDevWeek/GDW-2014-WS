@@ -336,4 +336,9 @@ public class Game {
     public InputProcessor getInputProcessor() {
         return inputForwarder;
     }
+    
+    public void win()
+    {
+        
+    }
 }

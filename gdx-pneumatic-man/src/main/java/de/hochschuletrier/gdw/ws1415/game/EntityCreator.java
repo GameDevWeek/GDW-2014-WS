@@ -683,7 +683,7 @@ public class EntityCreator {
         return new Entity();
     }
     
-    public static Entity createAndAddDeko(float x, float y,float xOffset, float yOffset, float dir,float distance,float radius, Color color, boolean light, boolean lightType )
+    public static Entity createAndAddDeko(float x, float y,float xOffset, float yOffset, float dir,float distance,float radius, Color color, String lightType )
     {
         Entity e = engine.createEntity();
         
@@ -691,7 +691,7 @@ public class EntityCreator {
         pc.x=x;
         pc.y=y;
         LayerComponent lc = engine.createComponent(LayerComponent.class);
-        if(lightType == true)
+        switch ( lightType.toLowerCase() )
         {
            
 //            ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
@@ -699,17 +699,21 @@ public class EntityCreator {
 //            clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
 //            clc.coneLight.setStaticLight(light);
 //            e.add(clc);
-           
-            Entity l = createPointLight( x,y,xOffset,yOffset,color,distance,true );
-        }else
-        {
+        case "cone":
+            createConeLight( x,y,xOffset,yOffset,color,distance,dir,radius,true );
+            break;
 //            PointLightComponent plc = engine.createComponent(PointLightComponent.class);
 //            plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
 //            plc.pointLight.setStaticLight(light);
 //            plc.offsetX = xOffset;
 //            plc.offsetY = yOffset;
 //            e.add(plc);
-            Entity l = createPointLight( x,y,xOffset,yOffset,color,distance,true );
+        case "point":
+            createPointLight( x,y,xOffset,yOffset,color,distance,true );
+            break;
+        case "chain":
+            EntityCreator.createChainLight(x, y, xOffset, yOffset, color, distance, (dir>90f&&dir<270f)?false:true , new float[]{0f,0,60f,0}, true);
+            break;
         }
         e.add(pc);
         e.add(lc);

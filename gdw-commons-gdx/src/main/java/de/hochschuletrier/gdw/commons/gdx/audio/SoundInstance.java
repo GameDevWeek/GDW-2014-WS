@@ -33,7 +33,6 @@ public class SoundInstance implements Pool.Poolable {
             throw new RuntimeException("Error getting soundIdToSource", e);
         }
         setReferenceDistance(50);
-        alSourcef(sourceId, AL_GAIN, 1.0f);
     }
 
     @Override

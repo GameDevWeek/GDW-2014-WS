@@ -450,16 +450,12 @@ public class MapLoader
                                     color.a = Float.parseFloat(tinfo.getProperty("Brightness", "0.7"));
                                     float xOffset = Float.parseFloat(tinfo.getProperty("XOffset", "0.0"));
                                     float yOffset = Float.parseFloat(tinfo.getProperty("YOffset", "0.0"));
-                                  //  xOffset = 0f;
-                                  //  yOffset = 0f;
                                     float x = i * map.getTileWidth();
                                     float y = j * map.getTileHeight();
                                     // different sizes needed to have some offsets
                                     switch( map.getTileSets().get( tinfo.tileSetId ).getName().toLowerCase() )
                                     {
                                         case "deco_gross":
-                                        //    x += 1.0f * map.getTileWidth();
-                                        //    y += 1.0f * map.getTileHeight();
                                             EntityCreator.createAndAddVisualEntity(map, tinfo, i+0.5f, j+0.5f);
                                             break;
                                         case "tutorialschild":
@@ -474,19 +470,28 @@ public class MapLoader
                                             EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                             break;
                                     }
-                                    float dir = (float) (tinfo.getFloatProperty("Direction", 0.0f) + 90.0);
-                                    float dis = tinfo.getFloatProperty("Distance", 0.0f);
-                                    float conedir = tinfo.getFloatProperty("Radius", 0.0f);
-                                    boolean isCone;
-                                    if (tinfo.getProperty("LightType", "cone").toLowerCase().equals("cone"))
+                                    
+                                    
+                                    
+                                    if ( tinfo.getBooleanProperty("Light",false) == true ) 
                                     {
-                                        isCone = true;
-                                    }else
-                                    {
-                                        isCone = false;
+                                        float dis = tinfo.getFloatProperty("Distance", 0.0f); 
+                                        float dir = (float) (tinfo.getFloatProperty("Direction", 90.0f) );
+                                        float conedir = tinfo.getFloatProperty("Radius", 30.0f);
+                                        
+                                        
+//                                        // TODO tests for the ChainLight
+//                                        if ( tinfo.getProperty("Name","").toLowerCase().equals( "lamp1" ) ||
+//                                                tinfo.getProperty("Name","").toLowerCase().equals( "lamp2" ) ||
+//                                                tinfo.getProperty("Name","").toLowerCase().equals( "lamp3" ) ) 
+//                                        {
+//                                            dis = 5f; // TODO 5f for test
+//                                        }
+                                        
+                                        
+                                        EntityCreator.createAndAddDeko(x, y, xOffset, yOffset, dir, dis, conedir, color, tinfo.getProperty("LightType","point") );
                                     }
                                     
-                                    EntityCreator.createAndAddDeko(x, y, xOffset, yOffset, dir, dis, conedir, color, false, isCone );
                                 }
                                     break;
                                 default :
