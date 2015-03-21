@@ -531,7 +531,7 @@ public class EntityCreator {
         entity.add(engine.createComponent(PositionComponent.class));
         addLayerComponent(entity, 10, 1, 1);
 
-        final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+        AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation("lava_ball"); //fixme: platform block
 
