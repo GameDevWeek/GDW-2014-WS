@@ -125,6 +125,10 @@ public class OptionMenu extends MenuPage
     		addImage((int)(width/2 + countSou[act]), y_sound, (int)soundBox[0].getWidth(), (int)soundBox[0].getHeight(), soundBoxActive[act]);
     		storeSettings();
     	}
+      if(Settings.SOUND_VOLUME.get()>0.0)
+        {
+            SoundEmitter.setMuted(false);
+       }
     }
     
     private void onSoundVolumeDown()
@@ -136,6 +140,11 @@ public class OptionMenu extends MenuPage
     		removeActor(soundBoxActive[act-1]);
             storeSettings();
     	}
+    	if(Settings.SOUND_VOLUME.get()<=0.0)
+        {
+            SoundEmitter.setMuted(true);
+       }
+    	
     }
     
     private void onMusicVolumeUp()
