@@ -4,7 +4,7 @@
  <tile id="0">
   <properties>
    <property name="Colour" value="purple"/>
-   <property name="Distance" value="5.0"/>
+   <property name="Distance" value="25.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="point"/>
@@ -17,7 +17,7 @@
  <tile id="1">
   <properties>
    <property name="Colour" value="purple"/>
-   <property name="Distance" value="5.0"/>
+   <property name="Distance" value="35.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="point"/>
