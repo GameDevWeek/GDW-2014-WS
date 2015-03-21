@@ -695,19 +695,23 @@ public class EntityCreator {
         LayerComponent lc = engine.createComponent(LayerComponent.class);
         if(lightType == true)
         {
-            ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
-            clc = engine.createComponent(ConeLightComponent.class);
-            clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
-            clc.coneLight.setStaticLight(light);
-            e.add(clc);
+           
+//            ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
+//            clc = engine.createComponent(ConeLightComponent.class);
+//            clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
+//            clc.coneLight.setStaticLight(light);
+//            e.add(clc);
+           
+            Entity l = createPointLight( x,y,xOffset,yOffset,color,distance,true );
         }else
         {
-            PointLightComponent plc = engine.createComponent(PointLightComponent.class);
-            plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
-            plc.pointLight.setStaticLight(light);
-            plc.offsetX = xOffset;
-            plc.offsetY = yOffset;
-            e.add(plc);
+//            PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+//            plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
+//            plc.pointLight.setStaticLight(light);
+//            plc.offsetX = xOffset;
+//            plc.offsetY = yOffset;
+//            e.add(plc);
+            Entity l = createPointLight( x,y,xOffset,yOffset,color,distance,true );
         }
         e.add(pc);
         e.add(lc);
@@ -747,7 +751,7 @@ public class EntityCreator {
      * @return
      */
     
-    public static Entity createConeLight(float x, float y, Color color, float distance, float directionDegree, float coneDegree, boolean staticLight){
+    public static Entity createConeLight(float x, float y, float xOffset, float yOffset, Color color, float distance, float directionDegree, float coneDegree, boolean staticLight){
         Entity e = engine.createEntity();
         PositionComponent pc = engine.createComponent(PositionComponent.class);
         pc.x=x;
@@ -757,6 +761,8 @@ public class EntityCreator {
         clc = engine.createComponent(ConeLightComponent.class);
         clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, directionDegree, coneDegree);
         clc.coneLight.setStaticLight(staticLight);
+        clc.offsetX = xOffset;
+        clc.offsetY = yOffset;
         e.add(pc);
         e.add(lc);
         e.add(clc);
@@ -776,7 +782,7 @@ public class EntityCreator {
      * @param chain Linie von Punkt zu Punkt {x1, y1, x2, y2} realtiv zu Pos x & Pos y
      * @return
      */
-    public static Entity createChainLight(float x, float y, Color color, float distance, boolean rayDirection, float[] chain, boolean staticLight){
+    public static Entity createChainLight(float x, float y, float xOffset, float yOffset, Color color, float distance, boolean rayDirection, float[] chain, boolean staticLight){
         Entity e = engine.createEntity();
         PositionComponent pc = engine.createComponent(PositionComponent.class);
         pc.x=x;
@@ -784,6 +790,8 @@ public class EntityCreator {
         LayerComponent lc = engine.createComponent(LayerComponent.class);
         ChainLightComponent clc = engine.createComponent(ChainLightComponent.class);
         clc = engine.createComponent(ChainLightComponent.class);
+        clc.offsetX = xOffset;
+        clc.offsetY = yOffset;
         for(int i = 0; i<chain.length;i++){
             if(i%2 == 0){
                 chain[i]=(x+chain[i])/GameConstants.BOX2D_SCALE; 

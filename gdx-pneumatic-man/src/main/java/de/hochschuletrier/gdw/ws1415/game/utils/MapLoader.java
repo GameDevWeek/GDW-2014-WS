@@ -20,6 +20,7 @@ import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
@@ -388,7 +389,6 @@ public class MapLoader
                             {
                                 case "floor":
                                 {
-                                 System.out.println("floor");
                                     
                                     if ( tinfo.getIntProperty("Hitpoints", 0) != 0 )
                                     {  
@@ -407,9 +407,11 @@ public class MapLoader
                                     {
                                         
                                         EntityCreator.createConeLight( 
-                                                i * map.getTileWidth() + 0.5f * map.getTileWidth(), 
-                                                j * map.getTileHeight() /* + 0.5f * map.getTileHeight()   */,
-                                                Color.valueOf("FF0088" ), 4.0f, 270.0f, 20.0f, false);
+                                                i * map.getTileWidth(), 
+                                                j * map.getTileHeight(),
+                                                0.5f * map.getTileWidth(),
+                                                0.25f * map.getTileHeight(),
+                                                Color.valueOf("FF0088" ), 4.0f, 270.0f, 40.0f, false);
                                                 
                                     }
                                 }
@@ -429,9 +431,9 @@ public class MapLoader
                                         TileInfo info = tiles[i][j];
                                         EntityCreator.createAndAddVisualEntity(map, info, i, j, PlayMode.LOOP, true);
                                         Color color = Color.valueOf("FFF600");
-                                        float x = i * map.getTileWidth() + 0.5f * map.getTileWidth();
-                                        float y = j * map.getTileHeight() + 0.5f * map.getTileHeight();
-                                        EntityCreator.createChainLight(x, y, color, Float.parseFloat(info.getProperty("Distance", ""))+1f, false, new float[]{-32.5f,30f,32.5f,30f},true);
+                                        float x = i * map.getTileWidth()+0.5f * map.getTileWidth();
+                                        float y = j * map.getTileHeight()+0.5f * map.getTileHeight();
+                                        EntityCreator.createChainLight(x, y,0,0, color, Float.parseFloat(info.getProperty("Distance", ""))+1f, false, new float[]{-32.5f,30f,32.5f,30f},true);
                                     }
                                 }
                                     break;
@@ -445,8 +447,9 @@ public class MapLoader
                                 case "deko":                                
                                 {
                                     Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "")));
-                                    float xOffset = 0.0f;//Float.parseFloat(tinfo.getProperty("XOffset", "0.0"));
-                                    float yOffset = 0.0f;//Float.parseFloat(tinfo.getProperty("YOffset", "0.0"));
+                                    color.a = Float.parseFloat(tinfo.getProperty("Brightness", "0.7"));
+                                    float xOffset = Float.parseFloat(tinfo.getProperty("XOffset", "0.0"));
+                                    float yOffset = -Float.parseFloat(tinfo.getProperty("YOffset", "0.0"));
                                     float x = i * map.getTileWidth();
                                     float y = j * map.getTileHeight();
                                     // different sizes needed to have some offsets
@@ -458,9 +461,14 @@ public class MapLoader
                                             EntityCreator.createAndAddVisualEntity(map, tinfo, i+0.5f, j+0.5f);
                                             break;
                                         case "tutorialschild":
+                                        {
                                             x += 1.5f * map.getTileWidth();
                                             y += 1.5f * map.getTileHeight();
-                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+1, j+1);
+                                            int add=0;
+                                            if ( Settings.GAMEPAD_ENABLED.get() ) add = 1;
+                                            TileInfo ti = new TileInfo( tinfo.tileSetId,tinfo.localId+add,tinfo.globalId+add,tinfo.getProperties() );
+                                            EntityCreator.createAndAddVisualEntity(map, ti, i+1, j+1);
+                                        }
                                             break;
                                         default :
                                             x += 0.5f * map.getTileWidth();
