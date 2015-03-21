@@ -72,7 +72,7 @@ public class EntityCreator {
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1f).friction(0f).restitution(0f)
-        .shapeBox(width * 0.2f, height * 0.85f, new Vector2(0, height * 0.05f), 0);
+        .shapeBox(width * 0.2f, height * 0.825f, new Vector2(0, 0), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
 
         fixtureDef = new PhysixFixtureDef(physixSystem)
@@ -84,7 +84,7 @@ public class EntityCreator {
         //laser
         fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0f).restitution(0f)
-                .shapeCircle(width * 0.1f, new Vector2(0, GameConstants.getTileSizeY()*0.68f));
+                .shapeCircle(width * 0.1f, new Vector2(0, height*0.425f));
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData("laser");
         
