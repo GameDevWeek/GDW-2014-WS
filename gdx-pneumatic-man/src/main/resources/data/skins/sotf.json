@@ -6,7 +6,8 @@
         "mainMenu-Small-font": {"file": "data/fonts/verdana_32.fnt"},
         "orbitron_32": {"file": "data/fonts/OrbitronBlack_Size32.fnt"},
 	"orbitron_150" : {"file" : "data/fonts/OrbitronBlack_Size150.fnt"},
-	"orbitron_75" : {"file" : "data/fonts/OrbitronBlack_Size75.fnt"}
+	"orbitron_75" : {"file" : "data/fonts/OrbitronBlack_Size75.fnt"},
+	"orbitron_18" : {"file" : "data/fonts/OrbitronBlack_Size18.fnt"}
         
     },
     "com.badlogic.gdx.graphics.Color": {
@@ -67,7 +68,8 @@
         "connectionError": {"font": "mainMenu-Small-font", "fontColor": "red"},
         "inputLabel": {"font": "mainMenu-Small-font", "fontColor": "white"},
         "helpTitle": {"font": "mainMenu-font", "fontColor": "black"},
-        "helpText": {"font": "mainMenu-Small-font", "fontColor": "black"}
+        "helpText": {"font": "mainMenu-Small-font", "fontColor": "black"},
+        "highscore": {"font": "orbitron_32"}
     },
     "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
         "default": {"selection": "selection", "background": "textfield", "font": "default-font", "fontColor": "white", "cursor": "cursor"},

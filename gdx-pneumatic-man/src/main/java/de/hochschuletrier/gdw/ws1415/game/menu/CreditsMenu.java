@@ -56,8 +56,6 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
         } catch (Exception ex) {
             logger.error("Error loading credits", ex);
         }
-        music = assetManager.getMusic("menu");
-        MusicManager.play(music, 2.0f);
 
         addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
     }
@@ -76,4 +74,8 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
     public Texture getTexture(String name) {
         return assetManager.getTexture(name);
     }
+    
+//Abspielen, wenn visible -> setVisible überschreiben    
+//    music = assetManager.getMusic("menu");
+//    MusicManager.play(music, 2.0f);
 }
