@@ -21,9 +21,9 @@ public class OptionMenu extends MenuPage
 	private final DecoImage keyboardActive = new DecoImage(assetManager.getTexture("keyboard_active"));
 	
 	private final DecoImage soundUpSound = new DecoImage(assetManager.getTexture("soundUp"));
-	private final DecoImage soundDownSound = new DecoImage(assetManager.getTexture("soundUp"));
+	private final DecoImage soundDownSound = new DecoImage(assetManager.getTexture("soundDown"));
 	private final DecoImage soundUpMusic = new DecoImage(assetManager.getTexture("soundUp"));
-	private final DecoImage soundDownMusic = new DecoImage(assetManager.getTexture("soundUp"));
+	private final DecoImage soundDownMusic = new DecoImage(assetManager.getTexture("soundDown"));
 	
 	private final DecoImage[] soundBox = new DecoImage[10];
 	private final DecoImage[] musicBox = new DecoImage[10];
