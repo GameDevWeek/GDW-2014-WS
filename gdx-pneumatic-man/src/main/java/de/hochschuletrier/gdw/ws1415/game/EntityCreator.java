@@ -118,9 +118,7 @@ public class EntityCreator {
         anim.animation = assetManager.getAnimation("char_spawn");
         entity.add(anim);
         
-        LayerComponent layer = engine.createComponent(LayerComponent.class);
-        layer.layer = 10; // TODO: Change later
-        entity.add(layer);
+        addLayerComponent(entity, 10, 1, 1);
 
         engine.addEntity(entity);
         return entity;
@@ -204,9 +202,12 @@ public class EntityCreator {
         Damage.damageToPlayer = true;
         entity.add(Damage);
         entity.add(engine.createComponent(AIComponent.class));
-        entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(SpawnComponent.class));
+        
+        final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+        entity.add(animation);
+        animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
 
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
@@ -236,6 +237,8 @@ public class EntityCreator {
         DirectionComponent d = new DirectionComponent();
         d.facingDirection = Direction.LEFT;
         entity.add(d);
+        
+        addLayerComponent(entity, 10, 1, 1);
 
         engine.addEntity(entity);
         return entity;
@@ -293,12 +296,18 @@ public class EntityCreator {
         bodyComponent.createFixture(pfx);
         Miner.add(bodyComponent);
         
-        LayerComponent layer = engine.createComponent(LayerComponent.class);
-        layer.layer = 10; // TODO: Change later
-        Miner.add(layer);
+        addLayerComponent(Miner, 10, 1, 1);
         
         engine.addEntity(Miner);
         return(Miner);
+    }
+
+    static void addLayerComponent(Entity entity, int layer, float parallaxX, float parallaxY) {
+        LayerComponent layerComponent = engine.createComponent(LayerComponent.class);
+        layerComponent.layer = layer;
+        layerComponent.parallaxX = parallaxX;
+        layerComponent.parallaxY = parallaxY;
+        entity.add(layerComponent);
     }
 
     public static Entity createAndAddGoal(float x, float y, int requiredMiners) {
@@ -382,9 +391,7 @@ public class EntityCreator {
         trapBlock.animation = assetManager.getAnimation("stone_breaking");
         
         entity.add(trapBlock);
-        LayerComponent layer = engine.createComponent(LayerComponent.class);
-        layer.layer = 10; // TODO: Change later
-        entity.add(layer);
+        addLayerComponent(entity, 10, 1, 1);
         engine.addEntity(entity);
         return entity;
     }
@@ -819,6 +826,12 @@ public class EntityCreator {
         position.x = positionX;
         position.y = positionY;
         entity.add(position);
+        
+        final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+        entity.add(animation);
+        animation.animation = assetManager.getAnimation("lava_ball");
+        
+        addLayerComponent(entity, 10, 1, 1);
         
         engine.addEntity(entity);
     }
