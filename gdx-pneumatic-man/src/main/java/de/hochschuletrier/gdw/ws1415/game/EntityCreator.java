@@ -49,28 +49,10 @@ public class EntityCreator {
     
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
-
-        entity.add(engine.createComponent(DamageComponent.class));
-        entity.add(engine.createComponent(InputComponent.class));
+        
         entity.add(engine.createComponent(PlayerComponent.class));
-        
-        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
-        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("laser"));
-        
-        pe.loop=true;
-        pe.particleEffect.flipY();
-        pe.particleEffect.start();
-        pe.offsetY = 60f;
-        pe.offsetX = -7f;
-        entity.add(pe);
 
         //addTestParticleAndLightComponent(entity);
-        
-//        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
-
-        HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 1;
-        entity.add(Health);
 
         float width = GameConstants.getTileSizeX() * 0.9f;
         float height = GameConstants.getTileSizeY() * 1.5f;
@@ -132,19 +114,49 @@ public class EntityCreator {
         // ***** temporary *****
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = true;
-        anim.animation = assetManager.getAnimation("char_idle");
+        anim.isSpawningPlayer = true;
+        anim.animation = assetManager.getAnimation("char_spawn");
         entity.add(anim);
-        
-        JumpableAnimationComponent jumpable = engine.createComponent(JumpableAnimationComponent.class);
-        jumpable.idle = anim.animation;
-        jumpable.jump = assetManager.getAnimation("char_jump");
-        entity.add(jumpable);
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
         layer.layer = 10; // TODO: Change later
         entity.add(layer);
 
         engine.addEntity(entity);
+        return entity;
+    }
+    
+    public static Entity modifyPlayerToLiving(Entity entity) {
+        //Entity dyingEntity = engine.createEntity();
+        
+        entity.add(engine.createComponent(DamageComponent.class));
+        entity.add(engine.createComponent(InputComponent.class));
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("laser"));
+        
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        pe.offsetY = 60f;
+        pe.offsetX = -7f;
+        entity.add(pe);
+
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        entity.add(Health);
+        
+        final AnimationComponent animation = ComponentMappers.animation.get(entity);
+        animation.animation = assetManager.getAnimation("char_idle");
+        animation.isSpawningPlayer = false;
+        
+        JumpableAnimationComponent jumpable = engine.createComponent(JumpableAnimationComponent.class);
+        jumpable.idle = animation.animation;
+        jumpable.jump = assetManager.getAnimation("char_jump");
+        entity.add(jumpable);
+
+        animation.stateTime = 0;
+        animation.animationFinished = false;
+
         return entity;
     }
     

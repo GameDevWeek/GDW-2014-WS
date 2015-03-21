@@ -22,6 +22,7 @@ public class AnimationComponent extends Component implements Pool.Poolable {
     public boolean flipY = false;
     public boolean IsActive = true;
     public boolean isDyingPlayer = false;
+    public boolean isSpawningPlayer = false;
     public AnimationExtended animation;
     public float stateTime;
     public float permanent_stateTime;

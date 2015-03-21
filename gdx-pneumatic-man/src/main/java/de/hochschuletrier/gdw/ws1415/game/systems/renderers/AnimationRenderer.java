@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
@@ -35,6 +36,8 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
                 if(animation.isDyingPlayer)
                 {
                     Game.loadLevel();
+                } else if(animation.isSpawningPlayer) {
+                    EntityCreator.modifyPlayerToLiving(entity);
                 }
             }
         }
