@@ -77,10 +77,13 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 int saved_miners = scoreSys.player.getComponent(PlayerComponent.class).saved_miners;
                 int destroyed_blocks = scoreSys.player.getComponent(PlayerComponent.class).destroyed_blocks;
                 int miners_threshold = scoreSys.goal.getComponent(GoalComponent.class).miners_threshold;
-                Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
-                logger.info("Your score is: " + Score.score);
-                Settings.HIGHSCORE.set(""+Score.score);
-                Game.loadLevel();
+                if(scoreSys.scoreCanBeRegistered){
+                    Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
+                    logger.info("Your score is: " + Score.score);
+                    scoreSys.timeSinceLastCalculation = 0;
+                    scoreSys.scoreCanBeRegistered = false;
+                    Game.loadLevel();
+                }
             }
         }
 

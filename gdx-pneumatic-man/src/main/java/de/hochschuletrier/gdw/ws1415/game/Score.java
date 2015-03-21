@@ -23,34 +23,34 @@ public class Score {
         compareScores(score);
     }
 
-    public static void readHighscores(){
-        for(int i = 0; i <= (highscores.length - 1); i++){
-            Settings.HIGHSCORE.set(highscores[i]);
-        }
-        Settings.flush();
-    }
+    //public static void readHighscores(){
+    //    for(int i = 0; i <= (highscores.length - 1); i++){
+    //        Settings.HIGHSCORE.set(highscores[i]);
+    //    }
+    //    Settings.flush();
+    //}
 
-    public static void addHighscore(int n){
-        for(int i = n; i <= (highscores.length - 1); i++){
-            int newPos = i + 1;
-            if(newPos <= (highscores.length - 1)){
-                highscores[i] = highscores[newPos];
-            }
+    public static void addHighscore(int NewHighScoreIdx, int newHighscore){
+
+        int LowestHighscoreIdx = highscores.length-1;
+        for(int i=LowestHighscoreIdx; i>NewHighScoreIdx; i--)
+        {
+            highscores[i] = highscores[i-1];
         }
 
-        highscores[n] = ""+score;
+        highscores[NewHighScoreIdx] = ""+newHighscore;
     }
 
     public static void compareScores(int score){
-        int n = -1;
+        int n = 0;
 
         for(String s : highscores){
             int currentHighscore = Integer.parseInt(s);
-            n++;
-            if(currentHighscore <= score){
-                addHighscore(n);
+            if(currentHighscore < score){
+                addHighscore(n, score);
                 break;
             }
+            n++;
         }
     }
 }
