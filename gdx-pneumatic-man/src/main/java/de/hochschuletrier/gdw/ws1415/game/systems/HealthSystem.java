@@ -82,6 +82,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                         deathTimer.deathTimer -= deltaTime;
                     }
                 }
+                else
+                {
+                    Health.health = HealthState.DEAD;
+                }
                 
 
                 if (ComponentMappers.player.has(entity)) {

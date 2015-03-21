@@ -29,6 +29,7 @@ public class InputManager implements SettingListener<Boolean>{
 	{
 	    // Listener anmelden
 	    // Wert aus den settings auslesen und darauf einstellen
+	    close();
 	    Settings.GAMEPAD_ENABLED.addListener(this);
 	    onSettingChanged(Settings.GAMEPAD_ENABLED, Settings.GAMEPAD_ENABLED.get());
 	}
