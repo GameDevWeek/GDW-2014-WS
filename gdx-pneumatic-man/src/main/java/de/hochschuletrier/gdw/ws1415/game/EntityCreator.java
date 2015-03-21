@@ -53,7 +53,7 @@ public class EntityCreator {
         
         entity.add(engine.createComponent(PlayerComponent.class));
         entity.add(engine.createComponent(SoundEmitterComponent.class));
-
+        
         //addTestParticleAndLightComponent(entity);
 
         float width = GameConstants.getTileSizeX() * 0.9f;
@@ -72,7 +72,7 @@ public class EntityCreator {
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1f).friction(0f).restitution(0f)
-        .shapeBox(width * 0.19f, height * 0.825f, new Vector2(0, 0), 0);
+        .shapeBox(width * 0.18f, height * 0.825f, new Vector2(0, 0), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
 
         fixtureDef = new PhysixFixtureDef(physixSystem)

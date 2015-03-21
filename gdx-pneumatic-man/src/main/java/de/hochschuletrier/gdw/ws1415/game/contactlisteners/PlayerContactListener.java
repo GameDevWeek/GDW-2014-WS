@@ -127,7 +127,10 @@ public class PlayerContactListener extends PhysixContactAdapter {
             
             if (IsAlive && otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
                 logger.info(contact.getWorldManifold().getNormal().toString());
-                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
+                if(player.getComponent(HealthComponent.class) != null){
+                    player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
+                }
+                
             }
         }
         

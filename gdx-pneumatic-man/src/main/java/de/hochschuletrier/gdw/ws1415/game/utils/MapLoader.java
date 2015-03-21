@@ -329,7 +329,7 @@ public class MapLoader
                         {
                             float width = GameConstants.getTileSizeX() * 0.9f;
                             float height = GameConstants.getTileSizeY() * 1.5f;
-                            cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX() + width, obj.getY()- height, 0) );
+                            cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX() + width, obj.getY(), 0) );
                         }
 
                             break;
