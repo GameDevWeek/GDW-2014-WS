@@ -41,7 +41,5 @@
     "bg2": "data/backgrounds/Hintergrund2.png",
     "bg3": "data/backgrounds/Hintergrund3.png",
     "bg_oben": "data/backgrounds/Hintergrund_oben.png",
-    "bg_zwischenstueck": "data/backgrounds/Hintergrund_zwischenstueck.png",
-    "hud_ico_stein" : "data/images/HUD_Ico_Stein01.png",
-    "hud_ico_time" : "data/images/HUD_Ico_Time01.png"
+    "bg_zwischenstueck": "data/backgrounds/Hintergrund_zwischenstueck.png"
 }
