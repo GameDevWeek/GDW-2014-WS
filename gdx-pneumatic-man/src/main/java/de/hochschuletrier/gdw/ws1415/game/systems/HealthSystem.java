@@ -1,9 +1,11 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
 
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
@@ -63,10 +65,20 @@ public class HealthSystem extends EntitySystem implements EntityListener {
             //Info log for damages
             if(Health.DecrementByValueNextFrame>0)
             {
+                /*
+                 * spielt sound zum  blockbeschödigen
+                 */
+                if(ComponentMappers.block.has(entity)){
+                 // ***** Sound *****
+                    Random rm=new Random();
+                    int i=rm.nextInt(5)+1;//1-5
+                    logger.info("Debris "+i);
+                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("cracks"+i), false);
+                }
                 logger.info("Damaging "+entity.getId()+" with " + Health.DecrementByValueNextFrame + " damage. New Health: "+ (Health.Value - Health.DecrementByValueNextFrame));
             }
-            /* 
-            */
+
+            
             Health.Value -= Health.DecrementByValueNextFrame;
             Health.DecrementByValueNextFrame = 0;
 
@@ -103,6 +115,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
                     Vector2 p1 = physix.getBody().getPosition();
                     Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(1.5f)); // FIXME MAGIC NUMBER
+                    
+                 // ***** Sound *****
+                    Random rm=new Random();
+                    int i=rm.nextInt(4)+1;//1-4
+                    logger.info("Debris "+i);
+                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("debris"+i), false);
 
                     if(Health.health == HealthComponent.HealthState.DEAD) {
                         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {

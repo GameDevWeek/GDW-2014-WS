@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
+import java.util.Random;
+
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 
@@ -13,6 +15,8 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector2;
 
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -49,6 +53,13 @@ public class PlayerContactListener extends PhysixContactAdapter {
         
         if(otherEntity.getComponent(MinerComponent.class) != null){
             otherEntity.getComponent(HealthComponent.class).Value = 0;
+            //play Sound
+            Random rm=new Random();
+            int i=rm.nextInt(3)+1;//1-3
+            System.out.println("saveSaound "+i);
+            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free"+i), false);
+//            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free2"), false);
+//            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free3"), false);
         }
         
         if(otherEntity.getComponent(GoalComponent.class) != null){
@@ -62,6 +73,13 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 int miners_threshold = scoreSys.goal.getComponent(GoalComponent.class).miners_threshold;
                 Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
                 logger.info("Your score is: " + Score.score);
+                
+                // ***** Sound *****
+                Random rm=new Random();
+                int i=rm.nextInt(3)+1;//1-3
+                logger.info("GlorySound "+i);
+                SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("glory"+i), false);
+                
                 Settings.HIGHSCORE.set(""+Score.score);
                 Game.loadLevel();
             }
