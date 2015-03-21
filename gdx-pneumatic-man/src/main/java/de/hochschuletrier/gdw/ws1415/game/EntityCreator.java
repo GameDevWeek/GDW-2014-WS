@@ -242,6 +242,7 @@ public class EntityCreator {
         entity.add(bodyComponent);
         AIComponent ai = new AIComponent();
         ai.type = type;
+        ai.AItimer = 5;
         entity.add(ai);
 
         MovementComponent movementComponent = engine.createComponent(MovementComponent.class);
@@ -1136,7 +1137,7 @@ public class EntityCreator {
         Bomb.add(deathTimer);
         
         //addRenderComponents(Bomb, map, info, tileX, tileY);
-        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
+        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, false);
         
         engine.addEntity(Bomb);
         return(Bomb);
@@ -1168,7 +1169,6 @@ public class EntityCreator {
         entity.add(PhysixBody);
         
         
-
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 0;
         entity.add(Health);
