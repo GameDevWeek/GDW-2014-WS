@@ -161,15 +161,18 @@ public class Game {
 
     private void selectPathFromSettings()
     {
-        int selectedLevel = Settings.CURRENTLY_SELECTED_LEVEL.get();
-        switch (selectedLevel)
-        {
-            case 0: 
-                levelFilePath = "data/maps/Testkarte_19.03.tmx";
-                break;
-            default:
-                System.out.println("Warning: Error in Level Selection");
-        }
+        
+        String selectedMap = assetManager.getTiledMap(Settings.CURRENTLY_SELECTED_LEVEL.toString()).getProperty("path", "data/maps/Testkarte_19.03.tmx");
+
+//        int selectedLevel = Settings.CURRENTLY_SELECTED_LEVEL.get();
+//        switch (selectedLevel)
+//        {
+//            case 0: 
+//                levelFilePath = "data/maps/Testkarte_19.03.tmx";
+//                break;
+//            default:
+//                System.out.println("Warning: Error in Level Selection");
+//        }
         
 //        String levelName = Settings.CURRENTLY_SELECTED_LEVEL;
 //        System.out.println("CurrentlySelectedLevel: " + levelName);

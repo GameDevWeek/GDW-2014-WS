@@ -21,6 +21,7 @@ import de.hochschuletrier.gdw.commons.devcon.cvar.CVarEnum;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
+import de.hochschuletrier.gdw.commons.gdx.assets.loaders.TiledMapLoader;
 import de.hochschuletrier.gdw.commons.gdx.devcon.DevConsoleView;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundDistanceModel;
@@ -32,6 +33,7 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.gdx.utils.GdxResourceLocator;
 import de.hochschuletrier.gdw.commons.gdx.utils.KeyUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
+import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.ClassUtils;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdateSoundEmitterSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxCommand;
@@ -93,6 +95,7 @@ public class Main extends StateBasedGame {
         assetManager.loadAssetList("data/json/particles.json", ParticleEffect.class, null);
         assetManager.loadAssetListWithParam("data/json/animations.json", AnimationExtended.class,
                 AnimationExtendedLoader.AnimationExtendedParameter.class);
+        assetManager.loadAssetListWithParam("data/json/levels.json", TiledMap.class, TiledMapLoader.TiledMapParameter.class);
         BitmapFontParameter fontParam = new BitmapFontParameter();
         fontParam.flip = true;
         assetManager.loadAssetList("data/json/fonts.json", BitmapFont.class, fontParam);
