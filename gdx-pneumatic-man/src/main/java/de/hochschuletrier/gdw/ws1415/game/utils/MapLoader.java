@@ -220,7 +220,16 @@ public class MapLoader
      * @author Assets
      */
     
-    
+    public static String convertLight(String lightName)
+    {
+        switch(lightName.toLowerCase())
+        {
+        case "white" : 
+            return "FFFFFF";
+        default : //TODO Exeption hinzufügen
+            return "FFFFFF";
+        }
+    }
     public static void generateWorldFromTileMapX(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
     {
         // if constants weren't loaded yet, do so
@@ -412,6 +421,15 @@ public class MapLoader
                                 case "deko":
                                 {
                                     EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                    
+                                    Color color = Color.valueOf(convertLight(tinfo.getProperty("Light", "white")));
+                                    float x = i * map.getTileWidth() + 0.5f * map.getTileWidth();
+                                    float y = j * map.getTileHeight() + 0.5f * map.getTileHeight();
+                                    float dir = (float) (tinfo.getFloatProperty("Direction", 0.0f) - 90.0);
+                                    float dis = tinfo.getFloatProperty("Distance", 0.0f);
+                                    float conedir = tinfo.getFloatProperty("Radius", 0.0f);
+                                    
+                                    EntityCreator.createAndAddDeko(x, y, dir, dis, conedir, color, true );
                                 }
                                     break;
                                 default :
