@@ -95,6 +95,7 @@
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Felix Wishnewsky ", "delay": "1700" },
                 { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Noah Plingen", "delay": "0" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Manuel Neugebauer ", "delay": "1350" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Marc Amann", "delay": "0" },
                 
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Design", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Julia Wolf  ", "delay": "1700" },
