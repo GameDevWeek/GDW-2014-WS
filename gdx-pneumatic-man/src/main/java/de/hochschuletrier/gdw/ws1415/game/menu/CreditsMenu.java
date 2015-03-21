@@ -11,6 +11,7 @@ import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimator;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimatorActor;
 import de.hochschuletrier.gdw.ws1415.Main;
@@ -42,7 +43,7 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
     }
 
     public CreditsMenu(Skin skin, MenuManager menuManager) {
-        super(skin, "credit_background");
+        super(skin, "background_menu");
         
         try {
             sceneAnimator = new SceneAnimator(this, "data/json/credits.json");
@@ -61,7 +62,8 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
 //        music = assetManager.getMusic("menu");
 //        MusicManager.play(music, 2.0f);
 
-        addCenteredButton(menuManager.getWidth() - 100, 54, 100, 40, "Zurück", () -> menuManager.popPage());
+//        addCenteredButton(menuManager.getWidth() - 100, 54, 100, 40, "Zurück", () -> menuManager.popPage());
+        addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
     }
 
     @Override

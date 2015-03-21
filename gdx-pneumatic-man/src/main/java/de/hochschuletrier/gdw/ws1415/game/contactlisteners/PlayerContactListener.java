@@ -81,8 +81,10 @@ public class PlayerContactListener extends PhysixContactAdapter {
             PhysixBodyComponent bodyComponent = ComponentMappers.physixBody.get(rockTriggerComponent.rockEntity);
             PhysixModifierComponent modifierComponent = EntityCreator.engine.createComponent(PhysixModifierComponent.class);
             modifierComponent.schedule(() -> {
-                bodyComponent.setActive(true);
+                bodyComponent.setGravityScale(1);
+                bodyComponent.setAwake(true);
             });
+            ComponentMappers.animation.get(rockTriggerComponent.rockEntity).IsActive = true;
             rockTriggerComponent.rockEntity.add(modifierComponent);
             EntityCreator.engine.removeEntity(otherEntity);
         }
@@ -97,6 +99,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
         if("jump".equals(contact.getMyFixture().getUserData())){
             JumpComponent jump = ComponentMappers.jump.get(player);
+            jump.previousContacts = jump.groundContacts;
             jump.groundContacts++;
         }
 
@@ -127,6 +130,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
            
             JumpComponent jump = ComponentMappers.jump.get(player);
             if(jump!= null){
+                jump.previousContacts = jump.groundContacts;
                 jump.groundContacts--;
             }
             
