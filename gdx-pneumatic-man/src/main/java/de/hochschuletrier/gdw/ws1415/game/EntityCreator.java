@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import java.util.Random;
+
 import box2dLight.ChainLight;
 import box2dLight.ConeLight;
 import box2dLight.DirectionalLight;
@@ -21,6 +23,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
@@ -52,7 +55,6 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
         
         entity.add(engine.createComponent(PlayerComponent.class));
-        entity.add(engine.createComponent(SoundEmitterComponent.class));
 
         //addTestParticleAndLightComponent(entity);
 
@@ -191,8 +193,12 @@ public class EntityCreator {
 
         entityToDie.remove(AnimationComponent.class);
         entityToDie.add(deathAnimation);
-
-
+      
+        //***** Sounds *****
+        Random rm=new Random();
+        int i=rm.nextInt(3)+1;//1-3
+        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
+        
         return entityToDie;
     }
 
@@ -205,6 +211,10 @@ public class EntityCreator {
         float width = GameConstants.getTileSizeX();
         float height = GameConstants.getTileSizeY();
 
+        HealthComponent Health =engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        entity.add(Health);
+        
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
         Damage.damage  = 1;
         Damage.damageToPlayer = true;
@@ -214,11 +224,9 @@ public class EntityCreator {
         entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
 
-        final SoundEmitterComponent soundEmitterComponent = engine.createComponent(SoundEmitterComponent.class);
-        entity.add(soundEmitterComponent);
-        final SoundInstance si = soundEmitterComponent.emitter.play(assetManager.getSound("alienBark1"), true);
-        si.setReferenceDistance(20);
+
         
+        // ***** ANimation*****ddddddddddddd
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
@@ -309,7 +317,7 @@ public class EntityCreator {
         bodyComponent.createFixture(pfx);
         Miner.add(bodyComponent);
         
-        addLayerComponent(Miner, 10, 1, 1);
+        addLayerComponent(Miner, 10, 1, 1);     
         
         engine.addEntity(Miner);
         return(Miner);
@@ -677,7 +685,7 @@ public class EntityCreator {
         return new Entity();
     }
     
-    public static Entity createAndAddDeko(float x, float y, float dir,float distance,float radius, Color color, boolean light )
+    public static Entity createAndAddDeko(float x, float y,float xOffset, float yOffset, float dir,float distance,float radius, Color color, boolean light, boolean lightType )
     {
         Entity e = engine.createEntity();
         
@@ -685,14 +693,25 @@ public class EntityCreator {
         pc.x=x;
         pc.y=y;
         LayerComponent lc = engine.createComponent(LayerComponent.class);
-        ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
-        clc = engine.createComponent(ConeLightComponent.class);
-        clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
-        clc.coneLight.setStaticLight(light);
+        if(lightType == true)
+        {
+            ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
+            clc = engine.createComponent(ConeLightComponent.class);
+            clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
+            clc.coneLight.setStaticLight(light);
+            e.add(clc);
+        }else
+        {
+            PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+            plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
+            plc.pointLight.setStaticLight(light);
+            plc.offsetX = xOffset;
+            plc.offsetY = yOffset;
+            e.add(plc);
+        }
         e.add(pc);
         e.add(lc);
-        e.add(clc);
-        
+
         engine.addEntity(e);
         return e;
     }
