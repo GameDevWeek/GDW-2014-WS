@@ -12,7 +12,7 @@
 
     "debris1": "data/sounds/debris1.wav",
     "debris2": "data/sounds/debris2.wav",
-    "debris3": "data/sounds/debris3.wav",
+    "debris3": "data/sounds/debris3.wav",d
     "debris4": "data/sounds/debris4.wav",
     "alienBark1": "data/sounds/alienBark1.wav",
 	"alienBark2": "data/sounds/alienBark2.wav",
@@ -58,6 +58,6 @@
 	"pneu3": "data/sounds/pneu3.wav",
 	"stoneDrops": "data/sounds/stoneDrop3.wav",
 	"stoneHit1": "data/sounds/stoneHit1.wav",
-	"stoneHit1": "data/sounds/stoneHit2.wav",
+	"stoneHit2": "data/sounds/stoneHit2.wav",
 	"stoneHit3": "data/sounds/stoneHit3.wav"
 }
