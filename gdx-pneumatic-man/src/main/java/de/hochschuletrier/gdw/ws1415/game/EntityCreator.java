@@ -406,7 +406,7 @@ public class EntityCreator {
         DamageComponent damageComp = engine.createComponent(DamageComponent.class);
         damageComp.damage = 4;
         damageComp.damageToPlayer = true;
-        damageComp.damageToTile = true;
+        damageComp.damageToTile = false;
         entity.add(damageComp);
 
         AnimationComponent trapBlock = engine.createComponent(AnimationComponent.class);

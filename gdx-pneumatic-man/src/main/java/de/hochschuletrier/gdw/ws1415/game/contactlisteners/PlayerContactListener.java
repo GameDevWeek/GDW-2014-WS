@@ -133,6 +133,8 @@ public class PlayerContactListener extends PhysixContactAdapter {
                     bodyComponent.setGravityScale(1);
                     bodyComponent.setAwake(true);
                 });
+                
+                ComponentMappers.damage.get(rockTriggerComponent.rockEntity).damageToTile = true;
                 ComponentMappers.animation.get(rockTriggerComponent.rockEntity).IsActive = true;
                 rockTriggerComponent.rockEntity.add(modifierComponent);
                 EntityCreator.engine.removeEntity(otherEntity);
