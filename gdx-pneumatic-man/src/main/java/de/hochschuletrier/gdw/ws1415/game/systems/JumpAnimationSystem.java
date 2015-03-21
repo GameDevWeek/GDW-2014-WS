@@ -27,6 +27,8 @@ public class JumpAnimationSystem extends IteratingSystem {
         JumpableAnimationComponent jumpable = entity.getComponent(JumpableAnimationComponent.class);
         JumpComponent jump = entity.getComponent(JumpComponent.class);
 
+//        System.out.prientln("Jump Animation System is alive");
+        
         // Charakter has been in midair, check if on ground again
         if(jumpable.midair)
         {
