@@ -21,6 +21,8 @@ import de.hochschuletrier.gdw.commons.jackson.JacksonList;
 
 public class AnimationExtendedLoader extends
         AsynchronousAssetLoaderX<AnimationExtended, AnimationExtendedLoader.AnimationExtendedParameter> {
+    
+    private static int count;
 
     public AnimationExtendedLoader(FileHandleResolver resolver) {
         super(resolver);
@@ -52,7 +54,7 @@ public class AnimationExtendedLoader extends
 
     @Override
     public String getFilePrefix() {
-        return "Anim:";
+        return "Anim:" + count++;
     }
 
     @Override
