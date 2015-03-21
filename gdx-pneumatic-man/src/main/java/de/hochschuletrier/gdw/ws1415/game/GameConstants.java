@@ -34,6 +34,8 @@ public class GameConstants {
     public static final boolean LIGHT_SHADOW = true;
     public static final boolean LIGHT_DIFFUSE = false;
     
+    public static final boolean useShader = false;
+    
     public static final float MUSIC_FADE_TIME = 2.0f;
     
     private static int TileSizeX = 0;
@@ -53,4 +55,5 @@ public class GameConstants {
     }
 
     public static boolean pause = false;
+    public static boolean menuOpen = false;
 }

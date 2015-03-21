@@ -10,9 +10,7 @@ import de.hochschuletrier.gdw.ws1415.Settings;
 
 public class OptionMenu extends MenuPage
 {	
-    //private final Slider soundSlider, musicSlider;
-	
-    private final DecoImage overlay = new DecoImage(assetManager.getTexture("options_overlay"));
+   private final DecoImage overlay = new DecoImage(assetManager.getTexture("options_overlay"));
 	private final DecoImage head = new DecoImage(assetManager.getTexture("optionen_button_active"));
 	
 	private final DecoImage gamepad = new DecoImage(assetManager.getTexture("gamepad_inactive"));
@@ -46,9 +44,7 @@ public class OptionMenu extends MenuPage
 		y_music = menuManager.getHeight()/2-115;
 		width = menuManager.getWidth();
 		height = menuManager.getHeight();
-		
-		//System.out.println(SoundEmitter.getGlobalVolume());
-		
+				
 		addImage(Main.WINDOW_WIDTH/5+10, Main.WINDOW_HEIGHT/5-15, (int)overlay.getWidth(),(int) overlay.getHeight(), overlay);
 		addImage((int)(Main.WINDOW_WIDTH/2 - 320), 750, (int) head.getWidth(), (int) head.getHeight(), head);
 		
@@ -72,12 +68,6 @@ public class OptionMenu extends MenuPage
 		addCenteredImage(menuManager.getWidth()/2 - 350, y_music - 17, (int)soundDownMusic.getWidth(), (int)soundDownMusic.getHeight(), soundDownMusic, this::onMusicVolumeDown);
 		addCenteredImage(menuManager.getWidth()/2 + 260, y_music - 17, (int)soundUpMusic.getWidth(), (int)soundUpMusic.getHeight(), soundUpMusic, this::onMusicVolumeUp);
 		
-//        soundSlider = createSlider(menuManager.getWidth()/2-110, menuManager.getHeight()/2-50, this::onSoundVolumeChanged);
-//        soundSlider.setValue(Settings.SOUND_VOLUME.get());
-//
-//        musicSlider = createSlider(menuManager.getWidth()/2-110, menuManager.getHeight()/2-210, this::onMusicVolumeChanged);
-//        musicSlider.setValue(Settings.MUSIC_VOLUME.get());
-				
 		int musicVolume = (int)(Settings.MUSIC_VOLUME.get() * 10);
 		int soundVolume = (int)(Settings.SOUND_VOLUME.get() * 10);
 		
@@ -110,9 +100,17 @@ public class OptionMenu extends MenuPage
 		
 		addCenteredImage(menuManager.getWidth()/2 - 400, menuManager.getHeight()/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepad, this::onGamepadChanged);
 		addCenteredImage(menuManager.getWidth()/2 + 50, menuManager.getHeight()/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboard, this::onKeyboardChanged);
-
-		addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
-        Settings.GAMEPAD_ENABLED.set(false);
+		
+		System.out.println(Settings.GAMEPAD_ENABLED.get());
+		
+		if (Settings.GAMEPAD_ENABLED.get() == true)
+		{
+			addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
+		}
+		else
+		{
+			addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
+		}
         
    		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
 	}
@@ -127,6 +125,10 @@ public class OptionMenu extends MenuPage
     		addImage((int)(width/2 + countSou[act]), y_sound, (int)soundBox[0].getWidth(), (int)soundBox[0].getHeight(), soundBoxActive[act]);
     		storeSettings();
     	}
+      if(Settings.SOUND_VOLUME.get()>0.0)
+        {
+            SoundEmitter.setMuted(false);
+       }
     }
     
     private void onSoundVolumeDown()
@@ -138,6 +140,11 @@ public class OptionMenu extends MenuPage
     		removeActor(soundBoxActive[act-1]);
             storeSettings();
     	}
+    	if(Settings.SOUND_VOLUME.get()<=0.0)
+        {
+            SoundEmitter.setMuted(true);
+       }
+    	
     }
     
     private void onMusicVolumeUp()
@@ -168,6 +175,7 @@ public class OptionMenu extends MenuPage
 		addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
 		removeActor(keyboardActive);
     	Settings.GAMEPAD_ENABLED.set(true);
+    	Settings.flush();
     }
     
     private void onKeyboardChanged()
@@ -175,31 +183,9 @@ public class OptionMenu extends MenuPage
 		addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
 		removeActor(gamepadActive);
     	Settings.GAMEPAD_ENABLED.set(false);
+    	Settings.flush();
     }
 
-//    @Override
-//    public void setVisible(boolean visible) 
-//    {
-//        if (soundSlider != null && isVisible() != visible) 
-//        {
-//            if (visible) 
-//            {
-//                restoreSettings();
-//            } 
-//            else 
-//            {
-//                storeSettings();
-//            }
-//        }
-//        super.setVisible(visible);
-//    }
-
-//    private void restoreSettings() 
-//    {
-//        sound = Settings.SOUND_VOLUME.get();
-//        music = Settings.MUSIC_VOLUME.get();
-//    }
-//
     private void storeSettings() 
     {
         Settings.SOUND_VOLUME.set(sound);
@@ -208,19 +194,4 @@ public class OptionMenu extends MenuPage
 		MusicManager.setGlobalVolume(music);
         Settings.flush();
     }
-//    
-//    private void check()
-//    {
-//    	if(Settings.SOUND_VOLUME.get() > 1.0f || sound < 1.0f)
-//		{
-//			sound = 1.0f;
-//			storeSettings();
-//
-//		}
-//		if(Settings.MUSIC_VOLUME.get() > 1.0f || music < 1.0f)
-//		{
-//			music = 1.0f;
-//			storeSettings();
-//		}
-//    }
 }

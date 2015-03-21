@@ -21,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -51,6 +52,7 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
         
         entity.add(engine.createComponent(PlayerComponent.class));
+        entity.add(engine.createComponent(SoundEmitterComponent.class));
 
         //addTestParticleAndLightComponent(entity);
 
@@ -70,7 +72,7 @@ public class EntityCreator {
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1f).friction(0f).restitution(0f)
-        .shapeBox(width * 0.2f, height * 0.8f, new Vector2(0, 0), 0);
+        .shapeBox(width * 0.19f, height * 0.825f, new Vector2(0, 0), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
 
         fixtureDef = new PhysixFixtureDef(physixSystem)
@@ -82,14 +84,14 @@ public class EntityCreator {
         //laser
         fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0f).restitution(0f)
-                .shapeCircle(width * 0.1f, new Vector2(0, GameConstants.getTileSizeY()*0.68f));
+                .shapeCircle(width * 0.1f, new Vector2(0, height*0.425f));
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData("laser");
         
         //jump contact
         fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1).friction(0f).restitution(0f)
-        .shapeCircle(width * 0.05f, new Vector2(0, GameConstants.getTileSizeY() * 0.8f)).sensor(true);
+        .shapeCircle(width * 0.08f, new Vector2(0, height * 0.49f)).sensor(true);
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData("jump");
         
@@ -101,7 +103,7 @@ public class EntityCreator {
         entity.add(jumpComponent);
 
         MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
-        moveComponent.speed = 20000.0f;
+        moveComponent.speed = 400.0f;
         entity.add(moveComponent);
 
         PositionComponent pos = engine.createComponent(PositionComponent.class);
@@ -203,6 +205,10 @@ public class EntityCreator {
         float width = GameConstants.getTileSizeX();
         float height = GameConstants.getTileSizeY();
 
+        HealthComponent Health =engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        entity.add(Health);
+        
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
         Damage.damage  = 1;
         Damage.damageToPlayer = true;
@@ -212,6 +218,11 @@ public class EntityCreator {
         entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
 
+        final SoundEmitterComponent soundEmitterComponent = engine.createComponent(SoundEmitterComponent.class);
+        entity.add(soundEmitterComponent);
+        final SoundInstance si = soundEmitterComponent.emitter.play(assetManager.getSound("alienBark1"), true);
+        si.setReferenceDistance(20);
+        
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
@@ -231,13 +242,13 @@ public class EntityCreator {
 
         MovementComponent movementComponent = engine.createComponent(MovementComponent.class);
         if(type == AIType.CHAMELEON)
-            movementComponent.speed = 10000.0f;
+            movementComponent.speed = 200.0f;
         else
-            movementComponent.speed = 17000.0f;
+            movementComponent.speed = 350.0f;
         entity.add(movementComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpSpeed = 12000.0f;
+        jumpComponent.jumpSpeed = 800.0f;
         jumpComponent.restingTime = 0.003f;
         entity.add(jumpComponent);
 
@@ -265,7 +276,7 @@ public class EntityCreator {
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, box);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(0).restitution(0.1f)
+                .density(1).friction(0).restitution(0)
                 .shapeBox(width, height).sensor(true);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
@@ -297,7 +308,7 @@ public class EntityCreator {
                 physixSystem).position(x + width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(pbdy, physixSystem, Miner);
         PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).restitution(0.1f)
+                .density(1).friction(1f).restitution(0)
                 .shapeBox(width, height);
         bodyComponent.createFixture(pfx);
         Miner.add(bodyComponent);
@@ -331,10 +342,10 @@ public class EntityCreator {
         
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x + width/2, y - height/2).fixedRotation(true);
+                physixSystem).position(x + width/2, y + height*2.5f).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, goal);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(0).restitution(0.1f)
+                .density(1).friction(0).restitution(0)
                 .shapeBox(width, height).sensor(true);
         bodyComponent.createFixture(fixtureDef);
         goal.add(bodyComponent);
@@ -376,7 +387,7 @@ public class EntityCreator {
         bodyComponent.setGravityScale(0);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
-                .restitution(0.1f);
+                .restitution(0).sensor(true);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
 
@@ -417,7 +428,7 @@ public class EntityCreator {
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f)
                 .shapeBox(dx, dy)
-                .restitution(0.1f)
+                .restitution(0)
                 .sensor(true);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
@@ -472,7 +483,7 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1f).friction(1f).shapeBox(width, height)
-                .restitution(0.1f);
+                .restitution(0);
         fixtureDef.sensor(true);
         bodyComponent.createFixture(fixtureDef);
 
@@ -504,7 +515,7 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(density).friction(friction).shapeBox(width, height)
-                .restitution(restitution);
+                .restitution(0);
         bodyComponent.createFixture(fixtureDef);
         return bodyComponent;
     }
@@ -527,7 +538,7 @@ public class EntityCreator {
         bodyComponent.getBody().setGravityScale(0f);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(500).friction(1f).shapeBox(boxWidth, boxHeight)
-                .restitution(0.1f);
+                .restitution(0);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
 
@@ -649,7 +660,7 @@ public class EntityCreator {
                 .density(1)
                 .friction(1f)
                 .shapeBox(width*0.8f, height * 0.8f, verschiebung, angle)
-                .restitution(0.1f)
+                .restitution(0)
                 .sensor(true);
         Fixture fixtureSpikeGround = bodyComponent.createFixture(fixtureDefSpikeGround);
         fixtureSpikeGround.setUserData(bodyComponent);
@@ -669,7 +680,37 @@ public class EntityCreator {
 */
         return new Entity();
     }
+    
+    public static Entity createAndAddDeko(float x, float y,float xOffset, float yOffset, float dir,float distance,float radius, Color color, boolean light, boolean lightType )
+    {
+        Entity e = engine.createEntity();
+        
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.x=x;
+        pc.y=y;
+        LayerComponent lc = engine.createComponent(LayerComponent.class);
+        if(lightType == true)
+        {
+            ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
+            clc = engine.createComponent(ConeLightComponent.class);
+            clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
+            clc.coneLight.setStaticLight(light);
+            e.add(clc);
+        }else
+        {
+            PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+            plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
+            plc.pointLight.setStaticLight(light);
+            plc.offsetX = xOffset;
+            plc.offsetY = yOffset;
+            e.add(plc);
+        }
+        e.add(pc);
+        e.add(lc);
 
+        engine.addEntity(e);
+        return e;
+    }
     // ********** Light section BEGIN **********
     public static Entity createPointLight(float x, float y, float xOffset, float yOffset, Color color, float distance, boolean staticLight){
         Entity e = engine.createEntity();
@@ -788,7 +829,7 @@ public class EntityCreator {
             float intervallOffset, float length){
         Entity entity = engine.createEntity();
         
-        float lavaBallSpeed = -2000.0f;
+        float lavaBallSpeed = -10.0f;
         float lavaBallSpawnIntervall = 0.25f;
         
         PositionComponent position = engine.createComponent(PositionComponent.class);
@@ -823,8 +864,9 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1f).friction(1f).shapeCircle(radius)
-                .restitution(0.1f).sensor(true);
+                .restitution(0).sensor(true);
         bodyComponent.createFixture(fixtureDef);
+        bodyComponent.setGravityScale(0);
         entity.add(bodyComponent);
         
         MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
@@ -847,9 +889,23 @@ public class EntityCreator {
         position.y = positionY;
         entity.add(position);
         
+        /*
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation("lava_ball");
+        */
+        
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("lava"));
+        
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        pe.offsetY=40f;
+        entity.add(pe);
+        
+        
         
         addLayerComponent(entity, 10, 1, 1);
         
@@ -1050,7 +1106,7 @@ public class EntityCreator {
         Bomb.add(engine.createComponent(BombComponent.class));
         
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
-        Damage.damage = 3;
+        Damage.damage = 10; // max!
         Damage.damageToTile = true;
         Bomb.add(Damage);
         
@@ -1076,6 +1132,9 @@ public class EntityCreator {
         entity.remove(HealthComponent.class);
         entity.remove(DestructableBlockComponent.class);
         entity.remove(TextureComponent.class);
+        
+        int RadiusInTiles = entity.getComponent(BombComponent.class).RadiusInTiles;
+        float RadiusInWorld = RadiusInTiles * GameConstants.getTileSizeX();
         entity.remove(BombComponent.class);
         
         entity.getComponent(DamageComponent.class).damageToPlayer = true;
@@ -1085,7 +1144,7 @@ public class EntityCreator {
         PhysixBodyDef bDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(PhysixOld.getPosition());
         PhysixBody.init(bDef, physixSystem, entity);
         PhysixFixtureDef fDef = new PhysixFixtureDef(physixSystem)
-                                       .shapeCircle(128)
+                                       .shapeCircle(RadiusInWorld)
                                        .sensor(true);
         
         PhysixBody.createFixture(fDef);
@@ -1110,9 +1169,12 @@ public class EntityCreator {
         entity.getComponent(LayerComponent.class).layer = 100;
         
         
+        
         entity.add(Anim);
         entity.add(DeathTimer);
         
+        ExplosionComponent explosion = engine.createComponent(ExplosionComponent.class);
+        entity.add(explosion);
         
     }
 

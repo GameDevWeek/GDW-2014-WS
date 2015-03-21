@@ -51,9 +51,9 @@ public class MovementSystem extends IteratingSystem {
                         movement.velocity.y);
             }
 
-            physix.setLinearVelocity(movement.velocity.x * deltaTime,
+            physix.setLinearVelocity(movement.velocity.x ,
                     physix.getLinearVelocity().y
-                            + (movement.velocity.y * deltaTime));
+                            + (movement.velocity.y ));
             
             if(playerComp != null) {
                 Vector2 lowestPlatformVelocity = new Vector2(0,0);
