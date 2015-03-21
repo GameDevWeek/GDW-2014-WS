@@ -24,11 +24,6 @@ public class ScoreMenu extends MenuPage
 		int y = 700; 
 		int y_step = 0;
 		
-		
-		int x = Main.WINDOW_WIDTH/2 - 50;
-		int y = 650; 
-		int y_step = 0;
-		
 		createLabel(menuManager.getWidth()/2, menuManager.getHeight()/2).setText("HIGHSCORE");
 		
 		for (int i = 0; i < testScore.length; i++)
