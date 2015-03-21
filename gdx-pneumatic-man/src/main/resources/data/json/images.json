@@ -51,9 +51,9 @@
     "Ico_Level_Active": "data/images/Ico_Level_Active01.png",
     "back_button_active": "data/images/Butt_Back_Active02.png",
     "butt_audio_add_active": "data/images/Butt_Audio_Add_Active01.png",
+    "butt_audio_sub_active": "data/images/Butt_Audio_Sub_Active01.png",
     "score_overlay": "data/images/Score_Border03.png",
     "score_head" : "data/images/preview.png",
     "butt_next_level" : "data/images/Butt.png",
     "winscreen" : "data/images/Winscreen.png"
-    
 }
