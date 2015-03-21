@@ -230,7 +230,7 @@ public class MapLoader
         case "yellow" :
             return "FFFB00";
         case "blue" :
-            return "AAC3E3";
+            return "0000FF";
         case "purple" :
             return "B22C8E";
         default : //TODO Exeption hinzufügen
