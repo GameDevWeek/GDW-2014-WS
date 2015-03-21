@@ -3,21 +3,22 @@ package de.hochschuletrier.gdw.ws1415.game.systems;
 import java.util.Comparator;
 
 import box2dLight.RayHandler;
-import com.badlogic.ashley.core.Engine;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
+
 import de.hochschuletrier.gdw.commons.devcon.DevConsole;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarFloat;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarInt;
 import de.hochschuletrier.gdw.commons.devcon.cvar.ICVarListener;
-
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.Shaders;
@@ -155,9 +156,11 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         cameraSystem.undoParallax();
     	
     	// rayHandler.updateAndRender() not allowed between begin() and end()
-    	DrawUtil.batch.end();
-    	updateRayHandler();
-    	DrawUtil.batch.begin();
+        if(Settings.LIGHTS.get()){
+        	DrawUtil.batch.end();
+        	updateRayHandler();
+        	DrawUtil.batch.begin();
+        }
 	}
     
     private void updateRayHandler(){

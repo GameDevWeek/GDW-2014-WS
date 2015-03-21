@@ -20,6 +20,7 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu;
+import de.hochschuletrier.gdw.ws1415.game.menu.WinScreen;
 
 /**
  * Gameplay state
@@ -48,7 +49,7 @@ public class GameplayState extends BaseGameState {
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.INGAME);
        
         //test IngameMenu:
-//        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
+//        final IngameMenu winScreen =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
         hand = new DecoImage(assetManager.getTexture("zeigefinger2"));
         //hand.setSize(hand.getWidth()/2,hand.getWidth()/2);
         menuManager.addLayer(mainMenu);
@@ -65,7 +66,6 @@ public class GameplayState extends BaseGameState {
         Main.getInstance().addScreenListener(menuManager);
 
         inputForwarder = new InputForwarder() {
-
             @Override
             public boolean keyUp(int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
@@ -90,6 +90,7 @@ public class GameplayState extends BaseGameState {
     @Override
     public void update(float delta) {
         game.update(delta);
+        
         if (inputForwarder.get() == menuInputProcessor) {
             
             menuManager.update(delta);
