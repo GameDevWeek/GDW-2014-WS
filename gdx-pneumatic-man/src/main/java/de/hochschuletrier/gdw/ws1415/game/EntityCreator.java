@@ -72,7 +72,7 @@ public class EntityCreator {
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1f).friction(0f).restitution(0f)
-        .shapeBox(width * 0.2f, height * 0.8f, new Vector2(0, 0), 0);
+        .shapeBox(width * 0.2f, height * 0.85f, new Vector2(0, height * 0.05f), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
 
         fixtureDef = new PhysixFixtureDef(physixSystem)
@@ -338,7 +338,7 @@ public class EntityCreator {
         
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x + width/2, y - height/2).fixedRotation(true);
+                physixSystem).position(x + width/2, y + height*2.5f).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, goal);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0.1f)
@@ -1057,7 +1057,7 @@ public class EntityCreator {
         Bomb.add(engine.createComponent(BombComponent.class));
         
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
-        Damage.damage = 3;
+        Damage.damage = 10; // max!
         Damage.damageToTile = true;
         Bomb.add(Damage);
         
@@ -1083,6 +1083,9 @@ public class EntityCreator {
         entity.remove(HealthComponent.class);
         entity.remove(DestructableBlockComponent.class);
         entity.remove(TextureComponent.class);
+        
+        int RadiusInTiles = entity.getComponent(BombComponent.class).RadiusInTiles;
+        float RadiusInWorld = RadiusInTiles * GameConstants.getTileSizeX();
         entity.remove(BombComponent.class);
         
         entity.getComponent(DamageComponent.class).damageToPlayer = true;
@@ -1092,7 +1095,7 @@ public class EntityCreator {
         PhysixBodyDef bDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(PhysixOld.getPosition());
         PhysixBody.init(bDef, physixSystem, entity);
         PhysixFixtureDef fDef = new PhysixFixtureDef(physixSystem)
-                                       .shapeCircle(128)
+                                       .shapeCircle(RadiusInWorld)
                                        .sensor(true);
         
         PhysixBody.createFixture(fDef);
@@ -1117,9 +1120,12 @@ public class EntityCreator {
         entity.getComponent(LayerComponent.class).layer = 100;
         
         
+        
         entity.add(Anim);
         entity.add(DeathTimer);
         
+        ExplosionComponent explosion = engine.createComponent(ExplosionComponent.class);
+        entity.add(explosion);
         
     }
 
