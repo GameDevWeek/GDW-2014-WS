@@ -1,24 +1,24 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
+import java.util.Random;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.RayCastCallback;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
-import de.hochschuletrier.gdw.ws1415.game.GameConstants;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 //import de.hochschuletrier.gdw.ws1415.game.components.BouncingComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.components.SoundEmitterComponent;
 
 public class MovementSystem extends IteratingSystem {
 
@@ -32,7 +32,7 @@ public class MovementSystem extends IteratingSystem {
         super(Family
                 .all(PhysixBodyComponent.class)
                 .one(MovementComponent.class, JumpComponent.class,
-                        InputComponent.class, PlayerComponent.class).get(), priority);
+                        InputComponent.class, PlayerComponent.class,LavaBallComponent.class).get(), priority);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class MovementSystem extends IteratingSystem {
         // BouncingComponent bouncing = ComponentMappers.bouncing.get(entity);
         JumpComponent jump = ComponentMappers.jump.get(entity);
         PlayerComponent playerComp = ComponentMappers.player.get(entity);
-        
+        LavaBallComponent lavaBall = ComponentMappers.lavaBall.get(entity);
         if (movement != null) {
             
             if (input != null) {
@@ -60,9 +60,15 @@ public class MovementSystem extends IteratingSystem {
                 }
                 
             }
-            physix.setLinearVelocity(movement.velocity.x  + lowestPlatformVelocity.x,
-                    physix.getLinearVelocity().y
-                            + (movement.velocity.y ) );
+            if(lavaBall != null){
+                physix.setLinearVelocity(movement.velocity.x  + lowestPlatformVelocity.x,
+                        (movement.velocity.y ) );
+            }else {
+                physix.setLinearVelocity(movement.velocity.x  + lowestPlatformVelocity.x,
+                        physix.getLinearVelocity().y
+                                + (movement.velocity.y ) );
+            }
+            
             
             
         }
@@ -85,6 +91,11 @@ public class MovementSystem extends IteratingSystem {
                 jump.justJumped = false;
                 if (jump.groundContacts > 0) {
                     if (input.jump) {
+                        SoundEmitterComponent se = ComponentMappers.soundEmitter.get(entity);
+                        if(se != null){
+                            int ji = (int) (Math.random() * 10 % 6) +1;
+                            se.emitter.play(EntityCreator.assetManager.getSound("jump" + ji), false);
+                        }
                         jump.justJumped = true;
                         physix.setLinearVelocityY(-jump.jumpSpeed);
                     }

@@ -22,6 +22,7 @@ public class InputManager implements SettingListener<Boolean>{
 		}
 		MyControllers.addListener(EntityCreator.engine.getSystem(InputGamepadSystem.class));
 		EntityCreator.engine.getSystem(InputGamepadSystem.class).setProcessing(true);
+		EntityCreator.engine.getSystem(InputGamepadSystem.class).reset();
 		EntityCreator.engine.getSystem(InputKeyboardSystem.class).setProcessing(false);
 	}
 

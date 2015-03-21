@@ -1,8 +1,10 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
 import java.util.Random;
+
 import javax.print.attribute.standard.MediaSize.Other;
 
+import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 
@@ -28,6 +30,7 @@ import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.Score;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
+import de.hochschuletrier.gdw.ws1415.states.WinState;
 
 /**
  * Handles contacts between player and other entities
@@ -77,9 +80,8 @@ public class PlayerContactListener extends PhysixContactAdapter {
             //play Sound
             Random rm=new Random();
             int i=rm.nextInt(3)+1;//1-3
-            System.out.println("free"+i);
+            System.out.println("saveSaouESCAPEnd "+i);
             SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free"+i), false);
-
         }
         
         if(otherEntity.getComponent(GoalComponent.class) != null){
@@ -107,7 +109,14 @@ public class PlayerContactListener extends PhysixContactAdapter {
                     logger.info("Your score is: " + Score.score);
                     scoreSys.timeSinceLastCalculation = 0;
                     scoreSys.scoreCanBeRegistered = false;
-                    Game.loadLevel();
+                    
+                    Main main = Main.getInstance();
+                    WinState Win = (WinState) main.getPersistentState(WinState.class);
+                    // Transfer data here
+                    main.changeState(Win);
+                    
+                    //Game.win();
+                    //Game.loadLevel();
                 }
             }
         }
