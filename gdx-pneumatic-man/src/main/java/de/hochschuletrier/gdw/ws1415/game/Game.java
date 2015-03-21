@@ -284,7 +284,7 @@ public class Game {
         }
     }
 
-    public TiledMap loadMap(String filename) {
+    public static TiledMap loadMap(String filename) {
         try {
             return new TiledMap(filename, LayerObject.PolyMode.ABSOLUTE);
         } catch (Exception ex) {
