@@ -329,13 +329,13 @@ public class MapLoader
                         {
                             float width = GameConstants.getTileSizeX() * 0.9f;
                             float height = GameConstants.getTileSizeY() * 1.5f;
-                            cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX() + width, obj.getY()- height, 0) );
+                            cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX() + width, obj.getY(), 0) );
                         }
 
                             break;
                         case "levelend":
                         {
-                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));
+                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));                            
                         }
                             break;
                         case "enemy":
@@ -398,6 +398,13 @@ public class MapLoader
                                     if ( tinfo.getBooleanProperty("Invulnerable", false) )
                                     {
                                         EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                    }
+                                    if ( tinfo.getProperty("Name","").equalsIgnoreCase("SpawnAndLevelEnd") )
+                                    {
+                                        EntityCreator.createConeLight( 
+                                                i * map.getTileWidth() + 0.5f * map.getTileWidth(), 
+                                                j * map.getTileHeight() /* + 0.5f * map.getTileHeight()   **/,
+                                                Color.valueOf("FF0088" ), 4.0f, 270.0f, 20.0f, false);
                                     }
                                 }
                                     break;

@@ -10,6 +10,8 @@
    <property name="LightType" value="point"/>
    <property name="Name" value="Stone1"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="80.0"/>
+   <property name="YOffset" value="96.0"/>
   </properties>
  </tile>
  <tile id="1">
@@ -21,6 +23,8 @@
    <property name="LightType" value="point"/>
    <property name="Name" value="Stone2"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="64.0"/>
+   <property name="YOffset" value="64.0"/>
   </properties>
  </tile>
  <tile id="2">
