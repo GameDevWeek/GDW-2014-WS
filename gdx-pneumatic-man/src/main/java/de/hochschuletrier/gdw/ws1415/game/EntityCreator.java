@@ -103,7 +103,7 @@ public class EntityCreator {
         entity.add(jumpComponent);
 
         MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
-        moveComponent.speed = 20000.0f;
+        moveComponent.speed = 400.0f;
         entity.add(moveComponent);
 
         PositionComponent pos = engine.createComponent(PositionComponent.class);
@@ -238,13 +238,13 @@ public class EntityCreator {
 
         MovementComponent movementComponent = engine.createComponent(MovementComponent.class);
         if(type == AIType.CHAMELEON)
-            movementComponent.speed = 10000.0f;
+            movementComponent.speed = 200.0f;
         else
-            movementComponent.speed = 17000.0f;
+            movementComponent.speed = 350.0f;
         entity.add(movementComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpSpeed = 12000.0f;
+        jumpComponent.jumpSpeed = 800.0f;
         jumpComponent.restingTime = 0.003f;
         entity.add(jumpComponent);
 
@@ -814,7 +814,7 @@ public class EntityCreator {
             float intervallOffset, float length){
         Entity entity = engine.createEntity();
         
-        float lavaBallSpeed = -2000.0f;
+        float lavaBallSpeed = -10.0f;
         float lavaBallSpawnIntervall = 0.25f;
         
         PositionComponent position = engine.createComponent(PositionComponent.class);
@@ -851,6 +851,7 @@ public class EntityCreator {
                 .density(1f).friction(1f).shapeCircle(radius)
                 .restitution(0).sensor(true);
         bodyComponent.createFixture(fixtureDef);
+        bodyComponent.setGravityScale(0);
         entity.add(bodyComponent);
         
         MovementComponent moveComponent = engine.createComponent(MovementComponent.class);
@@ -873,9 +874,23 @@ public class EntityCreator {
         position.y = positionY;
         entity.add(position);
         
+        /*
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation("lava_ball");
+        */
+        
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("lava"));
+        
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        pe.offsetY=40f;
+        entity.add(pe);
+        
+        
         
         addLayerComponent(entity, 10, 1, 1);
         
