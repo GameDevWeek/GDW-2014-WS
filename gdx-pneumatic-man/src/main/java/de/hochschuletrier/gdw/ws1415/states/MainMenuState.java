@@ -97,9 +97,12 @@ public class MainMenuState extends BaseGameState {
     public void update(float delta) {
         menuManager.update(delta);
         final Stage stage = menuManager.getStage();
-        Vector2 vector = new Vector2( Gdx.input.getX(), Gdx.input.getY() );
-        stage.screenToStageCoordinates(vector);
-        hand.setPosition((stage.getWidth() - Main.WINDOW_WIDTH)/2 + Main.WINDOW_WIDTH * 0.5f,vector.y-1150);
+//        Vector2 vector = new Vector2( Gdx.input.getX(), Gdx.input.getY() );
+//        stage.screenToStageCoordinates(vector);
+//        hand.setPosition((stage.getWidth() - Main.WINDOW_WIDTH)/2 + Main.WINDOW_WIDTH * 0.5f,vector.y-1150);
+        
+        Vector2 vector= menuManager.getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(),Gdx.input.getY()));
+        hand.setPosition(vector.x-765,vector.y-1200);
         render();
     }
 
