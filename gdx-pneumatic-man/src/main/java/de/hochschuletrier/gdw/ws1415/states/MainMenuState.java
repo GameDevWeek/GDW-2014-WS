@@ -30,6 +30,7 @@ import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.utils.Point;
 import de.hochschuletrier.gdw.ws1415.Main;
+import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.menu.IngameMenu;
 import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu;
 
@@ -38,7 +39,7 @@ import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu;
  *
  * @author Santo Pfingsten
  */
-public class MainMenuState extends BaseGameState implements InputProcessor {
+public class MainMenuState extends BaseGameState {
 
     private final Music music;
 
@@ -104,7 +105,7 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
 
     @Override
     public void onEnterComplete() {
-//        MusicManager.play(music, Constants.MUSIC_FADE_TIME);
+        MusicManager.play(music, GameConstants.MUSIC_FADE_TIME);
         inputForwarder.set(menuManager.getInputProcessor());
     }
 
@@ -117,58 +118,4 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
     public void dispose() {
         menuManager.dispose();
     }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
-      /*  Main main =Main.getInstance();
-        if(main.isTransitioning())
-        {
-            main.changeState(new GameplayState(assetManager),new Transition(500), null);
-        }*/
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
 }

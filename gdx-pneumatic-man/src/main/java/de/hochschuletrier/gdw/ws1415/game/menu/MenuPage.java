@@ -95,7 +95,7 @@ public class MenuPage extends Group {
             public void enter(InputEvent event, float x, float y, int pointer,
                     Actor fromActor) {
                 // TODO Auto-generated method stub
-                System.out.println("test");
+//                System.out.println("test");
                 //if(MouseInfo.getPointerInfo().getLocation().x>=image.getX()&&MouseInfo.getPointerInfo().getLocation().x<=image.getWidth()&&MouseInfo.getPointerInfo().getLocation().y>=image.getY()&&MouseInfo.getPointerInfo().getLocation().y<=image.getHeight()){
                     SoundEmitter.playGlobal(assetManager.getSound("click"),false);
                     changeTextureActive(image);

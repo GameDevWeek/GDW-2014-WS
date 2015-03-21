@@ -7,6 +7,7 @@ import box2dLight.RayHandler;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -117,7 +118,6 @@ public class Game {
             engine.removeAllEntities();
             removeSystems();
         }
-        Main.inputMultiplexer.removeProcessor(inputKeyboardSystem);
         Main.getInstance().console.unregister(physixDebug);
 
         addSystems();
@@ -147,7 +147,6 @@ public class Game {
         setupPhysixWorld();
 
         addContactListeners();
-        Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
         
         MapLoader.generateWorldFromTileMapX(engine, physixSystem, map, cameraSystem);
@@ -303,5 +302,9 @@ public class Game {
             // Light cannot be reseted
             // Render-Team is on it
         }
+    }
+
+    public InputProcessor getInputProcessor() {
+        return inputKeyboardSystem;
     }
 }
