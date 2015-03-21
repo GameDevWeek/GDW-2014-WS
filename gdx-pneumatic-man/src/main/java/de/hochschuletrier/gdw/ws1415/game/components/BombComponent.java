@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ws1415.game;
+package de.hochschuletrier.gdw.ws1415.game.components;
 
 import com.badlogic.ashley.core.Component;
 
