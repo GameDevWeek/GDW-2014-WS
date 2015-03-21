@@ -223,10 +223,11 @@ public class MovementTest extends SandboxGame {
                     if (tiles != null && tiles[i] != null && tiles[i][j] != null) {
                         if (tiles[i][j].getIntProperty("Hitpoints", 1) != 0
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
+                        	TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                    j * map.getTileHeight() + 0.5f * map.getTileHeight()
-                                    );
+                                    j * map.getTileHeight() + 0.5f * map.getTileHeight(),
+                                    map, info, i, j);
                         }
                     }
                 }
