@@ -102,5 +102,13 @@
 	"playType": "NORMAL",
 	"columns": 4,
 	"rows": 1
+    },
+    "bomb_explosion" : {
+        "filename" : "data/animations/explosion_sheet.png",
+        "frames" : 5,
+        "frameDuration": [0.08],
+        "playType": "NORMAL",
+        "columns" : 5,
+        "rows" : 1
     }
 }
