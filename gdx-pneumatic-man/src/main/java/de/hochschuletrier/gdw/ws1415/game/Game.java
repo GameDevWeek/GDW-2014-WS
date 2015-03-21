@@ -47,6 +47,7 @@ public class Game {
     private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
     private final Hotkey toggleReload = new Hotkey(() -> loadSelectedLevel = true, Input.Keys.NUM_0);
+    private final Hotkey toggleLight = new Hotkey(() -> Settings.LIGHTS.set(!Settings.LIGHTS.get()), Input.Keys.L);
 
     private  PooledEngine engine;
     private  PhysixSystem physixSystem;
@@ -86,6 +87,8 @@ public class Game {
             togglePhysixDebug.register();
             toggleReload.register();
         }
+        
+        toggleLight.register();
 
         EntityCreator.engine = this.engine;
         EntityCreator.physixSystem = this.physixSystem;
