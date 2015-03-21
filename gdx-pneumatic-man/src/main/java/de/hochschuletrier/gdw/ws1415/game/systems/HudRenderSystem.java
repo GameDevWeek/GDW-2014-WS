@@ -7,8 +7,10 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
@@ -30,6 +32,7 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
         final AssetManagerX assetManager = Main.getInstance().getAssetManager();
         
         font = assetManager.getFont("orbitron_32");
+        font.setColor(Color.valueOf("ffe601"));
         textureMinerFound = assetManager.getTexture("miner_found");
         textureMinerLeft = assetManager.getTexture("miner_notfound");
     }
@@ -58,20 +61,20 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
         PlayerComponent playerComponent = entity.getComponent(PlayerComponent.class);
         Main.getInstance().screenCamera.bind();
 
-        font.draw(DrawUtil.batch, "Time: " + playerComponent.game_time, Gdx.graphics.getWidth() / 2 - 40, Gdx.graphics.getHeight() - 30);
+        font.draw(DrawUtil.batch, "" + playerComponent.game_time, Gdx.graphics.getWidth() / 2 - 40, 10);
 
-        font.draw(DrawUtil.batch, "Destroyed Blocks: " + playerComponent.destroyed_blocks, 10, Gdx.graphics.getHeight() - 30);
+        font.draw(DrawUtil.batch, "" + playerComponent.destroyed_blocks, 10, 0);
 
         int x = 5;
         for (int i = 0; i < playerComponent.saved_miners; i++) {
-            DrawUtil.draw(textureMinerFound, x, 0);
+            DrawUtil.draw(textureMinerFound, x, Gdx.graphics.getHeight() - 65);
             x += 70;
         }
         
         int minimumMiners = goal.getComponent(GoalComponent.class).miners_threshold;
         int minersLeft = minimumMiners - playerComponent.saved_miners;
         for (int i = 0; i < minersLeft; i++) {
-            DrawUtil.draw(textureMinerLeft, x, 0);
+            DrawUtil.draw(textureMinerLeft, x, Gdx.graphics.getHeight() - 65);
             x += 70;
         }
     }
