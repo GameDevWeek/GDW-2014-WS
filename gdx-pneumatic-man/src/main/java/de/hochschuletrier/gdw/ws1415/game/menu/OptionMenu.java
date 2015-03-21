@@ -1,12 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
@@ -16,195 +10,217 @@ import de.hochschuletrier.gdw.ws1415.Settings;
 
 public class OptionMenu extends MenuPage
 {	
-	private final Label soundLabel, musicLabel;
-    private final Slider soundSlider, musicSlider;
-    private final ButtonGroup<TextButton> buttonGroup = new ButtonGroup<TextButton>();
-    private final TextButton gamepadButton, keyboardButton;
-   // private final TextButton soundMuteButton, musicMuteButton;
+    //private final Slider soundSlider, musicSlider;
+	
+    private final DecoImage overlay = new DecoImage(assetManager.getTexture("options_overlay"));
+	private final DecoImage head = new DecoImage(assetManager.getTexture("optionen_button_active"));
+	
+	private final DecoImage gamepad = new DecoImage(assetManager.getTexture("gamepad_inactive"));
+	private final DecoImage keyboard = new DecoImage(assetManager.getTexture("keyboard_inactive"));
+	private final DecoImage gamepadActive = new DecoImage(assetManager.getTexture("gamepad_active"));
+	private final DecoImage keyboardActive = new DecoImage(assetManager.getTexture("keyboard_active"));
+	
+	private final DecoImage soundUpSound = new DecoImage(assetManager.getTexture("soundUp"));
+	private final DecoImage soundDownSound = new DecoImage(assetManager.getTexture("soundUp"));
+	private final DecoImage soundUpMusic = new DecoImage(assetManager.getTexture("soundUp"));
+	private final DecoImage soundDownMusic = new DecoImage(assetManager.getTexture("soundUp"));
+	
+	private final DecoImage[] soundBox = new DecoImage[10];
+	private final DecoImage[] musicBox = new DecoImage[10];
+	private final DecoImage[] soundBoxActive = new DecoImage[10];
+	private final DecoImage[] musicBoxActive = new DecoImage[10];
+	
+	private final int y_sound, y_music;
+	private final int width, height; 
+	private int countVol[] = new int[10];
+	private int countSou[] = new int[10];
+	private float sound = Settings.SOUND_VOLUME.get();
+	private float music = Settings.MUSIC_VOLUME.get();
+	
 	
 	public OptionMenu(Skin skin, MenuManager menuManager)
 	{ 		
 		super(skin, "background_menu");
-		int y = 600;
+		int x_step = -260;
+		y_sound = menuManager.getHeight()/2+55;
+		y_music = menuManager.getHeight()/2-115;
+		width = menuManager.getWidth();
+		height = menuManager.getHeight();
 		
-		DecoImage overlay = new DecoImage(assetManager.getTexture("options_overlay"));
+		//System.out.println(SoundEmitter.getGlobalVolume());
 		
 		addImage(Main.WINDOW_WIDTH/5+10, Main.WINDOW_HEIGHT/5-15, (int)overlay.getWidth(),(int) overlay.getHeight(), overlay);
-
-		createLabel(Main.WINDOW_WIDTH/2, Main.WINDOW_HEIGHT/2 + 300).setText("OPTIONS");
-
+		addImage((int)(Main.WINDOW_WIDTH/2 - 320), 750, (int) head.getWidth(), (int) head.getHeight(), head);
 		
-		//createLabel(menuManager.getWidth()/2-75, y).setText("SOUND VOLUME");
-		y-= 20;
-        soundSlider = createSlider(menuManager.getWidth()/2-160, y, this::onSoundVolumeChanged);
-        soundSlider.setValue(Settings.SOUND_VOLUME.get());
-        soundLabel = createLabel(menuManager.getWidth()/2+190, y);
-        soundLabel.setVisible(false);
-       // soundMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onSoundMuteChanged);
-        //soundMuteButton.setVisible(false);
-        y -= 50;
+		for (int i = 0; i < soundBox.length; i ++)
+		{
+			soundBox[i] = new DecoImage(assetManager.getTexture("slider_inactive"));
+			musicBox[i] = new DecoImage(assetManager.getTexture("slider_inactive"));
+			
+			addImage(menuManager.getWidth()/2 + x_step, y_sound, (int)soundBox[i].getWidth(), (int)soundBox[i].getHeight(), soundBox[i]);
+			addImage(menuManager.getWidth()/2 + x_step, y_music, (int)musicBox[i].getWidth(), (int)musicBox[i].getHeight(), musicBox[i]);
+			
+			countSou[i] = x_step;
+			countVol[i] = x_step;
 
-        //createLabel(menuManager.getWidth()/2-75, y).setText("MUSIC VOLUME");
-        y -= 20;
-        musicSlider = createSlider(menuManager.getWidth()/2-160, y, this::onMusicVolumeChanged);
-        musicSlider.setValue(Settings.MUSIC_VOLUME.get());
-        musicLabel = createLabel(menuManager.getWidth()/2+190, y);
-        musicLabel.setVisible(false);
-       // musicMuteButton = createToggleButton(menuManager.getWidth()/2+250, y, "Aus", this::onMusicMuteChanged);
-       // musicMuteButton.setVisible(false);
-       // y -= 50;
-        
-        //DrawUtil.fillRect(menuManager.getWidth()/2-160, y, Gdx.graphics.getWidth() - 190.0f, Color.WHITE);
-//        DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, drawWidth, 200, progressUnfillColor);
-//    	DrawUtil.fillRect(50, Gdx.graphics.getHeight()/4, (int) (drawWidth * assetManager.getProgress()), 200, progressFillColor);
-        
-       // createLabel(menuManager.getWidth()/2-150, y).setText("GAMEPAD / KEYBOARD");
-        y -= 75;
-        gamepadButton = addButton(menuManager.getWidth()/2-160, y, 100, 50, "GAMEPAD", this::onGamepadChanged, "toggle");
-        keyboardButton = addButton(menuManager.getWidth()/2-50, y, 100, 50, "KEYBOARD", this::onKeyboardChanged, "toggle");
-        y -= 75;
-        
-       // fullscreenButton = addButton(menuManager.getWidth()/2-160, y, 100, 50, "FULLSCREEN", this::onFullscreenChanged, "toggle");
-        
-        buttonGroup.add(gamepadButton);
-        buttonGroup.add(keyboardButton);
-        buttonGroup.setChecked("KEYBOARD");
-        
+			x_step += (int)(soundBox[0].getWidth() + 5);
+		}
+		
+		addCenteredImage(menuManager.getWidth()/2 - 350, y_sound - 17, (int)soundDownSound.getWidth(), (int)soundDownSound.getHeight(), soundDownSound, this::onSoundVolumeDown);
+		addCenteredImage(menuManager.getWidth()/2 + 260, y_sound - 17, (int)soundUpSound.getWidth(), (int)soundUpSound.getHeight(), soundUpSound, this::onSoundVolumeUp);
+		
+		addCenteredImage(menuManager.getWidth()/2 - 350, y_music - 17, (int)soundDownMusic.getWidth(), (int)soundDownMusic.getHeight(), soundDownMusic, this::onMusicVolumeDown);
+		addCenteredImage(menuManager.getWidth()/2 + 260, y_music - 17, (int)soundUpMusic.getWidth(), (int)soundUpMusic.getHeight(), soundUpMusic, this::onMusicVolumeUp);
+		
+//        soundSlider = createSlider(menuManager.getWidth()/2-110, menuManager.getHeight()/2-50, this::onSoundVolumeChanged);
+//        soundSlider.setValue(Settings.SOUND_VOLUME.get());
+//
+//        musicSlider = createSlider(menuManager.getWidth()/2-110, menuManager.getHeight()/2-210, this::onMusicVolumeChanged);
+//        musicSlider.setValue(Settings.MUSIC_VOLUME.get());
+				
+		int musicVolume = (int)(Settings.MUSIC_VOLUME.get() * 10);
+		int soundVolume = (int)(Settings.SOUND_VOLUME.get() * 10);
+		
+		if(soundVolume > 10)
+		{
+			soundVolume = 10;
+		}
+		if(musicVolume > 10)
+		{
+			musicVolume = 10;
+		}
+
+		int x_step_active_s = -260;
+		
+		for (int i = 0; i < soundVolume; i++)
+		{
+			soundBoxActive[i] = new DecoImage(assetManager.getTexture("slider_active"));
+			addImage(menuManager.getWidth()/2 + x_step_active_s, y_sound, (int)soundBox[0].getWidth(), (int)soundBox[0].getHeight(), soundBoxActive[i]);
+			x_step_active_s += (int)(soundBox[0].getWidth() + 5);
+		}
+		
+		int x_step_active_m = -260;
+		
+		for (int i = 0; i < musicVolume; i++)
+		{
+			musicBoxActive[i] = new DecoImage(assetManager.getTexture("slider_active"));
+			addImage(menuManager.getWidth()/2 + x_step_active_m, y_music, (int)musicBox[0].getWidth(), (int)musicBox[0].getHeight(), musicBoxActive[i]);
+			x_step_active_m += (int)(musicBox[0].getWidth() + 5);
+		}
+		
+		addCenteredImage(menuManager.getWidth()/2 - 400, menuManager.getHeight()/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepad, this::onGamepadChanged);
+		addCenteredImage(menuManager.getWidth()/2 + 50, menuManager.getHeight()/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboard, this::onKeyboardChanged);
+
+		addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
         Settings.GAMEPAD_ENABLED.set(false);
         
    		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
 	}
 	
-	private Label createLabel(int x, int y)
-	{
-	    Label label = new Label("", skin);
-	    label.setBounds(x, y, 60, 30);
-	    addActor(label);
-	    return label;
-	}
-	
-	private Slider createSlider(int x, int y, Runnable runnable) 
-	{
-        Slider slider = new Slider(0, 1, 0.01f, false, skin);
-        slider.setBounds(x, y, 200, 30);
-        addActor(slider);
-        slider.addListener(new ChangeListener() 
-        {
-            @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) 
-            {
-                runnable.run();
-            }
-        });
-        return slider;
+    private void onSoundVolumeUp()
+    {    	
+    	if(Settings.SOUND_VOLUME.get() < 1.0)
+    	{
+    		int act = (int)(Settings.SOUND_VOLUME.get()*10);
+    		sound = (float)(((act+1)/10.0));
+    		soundBoxActive[act] = new DecoImage(assetManager.getTexture("slider_active"));
+    		addImage((int)(width/2 + countSou[act]), y_sound, (int)soundBox[0].getWidth(), (int)soundBox[0].getHeight(), soundBoxActive[act]);
+    		storeSettings();
+    	}
     }
-	
-	public final String pctToString(float value) 
-	{
-        int pct = (int) (100 * value);
-        return pct + "%";
+    
+    private void onSoundVolumeDown()
+    {    	
+    	if(Settings.SOUND_VOLUME.get() > 0)
+    	{
+    		int act = (int)(Settings.SOUND_VOLUME.get() * 10);
+    	    sound = (float)((act-1)/10.0);
+    		removeActor(soundBoxActive[act-1]);
+            storeSettings();
+    	}
     }
-
-    private void onSoundVolumeChanged() 
+    
+    private void onMusicVolumeUp()
     {
-        final float value = soundSlider.getValue();
-        //soundLabel.setText(pctToString(value));
-        SoundEmitter.setGlobalVolume(value);
+    	if(Settings.MUSIC_VOLUME.get() < 1.0)
+    	{
+    		int act = (int)(Settings.MUSIC_VOLUME.get()*10);
+    		music = (float)(((act+1)/10.0));
+    		musicBoxActive[act] = new DecoImage(assetManager.getTexture("slider_active"));
+    		addImage((int)(width/2 + countVol[act]), y_music, (int)musicBox[0].getWidth(), (int)musicBox[0].getHeight(), musicBoxActive[act]);
+    		storeSettings();
+    	}
     }
-
-    private void onMusicVolumeChanged() 
+    
+    private void onMusicVolumeDown()
     {
-        final float value = musicSlider.getValue();
-        //System.out.println("Test");
-        //musicLabel.setText(pctToString(value));
-        MusicManager.setGlobalVolume(value);
+    	if(Settings.MUSIC_VOLUME.get() > 0)
+    	{
+    		int act = (int)(Settings.MUSIC_VOLUME.get() * 10);
+    	    music = (float)((act-1)/10.0);
+    		removeActor(musicBoxActive[act-1]);
+            storeSettings();
+    	}
     }
     
     private void onGamepadChanged()
     {
+		addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
+		removeActor(keyboardActive);
     	Settings.GAMEPAD_ENABLED.set(true);
-    	//System.out.println("Gamepad");
     }
     
     private void onKeyboardChanged()
     {
+		addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
+		removeActor(gamepadActive);
     	Settings.GAMEPAD_ENABLED.set(false);
-    	//System.out.println("Keyboard");
     }
 
-//    private void onSoundMuteChanged() 
+//    @Override
+//    public void setVisible(boolean visible) 
 //    {
-//        boolean soundOn = soundMuteButton.isChecked();
-//        soundMuteButton.setText(soundOn ? "An" : "Aus");
-//        SoundEmitter.setMuted(!soundOn);
+//        if (soundSlider != null && isVisible() != visible) 
+//        {
+//            if (visible) 
+//            {
+//                restoreSettings();
+//            } 
+//            else 
+//            {
+//                storeSettings();
+//            }
+//        }
+//        super.setVisible(visible);
+//    }
+
+//    private void restoreSettings() 
+//    {
+//        sound = Settings.SOUND_VOLUME.get();
+//        music = Settings.MUSIC_VOLUME.get();
 //    }
 //
-//    private void onMusicMuteChanged() 
-//    {
-//        boolean musicOn = musicMuteButton.isChecked();
-//        musicMuteButton.setText(musicOn ? "An" : "Aus");
-//        MusicManager.setMuted(!musicOn);
-//    }
-
-    @Override
-    public void setVisible(boolean visible) 
-    {
-        if (soundSlider != null && isVisible() != visible) 
-        {
-            if (visible) 
-            {
-                restoreSettings();
-            } 
-            else 
-            {
-                storeSettings();
-            }
-        }
-        super.setVisible(visible);
-    }
-
-    private void restoreSettings() 
-    {
-    	//System.out.println("Restore");
-        soundSlider.setValue(Settings.SOUND_VOLUME.get());
-       // soundMuteButton.setChecked(!Settings.SOUND_MUTE.get());
-        musicSlider.setValue(Settings.MUSIC_VOLUME.get());
-       // musicMuteButton.setChecked(!Settings.MUSIC_MUTE.get());
-        //fullscreenButton.setChecked(Gdx.graphics.isFullscreen());
-    }
-
     private void storeSettings() 
     {
-    	//System.out.println("Store");
-        Settings.SOUND_VOLUME.set(soundSlider.getValue());
-       // Settings.SOUND_MUTE.set(!soundMuteButton.isChecked());
-        Settings.MUSIC_VOLUME.set(musicSlider.getValue());
-      //  Settings.MUSIC_MUTE.set(!musicMuteButton.isChecked());
-        //Settings.FULLSCREEN.set(Gdx.graphics.isFullscreen());
+        Settings.SOUND_VOLUME.set(sound);
+        Settings.MUSIC_VOLUME.set(music);
+		SoundEmitter.setGlobalVolume(sound);
+		MusicManager.setGlobalVolume(music);
         Settings.flush();
     }
-    
-//    private void onFullscreenChanged() {
-//        boolean fullscreenOn = fullscreenButton.isChecked();
-//        fullscreenButton.setText(fullscreenOn ? "An" : "Aus");
-//
-//        ScreenUtil.setFullscreen(fullscreenOn);
-//    }
-    
-//    private TextButton createToggleButton(int x, int y, String text, Runnable runnable) 
+//    
+//    private void check()
 //    {
-//        TextButton button = new TextButton(text, skin, "toggle");
-//        button.setBounds(x, y, 100, 30);
-//        addActor(button);
+//    	if(Settings.SOUND_VOLUME.get() > 1.0f || sound < 1.0f)
+//		{
+//			sound = 1.0f;
+//			storeSettings();
 //
-//        button.addListener(new ChangeListener() 
-//        {
-//            @Override
-//            public void changed(ChangeListener.ChangeEvent event, Actor actor) 
-//            {
-//                runnable.run();
-//            }
-//        });
-//        return button;
+//		}
+//		if(Settings.MUSIC_VOLUME.get() > 1.0f || music < 1.0f)
+//		{
+//			music = 1.0f;
+//			storeSettings();
+//		}
 //    }
 }
