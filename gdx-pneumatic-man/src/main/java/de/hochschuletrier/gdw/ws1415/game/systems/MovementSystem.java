@@ -1,24 +1,23 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
+import java.util.Random;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.RayCastCallback;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
-import de.hochschuletrier.gdw.ws1415.game.GameConstants;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 //import de.hochschuletrier.gdw.ws1415.game.components.BouncingComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.components.SoundEmitterComponent;
 
 public class MovementSystem extends IteratingSystem {
 
@@ -85,6 +84,11 @@ public class MovementSystem extends IteratingSystem {
                 jump.justJumped = false;
                 if (jump.groundContacts > 0) {
                     if (input.jump) {
+                        SoundEmitterComponent se = ComponentMappers.soundEmitter.get(entity);
+                        if(se != null){
+                            int ji = (int) (Math.random() * 10 % 6) +1;
+                            se.emitter.play(EntityCreator.assetManager.getSound("jump" + ji), false);
+                        }
                         jump.justJumped = true;
                         physix.setLinearVelocityY(-jump.jumpSpeed);
                     }

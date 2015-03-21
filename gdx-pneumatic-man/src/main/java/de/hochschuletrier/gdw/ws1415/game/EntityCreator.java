@@ -130,6 +130,9 @@ public class EntityCreator {
         
         addLayerComponent(entity, 10, 1, 1);
 
+        SoundEmitterComponent se = engine.createComponent(SoundEmitterComponent.class);
+        entity.add(se);
+        
         engine.addEntity(entity);
         return entity;
     }
