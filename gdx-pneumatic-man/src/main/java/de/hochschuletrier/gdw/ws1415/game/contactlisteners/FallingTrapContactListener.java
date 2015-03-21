@@ -67,7 +67,7 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         if(dot > 0) return;
 
         if(ComponentMappers.player.has(otherEntity)) return; // player jumped from ground to the spike
-        if(ComponentMappers.enemy.has(otherEntity)) return; // enemy jumped from ground to the spike
+        if(ComponentMappers.killsPlayerOnContact.has(otherEntity)) return; // enemy jumped from ground to the spike
 
         mybody.setGravityScale(0.0f);
         mybody.setLinearVelocity(0, 0);

@@ -205,6 +205,10 @@ public class EntityCreator {
         float width = GameConstants.getTileSizeX();
         float height = GameConstants.getTileSizeY();
 
+        HealthComponent Health =engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        entity.add(Health);
+        
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
         Damage.damage  = 1;
         Damage.damageToPlayer = true;

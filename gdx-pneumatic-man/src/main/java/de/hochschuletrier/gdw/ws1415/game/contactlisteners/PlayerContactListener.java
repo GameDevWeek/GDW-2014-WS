@@ -39,30 +39,35 @@ public class PlayerContactListener extends PhysixContactAdapter {
     }
 
     public void beginContact(PhysixContact contact) {
-
-        Entity player = contact.getMyComponent().getEntity();
-        Entity otherEntity = contact.getOtherComponent().getEntity();
-        AnimationComponent anim = player.getComponent(AnimationComponent.class);
-
-        if(player.getComponent(PlayerComponent.class) == null) // swap player
-        {
-            Entity tmp = otherEntity;
-            otherEntity = player;
-            player = tmp;
-        }
-
-        PositionComponent PlayerPosComp = player.getComponent(PositionComponent.class);
-        Vector2 PlayerPos = new Vector2(PlayerPosComp.x, PlayerPosComp.y);
-        
-        PositionComponent OtherPosComp = player.getComponent(PositionComponent.class);
-        Vector2 OtherPos = new Vector2(OtherPosComp.x, OtherPosComp.y);
-        
-        //boolean IsFromAbove 
         
         if (contact.getOtherComponent() == null)
             return;
 
-        // Entity myEntity = contact.getMyComponent().getEntity(); //
+        Entity player = contact.getMyComponent().getEntity();
+        Entity otherEntity = contact.getOtherComponent().getEntity();
+        
+        PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
+        if("jump".equals(contact.getMyFixture().getUserData())){
+            JumpComponent jump = ComponentMappers.jump.get(player);
+            if(jump.groundContacts==0)
+            {
+                jump.justLanded = true;
+            }
+            jump.groundContacts++;
+            if(otherEntity.getComponent(PlatformComponent.class) != null) {
+                player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
+            }
+            if(ComponentMappers.killsPlayerOnContact.has(otherEntity) && ComponentMappers.health.has(otherEntity))
+            {
+                HealthComponent Health = otherEntity.getComponent(HealthComponent.class);
+                otherEntity.getComponent(DamageComponent.class).damageToPlayer = false;
+                Health.DecrementByValueNextFrame += 1;
+                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = 0;
+            }
+            return;
+        }
+        
+        AnimationComponent anim = player.getComponent(AnimationComponent.class);
         
         if(otherEntity.getComponent(MinerComponent.class) != null){
             otherEntity.getComponent(HealthComponent.class).Value = 0;
@@ -107,13 +112,20 @@ public class PlayerContactListener extends PhysixContactAdapter {
         
 
         
-        if ((ComponentMappers.enemy.has(otherEntity) ||  // enemys + lava
+
+        if ((ComponentMappers.killsPlayerOnContact.has(otherEntity) ||  // enemys + lava
                 ComponentMappers.spikes.has(otherEntity) ||
                 ComponentMappers.lavaBall.has(otherEntity)
-                ) && 
-                contact.getWorldManifold().getNormal().y > 0) {
+                )) {
             // player touched an enemy
-            if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
+            boolean IsAlive = true;
+            if(ComponentMappers.health.has(otherEntity))
+            {
+                HealthComponent Health = ComponentMappers.health.get(otherEntity);
+                IsAlive = (Health.Value - Health.DecrementByValueNextFrame) > 0;
+            }
+            
+            if (IsAlive && otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
                 logger.info(contact.getWorldManifold().getNormal().toString());
                 if(player.getComponent(HealthComponent.class) != null){
                     player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
@@ -122,18 +134,6 @@ public class PlayerContactListener extends PhysixContactAdapter {
             }
         }
         
-        PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
-        if("jump".equals(contact.getMyFixture().getUserData())){
-            JumpComponent jump = ComponentMappers.jump.get(player);
-            if(jump.groundContacts==0)
-            {
-                jump.justLanded = true;
-            }
-            jump.groundContacts++;
-            if(otherEntity.getComponent(PlatformComponent.class) != null) {
-                player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
-            }
-        }
 
         
         //WiP
