@@ -69,7 +69,8 @@ public class CameraSystem extends EntitySystem implements EntityListener {
     public void update(float deltaTime) {
         // reset camera position to the correct position after parallax
         if(!firstLayer) {
-            camera.setPosition(cameraPos.x, cameraPos.y);
+            camera.setDestination(cameraPos.x, cameraPos.y);
+            camera.updateForced();
             firstLayer = true;
         }
 

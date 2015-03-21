@@ -58,8 +58,6 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
             case Input.Keys.D:
                 right = true;
                 break;
-            case Input.Keys.ESCAPE:
-            case Input.Keys.P: GameConstants.pause = !GameConstants.pause; break;
         }
         if(!Main.IS_RELEASE){  // nur für Testzwecke
             if(keycode == Input.Keys.C){

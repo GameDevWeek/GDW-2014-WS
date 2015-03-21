@@ -1,6 +1,8 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +62,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 int miners_threshold = scoreSys.goal.getComponent(GoalComponent.class).miners_threshold;
                 Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
                 logger.info("Your score is: " + Score.score);
+                Settings.HIGHSCORE.set(""+Score.score);
                 Game.loadLevel();
             }
         }
@@ -78,8 +81,10 @@ public class PlayerContactListener extends PhysixContactAdapter {
             PhysixBodyComponent bodyComponent = ComponentMappers.physixBody.get(rockTriggerComponent.rockEntity);
             PhysixModifierComponent modifierComponent = EntityCreator.engine.createComponent(PhysixModifierComponent.class);
             modifierComponent.schedule(() -> {
-                bodyComponent.setActive(true);
+                bodyComponent.setGravityScale(1);
+                bodyComponent.setAwake(true);
             });
+            ComponentMappers.animation.get(rockTriggerComponent.rockEntity).IsActive = true;
             rockTriggerComponent.rockEntity.add(modifierComponent);
             EntityCreator.engine.removeEntity(otherEntity);
         }
@@ -92,9 +97,10 @@ public class PlayerContactListener extends PhysixContactAdapter {
         }
         
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
-        if(contact.getMyFixture().getUserData().equals("jump")){
+        if("jump".equals(contact.getMyFixture().getUserData())){
             JumpComponent jump = ComponentMappers.jump.get(player);
-            jump.doJump = true;
+            jump.previousContacts = jump.groundContacts;
+            jump.groundContacts++;
         }
 
         
@@ -120,12 +126,12 @@ public class PlayerContactListener extends PhysixContactAdapter {
         Entity player = contact.getMyComponent().getEntity();
         
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
-        if(body!= null && contact.getMyFixture().getUserData().equals("jump")){
+        if(body!= null && "jump".equals(contact.getMyFixture().getUserData())){
            
             JumpComponent jump = ComponentMappers.jump.get(player);
             if(jump!= null){
-                jump.doJump = false;
-                jump.inAir = false;
+                jump.previousContacts = jump.groundContacts;
+                jump.groundContacts--;
             }
             
         }
