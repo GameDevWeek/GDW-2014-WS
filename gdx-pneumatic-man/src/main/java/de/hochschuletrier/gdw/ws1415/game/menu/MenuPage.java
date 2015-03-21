@@ -99,6 +99,7 @@ public class MenuPage extends Group {
                     Actor fromActor) {
                     if(abspielen==true){
                         //System.out.println("abspielen");
+                        SoundEmitter.updateGlobal();
                     SoundEmitter.playGlobal(assetManager.getSound("pmHover"),false);}
                     changeTextureActive(image);
                 //}
@@ -157,6 +158,8 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("levels_button_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("score_button"))
             image.setTexture(assetManager.getTexture("score_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("credits_button"))
+            image.setTexture(assetManager.getTexture("credits_button_active"));
     	
     }
     
@@ -176,5 +179,7 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("levels_button"));
         if(image.getRegion().getTexture()==assetManager.getTexture("score_button_active"))
             image.setTexture(assetManager.getTexture("score_button"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("credits_button_active"))
+            image.setTexture(assetManager.getTexture("credits_button"));
     }
 }
