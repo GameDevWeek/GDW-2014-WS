@@ -53,6 +53,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         addRenderer(new LightRenderer());
         
         this.rayHandler = rayHandler;
+  
         this.rayHandler.setAmbientLight(GameConstants.LIGHT_AMBIENT);
         this.rayHandler.setBlur(GameConstants.LIGHT_BLUR);
         this.rayHandler.setBlurNum(GameConstants.LIGHT_BLURNUM);
@@ -91,6 +92,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     @Override
 	public void update (float deltaTime) {
     	super.update(deltaTime);
+        cameraSystem.undoParallax();
     	
     	// rayHandler.updateAndRender() not allowed between begin() and end()
     	DrawUtil.batch.end();

@@ -27,11 +27,11 @@ public class GameConstants {
     public static final int BOX2D_SCALE = 40;
     
     // Light parameters
-    public static final int LIGHT_RAYS = 125;
-    public static final float LIGHT_AMBIENT = 0.9f;
+    public static final int LIGHT_RAYS = 90;
+    public static final float LIGHT_AMBIENT = 0.7f;
     public static final boolean LIGHT_BLUR = true;
-    public static final int LIGHT_BLURNUM = 3;
-    public static final boolean LIGHT_SHADOW = false;
+    public static final int LIGHT_BLURNUM = 2;
+    public static final boolean LIGHT_SHADOW = true;
     public static final boolean LIGHT_DIFFUSE = false;
     
     public static final float MUSIC_FADE_TIME = 2.0f;
@@ -53,4 +53,5 @@ public class GameConstants {
     }
 
     public static boolean pause = false;
+    public static boolean menuOpen = false;
 }

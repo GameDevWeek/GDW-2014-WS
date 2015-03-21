@@ -10,7 +10,6 @@ import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
-import de.hochschuletrier.gdw.ws1415.states.PauseGameState;
 
 public class InputKeyboardSystem extends IteratingSystem implements InputProcessor {
 
@@ -32,7 +31,9 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         inputComponent.reset();
         if (jump > 0) {
             inputComponent.jump = true;
-            jump -= deltaTime;
+            // wenn das hier drin ist, kann man nicht dauerhaft springen, noch dazu muss man eine Zeile weiter unten auskommentieren
+//            jump -= deltaTime;
+            
         }
         if (right) {
             inputComponent.direction++;
@@ -47,8 +48,7 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         switch (keycode) {
             case Input.Keys.UP:
             case Input.Keys.SPACE:
-            case Input.Keys.W:
-                jump = 0.2f;
+            case Input.Keys.W: jump = 0.2f;
                 break;
             case Input.Keys.LEFT:
             case Input.Keys.A:
@@ -57,6 +57,9 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
             case Input.Keys.RIGHT:
             case Input.Keys.D:
                 right = true;
+                break;
+            case Input.Keys.P:
+                GameConstants.pause = !GameConstants.pause;
                 break;
         }
         if(!Main.IS_RELEASE){  // nur für Testzwecke
@@ -73,19 +76,18 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
     @Override
     public boolean keyUp(int keycode) {
         switch (keycode) {
-//        case Input.Keys.UP:
-//        case Input.Keys.SPACE:
-//        case Input.Keys.W:
-//            jump = false;
-//            break;
+         // wenn die nächsten vier Zeilen auskommentiert sind kann man nicht mehr dauerhaft springen, noch dazu muss mein ein Zeile weiter oben wieder einkommentieren
+        case Input.Keys.UP:
+        case Input.Keys.SPACE:
+        case Input.Keys.W:jump = -0.5f; 
+            break;
         case Input.Keys.LEFT:
         case Input.Keys.A:
             left = false;
             break;
         case Input.Keys.RIGHT:
-        case Input.Keys.D:
-            right = false;
-            break;
+        case Input.Keys.D: right = false; break;
+        case Input.Keys.P: GameConstants.pause = !GameConstants.pause; break;
         }
         return false;
     }
