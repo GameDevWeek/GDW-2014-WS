@@ -285,7 +285,7 @@ public class Game {
         //
         // mapRenderer.update(delta);
         
-        if(GameConstants.pause)
+        if(GameConstants.pause || GameConstants.menuOpen)
         {
             renderSystem.update(0);
         }
