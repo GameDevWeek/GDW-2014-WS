@@ -61,8 +61,15 @@ public class CameraSystem extends EntitySystem implements EntityListener {
            firstLayer = false;
        }
        
-       camera.setPosition(cameraPos.x*layer.parallaxX, cameraPos.y*layer.parallaxY);
+       camera.setCameraPosition(cameraPos.x*layer.parallaxX, cameraPos.y*layer.parallaxY);
+       camera.getOrthographicCamera().update(true);
        camera.bind();
+    }
+   
+    void undoParallax() {
+        camera.setCameraPosition(camera.getPosition().x, camera.getPosition().y);
+        camera.getOrthographicCamera().update(true);
+        camera.bind();
     }
     
     @Override

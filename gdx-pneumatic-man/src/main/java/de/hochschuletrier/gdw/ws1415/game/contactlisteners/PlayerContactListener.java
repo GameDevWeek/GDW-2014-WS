@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
 import java.util.Random;
+import javax.print.attribute.standard.MediaSize.Other;
 
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
@@ -41,15 +42,35 @@ public class PlayerContactListener extends PhysixContactAdapter {
     }
 
     public void beginContact(PhysixContact contact) {
-
-        Entity player = contact.getMyComponent().getEntity();
-        AnimationComponent anim = player.getComponent(AnimationComponent.class);
-
+        
         if (contact.getOtherComponent() == null)
             return;
 
-        // Entity myEntity = contact.getMyComponent().getEntity(); //
+        Entity player = contact.getMyComponent().getEntity();
         Entity otherEntity = contact.getOtherComponent().getEntity();
+        
+        PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
+        if("jump".equals(contact.getMyFixture().getUserData())){
+            JumpComponent jump = ComponentMappers.jump.get(player);
+            if(jump.groundContacts==0)
+            {
+                jump.justLanded = true;
+            }
+            jump.groundContacts++;
+            if(otherEntity.getComponent(PlatformComponent.class) != null) {
+                player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
+            }
+            if(ComponentMappers.killsPlayerOnContact.has(otherEntity) && ComponentMappers.health.has(otherEntity))
+            {
+                HealthComponent Health = otherEntity.getComponent(HealthComponent.class);
+                otherEntity.getComponent(DamageComponent.class).damageToPlayer = false;
+                Health.DecrementByValueNextFrame += 1;
+                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = 0;
+            }
+            return;
+        }
+        
+        AnimationComponent anim = player.getComponent(AnimationComponent.class);
         
         if(otherEntity.getComponent(MinerComponent.class) != null){
             otherEntity.getComponent(HealthComponent.class).Value = 0;
@@ -82,6 +103,13 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 
                 Settings.HIGHSCORE.set(""+Score.score);
                 Game.loadLevel();
+                if(scoreSys.scoreCanBeRegistered){
+                    Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
+                    logger.info("Your score is: " + Score.score);
+                    scoreSys.timeSinceLastCalculation = 0;
+                    scoreSys.scoreCanBeRegistered = false;
+                    Game.loadLevel();
+                }
             }
         }
 
@@ -102,25 +130,28 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 EntityCreator.engine.removeEntity(otherEntity);
             }
         }
+        
 
-        if (ComponentMappers.enemy.has(otherEntity) ||  // enemys + lava
+        
+
+        if ((ComponentMappers.killsPlayerOnContact.has(otherEntity) ||  // enemys + lava
                 ComponentMappers.spikes.has(otherEntity) ||
-                ComponentMappers.lavaBall.has(otherEntity)) {
+                ComponentMappers.lavaBall.has(otherEntity)
+                )) {
             // player touched an enemy
-            if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
+            boolean IsAlive = true;
+            if(ComponentMappers.health.has(otherEntity))
+            {
+                HealthComponent Health = ComponentMappers.health.get(otherEntity);
+                IsAlive = (Health.Value - Health.DecrementByValueNextFrame) > 0;
+            }
+            
+            if (IsAlive && otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
+                logger.info(contact.getWorldManifold().getNormal().toString());
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
             }
         }
         
-        PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
-        if("jump".equals(contact.getMyFixture().getUserData())){
-            JumpComponent jump = ComponentMappers.jump.get(player);
-            jump.previousContacts = jump.groundContacts;
-            jump.groundContacts++;
-            if(otherEntity.getComponent(PlatformComponent.class) != null) {
-                player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
-            }
-        }
 
         
         //WiP
@@ -153,7 +184,6 @@ public class PlayerContactListener extends PhysixContactAdapter {
             JumpComponent jump = ComponentMappers.jump.get(player);
             
             if(jump!= null){
-                jump.previousContacts = jump.groundContacts;
                 jump.groundContacts--;
             }
             if(otherPlatformComp != null && playerComp != null) {
