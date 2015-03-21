@@ -16,8 +16,7 @@ public class JumpComponent extends Component implements Pool.Poolable {
 	public float restingTime, timeToNextJump;
 	public float jumpTimer = 0.2f;
 	
-//	public boolean inAir;
-	public int previousContacts;
+	public boolean justLanded;
     public int groundContacts;
 
 	@Override
