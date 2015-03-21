@@ -196,7 +196,8 @@ public class Game {
         
         MapLoader.generateWorldFromTileMapX(engine, physixSystem, map, cameraSystem);
         // TODO: Move to better place or remove later
-        EntityCreator.createTestBackground(map.getWidth()* map.getTileWidth(), map.getHeight() * map.getTileHeight());
+        //EntityCreator.createTestBackground(map.getWidth()* map.getTileWidth(), map.getHeight() * map.getTileHeight());
+        EntityCreator.createTestBackground();
         inputManager.init();
     }
 

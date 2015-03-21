@@ -9,6 +9,7 @@ import box2dLight.PointLight;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
@@ -32,38 +34,7 @@ import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.BombComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DeathComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DeathTimerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.ExplosionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.FallingRockTriggerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.IndestructableBlockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.JumpableAnimationComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.SoundEmitterComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.SpikeComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.ChainLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.ConeLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.DirectionalLightComponent;
@@ -71,6 +42,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
@@ -254,14 +226,7 @@ public class EntityCreator {
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
-
-
         
-        // ***** ANimation*****ddddddddddddd
-        final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
-        entity.add(animation);
-        animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
-
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
@@ -272,8 +237,8 @@ public class EntityCreator {
         bodyComponent.createFixture(pfx);
         entity.add(bodyComponent);
         AIComponent ai = new AIComponent();
+        
         ai.type = type;
-        ai.AItimer = 5;
         entity.add(ai);
 
         MovementComponent movementComponent = engine.createComponent(MovementComponent.class);
@@ -292,11 +257,12 @@ public class EntityCreator {
         d.facingDirection = Direction.LEFT;
         entity.add(d);
         
+        final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+        entity.add(animation);
+        animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
+               
         addLayerComponent(entity, 10, 1, 1);
 
-        SoundEmitterComponent soundEmitterComponent = engine.createComponent(SoundEmitterComponent.class);
-        entity.add(soundEmitterComponent);
-        
         engine.addEntity(entity);
         return entity;
     }
@@ -576,7 +542,7 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.getBody().setGravityScale(0f);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1f).friction(0).shapeBox(boxWidth, boxHeight)
+                .density(500).friction(1f).shapeBox(boxWidth, boxHeight)
                 .restitution(0);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
@@ -720,7 +686,7 @@ public class EntityCreator {
         return new Entity();
     }
     
-    public static Entity createAndAddDeko(float x, float y,float xOffset, float yOffset, float dir,float distance,float radius, Color color, boolean light, boolean lightType )
+    public static Entity createAndAddDeko(float x, float y,float xOffset, float yOffset, float dir,float distance,float radius, Color color, String lightType )
     {
         Entity e = engine.createEntity();
         
@@ -728,21 +694,29 @@ public class EntityCreator {
         pc.x=x;
         pc.y=y;
         LayerComponent lc = engine.createComponent(LayerComponent.class);
-        if(lightType == true)
+        switch ( lightType.toLowerCase() )
         {
-            ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
-            clc = engine.createComponent(ConeLightComponent.class);
-            clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
-            clc.coneLight.setStaticLight(light);
-            e.add(clc);
-        }else
-        {
-            PointLightComponent plc = engine.createComponent(PointLightComponent.class);
-            plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
-            plc.pointLight.setStaticLight(light);
-            plc.offsetX = xOffset;
-            plc.offsetY = yOffset;
-            e.add(plc);
+           
+//            ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
+//            clc = engine.createComponent(ConeLightComponent.class);
+//            clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
+//            clc.coneLight.setStaticLight(light);
+//            e.add(clc);
+        case "cone":
+            createConeLight( x,y,xOffset,yOffset,color,distance,dir,radius,true );
+            break;
+//            PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+//            plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
+//            plc.pointLight.setStaticLight(light);
+//            plc.offsetX = xOffset;
+//            plc.offsetY = yOffset;
+//            e.add(plc);
+        case "point":
+            createPointLight( x,y,xOffset,yOffset,color,distance,true );
+            break;
+        case "chain":
+            EntityCreator.createChainLight(x, y, xOffset, yOffset, color, distance, (dir>90f&&dir<270f)?false:true , new float[]{0f,0,60f,0}, true);
+            break;
         }
         e.add(pc);
         e.add(lc);
@@ -782,7 +756,7 @@ public class EntityCreator {
      * @return
      */
     
-    public static Entity createConeLight(float x, float y, Color color, float distance, float directionDegree, float coneDegree, boolean staticLight){
+    public static Entity createConeLight(float x, float y, float xOffset, float yOffset, Color color, float distance, float directionDegree, float coneDegree, boolean staticLight){
         Entity e = engine.createEntity();
         PositionComponent pc = engine.createComponent(PositionComponent.class);
         pc.x=x;
@@ -792,6 +766,8 @@ public class EntityCreator {
         clc = engine.createComponent(ConeLightComponent.class);
         clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, directionDegree, coneDegree);
         clc.coneLight.setStaticLight(staticLight);
+        clc.offsetX = xOffset;
+        clc.offsetY = yOffset;
         e.add(pc);
         e.add(lc);
         e.add(clc);
@@ -811,7 +787,7 @@ public class EntityCreator {
      * @param chain Linie von Punkt zu Punkt {x1, y1, x2, y2} realtiv zu Pos x & Pos y
      * @return
      */
-    public static Entity createChainLight(float x, float y, Color color, float distance, boolean rayDirection, float[] chain, boolean staticLight){
+    public static Entity createChainLight(float x, float y, float xOffset, float yOffset, Color color, float distance, boolean rayDirection, float[] chain, boolean staticLight){
         Entity e = engine.createEntity();
         PositionComponent pc = engine.createComponent(PositionComponent.class);
         pc.x=x;
@@ -819,6 +795,8 @@ public class EntityCreator {
         LayerComponent lc = engine.createComponent(LayerComponent.class);
         ChainLightComponent clc = engine.createComponent(ChainLightComponent.class);
         clc = engine.createComponent(ChainLightComponent.class);
+        clc.offsetX = xOffset;
+        clc.offsetY = yOffset;
         for(int i = 0; i<chain.length;i++){
             if(i%2 == 0){
                 chain[i]=(x+chain[i])/GameConstants.BOX2D_SCALE; 
@@ -944,17 +922,6 @@ public class EntityCreator {
         pe.offsetY=40f;
         entity.add(pe);
         
-        int soundInstance = (int)(Math.random() * 10 % 1)+1;
-        
-        SoundEmitterComponent sec = engine.createComponent(SoundEmitterComponent.class);
-        
-        SoundInstance si = sec.emitter.play(assetManager.getSound("burst" + soundInstance), false);
-        si.setReferenceDistance(100f);
-        sec.emitter.setPosition(positionX, positionY, 0);
-        
-        
-        entity.add(sec);
-        
         
         
         addLayerComponent(entity, 10, 1, 1);
@@ -965,11 +932,11 @@ public class EntityCreator {
     
     // ********** Rendering section BEGIN **********
     
-    public static Entity createTestBackground( int w, int h) {
+    public static Entity createTestBackground() {
         Entity entity = engine.createEntity();
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = -1;
-        entityLayer.parallaxX = 0.125f;
+        entityLayer.parallaxX = 0.1f;
         
         TextureComponent tex = engine.createComponent(TextureComponent.class);
         tex.texture = assetManager.getTexture("bg1");
@@ -979,8 +946,8 @@ public class EntityCreator {
         pos.x = 0.f;
         pos.y = 500.f;
         pos.rotation = 0;
-        pos.scaleX = w / tex.texture.getWidth() / entityLayer.parallaxX;
-        pos.scaleY = h / tex.texture.getHeight() / entityLayer.parallaxX;
+        pos.scaleX = 2.5f;
+        pos.scaleY = 2.5f;
         
         entity.add(pos);
         entity.add(entityLayer);
@@ -1007,7 +974,8 @@ public class EntityCreator {
         entity.add(pl);
     }
     
-    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
+    // changed tileX and tileY form int to float   um die 2x2 DekoObjekte korrekt justieren zu koennen  @Assets(Tobi)
+    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, float tileX, float tileY) {
     	Entity entity = engine.createEntity();
     	
     	addRenderComponents(entity, map, info, tileX, tileY);
@@ -1071,7 +1039,7 @@ public class EntityCreator {
     /**
      * Extracts information from the map and tile info to add components to the the given entity.
      */
-    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY) {
+    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, float tileX, float tileY) {
     	TileSet tileset = map.findTileSet(info.globalId);
     	Texture image = (Texture) tileset.getAttachment();
 
@@ -1100,9 +1068,9 @@ public class EntityCreator {
      * Extracts information from the map and tile info to add components to the the given entity.
      * Make sure the property "animationFrames" of the TileSet is set to greater than 1.
      */
-    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
+    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, float tileX, float tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
-    	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
+    	int frames = tileset.getIntProperty("AnimationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
         
     	assert(frames > 1);
 
@@ -1175,7 +1143,7 @@ public class EntityCreator {
 
         
         //addRenderComponents(Bomb, map, info, tileX, tileY);
-        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, false);
+        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
         
         engine.addEntity(Bomb);
         return(Bomb);
@@ -1211,6 +1179,7 @@ public class EntityCreator {
         entity.add(PhysixBody);
         
         
+
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 0;
         entity.add(Health);
