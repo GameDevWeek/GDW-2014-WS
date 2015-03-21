@@ -389,9 +389,11 @@ public class EntityCreator {
         
         AnimationComponent trapBlock = engine.createComponent(AnimationComponent.class);
         trapBlock.animation = assetManager.getAnimation("stone_breaking");
+        trapBlock.IsActive = false;
         
         entity.add(trapBlock);
         addLayerComponent(entity, 10, 1, 1);
+        entity.add(engine.createComponent(PositionComponent.class));
         engine.addEntity(entity);
         return entity;
     }

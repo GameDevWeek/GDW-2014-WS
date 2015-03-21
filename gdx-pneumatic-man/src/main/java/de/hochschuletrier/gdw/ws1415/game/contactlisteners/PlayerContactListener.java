@@ -80,6 +80,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
             modifierComponent.schedule(() -> {
                 bodyComponent.setActive(true);
             });
+            ComponentMappers.animation.get(rockTriggerComponent.rockEntity).IsActive = true;
             rockTriggerComponent.rockEntity.add(modifierComponent);
             EntityCreator.engine.removeEntity(otherEntity);
         }

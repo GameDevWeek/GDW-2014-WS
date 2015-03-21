@@ -98,7 +98,7 @@
     "stone_breaking": {
 	"filename": "data/animations/stone_breaking.png",
 	"frames": 4,
-	"frameDuration": [0,5],
+	"frameDuration": [0.5],
 	"playType": "NORMAL",
 	"columns": 4,
 	"rows": 1
