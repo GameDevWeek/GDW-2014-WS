@@ -28,7 +28,7 @@ public class WinScreen extends MenuPage
     
     public WinScreen(Skin skin, MenuManager menuManager, Type type)
     {
-        super(skin, "background_menu" );
+        super(skin, "winscreen" );
         
         font_32 = assetManager.getFont("orbitron_32");
         font_75 = assetManager.getFont("orbitron_75");
