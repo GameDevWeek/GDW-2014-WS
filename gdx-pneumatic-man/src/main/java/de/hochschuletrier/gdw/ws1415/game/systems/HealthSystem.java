@@ -111,7 +111,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                                     (PhysixBodyComponent) bodyUserData : null;
                             if (bodyComponent != null && ComponentMappers.spikes.has(bodyComponent.getEntity())) {
 
-                                bodyComponent.setGravityScale(1);
+                                bodyComponent.setGravityScale(1.8f);
                                 bodyComponent.setAwake(true);
                                 bodyComponent.setActive(true);
                                 bodyComponent.getBody().getFixtureList().forEach(f -> f.setSensor(false));
