@@ -449,21 +449,21 @@ public class MapLoader
                                     Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "")));
                                     color.a = Float.parseFloat(tinfo.getProperty("Brightness", "0.7"));
                                     float xOffset = Float.parseFloat(tinfo.getProperty("XOffset", "0.0"));
-                                    float yOffset = -Float.parseFloat(tinfo.getProperty("YOffset", "0.0"));
+                                    float yOffset = Float.parseFloat(tinfo.getProperty("YOffset", "0.0"));
+                                  //  xOffset = 0f;
+                                  //  yOffset = 0f;
                                     float x = i * map.getTileWidth();
                                     float y = j * map.getTileHeight();
                                     // different sizes needed to have some offsets
                                     switch( map.getTileSets().get( tinfo.tileSetId ).getName().toLowerCase() )
                                     {
                                         case "deco_gross":
-                                            x += 1.0f * map.getTileWidth();
-                                            y += 1.0f * map.getTileHeight();
+                                        //    x += 1.0f * map.getTileWidth();
+                                        //    y += 1.0f * map.getTileHeight();
                                             EntityCreator.createAndAddVisualEntity(map, tinfo, i+0.5f, j+0.5f);
                                             break;
                                         case "tutorialschild":
                                         {
-                                            x += 1.5f * map.getTileWidth();
-                                            y += 1.5f * map.getTileHeight();
                                             int add=0;
                                             if ( Settings.GAMEPAD_ENABLED.get() ) add = 1;
                                             TileInfo ti = new TileInfo( tinfo.tileSetId,tinfo.localId+add,tinfo.globalId+add,tinfo.getProperties() );
@@ -471,8 +471,6 @@ public class MapLoader
                                         }
                                             break;
                                         default :
-                                            x += 0.5f * map.getTileWidth();
-                                            y += 0.5f * map.getTileHeight();
                                             EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                             break;
                                     }
