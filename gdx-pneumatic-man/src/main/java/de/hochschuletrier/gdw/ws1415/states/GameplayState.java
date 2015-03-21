@@ -71,7 +71,7 @@ public class GameplayState extends BaseGameState {
                 if (keycode == Input.Keys.ESCAPE) {
                     if (mainProcessor == gameInputProcessor) {
                         mainProcessor = menuInputProcessor;
-                        GameConstants.pause = true;
+                        GameConstants.menuOpen = true;
                     } else {
                         menuManager.popPage();
                     }
@@ -84,7 +84,7 @@ public class GameplayState extends BaseGameState {
 
     private void onMenuEmptyPop() {
         inputForwarder.set(gameInputProcessor);
-        GameConstants.pause = false;
+        GameConstants.menuOpen = false;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class GameplayState extends BaseGameState {
     public void onEnterComplete() {
         Main.inputMultiplexer.addProcessor(inputForwarder);
         inputForwarder.set(gameInputProcessor);
-        GameConstants.pause = false;
+        GameConstants.menuOpen = false;
     }
 
     @Override

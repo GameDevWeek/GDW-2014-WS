@@ -53,4 +53,5 @@ public class GameConstants {
     }
 
     public static boolean pause = false;
+    public static boolean menuOpen = false;
 }

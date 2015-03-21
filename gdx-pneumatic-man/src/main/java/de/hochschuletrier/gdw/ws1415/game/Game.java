@@ -237,6 +237,7 @@ public class Game {
         engine.addSystem(lavaFountainSystem);
         engine.addSystem(destroyBlocksSystem);
         engine.addSystem(platformSystem);
+        engine.addSystem(new UpdateSoundEmitterSystem());
     }
     private void removeSystems(){
         engine.removeSystem(physixSystem);
@@ -284,7 +285,7 @@ public class Game {
         //
         // mapRenderer.update(delta);
         
-        if(GameConstants.pause)
+        if(GameConstants.pause || GameConstants.menuOpen)
         {
             renderSystem.update(0);
         }
