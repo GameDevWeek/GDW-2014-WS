@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class DestroyBlocksSystem extends IteratingSystem {
 
-    public final static float RAY_LENGTH_JUMP = 2.8f;
+    public final static float RAY_LENGTH_JUMP = 2.4f;
     public final static float RAY_LENGTH_GROUNDED = 1.4f;
 
     public DestroyBlocksSystem() {

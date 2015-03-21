@@ -10,7 +10,6 @@ import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
-import de.hochschuletrier.gdw.ws1415.states.PauseGameState;
 
 public class InputKeyboardSystem extends IteratingSystem implements InputProcessor {
 
@@ -57,6 +56,9 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
             case Input.Keys.RIGHT:
             case Input.Keys.D:
                 right = true;
+                break;
+            case Input.Keys.P:
+                GameConstants.pause = !GameConstants.pause;
                 break;
         }
         if(!Main.IS_RELEASE){  // nur für Testzwecke

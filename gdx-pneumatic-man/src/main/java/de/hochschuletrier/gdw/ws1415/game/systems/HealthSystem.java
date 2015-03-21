@@ -60,11 +60,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
     public void update(float deltaTime) {
         for (Entity entity : entities) {
             HealthComponent Health = ComponentMappers.health.get(entity);
-            /* Info log for damages
+            //Info log for damages
             if(Health.DecrementByValueNextFrame>0)
             {
                 logger.info("Damaging "+entity.getId()+" with " + Health.DecrementByValueNextFrame + " damage. New Health: "+ (Health.Value - Health.DecrementByValueNextFrame));
             }
+            /* 
             */
             Health.Value -= Health.DecrementByValueNextFrame;
             Health.DecrementByValueNextFrame = 0;
@@ -80,6 +81,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                         Health.health = HealthComponent.HealthState.DYING;
                         deathTimer.deathTimer -= deltaTime;
                     }
+                }
+                else
+                {
+                    Health.health = HealthState.DEAD;
                 }
                 
 
@@ -123,7 +128,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else
                 {
-                    if(Health.health != HealthState.DYING)
+                    //if(Health.health != HealthState.DYING)
                     {
                         logger.info(entity.getId() + " removed");
                         PostUpdateRemovals.add(entity);
