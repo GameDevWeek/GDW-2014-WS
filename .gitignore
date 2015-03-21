@@ -126,3 +126,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+publish.sh
+update-from.sh
+
+#*.orig merge files
+*.orig

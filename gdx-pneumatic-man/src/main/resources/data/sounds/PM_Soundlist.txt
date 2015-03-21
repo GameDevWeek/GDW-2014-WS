@@ -1,0 +1,114 @@
+﻿Soundliste v0.23
+
+[Pneumatik Man]
+
+Presslufthammerger�usch
+	-pneu1
+	-pneu2
+	-pneu3
+
+Presslufthammer auf Eisenblöcken
+    iron1
+    iron2
+    iron3
+
+PM wird getroffen
+	ouch1
+	ouch2
+	ouch3	
+
+PM springt
+	jump1
+	jump2
+    jump3
+    jump4
+    jump5
+    jump6
+
+PM stirbt
+    ouch1
+    ouch2
+    ouch3
+
+
+PM befreit einen Kameraden
+	-free1
+	-free2
+	-free3
+
+Level beendet
+	glory1
+	glory2
+	glory3
+
+
+
+..
+[Environment]
+Bombe explodiert
+    -boom
+loop für die Lava
+    magmaLoop
+    
+Lava blubbert
+	-magma1
+	-magma2
+	-magma3
+
+Lava schie�t hervor (neu machen)
+	burst1
+	-burst2
+
+*Block3 nimmt Schaden -> wird zu Block2
+*Block2 nimmt Schaden -> wird zu Block1
+	cracks1
+	cracks2
+	cracks3
+	cracks4
+	cracks5
+
+Block1 nimmt Schaden -> zerbricht
+	debris1
+	debris2
+	debris3
+	debris4
+
+
+Felsen f�llt herunter
+	stoneDrops
+
+Felsen schl�gt auf etwas auf
+	-stoneHit1
+	-stoneHit2
+	-stoneHit3
+
+..
+[Gegner]
+
+W�chterchameleon stirbt
+    -guardDie
+
+W�chterchameleon gibt Laute von sich
+	guardGrunt1
+	guardGrunt2
+	guardGrunt3
+    guardGrunt4
+    
+Alienhund stirbt
+	-alienDie
+
+Alienhund schreit
+	alienBark1
+	alienBark2
+	alienBark3
+	alienBark4
+
+	
+..
+[Menu]
+Auswahl
+	pmHover
+Best�tigung
+	pmAccept
+Abbruch
+	pmCancel
