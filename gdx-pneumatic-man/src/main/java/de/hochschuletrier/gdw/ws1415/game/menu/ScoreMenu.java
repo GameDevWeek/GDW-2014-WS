@@ -40,6 +40,7 @@ public class ScoreMenu extends MenuPage
         if(highscoreLabels != null && highscoreLabels[0] != null){
             updateHighscoreList();
         }
+        super.setVisible(visible);
   }
 
     public void createHighscoreList(){
