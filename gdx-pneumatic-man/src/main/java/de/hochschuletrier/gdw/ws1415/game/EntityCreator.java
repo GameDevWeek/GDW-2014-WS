@@ -110,6 +110,13 @@ public class EntityCreator {
         
         entity.add(pos);
         
+        // ***** LIGHT *****
+        PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("7a44e6")),0.5f,0,0);
+        plc.offsetX = -10f;
+        plc.offsetY = 40f;
+        entity.add(plc);
+        
         // ***** temporary *****
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = true;
@@ -203,7 +210,8 @@ public class EntityCreator {
         entity.add(engine.createComponent(AIComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(SpawnComponent.class));
-        
+        entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
+
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
@@ -286,7 +294,7 @@ public class EntityCreator {
         Miner.add(ac);
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
-                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+                physixSystem).position(x + width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(pbdy, physixSystem, Miner);
         PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).restitution(0.1f)
@@ -323,7 +331,7 @@ public class EntityCreator {
         
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
-                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+                physixSystem).position(x + width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, goal);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0.1f)
@@ -376,14 +384,15 @@ public class EntityCreator {
         rockComponent.id = trapId;
         entity.add(rockComponent);
 
-        HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 1;
+//        HealthComponent Health = engine.createComponent(HealthComponent.class);
+//        Health.Value = 1;
 
         DamageComponent damageComp = engine.createComponent(DamageComponent.class);
         damageComp.damage = 4;
         damageComp.damageToPlayer = true;
         damageComp.damageToTile = true;
-        
+        entity.add(damageComp);
+
         AnimationComponent trapBlock = engine.createComponent(AnimationComponent.class);
         trapBlock.animation = assetManager.getAnimation("stone_breaking");
         trapBlock.IsActive = false;
@@ -470,6 +479,11 @@ public class EntityCreator {
         KillsPlayerOnContactComponent killComponent = engine
                 .createComponent(KillsPlayerOnContactComponent.class);
         entity.add(killComponent);
+
+        DamageComponent Damage = engine.createComponent(DamageComponent.class);
+        Damage.damageToPlayer = true;
+        Damage.damage = 999;
+        entity.add(Damage);
 
         PositionComponent positionComponent = engine
                 .createComponent(PositionComponent.class);
@@ -657,16 +671,17 @@ public class EntityCreator {
     }
 
     // ********** Light section BEGIN **********
-    public static Entity createPointLight(float x, float y, Color color, float distance){
+    public static Entity createPointLight(float x, float y, float xOffset, float yOffset, Color color, float distance, boolean staticLight){
         Entity e = engine.createEntity();
         PositionComponent pc = engine.createComponent(PositionComponent.class);
         pc.x=x;
         pc.y=y;
         LayerComponent lc = engine.createComponent(LayerComponent.class);
         PointLightComponent plc = engine.createComponent(PointLightComponent.class);
-        plc = engine.createComponent(PointLightComponent.class);
         plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
-        
+        plc.pointLight.setStaticLight(staticLight);
+        plc.offsetX = xOffset;
+        plc.offsetY = yOffset;
         e.add(pc);
         e.add(lc);
         e.add(plc);
@@ -687,7 +702,7 @@ public class EntityCreator {
      * @return
      */
     
-    public static Entity createConeLight(float x, float y, Color color, float distance, float directionDegree, float coneDegree){
+    public static Entity createConeLight(float x, float y, Color color, float distance, float directionDegree, float coneDegree, boolean staticLight){
         Entity e = engine.createEntity();
         PositionComponent pc = engine.createComponent(PositionComponent.class);
         pc.x=x;
@@ -696,7 +711,7 @@ public class EntityCreator {
         ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
         clc = engine.createComponent(ConeLightComponent.class);
         clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, directionDegree, coneDegree);
-        
+        clc.coneLight.setStaticLight(staticLight);
         e.add(pc);
         e.add(lc);
         e.add(clc);
@@ -716,7 +731,7 @@ public class EntityCreator {
      * @param chain Linie von Punkt zu Punkt {x1, y1, x2, y2} realtiv zu Pos x & Pos y
      * @return
      */
-    public static Entity createChainLight(float x, float y, Color color, float distance, boolean rayDirection, float[] chain){
+    public static Entity createChainLight(float x, float y, Color color, float distance, boolean rayDirection, float[] chain, boolean staticLight){
         Entity e = engine.createEntity();
         PositionComponent pc = engine.createComponent(PositionComponent.class);
         pc.x=x;
@@ -732,7 +747,7 @@ public class EntityCreator {
             }
         }
         clc.chainLight = new ChainLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, rayDirection ? 1:-1, chain);
-        
+        clc.chainLight.setStaticLight(staticLight);
         e.add(pc);
         e.add(lc);
         e.add(clc);
@@ -750,7 +765,7 @@ public class EntityCreator {
      * @param directionDegree Direction of Light
      * @return
      */
-    public static Entity createDirectionalLight(float x, float y, Color color, float directionDegree){
+    public static Entity createDirectionalLight(float x, float y, Color color, float directionDegree, boolean staticLight){
         Entity e = engine.createEntity();
         PositionComponent pc = engine.createComponent(PositionComponent.class);
         pc.x=x;
@@ -759,7 +774,7 @@ public class EntityCreator {
         DirectionalLightComponent dlc = engine.createComponent(DirectionalLightComponent.class);
         dlc = engine.createComponent(DirectionalLightComponent.class);
         dlc.directionalLight = new DirectionalLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, directionDegree);
-        
+        dlc.directionalLight.setStaticLight(staticLight);
         e.add(pc);
         e.add(lc);
         e.add(dlc);
@@ -768,12 +783,13 @@ public class EntityCreator {
         
         return e;
     }
+    
     public static void createLavaFountain(float x, float y, float height, float intervall, 
             float intervallOffset, float length){
         Entity entity = engine.createEntity();
         
         float lavaBallSpeed = -2000.0f;
-        float lavaBallSpawnIntervall = 0.5f;
+        float lavaBallSpawnIntervall = 0.25f;
         
         PositionComponent position = engine.createComponent(PositionComponent.class);
         position.x = x;
@@ -807,7 +823,7 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1f).friction(1f).shapeCircle(radius)
-                .restitution(0.1f);
+                .restitution(0.1f).sensor(true);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
         

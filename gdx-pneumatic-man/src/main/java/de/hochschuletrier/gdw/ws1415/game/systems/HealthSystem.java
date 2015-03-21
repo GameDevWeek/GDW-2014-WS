@@ -60,6 +60,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
     public void update(float deltaTime) {
         for (Entity entity : entities) {
             HealthComponent Health = ComponentMappers.health.get(entity);
+            /* Info log for damages
+            if(Health.DecrementByValueNextFrame>0)
+            {
+                logger.info("Damaging "+entity.getId()+" with " + Health.DecrementByValueNextFrame + " damage. New Health: "+ (Health.Value - Health.DecrementByValueNextFrame));
+            }
+            */
             Health.Value -= Health.DecrementByValueNextFrame;
             Health.DecrementByValueNextFrame = 0;
 
