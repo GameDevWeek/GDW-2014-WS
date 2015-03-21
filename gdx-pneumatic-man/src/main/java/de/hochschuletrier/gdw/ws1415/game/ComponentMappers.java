@@ -38,6 +38,6 @@ public class ComponentMappers {
     public static final ComponentMapper<PlayerComponent> player = ComponentMapper.getFor(PlayerComponent.class);
     public static final ComponentMapper<PlatformComponent> platform = ComponentMapper.getFor(PlatformComponent.class);
     public static final ComponentMapper<SpikeComponent> spikes = ComponentMapper.getFor(SpikeComponent.class);
-
+    
     public static final ComponentMapper<BombComponent> bomb = ComponentMapper.getFor(BombComponent.class);
 }

@@ -99,6 +99,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
         if("jump".equals(contact.getMyFixture().getUserData())){
             JumpComponent jump = ComponentMappers.jump.get(player);
+            jump.previousContacts = jump.groundContacts;
             jump.groundContacts++;
         }
 
@@ -129,6 +130,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
            
             JumpComponent jump = ComponentMappers.jump.get(player);
             if(jump!= null){
+                jump.previousContacts = jump.groundContacts;
                 jump.groundContacts--;
             }
             

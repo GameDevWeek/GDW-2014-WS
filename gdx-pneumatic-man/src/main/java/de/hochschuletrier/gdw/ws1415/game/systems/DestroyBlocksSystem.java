@@ -19,36 +19,72 @@ import java.util.ArrayList;
 
 public class DestroyBlocksSystem extends IteratingSystem {
 
+    public final static float RAY_LENGTH_JUMP = 2.8f;
+    public final static float RAY_LENGTH_GROUNDED = 1.4f;
 
     public DestroyBlocksSystem() {
         super(Family.all(PlayerComponent.class).get());
     }
 
+    void sendBlockRaycastBelowAndDamageBlock(Entity raycastSender, int DamageValue, float RayScale, float Facing)
+    {
+        Vector2 RayDir = new Vector2( Facing * 0.1f, 1 );
+        RayDir.nor();
+        PhysixBodyComponent physix = ComponentMappers.physixBody.get(raycastSender);
+        Vector2 p1 = physix.getBody().getPosition();
+        Vector2 p2 = new Vector2(p1).add(RayDir.scl(RayScale)); 
+
+        EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
+            Object bodyUserData = fixture.getBody().getUserData();
+            if (bodyUserData instanceof PhysixBodyComponent) {
+                PhysixBodyComponent bodyComponent = (PhysixBodyComponent) bodyUserData;
+                if (ComponentMappers.block.has(bodyComponent.getEntity())
+                        && ComponentMappers.health.has(bodyComponent.getEntity())) {
+                    HealthComponent healthComponent = ComponentMappers.health.get(bodyComponent.getEntity());
+                    healthComponent.DecrementByValueNextFrame += DamageValue;
+                    return 0;
+                }
+            }
+            return 1;
+        }, p1, p2);
+    }
+
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         AnimationComponent ani = entity.getComponent(AnimationComponent.class);
-        PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
+        float Facing = ani.flipX ? 1 : -1;
 
-
-        if(ani != null) {
-            if (ani.animationFinished) {
-                Vector2 p1 = physix.getBody().getPosition();
-                Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(1.4f)); // FIXME MAGIC NUMBER
-
-                EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
-                    Object bodyUserData = fixture.getBody().getUserData();
-                    if (bodyUserData instanceof PhysixBodyComponent) {
-                        PhysixBodyComponent bodyComponent = (PhysixBodyComponent) bodyUserData;
-                        if (ComponentMappers.block.has(bodyComponent.getEntity())
-                                && ComponentMappers.health.has(bodyComponent.getEntity())) {
-                            HealthComponent healthComponent = ComponentMappers.health.get(bodyComponent.getEntity());
-                            healthComponent.DecrementByValueNextFrame += 1;
-                            return 0;
+        JumpComponent Jump = entity.getComponent(JumpComponent.class);
+        if(Jump != null)
+        {
+            if(Jump.groundContacts != 0) // Wenn Grounded, dann 
+            {
+                if(Jump.previousContacts < Jump.groundContacts)
+                {
+                    //System.out.println("Damage on Land");
+                    Jump.previousContacts = Jump.groundContacts;
+                    sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP, Facing);
+                    ani.stateTime = 0.0f;
+                    ani.animationFinished = false;
+                    ani.permanent_stateTime = 0.0f;
+                }
+                else
+                {
+                    if(ani != null) {
+                        if (ani.animationFinished) {
+                            sendBlockRaycastBelowAndDamageBlock(entity, 1, RAY_LENGTH_GROUNDED, Facing);
+                            ani.animationFinished = false;
                         }
                     }
-                    return 1;
-                }, p1, p2);
-                ani.animationFinished = false;
+                }
+            }
+            else // In Air
+            {
+                if(Jump.justJumped) // Gerade erst losgesprungen
+                {
+                    //System.out.println("Damage on Jump");
+                    sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP, Facing);
+                }
             }
         }
     }
