@@ -10,10 +10,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.commons.utils.FpsCalculator;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
@@ -21,6 +23,8 @@ import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 
 public class HudRenderSystem extends IteratingSystem implements EntityListener {
 
+    private final CVarBool showFps = new CVarBool("hud_showFps", true, 0, "Show FPS");
+    private final FpsCalculator fpsCalc = new FpsCalculator(200, 100, 16);
     Family goalFamily = Family.all(GoalComponent.class).get();
     private final Texture textureMinerLeft;
     private final Texture textureMinerFound;
@@ -53,8 +57,15 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
         super.addedToEngine(engine);
         
         engine.addEntityListener(goalFamily, this);
+        Main.getInstance().console.register(showFps);
     }
-
+    
+    @Override
+    public void removedFromEngine(Engine engine) {
+        super.removedFromEngine(engine);
+        Main.getInstance().console.unregister(showFps);
+    }
+    
     @Override
     public void entityAdded(Entity entity) {
         if(goalFamily.matches(entity))
@@ -65,6 +76,19 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
 
     @Override
     public void entityRemoved(Entity entity) {
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        
+        if(showFps.get()) {
+            fpsCalc.addFrame();
+            
+            String str = String.format("%.2f FPS", fpsCalc.getFps());
+            float width = font.getBounds(str).width;
+            font.draw(DrawUtil.batch, str, Gdx.graphics.getWidth()-width, 0);
+        }
     }
 
     @Override
