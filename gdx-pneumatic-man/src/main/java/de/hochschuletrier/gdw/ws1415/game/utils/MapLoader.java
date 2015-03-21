@@ -343,7 +343,7 @@ public class MapLoader
                             break;
                         case "miner":
                         {    
-                            float positionX = obj.getX() + obj.getWidth();
+                            float positionX = obj.getX() ;
                             float positionY = obj.getY();
                             EntityCreator.createAndAddMiner(positionX, positionY);
                             break;
