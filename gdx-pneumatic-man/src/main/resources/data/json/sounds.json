@@ -1,7 +1,8 @@
 {
 	"click": "data/sounds/click.wav",
 	"helicopter": "data/sounds/helicopter.wav",
-
+    "bomb": "data/sounds/bomb.wav",
+    "bombTicks": "data/sounds/bombTicks.wav",
     
     "cracks1": "data/sounds/cracks1.wav",
     "cracks2": "data/sounds/cracks2.wav",
@@ -18,7 +19,7 @@
 	"alienBark3": "data/sounds/alienBark3.wav",
 	"alienBark4": "data/sounds/alienBark3.wav",
     
-	"alienJump": "data/sounds/alienJump.wav",
+	"alienDie": "data/sounds/alienDie.wav",
 	"burst1": "data/sounds/burst1.wav",
 	"burst2": "data/sounds/burst2.wav",
 	"free1": "data/sounds/free1.wav",
