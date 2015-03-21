@@ -47,6 +47,8 @@ public class OptionMenu extends MenuPage
 		width = menuManager.getWidth();
 		height = menuManager.getHeight();
 		
+		//System.out.println(SoundEmitter.getGlobalVolume());
+		
 		addImage(Main.WINDOW_WIDTH/5+10, Main.WINDOW_HEIGHT/5-15, (int)overlay.getWidth(),(int) overlay.getHeight(), overlay);
 		addImage((int)(Main.WINDOW_WIDTH/2 - 320), 750, (int) head.getWidth(), (int) head.getHeight(), head);
 		
@@ -123,7 +125,6 @@ public class OptionMenu extends MenuPage
     		sound = (float)(((act+1)/10.0));
     		soundBoxActive[act] = new DecoImage(assetManager.getTexture("slider_active"));
     		addImage((int)(width/2 + countSou[act]), y_sound, (int)soundBox[0].getWidth(), (int)soundBox[0].getHeight(), soundBoxActive[act]);
-    		SoundEmitter.setGlobalVolume(sound);
     		storeSettings();
     	}
     }
@@ -135,7 +136,6 @@ public class OptionMenu extends MenuPage
     		int act = (int)(Settings.SOUND_VOLUME.get() * 10);
     	    sound = (float)((act-1)/10.0);
     		removeActor(soundBoxActive[act-1]);
-    		SoundEmitter.setGlobalVolume(sound);
             storeSettings();
     	}
     }
@@ -202,9 +202,10 @@ public class OptionMenu extends MenuPage
 //
     private void storeSettings() 
     {
-		MusicManager.setGlobalVolume(music);
         Settings.SOUND_VOLUME.set(sound);
         Settings.MUSIC_VOLUME.set(music);
+		SoundEmitter.setGlobalVolume(sound);
+		MusicManager.setGlobalVolume(music);
         Settings.flush();
     }
 //    
