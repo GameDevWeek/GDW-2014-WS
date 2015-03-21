@@ -4,11 +4,13 @@ import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ws1415.sandbox.credits.Credits;
 import de.hochschuletrier.gdw.ws1415.states.GameplayState;
@@ -29,6 +31,11 @@ public class MainMenu extends MenuPage{
     DecoImage levels = new DecoImage(assetManager.getTexture("levels_button"));
     //DecoImage hand=new DecoImage(assetManager.getTexture("zeigefinger"));
     
+    DecoImage backToGame = new DecoImage(assetManager.getTexture("resume_button_inactive"));
+    DecoImage restart = new DecoImage(assetManager.getTexture("restart_button_inactive"));
+    DecoImage mainMenu = new DecoImage(assetManager.getTexture("mainmenu_button_inactive"));
+    DecoImage quit = new DecoImage(assetManager.getTexture("quit_button_inactive"));
+    
     public enum Type {
         MAINMENU,
         INGAME
@@ -42,9 +49,12 @@ public class MainMenu extends MenuPage{
         int y = 620;
         int yStep = 110;
         
-    		//addPageEntryStart(menuManager,x,y-yStep*1, start);
-        	addPageEntryStart(menuManager,x,y-yStep*(i++), start);
-        	addPageEntry(menuManager, x, y-yStep*(i++), levels, new LevelMenu(skin, menuManager));
+        //MainMenu:
+        if(type.name().equals("MAINMENU"))
+        {
+            //addPageEntryStart(menuManager,x,y-yStep*1, start);
+            addPageEntryStart(menuManager,x,y-yStep*(i++), start);
+            addPageEntry(menuManager, x, y-yStep*(i++), levels, new LevelMenu(skin, menuManager));
             addPageEntry(menuManager,x, y-yStep*(i++), optionen, new OptionMenu(skin, menuManager));
             addPageEntry(menuManager, x, y-yStep*(i++), highscore, new ScoreMenu(skin, menuManager));
             //addPageEntry(menuManager,x,y-yStep*(i++),credits, new OptionMenu(skin, menuManager));
@@ -55,6 +65,23 @@ public class MainMenu extends MenuPage{
             addCenteredImage(450, 750, 108, 108, ende, () -> System.exit(0));
             //addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Testbutton", () -> System.exit(-1));
             //addGear(hand);
+        }
+
+            
+        //IngameMenu:
+        if(type.name().equals("INGAME"))
+        {
+//          addPageEntry(menuManager,x,y-yStep*(i++),backToGame, new OptionMenu(skin, menuManager));   //Resume Game
+          addPageEntryResume(menuManager,x,y-yStep*(i++), backToGame);
+//          addPageEntry(menuManager,x,y-yStep*(i++),restart, new OptionMenu    (skin, menuManager));           //Restart Level
+          addPageEntryStart(menuManager,x,y-yStep*(i++), restart);
+          addPageEntry(menuManager,x,y-yStep*(i++),optionen, new OptionMenu(skin, menuManager));
+          addPageEntry(menuManager,x,y-yStep*(i++),mainMenu, new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU));
+//          addPageEntry(menuManager,x,y-yStep*(i++),quit, new OptionMenu(skin, menuManager));
+          addCenteredImage((int)(x-(quit.getWidth()/2)),y-yStep*(i++),(int)quit.getWidth(),(int)quit.getHeight()/2,quit,()->System.exit(0));
+        }
+            
+            
     }
 
     
@@ -71,6 +98,14 @@ public class MainMenu extends MenuPage{
         addCenteredImage((int)(x-(image.getWidth()/2)), y, (int)image.getWidth(), (int)image.getHeight(), image, () ->  main.changeState(new GameplayState(assetManager),new SplitHorizontalTransition(500), null));
         
     }
+    
+    protected final void addPageEntryResume(MenuManager menuManager, int x, int y, DecoImage image) {
+
+        addCenteredImage((int)(x-(image.getWidth()/2)), y, (int)image.getWidth(), (int)image.getHeight(), image, () ->  menuManager.popPage());
+    }
+    
+    
+    
    /*private void addGear(DecoImage image) {
         //final Texture texture = assetManager.getTexture(name);
         //final DecoImage decoImage = new DecoImage(texture);
