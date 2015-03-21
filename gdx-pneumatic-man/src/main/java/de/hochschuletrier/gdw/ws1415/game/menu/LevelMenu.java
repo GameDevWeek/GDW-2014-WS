@@ -1,14 +1,9 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
-import org.lwjgl.input.Mouse;
 
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-//import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.ws1415.Main;
@@ -17,11 +12,14 @@ import de.hochschuletrier.gdw.ws1415.Main;
 public class LevelMenu extends MenuPage 
 {
 	boolean levelSelected = false;
-    private final ButtonGroup<ImageButton> buttonGroup = new ButtonGroup<ImageButton>();
     int[] test = {1, 2, 3, 4, 5};
+    
 	DecoImage[] imageArray = new DecoImage[test.length];
 	ImageButton[] buttonArray = new ImageButton[test.length];
+	
 	DecoImage pointer = new DecoImage(assetManager.getTexture("back_button"));
+	
+	private final DecoImage head = new DecoImage(assetManager.getTexture("levels_button_active"));
 
 
 	public LevelMenu(Skin skin, MenuManager menuManager)
@@ -30,7 +28,7 @@ public class LevelMenu extends MenuPage
 				
 		int x = 600;
 		int x_step = 0;
-		int y = Main.WINDOW_HEIGHT/2;
+		int y = Main.WINDOW_HEIGHT/2 - 200;
 		int y_up = y + 100;
 		int y_down = y - 20;
 				
@@ -39,7 +37,7 @@ public class LevelMenu extends MenuPage
 		//tryOut.setBackground("data/images/back_button.png");
 		//tryOut.setBackground("back_button");
 		
-		createLabel(Main.WINDOW_WIDTH/2, Main.WINDOW_HEIGHT/2 + 300).setText("LEVEL");
+		addImage((int)(Main.WINDOW_WIDTH/2 - 350), 750, (int) head.getWidth(), (int) head.getHeight(), head);
 		
 		addCenteredImage(x + x_step, y + 120, 108, 108, pointer, ()-> System.exit(0));
 		
