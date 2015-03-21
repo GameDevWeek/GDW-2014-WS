@@ -5,11 +5,12 @@ import com.badlogic.gdx.utils.Pool;
 
 public class DestructableBlockComponent extends Component implements Pool.Poolable {
 
-    public float deathTimer = 0.25f;;
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+        
+    }
 
-	@Override
-	public void reset() {
-        deathTimer = 0.25f;
-	}
+
 
 }

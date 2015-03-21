@@ -11,6 +11,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
+import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
@@ -55,7 +56,8 @@ public class PlatformSystem extends IteratingSystem {
         DirectionComponent direction = entity.getComponent(DirectionComponent.class);
         PlatformComponent platform = entity.getComponent(PlatformComponent.class);
 
-        platform.traveledDistanceVector.set(physix.getPosition().x, physix.getPosition().y);
+        platform.traveledDistanceVector.set(physix.getPosition().x-0.5f*GameConstants.getTileSizeX(),
+                physix.getPosition().y-0.5f*GameConstants.getTileSizeY());
         platform.traveledDistanceVector.sub(platform.startPos).len2();
         
         if(platform.traveledDistanceVector.len2() <= platform.travelDistance*platform.travelDistance){
