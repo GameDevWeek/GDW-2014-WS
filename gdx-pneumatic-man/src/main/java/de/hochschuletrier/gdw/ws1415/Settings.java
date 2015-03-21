@@ -24,6 +24,7 @@ public class Settings {
     public static final IntegerSetting CURRENTLY_SELECTED_LEVEL = new IntegerSetting(prefs, "selected_level", 0);
     public static final BooleanSetting GAMEPAD_ENABLED = new BooleanSetting(prefs, "gamepad_enabled", false);
     //public static final IntegerSetting CURRENTLY_SELECTED_LEVEL = new IntegerSetting(prefs, "selected_level", 1);
+    public static final StringSetting HIGHSCORE = new StringSetting(prefs, "highscore", "blank");
 
     public static void flush() {
         prefs.flush();
