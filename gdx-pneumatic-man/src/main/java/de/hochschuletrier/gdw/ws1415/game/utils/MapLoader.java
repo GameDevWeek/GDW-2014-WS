@@ -445,8 +445,8 @@ public class MapLoader
                                 case "deko":                                
                                 {
                                     Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "")));
-                                    float xOffset = 0.0f;//Float.parseFloat(tinfo.getProperty("XOffset", "0.0"));
-                                    float yOffset = 0.0f;//Float.parseFloat(tinfo.getProperty("YOffset", "0.0"));
+                                    float xOffset = Float.parseFloat(tinfo.getProperty("XOffset", "0.0"));
+                                    float yOffset = Float.parseFloat(tinfo.getProperty("YOffset", "0.0"));
                                     float x = i * map.getTileWidth();
                                     float y = j * map.getTileHeight();
                                     // different sizes needed to have some offsets
