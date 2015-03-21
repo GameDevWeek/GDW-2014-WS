@@ -33,7 +33,6 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
     private TextBounds blockbound;
     private TextBounds timebound;
     
-    private Boolean bigBlockNumber;
 
     public HudRenderSystem() {
         super(Family.all(PlayerComponent.class).get(), GameConstants.PRIORITY_HUD);
@@ -47,7 +46,6 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
         textureHudStein = assetManager.getTexture("hud_ico_stein");
         textureHudTime = assetManager.getTexture("hud_ico_time");
         
-        bigBlockNumber = false;
     }
 
     @Override
@@ -91,7 +89,7 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
 //        font.draw(DrawUtil.batch, "" + playerComponent.destroyed_blocks, 68, 47);
         
         
-        //with boolean for big blocknumber
+        //with cases for big blocknumber
         if(playerComponent.destroyed_blocks >= 20)
         {
             font.draw(DrawUtil.batch, "" + playerComponent.destroyed_blocks, 53, 47);
