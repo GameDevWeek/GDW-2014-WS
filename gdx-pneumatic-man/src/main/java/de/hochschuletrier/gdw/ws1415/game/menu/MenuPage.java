@@ -27,6 +27,7 @@ public class MenuPage extends Group {
     protected Main main = Main.getInstance();
     protected AssetManagerX assetManager = main.getAssetManager();
     protected final Skin skin;
+    public static boolean abspielen=true;
 //    protected final Texture overlay = new Texture(Gdx.files.internal("data/images/background_overlay.png"));
 //    private float x = (Gdx.graphics.getWidth() - overlay.getWidth())/2;
 //	private float y = (Gdx.graphics.getHeight() - overlay.getHeight())/2;
@@ -71,11 +72,13 @@ public class MenuPage extends Group {
     {
         image.setPosition(x,y);
         image.setTouchable(Touchable.enabled);
-       
+        abspielen=false;
+
         image.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float width, float height) {
                 //System.out.println("kjfghkd");
+                abspielen=false;
                 if(image.getRegion().getTexture()!=assetManager.getTexture("back_button")){
                     SoundEmitter.updateGlobal();
                     SoundEmitter.playGlobal(assetManager.getSound("pmAccept"),false);
@@ -94,8 +97,10 @@ public class MenuPage extends Group {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer,
                     Actor fromActor) {
-                //if(MouseInfo.getPointerInfo().getLocation().x>=image.getX()&&MouseInfo.getPointerInfo().getLocation().x<=image.getWidth()&&MouseInfo.getPointerInfo().getLocation().y>=image.getY()&&MouseInfo.getPointerInfo().getLocation().y<=image.getHeight()){
-                    SoundEmitter.playGlobal(assetManager.getSound("pmHover"),false);
+                    if(abspielen==true){
+                        //System.out.println("abspielen");
+                        SoundEmitter.updateGlobal();
+                    SoundEmitter.playGlobal(assetManager.getSound("pmHover"),false);}
                     changeTextureActive(image);
                 //}
             }
@@ -106,7 +111,8 @@ public class MenuPage extends Group {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer,
                     Actor toActor) {
-                
+                abspielen=true;
+
                 changeTextureNotActive( image);
             }
              
@@ -144,6 +150,7 @@ public class MenuPage extends Group {
     
     protected final  void changeTextureActive(DecoImage image)
     {
+      //MainMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("optionen_button"))
             image.setTexture(assetManager.getTexture("optionen_button_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("start_button"))
@@ -152,6 +159,18 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("levels_button_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("score_button"))
             image.setTexture(assetManager.getTexture("score_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("credits_button"))
+            image.setTexture(assetManager.getTexture("credits_button_active"));
+        
+        //IngameMenu Bilder
+        if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_inactive"))
+            image.setTexture(assetManager.getTexture("resume_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("restart_button_inactive"))
+            image.setTexture(assetManager.getTexture("restart_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("mainmenu_button_inactive"))
+            image.setTexture(assetManager.getTexture("mainmenu_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("quit_button_inactive"))
+            image.setTexture(assetManager.getTexture("quit_button_active"));
     	
     }
     
@@ -163,6 +182,7 @@ public class MenuPage extends Group {
 
     protected final  void changeTextureNotActive(DecoImage image)
     {
+        //MainMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("optionen_button_active"))
             image.setTexture(assetManager.getTexture("optionen_button"));
         if(image.getRegion().getTexture()==assetManager.getTexture("start_button_active"))
@@ -171,5 +191,17 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("levels_button"));
         if(image.getRegion().getTexture()==assetManager.getTexture("score_button_active"))
             image.setTexture(assetManager.getTexture("score_button"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("credits_button_active"))
+            image.setTexture(assetManager.getTexture("credits_button"));
+        
+      //IngameMenu Bilder
+        if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_active"))
+            image.setTexture(assetManager.getTexture("resume_button_inactive"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("restart_button_active"))
+            image.setTexture(assetManager.getTexture("restart_button_inactive"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("mainmenu_button_active"))
+            image.setTexture(assetManager.getTexture("mainmenu_button_inactive"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("quit_button_active"))
+            image.setTexture(assetManager.getTexture("quit_button_inactive"));
     }
 }
