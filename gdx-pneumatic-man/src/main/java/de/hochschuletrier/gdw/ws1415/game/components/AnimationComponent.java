@@ -30,7 +30,6 @@ public class AnimationComponent extends Component implements Pool.Poolable {
 
     @Override
     public void reset() {
-        flipX = false;
         flipY = false;
         IsActive = true;
         animation = null;

@@ -220,7 +220,16 @@ public class MapLoader
      * @author Assets
      */
     
-    
+    public static String convertLight(String lightName)
+    {
+        switch(lightName.toLowerCase())
+        {
+        case "white" : 
+            return "FFFFFF";
+        default : //TODO Exeption hinzufügen
+            return "FFFFFF";
+        }
+    }
     public static void generateWorldFromTileMapX(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
     {
         // if constants weren't loaded yet, do so
@@ -288,8 +297,14 @@ public class MapLoader
                             int distance = (int)obj.getDoubleProperty("Distance", 0.0);
                             int hitpoints = obj.getIntProperty("Hitpoints", 0);
                             float speed = obj.getFloatProperty("Speed", 0);
-                            if(hitpoints == 0)
+                            if(hitpoints == 0){
                                 EntityCreator.IndestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode);
+                                if(obj.getProperty("Name", "").equalsIgnoreCase("SpawnAndLevelEnd")){
+                                    float x = obj.getX() * map.getTileWidth() + 0.5f * map.getTileWidth();
+                                    float y = obj.getY() * map.getTileHeight() + 0.5f * map.getTileHeight();
+                                    EntityCreator.createPointLight(x, y, 0f, -10f, new Color(1f, 1f, 1f, 1f), 2f, true);
+                                }
+                            }
                             else
                                 EntityCreator.DestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode, hitpoints);
                         }
@@ -412,6 +427,15 @@ public class MapLoader
                                 case "deko":
                                 {
                                     EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                    
+                                    Color color = Color.valueOf(convertLight(tinfo.getProperty("Light", "white")));
+                                    float x = i * map.getTileWidth() + 0.5f * map.getTileWidth();
+                                    float y = j * map.getTileHeight() + 0.5f * map.getTileHeight();
+                                    float dir = (float) (tinfo.getFloatProperty("Direction", 0.0f) - 90.0);
+                                    float dis = tinfo.getFloatProperty("Distance", 0.0f);
+                                    float conedir = tinfo.getFloatProperty("Radius", 0.0f);
+                                    
+                                    EntityCreator.createAndAddDeko(x, y, dir, dis, conedir, color, true );
                                 }
                                     break;
                                 default :
