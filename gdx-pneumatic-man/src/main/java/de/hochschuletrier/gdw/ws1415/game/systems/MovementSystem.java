@@ -70,7 +70,7 @@ public class MovementSystem extends IteratingSystem {
 
                 if (jump.groundContacts > 0) {
                     if (input.jump) {
-                        physix.applyImpulse(0, -jump.jumpImpulse);
+                        physix.setLinearVelocityY(-jump.jumpSpeed);
                     }
                 }
 

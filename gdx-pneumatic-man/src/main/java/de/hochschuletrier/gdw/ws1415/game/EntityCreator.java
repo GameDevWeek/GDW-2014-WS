@@ -97,7 +97,7 @@ public class EntityCreator {
         entity.add(bodyComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpImpulse = 725.0f;
+        jumpComponent.jumpSpeed = 900.0f;
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
@@ -229,7 +229,7 @@ public class EntityCreator {
         entity.add(movementComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpImpulse = 12000.0f;
+        jumpComponent.jumpSpeed = 12000.0f;
         jumpComponent.restingTime = 0.003f;
         entity.add(jumpComponent);
 

@@ -88,7 +88,7 @@ public class AISystem extends IteratingSystem {
                 }
                 if(clear[0]){
                     JumpComponent jump = ComponentMappers.jump.get(physix.getEntity());
-                    physix.applyImpulse(0, jump.jumpImpulse);
+                    physix.applyImpulse(0, jump.jumpSpeed);
                     ai.AIstate = 1;
                 }else{
                     ai.AIstate = 3;
