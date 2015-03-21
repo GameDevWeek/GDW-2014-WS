@@ -1050,7 +1050,7 @@ public class EntityCreator {
         Bomb.add(engine.createComponent(BombComponent.class));
         
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
-        Damage.damage = 3;
+        Damage.damage = 10; // max!
         Damage.damageToTile = true;
         Bomb.add(Damage);
         
@@ -1110,9 +1110,12 @@ public class EntityCreator {
         entity.getComponent(LayerComponent.class).layer = 100;
         
         
+        
         entity.add(Anim);
         entity.add(DeathTimer);
         
+        ExplosionComponent explosion = engine.createComponent(ExplosionComponent.class);
+        entity.add(explosion);
         
     }
 

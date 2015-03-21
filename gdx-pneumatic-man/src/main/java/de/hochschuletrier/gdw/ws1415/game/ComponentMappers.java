@@ -41,4 +41,6 @@ public class ComponentMappers {
     
     public static final ComponentMapper<BombComponent> bomb = ComponentMapper.getFor(BombComponent.class);
     public static final ComponentMapper<DeathTimerComponent> deathTimer = ComponentMapper.getFor(DeathTimerComponent.class);
+    public static final ComponentMapper<DamageComponent> damage = ComponentMapper.getFor(DamageComponent.class);
+
 }
