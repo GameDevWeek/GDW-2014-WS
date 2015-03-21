@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
@@ -65,6 +66,7 @@ public class Game {
     private  DestroyBlocksSystem destroyBlocksSystem;
     private  AISystem aisystems ;
     private InputManager inputManager = new InputManager();
+    private final InputForwarder inputForwarder = new InputForwarder();
     
     private Sound impactSound;
     private AnimationExtended ballAnimation;
@@ -216,6 +218,7 @@ public class Game {
                 GameConstants.PRIORITY_PHYSIX + 1,
                 physixSystem
         );
+        inputForwarder.set(inputKeyboardSystem);
         
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
@@ -305,6 +308,6 @@ public class Game {
     }
 
     public InputProcessor getInputProcessor() {
-        return inputKeyboardSystem;
+        return inputForwarder;
     }
 }
