@@ -47,7 +47,7 @@ public class LevelMenu extends MenuPage
 	
 	private Label createLabel(int x, int y)
 	{
-	    Label label = new Label("", skin);
+	    Label label = new Label("", skin, "highscore");
 	    label.setBounds(x, y, 60, 30);
 	    addActor(label);
 	    return label;
