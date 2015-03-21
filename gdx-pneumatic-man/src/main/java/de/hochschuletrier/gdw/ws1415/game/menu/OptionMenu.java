@@ -100,9 +100,7 @@ public class OptionMenu extends MenuPage
 		
 		addCenteredImage(menuManager.getWidth()/2 - 400, menuManager.getHeight()/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepad, this::onGamepadChanged);
 		addCenteredImage(menuManager.getWidth()/2 + 50, menuManager.getHeight()/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboard, this::onKeyboardChanged);
-		
-		System.out.println(Settings.GAMEPAD_ENABLED.get());
-		
+				
 		if (Settings.GAMEPAD_ENABLED.get() == true)
 		{
 			addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
