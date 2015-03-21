@@ -78,10 +78,10 @@ public class MenuPage extends Group {
                 //System.out.println("kjfghkd");
                 if(image.getRegion().getTexture()!=assetManager.getTexture("back_button")){
                     SoundEmitter.updateGlobal();
-                    SoundEmitter.playGlobal(assetManager.getSound("click"),false);
+                    SoundEmitter.playGlobal(assetManager.getSound("pmAccept"),false);
                 }else{
                     SoundEmitter.updateGlobal();
-                    SoundEmitter.playGlobal(assetManager.getSound("cracks2"),false); 
+                    SoundEmitter.playGlobal(assetManager.getSound("pmCancel"),false); 
                 }
                
                 runnable.run();
@@ -94,10 +94,8 @@ public class MenuPage extends Group {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer,
                     Actor fromActor) {
-                // TODO Auto-generated method stub
-//                System.out.println("test");
                 //if(MouseInfo.getPointerInfo().getLocation().x>=image.getX()&&MouseInfo.getPointerInfo().getLocation().x<=image.getWidth()&&MouseInfo.getPointerInfo().getLocation().y>=image.getY()&&MouseInfo.getPointerInfo().getLocation().y<=image.getHeight()){
-                    SoundEmitter.playGlobal(assetManager.getSound("click"),false);
+                    SoundEmitter.playGlobal(assetManager.getSound("pmHover"),false);
                     changeTextureActive(image);
                 //}
             }
