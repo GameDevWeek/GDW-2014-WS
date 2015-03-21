@@ -92,6 +92,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     @Override
 	public void update (float deltaTime) {
     	super.update(deltaTime);
+        cameraSystem.undoParallax();
     	
     	// rayHandler.updateAndRender() not allowed between begin() and end()
     	DrawUtil.batch.end();
