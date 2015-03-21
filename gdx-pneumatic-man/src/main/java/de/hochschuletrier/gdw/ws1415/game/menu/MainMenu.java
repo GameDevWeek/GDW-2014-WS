@@ -25,7 +25,7 @@ public class MainMenu extends MenuPage{
         super(skin,"background_menu" );
         int x = 960;
         int i = 0;
-        int y = 670;
+        int y = 700;
         int yStep = 113;
         
         addPageEntryStart(menuManager,x,y-yStep*(i++), start);

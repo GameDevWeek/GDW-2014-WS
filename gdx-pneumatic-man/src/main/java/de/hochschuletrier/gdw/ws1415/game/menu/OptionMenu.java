@@ -35,6 +35,8 @@ public class OptionMenu extends MenuPage
 	private float sound = Settings.SOUND_VOLUME.get();
 	private float music = Settings.MUSIC_VOLUME.get();
 	
+	private boolean gamepadSet;
+	
 	
 	public OptionMenu(Skin skin, MenuManager menuManager)
 	{ 		
@@ -101,7 +103,7 @@ public class OptionMenu extends MenuPage
 		addCenteredImage(menuManager.getWidth()/2 - 400, menuManager.getHeight()/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepad, this::onGamepadChanged);
 		addCenteredImage(menuManager.getWidth()/2 + 50, menuManager.getHeight()/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboard, this::onKeyboardChanged);
 				
-		if (Settings.GAMEPAD_ENABLED.get() == true)
+		if (gamepadSet)
 		{
 			addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
 		}
@@ -173,6 +175,7 @@ public class OptionMenu extends MenuPage
 		addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
 		removeActor(keyboardActive);
     	Settings.GAMEPAD_ENABLED.set(true);
+    	gamepadSet = true;
     	Settings.flush();
     }
     
@@ -181,6 +184,7 @@ public class OptionMenu extends MenuPage
 		addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
 		removeActor(gamepadActive);
     	Settings.GAMEPAD_ENABLED.set(false);
+    	gamepadSet = false;
     	Settings.flush();
     }
 
@@ -191,5 +195,23 @@ public class OptionMenu extends MenuPage
 		SoundEmitter.setGlobalVolume(sound);
 		MusicManager.setGlobalVolume(music);
         Settings.flush();
+    }
+    
+    private void restoreSettings() {
+    	gamepadSet = Settings.GAMEPAD_ENABLED.get();
+        sound = Settings.SOUND_VOLUME.get();
+        music = Settings.SOUND_VOLUME.get();
+    }
+    
+    @Override
+    public void setVisible(boolean visible) {
+        if (gamepad != null && isVisible() != visible) {
+            if (visible) {
+                restoreSettings();
+            } else {
+                storeSettings();
+            }
+        }
+        super.setVisible(visible);
     }
 }

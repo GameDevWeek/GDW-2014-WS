@@ -22,9 +22,9 @@ public class LevelMenu extends MenuPage
 	{
 		super(skin, "background_menu");
 				
-		int x = 500;
+		int x = 490;
 		int x_step = 0;
-		int y = Main.WINDOW_HEIGHT/2 - 200;
+		int y = Main.WINDOW_HEIGHT/2 - 100;
 		int y_up = y + 200;
 		
 		addImage((int)(Main.WINDOW_WIDTH/2 - 350), 750, (int) head.getWidth(), (int) head.getHeight(), head);
