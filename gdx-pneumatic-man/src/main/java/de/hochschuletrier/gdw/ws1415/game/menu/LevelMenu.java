@@ -66,7 +66,7 @@ public class LevelMenu extends MenuPage
 		pointer.setX(imageArray[newLevel].getX());
 		pointer.setY(imageArray[newLevel].getY()+20);
 
-		System.out.println("Level ausgewählt: " + (newLevel+1));
+		//System.out.println("Level ausgewählt: " + (newLevel+1));
 		Settings.CURRENTLY_SELECTED_LEVEL.set(newLevel);
 	}
 }

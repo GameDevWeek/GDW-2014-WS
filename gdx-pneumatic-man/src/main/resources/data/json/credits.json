@@ -46,7 +46,7 @@
             "items" : [
             
                 
-                { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text" : "PNEUMATIC MOLE", "delay" : "0"},
+                { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text" : "PNEUMATIC MAN", "delay" : "0"},
                 
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Organisation", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Santo Pfingsten  ", "delay": "1700" },
@@ -77,8 +77,7 @@
                 { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Yasmin Juncker", "delay": "0" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Mira Lorenz  ", "delay": "1350" },
                 { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Julia Eiden", "delay": "0" },
-                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Maximilian Furrer  ", "delay": "1350" },
-                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Niklas Zorell", "delay": "0" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Niklas Zorell  ", "delay": "1350" },
                 
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Level Design", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Jerome Jaehnig  ", "delay": "1700" },
@@ -96,6 +95,7 @@
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Felix Wishnewsky ", "delay": "1700" },
                 { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Noah Plingen", "delay": "0" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Manuel Neugebauer ", "delay": "1350" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Marc Amann", "delay": "0" },
                 
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Design", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Julia Wolf  ", "delay": "1700" },
@@ -103,6 +103,7 @@
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Saskia Hohmann  ", "delay": "1350" },
                 { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Maxine Hammen", "delay": "0" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Lynn Friedrich  ", "delay": "1350" },
+                { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Maximilian Furrer", "delay": "0" },
                 
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Assets", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Tobias Gepp  ", "delay": "1700" },
@@ -111,13 +112,10 @@
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Animation", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Hans Boehme  ", "delay": "1700" },
                 
-                { "type": "texture", "path" : "heading", "group" : "bild", "resource" : "injava_jones", "delay" : "7000"},
+                { "type": "texture", "path" : "heading", "group" : "bild", "resource" : "injava_jones", "delay" : "25000"}
                 
                
-                { "type": "text", "path" : "btw", "group" : "btw", "style" : "text_right", "text": "btw..", "delay": "10000" },
-                { "type": "text", "path" : "btw", "group" : "git1", "style" : "text_right", "text": "I hate libgdx!", "delay": "1500" },
-                { "type": "text", "path" : "btw", "group" : "git1b", "style" : "text_right", "text": "Nevermind, I need to learn to live with it..", "delay": "0" },
-                { "type": "text", "path" : "btw", "group" : "git2", "style" : "text_right", "text": "... there, I said it!", "delay": "1500" }
+                
             ],
             "animations": [
             

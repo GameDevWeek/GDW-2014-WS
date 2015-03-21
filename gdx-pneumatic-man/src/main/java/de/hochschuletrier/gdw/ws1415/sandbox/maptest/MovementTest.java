@@ -144,7 +144,7 @@ public class MovementTest extends SandboxGame {
         player.add(movementComponent);
         
         jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpImpulse = 100000.0f;
+        jumpComponent.jumpSpeed = 100000.0f;
         jumpComponent.restingTime = 0.02f;
         player.add(jumpComponent);
 

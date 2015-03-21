@@ -22,6 +22,7 @@ public class ComponentMappers {
     public static final ComponentMapper<AIComponent> AI = ComponentMapper.getFor(AIComponent.class);
     public static final ComponentMapper<HealthComponent> health = ComponentMapper.getFor(HealthComponent.class);
     public static final ComponentMapper<DestructableBlockComponent> block = ComponentMapper.getFor(DestructableBlockComponent.class);
+    public static final ComponentMapper<IndestructableBlockComponent> iblock = ComponentMapper.getFor(IndestructableBlockComponent.class);
     public static final ComponentMapper<LayerComponent> layer = ComponentMapper.getFor(LayerComponent.class);
     public static final ComponentMapper<TextureComponent> texture = ComponentMapper.getFor(TextureComponent.class);
     public static final ComponentMapper<JumpComponent> jump = ComponentMapper.getFor(JumpComponent.class);
@@ -37,6 +38,6 @@ public class ComponentMappers {
     public static final ComponentMapper<PlayerComponent> player = ComponentMapper.getFor(PlayerComponent.class);
     public static final ComponentMapper<PlatformComponent> platform = ComponentMapper.getFor(PlatformComponent.class);
     public static final ComponentMapper<SpikeComponent> spikes = ComponentMapper.getFor(SpikeComponent.class);
-
+    
     public static final ComponentMapper<BombComponent> bomb = ComponentMapper.getFor(BombComponent.class);
 }

@@ -11,43 +11,20 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class JumpComponent extends Component implements Pool.Poolable {
 
-	public float jumpImpulse;
+    public boolean justJumped = false;
+	public float jumpSpeed;
 	public float restingTime, timeToNextJump;
 	public float jumpTimer = 0.2f;
 	
-	public boolean doJump, inAir;
-	
-	public JumpComponent(){
-		this(0,0);
-	}
-
-	/**
-	 * 
-	 * @param jumpImpulse
-	 *            increase, to increase jump height
-	 * @param restingTime
-	 *            increase, to increase time between jumps
-	 */
-	public JumpComponent(float jumpImpulse, float restingTime) {
-		this.jumpImpulse = jumpImpulse;
-		this.restingTime = restingTime;
-		
-		timeToNextJump = 0;
-		doJump = false;
-	}
-	
-	/**
-	 * call this to make the entity jump
-	 */
-	public void jump(){
-		doJump = true;
-	}
+//	public boolean inAir;
+	public int previousContacts;
+    public int groundContacts;
 
 	@Override
 	public void reset() {
-		jumpImpulse = 0;
+		jumpSpeed = 0;
 		restingTime = 0;
-		doJump = false;
+		groundContacts = 0;
 	}
 
 }

@@ -7,12 +7,14 @@ import box2dLight.RayHandler;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
@@ -64,6 +66,7 @@ public class Game {
     private  DestroyBlocksSystem destroyBlocksSystem;
     private  AISystem aisystems ;
     private InputManager inputManager = new InputManager();
+    private final InputForwarder inputForwarder = new InputForwarder();
     
     private Sound impactSound;
     private AnimationExtended ballAnimation;
@@ -117,7 +120,6 @@ public class Game {
             engine.removeAllEntities();
             removeSystems();
         }
-        Main.inputMultiplexer.removeProcessor(inputKeyboardSystem);
         Main.getInstance().console.unregister(physixDebug);
 
         addSystems();
@@ -142,12 +144,12 @@ public class Game {
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
             tilesetImages.put(tileset, new Texture(filename));
         }
+        cameraSystem.adjustToMap(map);
         
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
         setupPhysixWorld();
 
         addContactListeners();
-        Main.inputMultiplexer.addProcessor(inputKeyboardSystem);
         
         
         MapLoader.generateWorldFromTileMapX(engine, physixSystem, map, cameraSystem);
@@ -217,6 +219,7 @@ public class Game {
                 GameConstants.PRIORITY_PHYSIX + 1,
                 physixSystem
         );
+        inputForwarder.set(inputKeyboardSystem);
         
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
@@ -303,5 +306,9 @@ public class Game {
             // Light cannot be reseted
             // Render-Team is on it
         }
+    }
+
+    public InputProcessor getInputProcessor() {
+        return inputForwarder;
     }
 }
