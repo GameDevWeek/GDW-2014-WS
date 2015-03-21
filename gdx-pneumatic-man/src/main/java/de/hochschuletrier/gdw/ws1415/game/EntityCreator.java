@@ -782,7 +782,7 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
         
         float lavaBallSpeed = -2000.0f;
-        float lavaBallSpawnIntervall = 0.5f;
+        float lavaBallSpawnIntervall = 0.25f;
         
         PositionComponent position = engine.createComponent(PositionComponent.class);
         position.x = x;
@@ -816,7 +816,7 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1f).friction(1f).shapeCircle(radius)
-                .restitution(0.1f);
+                .restitution(0.1f).sensor(true);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
         
