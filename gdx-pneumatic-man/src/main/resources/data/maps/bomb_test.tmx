@@ -4,9 +4,10 @@
  <tileset firstgid="7" source="tilesets/lava.tsx"/>
  <tileset firstgid="15" source="tilesets/rest.tsx"/>
  <tileset firstgid="23" source="tilesets/zacken.tsx"/>
+ <tileset firstgid="26" source="tilesets/bomb.tsx"/>
  <layer name="Kachelebene 1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt1DEKgDAMBdBOXTuY+59Vhw4qdOhQU/A9+GQN+ZBSgFmRvQAP+tiLPvaij71Ez9FnvdL6jEFY533reosuvjfTB+uNfpIuAADytewFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgJ04btAOC
+   eJzt1DEKgDAMBdBOXR3M5v3vqUMGFTp0qC34HnyyhnxIKUCvmL0AD/pYiz7Woo+1RGbPWa8cOaMRxnnfut6ii+/19MF4rZ+kCwCA+bbZCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwE+c/H4Djg==
   </data>
  </layer>
  <objectgroup name="Objektebene 1">

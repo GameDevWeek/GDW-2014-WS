@@ -36,12 +36,16 @@ public class DestroyBlocksSystem extends IteratingSystem {
 
         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
             Object bodyUserData = fixture.getBody().getUserData();
-            if (bodyUserData instanceof PhysixBodyComponent) {
+            if (bodyUserData instanceof PhysixBodyComponent) 
+            {
                 PhysixBodyComponent bodyComponent = (PhysixBodyComponent) bodyUserData;
                 if (ComponentMappers.block.has(bodyComponent.getEntity())
-                        && ComponentMappers.health.has(bodyComponent.getEntity())) {
+                        && ComponentMappers.health.has(bodyComponent.getEntity())) 
+                {
                     HealthComponent healthComponent = ComponentMappers.health.get(bodyComponent.getEntity());
                     healthComponent.DecrementByValueNextFrame += DamageValue;
+                    
+
                     return 0;
                 }
             }

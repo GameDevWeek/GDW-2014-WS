@@ -1052,8 +1052,8 @@ public class EntityCreator {
      */
     private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
-    	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
-    			
+    	int frames = tileset.getIntProperty("AnimationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
+        
     	assert(frames > 1);
 
     	Texture image = (Texture) tileset.getAttachment();
@@ -1119,10 +1119,11 @@ public class EntityCreator {
         Bomb.add(DestructableComp);
         
         DeathTimerComponent deathTimer = engine.createComponent(DeathTimerComponent.class);
-        deathTimer.deathTimer = 3.0f;
+        deathTimer.deathTimer = 1.5f;
         Bomb.add(deathTimer);
         
-        addRenderComponents(Bomb, map, info, tileX, tileY);
+        //addRenderComponents(Bomb, map, info, tileX, tileY);
+        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
         
         engine.addEntity(Bomb);
         return(Bomb);
