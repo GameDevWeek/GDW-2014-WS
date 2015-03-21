@@ -222,7 +222,6 @@ public class MapLoader
     
     public static String convertLight(String lightName)
     { 
-        System.out.println(lightName);
         switch(lightName.toLowerCase())
         {
         case "white" : 
@@ -387,13 +386,16 @@ public class MapLoader
                             {
                                 case "floor":
                                 {
+                                 System.out.println("floor");
                                     
                                     if ( tinfo.getIntProperty("Hitpoints", 0) != 0 )
                                     {  
+                                        
                                         EntityCreator.createAndAddVulnerableFloor(
                                                 i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(),
                                                 map, tinfo, tinfo.getIntProperty("Hitpoints", 0), i, j);
+                                                
                                     } 
                                     if ( tinfo.getBooleanProperty("Invulnerable", false) )
                                     {
@@ -401,10 +403,12 @@ public class MapLoader
                                     }
                                     if ( tinfo.getProperty("Name","").equalsIgnoreCase("SpawnAndLevelEnd") )
                                     {
+                                        
                                         EntityCreator.createConeLight( 
                                                 i * map.getTileWidth() + 0.5f * map.getTileWidth(), 
-                                                j * map.getTileHeight() /* + 0.5f * map.getTileHeight()   **/,
+                                                j * map.getTileHeight() /* + 0.5f * map.getTileHeight()   */,
                                                 Color.valueOf("FF0088" ), 4.0f, 270.0f, 20.0f, false);
+                                                
                                     }
                                 }
                                     break;
@@ -436,14 +440,32 @@ public class MapLoader
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(), map, tinfo, i, j);
                                 }
                                     break;
-                                case "deko":                                 {
-                                    EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
-                                    
+                                case "deko":                                
+                                {
                                     Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "white")));
                                     float xOffset = tinfo.getFloatProperty("XOffset", 0.0f);
                                     float yOffset = tinfo.getFloatProperty("YOffset", 0.0f);
-                                    float x = i * map.getTileWidth() + 0.5f * map.getTileWidth();
-                                    float y = j * map.getTileHeight() + 0.5f * map.getTileHeight();
+                                    float x = i * map.getTileWidth();
+                                    float y = j * map.getTileHeight();
+                                    // different sizes needed to have some offsets
+                                    switch( map.getTileSets().get( tinfo.tileSetId ).getName().toLowerCase() )
+                                    {
+                                        case "deco_gross":
+                                            x += 1.0f * map.getTileWidth();
+                                            y += 1.0f * map.getTileHeight();
+                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+0.5f, j+0.5f);
+                                            break;
+                                        case "tutorialschild":
+                                            x += 1.5f * map.getTileWidth();
+                                            y += 1.5f * map.getTileHeight();
+                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+1, j+1);
+                                            break;
+                                        default :
+                                            x += 0.5f * map.getTileWidth();
+                                            y += 0.5f * map.getTileHeight();
+                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                            break;
+                                    }
                                     float dir = (float) (tinfo.getFloatProperty("Direction", 0.0f) + 90.0);
                                     float dis = tinfo.getFloatProperty("Distance", 0.0f);
                                     float conedir = tinfo.getFloatProperty("Radius", 0.0f);

@@ -953,7 +953,8 @@ public class EntityCreator {
         entity.add(pl);
     }
     
-    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY) {
+    // changed tileX and tileY form int to float   um die 2x2 DekoObjekte korrekt justieren zu koennen  @Assets(Tobi)
+    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, float tileX, float tileY) {
     	Entity entity = engine.createEntity();
     	
     	addRenderComponents(entity, map, info, tileX, tileY);
@@ -1017,7 +1018,7 @@ public class EntityCreator {
     /**
      * Extracts information from the map and tile info to add components to the the given entity.
      */
-    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY) {
+    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, float tileX, float tileY) {
     	TileSet tileset = map.findTileSet(info.globalId);
     	Texture image = (Texture) tileset.getAttachment();
 
@@ -1046,7 +1047,7 @@ public class EntityCreator {
      * Extracts information from the map and tile info to add components to the the given entity.
      * Make sure the property "animationFrames" of the TileSet is set to greater than 1.
      */
-    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
+    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, float tileX, float tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
     	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
     			
