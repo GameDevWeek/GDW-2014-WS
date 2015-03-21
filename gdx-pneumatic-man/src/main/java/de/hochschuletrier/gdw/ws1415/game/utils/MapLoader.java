@@ -330,7 +330,7 @@ public class MapLoader
                             break;
                         case "levelend":
                         {
-                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));
+                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));                            
                         }
                             break;
                         case "enemy":
@@ -393,6 +393,13 @@ public class MapLoader
                                     if ( tinfo.getBooleanProperty("Invulnerable", false) )
                                     {
                                         EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                    }
+                                    if ( tinfo.getProperty("Name","").equalsIgnoreCase("SpawnAndLevelEnd") )
+                                    {
+                                        EntityCreator.createConeLight( 
+                                                i * map.getTileWidth() + 0.5f * map.getTileWidth(), 
+                                                j * map.getTileHeight() /* + 0.5f * map.getTileHeight()   **/,
+                                                Color.valueOf("FF0088" ), 4.0f, 270.0f, 20.0f, false);
                                     }
                                 }
                                     break;
