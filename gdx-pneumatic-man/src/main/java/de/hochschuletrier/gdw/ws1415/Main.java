@@ -95,7 +95,6 @@ public class Main extends StateBasedGame {
         assetManager.loadAssetList("data/json/particles.json", ParticleEffect.class, null);
         assetManager.loadAssetListWithParam("data/json/animations.json", AnimationExtended.class,
                 AnimationExtendedLoader.AnimationExtendedParameter.class);
-        assetManager.loadAssetListWithParam("data/json/levels.json", TiledMap.class, TiledMapLoader.TiledMapParameter.class);
         BitmapFontParameter fontParam = new BitmapFontParameter();
         fontParam.flip = true;
         assetManager.loadAssetList("data/json/fonts.json", BitmapFont.class, fontParam);

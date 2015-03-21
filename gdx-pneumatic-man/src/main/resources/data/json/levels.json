@@ -1,8 +1,8 @@
-{
-   "level_1": {
-        "path": "data/maps/Testkarte_19.03.tmx",
-        "difficulty" : 1,
-        "index": 0
-    },
-
-}
+[
+    {
+        "name" : "level_1",
+        "levelFilePath" : "data/maps/Testkarte_19.03.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "NORMAL"
+    }
+]

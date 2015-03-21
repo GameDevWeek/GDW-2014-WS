@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import java.util.HashMap;
 
+import java.util.List;
 import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.PooledEngine;
@@ -21,6 +22,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
+import de.hochschuletrier.gdw.commons.jackson.JacksonReader;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
@@ -46,7 +48,6 @@ public class Game {
     private static boolean loadSelectedLevel = false;
     private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
-    private final Hotkey toggleReload = new Hotkey(() -> loadSelectedLevel = true, Input.Keys.NUM_0);
 
     private  PooledEngine engine;
     private  PhysixSystem physixSystem;
@@ -73,18 +74,18 @@ public class Game {
     private Sound impactSound;
     private AnimationExtended ballAnimation;
 
+    private List<LevelListElement> levelList;
     private TiledMap map;
     private TiledMapRendererGdx mapRenderer;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
     
-    private String levelFilePath = "data/maps/Testkarte_19.03.tmx";
+//    private String levelFilePath = "data/maps/Testkarte_19.03.tmx";
     private AssetManagerX assetManager;
 
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
             togglePhysixDebug.register();
-            toggleReload.register();
         }
 
         EntityCreator.engine = this.engine;
@@ -104,6 +105,8 @@ public class Game {
         System.out.println("Init called");
         EntityCreator.assetManager = assetManager;
         
+        loadLevelList();
+        
         this.assetManager = assetManager;
         
         selectPathFromSettings();
@@ -114,6 +117,18 @@ public class Game {
     }
 
     
+    private void loadLevelList()
+    {
+        try{
+            levelList = JacksonReader.readList("data/json/levels.json", LevelListElement.class);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            System.out.println("failed to load levels.json");
+        }
+    }
+
     // Only called from Ingame and PauseMenu (both are GameplayState)
     private void loadCurrentlySelectedLevel()
     {
@@ -137,11 +152,15 @@ public class Game {
         physixDebugRenderSystem.setProcessing(physixDebug.get());
         
         // Load Map
-        String file = levelFilePath;
-        if(Main.cmdLine.hasOption("map")) {
-            file = "data/maps/" + Main.cmdLine.getOptionValue("map") + ".tmx";
-        }
-        map = loadMap(file);
+//        String file = levelFilePath;
+//        if(Main.cmdLine.hasOption("map")) {
+//            file = "data/maps/" + Main.cmdLine.getOptionValue("map") + ".tmx";
+//        }
+        
+        
+//        map = loadMap(file);
+        map = loadMap(levelList.get(Settings.CURRENTLY_SELECTED_LEVEL.get()).levelFilePath);        
+        
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
@@ -163,9 +182,6 @@ public class Game {
 
     private void selectPathFromSettings()
     {
-        
-        String selectedMap = assetManager.getTiledMap(Settings.CURRENTLY_SELECTED_LEVEL.toString()).getProperty("path", "data/maps/Testkarte_19.03.tmx");
-
 //        int selectedLevel = Settings.CURRENTLY_SELECTED_LEVEL.get();
 //        switch (selectedLevel)
 //        {
@@ -301,9 +317,8 @@ public class Game {
             engine.update(delta);
         }
 
-
         // Level reset Testing    
-        if(loadSelectedLevel){
+        if(loadSelectedLevel || Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
             loadSelectedLevel = false;
             System.out.println("Restart Level"); 
 
@@ -314,9 +329,37 @@ public class Game {
             // Light cannot be reseted
             // Render-Team is on it
         }
+        
+        if(Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP))
+        {
+            Settings.CURRENTLY_SELECTED_LEVEL.set((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % levelList.size());
+            System.out.println("Level changed to: " + Settings.CURRENTLY_SELECTED_LEVEL.get());
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN))
+        {
+            Settings.CURRENTLY_SELECTED_LEVEL.set((Settings.CURRENTLY_SELECTED_LEVEL.get() - 1 ) % levelList.size());
+            System.out.println("Level changed to: " + Settings.CURRENTLY_SELECTED_LEVEL.get());
+        }
     }
 
     public InputProcessor getInputProcessor() {
         return inputForwarder;
+    }
+    
+    public static class LevelListElement
+    {
+        public String name;
+        public String levelFilePath;
+        public String thumbnailFilePath;
+        public String difficulty;
+
+//        public Difficulty difficulty;
+//        
+//        public static enum Difficulty {
+//            EASY,
+//            NORMAL, 
+//            HARD, 
+//            VERY_HARD;
+//        }
     }
 }
