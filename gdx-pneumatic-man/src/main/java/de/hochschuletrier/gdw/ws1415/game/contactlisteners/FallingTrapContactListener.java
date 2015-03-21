@@ -1,7 +1,11 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
+import java.util.Random;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
+
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -36,6 +40,7 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         Vector2 d = contact.getMyFixture().getBody().getPosition()
                 .sub(contact.getOtherFixture().getBody().getPosition()); // vector von other nach rock
 
+
         PhysixBodyComponent mybody = ComponentMappers.physixBody.get(myEntity);
 
         // kommt rock von oben?
@@ -43,10 +48,20 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         if(dot > 0) return; // nope
 
         DamageComponent dmg = myEntity.getComponent(DamageComponent.class);
+        // ***** sound stoneDrops
+        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneDrops"), false);
 
         // ja stein kommt von oben:
         if(ComponentMappers.health.has(otherEntity)) {
             HealthComponent h = ComponentMappers.health.get(otherEntity);
+
+             // ***** Sound *****
+            Random rm=new Random();
+            int i=rm.nextInt(3)+1;//1-3
+            System.out.println("stoneHit "+i);
+            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneHit"+i), false);
+                    
+            // *****reactions****
             if(ComponentMappers.block.has(otherEntity)){
                 h.DecrementByValueNextFrame += dmg.damageToTile ? dmg.damage : 0;
             }else if(ComponentMappers.player.has(otherEntity)){
@@ -67,7 +82,7 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         if(dot > 0) return;
 
         if(ComponentMappers.player.has(otherEntity)) return; // player jumped from ground to the spike
-        if(ComponentMappers.enemy.has(otherEntity)) return; // enemy jumped from ground to the spike
+        if(ComponentMappers.killsPlayerOnContact.has(otherEntity)) return; // enemy jumped from ground to the spike
 
         mybody.setGravityScale(0.0f);
         mybody.setLinearVelocity(0, 0);

@@ -221,11 +221,16 @@ public class MapLoader
      */
     
     public static String convertLight(String lightName)
-    {
+    { 
+        System.out.println(lightName);
         switch(lightName.toLowerCase())
         {
         case "white" : 
             return "FFFFFF";
+        case "yellow" :
+            return "E578DF";
+        case "blue" :
+            return "BFDAFF";
         default : //TODO Exeption hinzufügen
             return "FFFFFF";
         }
@@ -324,13 +329,13 @@ public class MapLoader
                         {
                             float width = GameConstants.getTileSizeX() * 0.9f;
                             float height = GameConstants.getTileSizeY() * 1.5f;
-                            cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX() + width, obj.getY()- height, 0) );
+                            cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX() + width, obj.getY(), 0) );
                         }
 
                             break;
                         case "levelend":
                         {
-                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));
+                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));                            
                         }
                             break;
                         case "enemy":
@@ -394,6 +399,13 @@ public class MapLoader
                                     {
                                         EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                     }
+                                    if ( tinfo.getProperty("Name","").equalsIgnoreCase("SpawnAndLevelEnd") )
+                                    {
+                                        EntityCreator.createConeLight( 
+                                                i * map.getTileWidth() + 0.5f * map.getTileWidth(), 
+                                                j * map.getTileHeight() /* + 0.5f * map.getTileHeight()   **/,
+                                                Color.valueOf("FF0088" ), 4.0f, 270.0f, 20.0f, false);
+                                    }
                                 }
                                     break;
                                 case "spikeleft": case "spiketop": case "spikeright": case "spikedown":
@@ -424,18 +436,27 @@ public class MapLoader
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(), map, tinfo, i, j);
                                 }
                                     break;
-                                case "deko":
-                                {
+                                case "deko":                                 {
                                     EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                     
-                                    Color color = Color.valueOf(convertLight(tinfo.getProperty("Light", "white")));
+                                    Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "white")));
+                                    float xOffset = tinfo.getFloatProperty("XOffset", 0.0f);
+                                    float yOffset = tinfo.getFloatProperty("YOffset", 0.0f);
                                     float x = i * map.getTileWidth() + 0.5f * map.getTileWidth();
                                     float y = j * map.getTileHeight() + 0.5f * map.getTileHeight();
-                                    float dir = (float) (tinfo.getFloatProperty("Direction", 0.0f) - 90.0);
+                                    float dir = (float) (tinfo.getFloatProperty("Direction", 0.0f) + 90.0);
                                     float dis = tinfo.getFloatProperty("Distance", 0.0f);
                                     float conedir = tinfo.getFloatProperty("Radius", 0.0f);
+                                    boolean isCone;
+                                    if (tinfo.getProperty("LightType", "cone").toLowerCase().equals("cone"))
+                                    {
+                                        isCone = true;
+                                    }else
+                                    {
+                                        isCone = false;
+                                    }
                                     
-                                    EntityCreator.createAndAddDeko(x, y, dir, dis, conedir, color, true );
+                                    EntityCreator.createAndAddDeko(x, y, xOffset, yOffset, dir, dis, conedir, color, true, isCone );
                                 }
                                     break;
                                 default :

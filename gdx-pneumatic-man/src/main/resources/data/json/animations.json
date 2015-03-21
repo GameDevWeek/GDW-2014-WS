@@ -106,7 +106,7 @@
     "bomb_explosion" : {
         "filename" : "data/animations/explosion_sheet.png",
         "frames" : 5,
-        "frameDuration": [2],
+        "frameDuration": [0.1],
         "playType": "NORMAL",
         "columns" : 5,
         "rows" : 1
