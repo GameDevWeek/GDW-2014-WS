@@ -3,19 +3,74 @@
  <properties>
   <property name="Background" value="Hintergrund1.png"/>
  </properties>
- <tileset firstgid="1" source="tilesets/destructable_block.tsx"/>
+ <tileset firstgid="1" name="destructable_block" tilewidth="64" tileheight="64" spacing="64" margin="64">
+  <properties>
+   <property name="animationDuration" value="1"/>
+   <property name="animationFrames" value="6"/>
+   <property name="animationOffset" value="1"/>
+  </properties>
+  <image source="tilesets/destructable_block.png" width="832" height="192"/>
+  <tile id="0">
+   <properties>
+    <property name="Hitpoints" value="1"/>
+    <property name="Invulnerable" value="false"/>
+    <property name="Name" value="Block1Background"/>
+    <property name="Type" value="Deko"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Name" value="Block2Background"/>
+    <property name="Type" value="Deko"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Hitpoints" value="3"/>
+    <property name="Invulnerable" value="false"/>
+    <property name="Name" value="Block3Background"/>
+    <property name="Type" value="Deko"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="Hitpoints" value="4"/>
+    <property name="Invulnerable" value="false"/>
+    <property name="Name" value="Block4Background"/>
+    <property name="Type" value="Deko"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Hitpoints" value="5"/>
+    <property name="Invulnerable" value="false"/>
+    <property name="Name" value="Block5Background"/>
+    <property name="Type" value="Deko"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="Hitpoints" value="6"/>
+    <property name="Invulnerable" value="false"/>
+    <property name="Name" value="Block6Background"/>
+    <property name="Type" value="Deko"/>
+   </properties>
+  </tile>
+ </tileset>
  <tileset firstgid="7" source="tilesets/rest.tsx"/>
  <tileset firstgid="15" source="tilesets/lava.tsx"/>
  <tileset firstgid="23" source="tilesets/zacken.tsx"/>
  <tileset firstgid="26" source="tilesets/deco.tsx"/>
- <tileset firstgid="32" source="tilesets/background_block.tsx"/>
- <tileset firstgid="38" source="tilesets/bomb.tsx"/>
+ <tileset firstgid="40" source="tilesets/background_block.tsx"/>
+ <tileset firstgid="46" source="tilesets/bomb.tsx"/>
+ <tileset firstgid="48" source="tilesets/deco_gross.tsx"/>
+ <tileset firstgid="51" source="tilesets/TutorialSchild.tsx"/>
  <layer name="Mittellayer" width="75" height="20">
   <properties>
    <property name="Parallax" value="0,5"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt0bkKgDAURNG4tu4Wcev8/090BNPbmOGZOXCRNGYgzomIiMgfnOwBIiKSlIM9gCRDOSrYQwwoUYVq9hBJyvZ8d+qKdxbk0Rrpvga1ke6ybkDjR/8O79Ch3siZJbzDhGYj59sF9DgHqw==
+   eJztzskJACAMAMF49l+yKcGXQZiB/W8EAAAAcKNlPRvVIx+Y2cp29QgAPHQAsRQAFg==
   </data>
  </layer>
  <layer name="Spielebene" width="75" height="20">
@@ -23,7 +78,7 @@
    <property name="Parallax" value="1,0"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztmN0OgjAMhauIinDv+7+pIdGkIaNr2elYzU5yLrhg3b6d/cBCREu32l15dVZ6/QOru2CkrKzQ9RFCsPlxkLi3kquSTJSy4gxGwQhWqTaOtPtmtoizepCN3bafN8GoXKVY1VJu3ewpNfZBMJLV6vlAm6X1NXuMNvdXwaV3MY9MWmU9B6W5vAguzRVqr6t1d86973UOos6FWvLm7KlW7itaWfrL18AIqh1JWlbocXlkyvvfQbR1cKaisfL+PpbEczhTOpfa/E7f5+emxkuoyb13h4xgLSuv/aE1nT0PkbT2+wPXohEA
+   eJztVmkLwyAMdUfHthZ2b7D73rex4///t1moIKIx1tji6INHm80k9hk1GWMsa4hmAzsarfD4B616ACnhqhV1fgpQaCN0gHQPVVcfx/E+NeGrlaxBApBCK12MMnFXEl0ga/Vkbtqp8+wCpKornVZVwbZvTgY/3bd3AOrGv0rMV8RJDTFtvj7AnDHYum8D9O3FVPvi9JX6GAJvpL/rPQitZQug7x6kOuuq6p1t/qHuQap7oSqE1jkkYuuDXeYr74GEKHdMwGqVj9lwrjm3FeYtEzPU+RfbPqgTrlrtiufX8P8eEeMgvZ+L5xWZ39YX3Ax+d8PvR84HMrdch6lijzjHDF+/g8LuKzmGQE6Zph4yBs4454Fii3WYcE4jsetehwXnMhI7n/cPoFUaeA==
   </data>
  </layer>
  <objectgroup name="Objektebene 1">
