@@ -1,6 +1,8 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
+import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +62,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 int miners_threshold = scoreSys.goal.getComponent(GoalComponent.class).miners_threshold;
                 Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
                 logger.info("Your score is: " + Score.score);
+                Settings.HIGHSCORE.set(""+Score.score);
                 Game.loadLevel();
             }
         }
