@@ -72,6 +72,7 @@ public class MapLoader
      * 
      * @author Renderer
      */
+    @Deprecated
     public static void generateWorldFromTileMap(PooledEngine engine, PhysixSystem physixSystem, TiledMap map, CameraSystem cameraSystem) 
     {
         
@@ -135,7 +136,7 @@ public class MapLoader
                     else if(obj.getProperty("Name", "").equalsIgnoreCase("PlayerSpawn")){
                         cameraSystem.follow(EntityCreator.createAndAddPlayer(obj.getX(), obj.getY(), 0));
                         //TESTS FOR LIGHT
-                        EntityCreator.createConeLight(obj.getX(), obj.getY()-500f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
+                        //EntityCreator.createConeLight(obj.getX(), obj.getY()-500f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
                         //EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}/*new float[]{obj.getX()+20f, obj.getY()-20f,obj.getX()+40f, obj.getY()-20f}*/);
                         //EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
                     }
@@ -198,6 +199,7 @@ public class MapLoader
                                 && tiles[i][j].getProperty("Type", "").equals("Lava")) {
                             TileInfo info = tiles[i][j];
                             EntityCreator.createAndAddVisualEntity(map, info, i, j, PlayMode.LOOP, true);
+    
                         }
                     }
                 }
@@ -310,11 +312,6 @@ public class MapLoader
                             float width = GameConstants.getTileSizeX() * 0.9f;
                             float height = GameConstants.getTileSizeY() * 1.5f;
                             cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX() + width, obj.getY()- height, 0) );
-                            //TESTS FOR LIGHT
-                            EntityCreator.createConeLight(obj.getX() + 100, obj.getY()-380f, new Color(1f, 1f, 1f, 1f), 50f, 90f, 45f);
-                            //EntityCreator.createChainLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 100f, true, new float[]{50f, -300f, 500f, -300f}/*new float[]{obj.getX()+20f, obj.getY()-20f,obj.getX()+40f, obj.getY()-20f}*/);
-                            //EntityCreator.createDirectionalLight(obj.getX(), obj.getY(), new Color(1f, 1f, 1f, 1f), 45f);
-                            
                         }
 
                             break;
@@ -415,6 +412,10 @@ public class MapLoader
                                     {
                                         TileInfo info = tiles[i][j];
                                         EntityCreator.createAndAddVisualEntity(map, info, i, j, PlayMode.LOOP, true);
+                                        Color color = Color.valueOf("FFF600");
+                                        float x = i * map.getTileWidth() + 0.5f * map.getTileWidth();
+                                        float y = j * map.getTileHeight() + 0.5f * map.getTileHeight();
+                                        EntityCreator.createChainLight(x, y, color, Float.parseFloat(info.getProperty("Distance", ""))+1f, false, new float[]{-32.5f,30f,32.5f,30f},true);
                                     }
                                 }
                                     break;

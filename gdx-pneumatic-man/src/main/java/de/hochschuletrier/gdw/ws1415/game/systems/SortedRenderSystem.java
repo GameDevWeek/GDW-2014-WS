@@ -53,6 +53,7 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         addRenderer(new LightRenderer());
         
         this.rayHandler = rayHandler;
+  
         this.rayHandler.setAmbientLight(GameConstants.LIGHT_AMBIENT);
         this.rayHandler.setBlur(GameConstants.LIGHT_BLUR);
         this.rayHandler.setBlurNum(GameConstants.LIGHT_BLURNUM);
