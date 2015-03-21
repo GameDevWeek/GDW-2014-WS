@@ -39,14 +39,6 @@ public class WinScreen extends MenuPage
         {
             System.out.println(names[(int)(Math.random()*100)%names.length]);
         }
-         
-        
-        
-        
-        //fuck off!
-        
-        
-        
     }
 
 }
