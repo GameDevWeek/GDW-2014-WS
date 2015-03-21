@@ -32,7 +32,7 @@ public class MovementSystem extends IteratingSystem {
         super(Family
                 .all(PhysixBodyComponent.class)
                 .one(MovementComponent.class, JumpComponent.class,
-                        InputComponent.class).get(), priority);
+                        InputComponent.class, PlayerComponent.class).get(), priority);
     }
 
     @Override
@@ -50,20 +50,21 @@ public class MovementSystem extends IteratingSystem {
                 movement.velocity.set(movement.speed * input.direction,
                         movement.velocity.y);
             }
-
-            physix.setLinearVelocity(movement.velocity.x ,
-                    physix.getLinearVelocity().y
-                            + (movement.velocity.y ));
-            
+            Vector2 lowestPlatformVelocity = new Vector2(0,0);
             if(playerComp != null) {
-                Vector2 lowestPlatformVelocity = new Vector2(0,0);
+                
                 for (Entity platform : playerComp.platformContactEntities) {
                     Vector2 vel = platform.getComponent(PlatformComponent.class).velocity;
                     if(vel.len2() > lowestPlatformVelocity.len2())
                         lowestPlatformVelocity = vel;
                 }
-                physix.setLinearVelocity(physix.getLinearVelocity().add(lowestPlatformVelocity));
+                
             }
+            physix.setLinearVelocity(movement.velocity.x  + lowestPlatformVelocity.x,
+                    physix.getLinearVelocity().y
+                            + (movement.velocity.y ) );
+            
+            
         }
         /*
          * deprecated if (bouncing != null) { // if entity is on the ground and

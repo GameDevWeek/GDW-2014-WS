@@ -228,9 +228,11 @@ public class MapLoader
         case "white" : 
             return "FFFFFF";
         case "yellow" :
-            return "E578DF";
+            return "FFFB00";
         case "blue" :
-            return "BFDAFF";
+            return "AAC3E3";
+        case "purple" :
+            return "B22C8E";
         default : //TODO Exeption hinzufügen
             return "FFFFFF";
         }
@@ -335,7 +337,7 @@ public class MapLoader
                             break;
                         case "levelend":
                         {
-                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));
+                            EntityCreator.createAndAddGoal(obj.getX(), obj.getY(), Integer.parseInt(obj.getProperty("RequiredMiners", "0")));                            
                         }
                             break;
                         case "enemy":
@@ -399,6 +401,13 @@ public class MapLoader
                                     {
                                         EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                     }
+                                    if ( tinfo.getProperty("Name","").equalsIgnoreCase("SpawnAndLevelEnd") )
+                                    {
+                                        EntityCreator.createConeLight( 
+                                                i * map.getTileWidth() + 0.5f * map.getTileWidth(), 
+                                                j * map.getTileHeight() /* + 0.5f * map.getTileHeight()   **/,
+                                                Color.valueOf("FF0088" ), 4.0f, 270.0f, 20.0f, false);
+                                    }
                                 }
                                     break;
                                 case "spikeleft": case "spiketop": case "spikeright": case "spikedown":
@@ -432,9 +441,9 @@ public class MapLoader
                                 case "deko":                                 {
                                     EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
                                     
-                                    Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "white")));
-                                    float xOffset = tinfo.getFloatProperty("XOffset", 0.0f);
-                                    float yOffset = tinfo.getFloatProperty("YOffset", 0.0f);
+                                    Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "")));
+                                    float xOffset = 0.0f;//Float.parseFloat(tinfo.getProperty("XOffset", "0.0"));
+                                    float yOffset = 0.0f;//Float.parseFloat(tinfo.getProperty("YOffset", "0.0"));
                                     float x = i * map.getTileWidth() + 0.5f * map.getTileWidth();
                                     float y = j * map.getTileHeight() + 0.5f * map.getTileHeight();
                                     float dir = (float) (tinfo.getFloatProperty("Direction", 0.0f) + 90.0);
@@ -449,7 +458,7 @@ public class MapLoader
                                         isCone = false;
                                     }
                                     
-                                    EntityCreator.createAndAddDeko(x, y, xOffset, yOffset, dir, dis, conedir, color, true, isCone );
+                                    EntityCreator.createAndAddDeko(x, y, xOffset, yOffset, dir, dis, conedir, color, false, isCone );
                                 }
                                     break;
                                 default :

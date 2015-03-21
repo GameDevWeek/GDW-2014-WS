@@ -58,8 +58,8 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
              // ***** Sound *****
             Random rm=new Random();
             int i=rm.nextInt(3)+1;//1-3
-            System.out.println("StoneHits "+i);
-            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneHit1"), false);
+            System.out.println("stoneHit "+i);
+            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneHit"+i), false);
                     
             // *****reactions****
             if(ComponentMappers.block.has(otherEntity)){

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.BombComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
@@ -25,7 +26,18 @@ public class DestructableBlockRenderer extends SortedFamilyRenderSystem.Renderer
         PositionComponent position = ComponentMappers.position.get(entity);
         HealthComponent health = ComponentMappers.health.get(entity);
 
+        if(animation.IsActive)
+        {
+            animation.stateTime += deltaTime;
+            animation.permanent_stateTime += deltaTime;
+        }
+        
         TextureRegion keyFrame = animation.animation.getKeyFrame(health.Value <= 0 ? 0 : health.Value-1);
+        if(entity.getComponent(BombComponent.class) != null) 
+        {
+            keyFrame = animation.animation.getKeyFrame(animation.permanent_stateTime);
+        }
+        
         int w = keyFrame.getRegionWidth();
         int h = keyFrame.getRegionHeight();
         DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h, 1, 1, position.rotation);
