@@ -21,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -51,6 +52,7 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
         
         entity.add(engine.createComponent(PlayerComponent.class));
+        entity.add(engine.createComponent(SoundEmitterComponent.class));
 
         //addTestParticleAndLightComponent(entity);
 
@@ -212,6 +214,11 @@ public class EntityCreator {
         entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
 
+        final SoundEmitterComponent soundEmitterComponent = engine.createComponent(SoundEmitterComponent.class);
+        entity.add(soundEmitterComponent);
+        final SoundInstance si = soundEmitterComponent.emitter.play(assetManager.getSound("alienBark1"), true);
+        si.setReferenceDistance(20);
+        
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
