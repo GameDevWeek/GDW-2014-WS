@@ -92,6 +92,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     }else {
                         Health.health = HealthComponent.HealthState.DYING;
                         deathTimer.deathTimer -= deltaTime;
+                        if(ComponentMappers.bomb.has(entity))
+                        {
+                            entity.getComponent(AnimationComponent.class).IsActive = true;
+                        }
                     }
                 }
                 else

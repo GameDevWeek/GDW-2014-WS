@@ -37,6 +37,7 @@ import de.hochschuletrier.gdw.ws1415.game.systems.UpdateSoundEmitterSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxCommand;
 import de.hochschuletrier.gdw.ws1415.states.LoadGameState;
 import de.hochschuletrier.gdw.ws1415.states.MainMenuState;
+import de.hochschuletrier.gdw.ws1415.states.WinState;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -138,6 +139,10 @@ public class Main extends StateBasedGame {
     private void onLoadComplete() {
         final MainMenuState mainMenuState = new MainMenuState(assetManager);
         addPersistentState(mainMenuState);
+        
+        final WinState winState = new WinState(assetManager);
+        addPersistentState(winState);
+        
         changeState(mainMenuState, null, null);
         SandboxCommand.init(assetManager);
         

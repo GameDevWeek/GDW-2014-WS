@@ -9,7 +9,6 @@ import box2dLight.PointLight;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -18,7 +17,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
@@ -34,7 +32,38 @@ import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.BombComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DeathComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DeathTimerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.ExplosionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockTriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.IndestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.JumpableAnimationComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SoundEmitterComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SpikeComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.ChainLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.ConeLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.DirectionalLightComponent;
@@ -42,7 +71,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
@@ -242,6 +270,7 @@ public class EntityCreator {
         entity.add(bodyComponent);
         AIComponent ai = new AIComponent();
         ai.type = type;
+        ai.AItimer = 5;
         entity.add(ai);
 
         MovementComponent movementComponent = engine.createComponent(MovementComponent.class);
@@ -262,6 +291,9 @@ public class EntityCreator {
         
         addLayerComponent(entity, 10, 1, 1);
 
+        SoundEmitterComponent soundEmitterComponent = engine.createComponent(SoundEmitterComponent.class);
+        entity.add(soundEmitterComponent);
+        
         engine.addEntity(entity);
         return entity;
     }
@@ -541,7 +573,7 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.getBody().setGravityScale(0f);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(500).friction(1f).shapeBox(boxWidth, boxHeight)
+                .density(1f).friction(0).shapeBox(boxWidth, boxHeight)
                 .restitution(0);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
@@ -921,6 +953,15 @@ public class EntityCreator {
         pe.offsetY=40f;
         entity.add(pe);
         
+        SoundEmitterComponent sec = engine.createComponent(SoundEmitterComponent.class);
+        
+        SoundInstance si = sec.emitter.play(assetManager.getSound("burst1"), false);
+        si.setReferenceDistance(100f);
+        sec.emitter.setPosition(positionX, positionY, 0);
+        
+        
+        entity.add(sec);
+        
         
         
         addLayerComponent(entity, 10, 1, 1);
@@ -931,11 +972,11 @@ public class EntityCreator {
     
     // ********** Rendering section BEGIN **********
     
-    public static Entity createTestBackground() {
+    public static Entity createTestBackground( int w, int h) {
         Entity entity = engine.createEntity();
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = -1;
-        entityLayer.parallaxX = 0.1f;
+        entityLayer.parallaxX = 0.125f;
         
         TextureComponent tex = engine.createComponent(TextureComponent.class);
         tex.texture = assetManager.getTexture("bg1");
@@ -945,8 +986,8 @@ public class EntityCreator {
         pos.x = 0.f;
         pos.y = 500.f;
         pos.rotation = 0;
-        pos.scaleX = 2.5f;
-        pos.scaleY = 2.5f;
+        pos.scaleX = w / tex.texture.getWidth() / entityLayer.parallaxX;
+        pos.scaleY = h / tex.texture.getHeight() / entityLayer.parallaxX;
         
         entity.add(pos);
         entity.add(entityLayer);
@@ -1069,7 +1110,7 @@ public class EntityCreator {
      */
     private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, float tileX, float tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
-    	int frames = tileset.getIntProperty("AnimationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
+    	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
         
     	assert(frames > 1);
 
@@ -1140,7 +1181,7 @@ public class EntityCreator {
         Bomb.add(deathTimer);
         
         //addRenderComponents(Bomb, map, info, tileX, tileY);
-        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
+        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, false);
         
         engine.addEntity(Bomb);
         return(Bomb);
@@ -1172,7 +1213,6 @@ public class EntityCreator {
         entity.add(PhysixBody);
         
         
-
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 0;
         entity.add(Health);
