@@ -61,8 +61,7 @@ public class EntityCreator {
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
-        bodyComponent.getBody().setUserData(bodyComponent);
-        bodyComponent.getBody().setGravityScale(1.75f);
+        bodyComponent.setGravityScale(1.75f);
         // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0f)
@@ -257,7 +256,6 @@ public class EntityCreator {
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, box);
-        bodyComponent.getBody().setUserData(bodyComponent);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0.1f)
                 .shapeBox(width, height).sensor(true);
@@ -327,7 +325,6 @@ public class EntityCreator {
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody,
                 physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, goal);
-        bodyComponent.getBody().setUserData(bodyComponent);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0.1f)
                 .shapeBox(width, height).sensor(true);
@@ -368,7 +365,7 @@ public class EntityCreator {
         PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem).position(x, y).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
-        bodyComponent.getBody().setActive(false);
+        bodyComponent.setGravityScale(0);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
@@ -563,8 +560,7 @@ public class EntityCreator {
                 .position((x+0.5f) * GameConstants.getTileSizeX(), (y+0.5f) * GameConstants.getTileSizeY())
                 .fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
-        bodyComponent.getBody().setUserData(bodyComponent);
-        bodyComponent.getBody().setGravityScale(0f);
+        bodyComponent.setGravityScale(0f);
 
         PhysixFixtureDef fixtureDefSpikeGround = new PhysixFixtureDef(physixSystem)
                 .density(1)
