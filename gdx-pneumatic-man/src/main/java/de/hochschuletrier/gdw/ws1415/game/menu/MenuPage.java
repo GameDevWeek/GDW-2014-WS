@@ -144,6 +144,7 @@ public class MenuPage extends Group {
     
     protected final  void changeTextureActive(DecoImage image)
     {
+      //MainMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("optionen_button"))
             image.setTexture(assetManager.getTexture("optionen_button_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("start_button"))
@@ -152,6 +153,16 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("levels_button_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("score_button"))
             image.setTexture(assetManager.getTexture("score_button_active"));
+        
+        //IngameMenu Bilder
+        if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_inactive"))
+            image.setTexture(assetManager.getTexture("resume_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("restart_button_inactive"))
+            image.setTexture(assetManager.getTexture("restart_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("mainmenu_button_inactive"))
+            image.setTexture(assetManager.getTexture("mainmenu_button_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("quit_button_inactive"))
+            image.setTexture(assetManager.getTexture("quit_button_active"));
     	
     }
     
@@ -163,6 +174,7 @@ public class MenuPage extends Group {
 
     protected final  void changeTextureNotActive(DecoImage image)
     {
+        //MainMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("optionen_button_active"))
             image.setTexture(assetManager.getTexture("optionen_button"));
         if(image.getRegion().getTexture()==assetManager.getTexture("start_button_active"))
@@ -171,5 +183,15 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("levels_button"));
         if(image.getRegion().getTexture()==assetManager.getTexture("score_button_active"))
             image.setTexture(assetManager.getTexture("score_button"));
+        
+      //IngameMenu Bilder
+        if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_active"))
+            image.setTexture(assetManager.getTexture("resume_button_inactive"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("restart_button_active"))
+            image.setTexture(assetManager.getTexture("restart_button_inactive"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("mainmenu_button_active"))
+            image.setTexture(assetManager.getTexture("mainmenu_button_inactive"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("quit_button_active"))
+            image.setTexture(assetManager.getTexture("quit_button_inactive"));
     }
 }
