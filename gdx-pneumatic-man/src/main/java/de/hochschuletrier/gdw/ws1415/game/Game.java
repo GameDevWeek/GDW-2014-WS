@@ -352,12 +352,7 @@ public class Game {
         
         if(Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP))
         {
-            Settings.CURRENTLY_SELECTED_LEVEL.set((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % levelList.size());
-            System.out.println("Level changed to: " + Settings.CURRENTLY_SELECTED_LEVEL.get());
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN))
-        {
-            Settings.CURRENTLY_SELECTED_LEVEL.set((Settings.CURRENTLY_SELECTED_LEVEL.get() - 1 ) % levelList.size());
+            Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % levelList.size()));
             System.out.println("Level changed to: " + Settings.CURRENTLY_SELECTED_LEVEL.get());
         }
     }
