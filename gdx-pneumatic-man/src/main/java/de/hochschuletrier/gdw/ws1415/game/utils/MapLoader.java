@@ -281,7 +281,7 @@ public class MapLoader
                         // all preloaded Object are not needed to be handled
                         case "rock":
                             break;
-                        case "plattform":
+                        case "platform":
                         {
                             PlatformMode mode = PlatformMode.valueOf(obj.getProperty("Mode", PlatformMode.ALWAYS.name()).toUpperCase());
                             Direction dir = Direction.valueOf(obj.getProperty("Direction", Direction.UP.name()).toUpperCase()); // "Direction"
