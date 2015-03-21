@@ -29,6 +29,7 @@ import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ExplosionContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.FallingTrapContactListener;
@@ -237,6 +238,7 @@ public class Game {
         engine.addSystem(lavaFountainSystem);
         engine.addSystem(destroyBlocksSystem);
         engine.addSystem(platformSystem);
+        engine.addSystem(new UpdateSoundEmitterSystem());
     }
     private void removeSystems(){
         engine.removeSystem(physixSystem);
@@ -264,6 +266,7 @@ public class Game {
         contactListener.addListener(PlayerComponent.class, new PlayerContactListener(engine));
         contactListener.addListener(FallingRockComponent.class, new FallingTrapContactListener());
         contactListener.addListener(SpikeComponent.class, new FallingTrapContactListener());
+        contactListener.addListener(ExplosionComponent.class, new ExplosionContactListener());
         physixSystem.getWorld().setContactListener(contactListener);
     }
 
@@ -284,7 +287,7 @@ public class Game {
         //
         // mapRenderer.update(delta);
         
-        if(GameConstants.pause)
+        if(GameConstants.pause || GameConstants.menuOpen)
         {
             renderSystem.update(0);
         }

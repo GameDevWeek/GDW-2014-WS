@@ -39,15 +39,20 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         PhysixBodyComponent mybody = ComponentMappers.physixBody.get(myEntity);
 
         // kommt rock von oben?
-        Vector2 a = mybody.getBody().getPosition().cpy().sub(contact.getOtherFixture().getBody().getPosition());
-        float dot = a.dot(Direction.DOWN.toVector2());
+        float dot = d.dot(Direction.DOWN.toVector2());
         if(dot > 0) return; // nope
+
+        DamageComponent dmg = myEntity.getComponent(DamageComponent.class);
 
         // ja stein kommt von oben:
         if(ComponentMappers.health.has(otherEntity)) {
-            HealthComponent h = ComponentMappers.health.get(contact.getOtherComponent().getEntity());
-            EntityCreator.engine.removeEntity(myEntity);
-        }else if(ComponentMappers.block.has(otherEntity)){
+            HealthComponent h = ComponentMappers.health.get(otherEntity);
+            if(ComponentMappers.block.has(otherEntity)){
+                h.DecrementByValueNextFrame += dmg.damageToTile ? dmg.damage : 0;
+            }else if(ComponentMappers.player.has(otherEntity)){
+                h.DecrementByValueNextFrame += dmg.damageToPlayer ? dmg.damage : 0;
+            }
+
             EntityCreator.engine.removeEntity(myEntity);
         }
     }
@@ -60,6 +65,9 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         Vector2 a = mybody.getBody().getPosition().cpy().sub(contact.getOtherFixture().getBody().getPosition());
         float dot = a.dot(Direction.DOWN.toVector2());
         if(dot > 0) return;
+
+        if(ComponentMappers.player.has(otherEntity)) return; // player jumped from ground to the spike
+        if(ComponentMappers.enemy.has(otherEntity)) return; // enemy jumped from ground to the spike
 
         mybody.setGravityScale(0.0f);
         mybody.setLinearVelocity(0, 0);

@@ -21,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -51,6 +52,7 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
         
         entity.add(engine.createComponent(PlayerComponent.class));
+        entity.add(engine.createComponent(SoundEmitterComponent.class));
 
         //addTestParticleAndLightComponent(entity);
 
@@ -65,12 +67,12 @@ public class EntityCreator {
         // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0f)
-                .shapeCircle(width * 0.05f, new Vector2(0, -height * 0.4f));
+                .shapeCircle(width * 0.1f, new Vector2(0, -height * 0.4f));
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1f).friction(0f).restitution(0f)
-        .shapeBox(width * 0.1f, height * 0.5f, new Vector2(0, height * 0.2f), 0);
+        .shapeBox(width * 0.2f, height * 0.8f, new Vector2(0, 0), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
 
         fixtureDef = new PhysixFixtureDef(physixSystem)
@@ -210,6 +212,12 @@ public class EntityCreator {
         entity.add(engine.createComponent(AIComponent.class));
         entity.add(engine.createComponent(PositionComponent.class));
         entity.add(engine.createComponent(SpawnComponent.class));
+        entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
+
+        final SoundEmitterComponent soundEmitterComponent = engine.createComponent(SoundEmitterComponent.class);
+        entity.add(soundEmitterComponent);
+        final SoundInstance si = soundEmitterComponent.emitter.play(assetManager.getSound("alienBark1"), true);
+        si.setReferenceDistance(20);
         
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
@@ -383,14 +391,15 @@ public class EntityCreator {
         rockComponent.id = trapId;
         entity.add(rockComponent);
 
-        HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 1;
+//        HealthComponent Health = engine.createComponent(HealthComponent.class);
+//        Health.Value = 1;
 
         DamageComponent damageComp = engine.createComponent(DamageComponent.class);
         damageComp.damage = 4;
         damageComp.damageToPlayer = true;
         damageComp.damageToTile = true;
-        
+        entity.add(damageComp);
+
         AnimationComponent trapBlock = engine.createComponent(AnimationComponent.class);
         trapBlock.animation = assetManager.getAnimation("stone_breaking");
         trapBlock.IsActive = false;
@@ -477,6 +486,11 @@ public class EntityCreator {
         KillsPlayerOnContactComponent killComponent = engine
                 .createComponent(KillsPlayerOnContactComponent.class);
         entity.add(killComponent);
+
+        DamageComponent Damage = engine.createComponent(DamageComponent.class);
+        Damage.damageToPlayer = true;
+        Damage.damage = 999;
+        entity.add(Damage);
 
         PositionComponent positionComponent = engine
                 .createComponent(PositionComponent.class);
@@ -801,7 +815,7 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
         
         float lavaBallSpeed = -2000.0f;
-        float lavaBallSpawnIntervall = 0.5f;
+        float lavaBallSpawnIntervall = 0.25f;
         
         PositionComponent position = engine.createComponent(PositionComponent.class);
         position.x = x;
@@ -835,7 +849,7 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1f).friction(1f).shapeCircle(radius)
-                .restitution(0.1f);
+                .restitution(0.1f).sensor(true);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
         
@@ -1062,7 +1076,7 @@ public class EntityCreator {
         Bomb.add(engine.createComponent(BombComponent.class));
         
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
-        Damage.damage = 3;
+        Damage.damage = 10; // max!
         Damage.damageToTile = true;
         Bomb.add(Damage);
         
@@ -1071,8 +1085,12 @@ public class EntityCreator {
                 true, 1f, 1f, 0.1f));
         
         DestructableBlockComponent DestructableComp = engine.createComponent(DestructableBlockComponent.class);
-        DestructableComp.deathTimer = 3.0f;
+        
         Bomb.add(DestructableComp);
+        
+        DeathTimerComponent deathTimer = engine.createComponent(DeathTimerComponent.class);
+        deathTimer.deathTimer = 3.0f;
+        Bomb.add(deathTimer);
         
         addRenderComponents(Bomb, map, info, tileX, tileY);
         
@@ -1084,7 +1102,7 @@ public class EntityCreator {
         entity.remove(HealthComponent.class);
         entity.remove(DestructableBlockComponent.class);
         entity.remove(TextureComponent.class);
-        entity.remove(LayerComponent.class);
+        entity.remove(BombComponent.class);
         
         entity.getComponent(DamageComponent.class).damageToPlayer = true;
         /* Create explosion Physics */
@@ -1103,20 +1121,30 @@ public class EntityCreator {
         entity.add(PhysixBody);
         
         
+
         HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 1;
-        Health.DecrementByValueNextFrame = 1;
+        Health.Value = 0;
         entity.add(Health);
+        
+        AnimationComponent Anim = engine.createComponent(AnimationComponent.class);
+        Anim.animation = assetManager.getAnimation("bomb_explosion");
+        Anim.IsActive = true;
+
+        DeathTimerComponent DeathTimer = engine.createComponent(DeathTimerComponent.class);
+        DeathTimer.deathTimer = Anim.animation.animationDuration;
+        
+        entity.getComponent(LayerComponent.class).layer = 100;
+        
+        
+        
+        entity.add(Anim);
+        entity.add(DeathTimer);
+        
+        ExplosionComponent explosion = engine.createComponent(ExplosionComponent.class);
+        entity.add(explosion);
         
     }
 
     
-
-
-
-
-
-
-
    
 }

@@ -67,29 +67,27 @@ public class PlayerContactListener extends PhysixContactAdapter {
             }
         }
 
-        // Player collides with lava.
-        if (otherEntity.getComponent(KillsPlayerOnContactComponent.class) != null) {
-            // Player dies and level resets.
-            HealthComponent Health = player.getComponent(HealthComponent.class);
-            Health.DecrementByValueNextFrame = Health.Value;
-        }
-
         if (otherEntity.getComponent(FallingRockTriggerComponent.class) != null){
             FallingRockTriggerComponent rockTriggerComponent = otherEntity.getComponent(FallingRockTriggerComponent.class);
             //FallingRockComponent rockComponent = ComponentMappers.rockTraps.get(rockTriggerComponent.rockEntity);
             //rockComponent.falling = true;
-            PhysixBodyComponent bodyComponent = ComponentMappers.physixBody.get(rockTriggerComponent.rockEntity);
-            PhysixModifierComponent modifierComponent = EntityCreator.engine.createComponent(PhysixModifierComponent.class);
-            modifierComponent.schedule(() -> {
-                bodyComponent.setGravityScale(1);
-                bodyComponent.setAwake(true);
-            });
-            ComponentMappers.animation.get(rockTriggerComponent.rockEntity).IsActive = true;
-            rockTriggerComponent.rockEntity.add(modifierComponent);
-            EntityCreator.engine.removeEntity(otherEntity);
+            if(ComponentMappers.physixBody.has(rockTriggerComponent.rockEntity)) {
+                PhysixBodyComponent bodyComponent = ComponentMappers.physixBody.get(rockTriggerComponent.rockEntity);
+
+                PhysixModifierComponent modifierComponent = EntityCreator.engine.createComponent(PhysixModifierComponent.class);
+                modifierComponent.schedule(() -> {
+                    bodyComponent.setGravityScale(1);
+                    bodyComponent.setAwake(true);
+                });
+                ComponentMappers.animation.get(rockTriggerComponent.rockEntity).IsActive = true;
+                rockTriggerComponent.rockEntity.add(modifierComponent);
+                EntityCreator.engine.removeEntity(otherEntity);
+            }
         }
 
-        if (otherEntity.getComponent(DamageComponent.class) != null) {
+        if (ComponentMappers.enemy.has(otherEntity) ||  // enemys + lava
+                ComponentMappers.spikes.has(otherEntity) ||
+                ComponentMappers.lavaBall.has(otherEntity)) {
             // player touched an enemy
             if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
                 player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
@@ -101,6 +99,9 @@ public class PlayerContactListener extends PhysixContactAdapter {
             JumpComponent jump = ComponentMappers.jump.get(player);
             jump.previousContacts = jump.groundContacts;
             jump.groundContacts++;
+            if(otherEntity.getComponent(PlatformComponent.class) != null) {
+                player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
+            }
         }
 
         
@@ -124,14 +125,21 @@ public class PlayerContactListener extends PhysixContactAdapter {
     }
     public void endContact(PhysixContact contact) {
         Entity player = contact.getMyComponent().getEntity();
+        Entity otherEntity = contact.getOtherComponent().getEntity();
+        PlayerComponent playerComp = ComponentMappers.player.get(player);
+        PlatformComponent otherPlatformComp = ComponentMappers.platform.get(otherEntity);
         
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
         if(body!= null && "jump".equals(contact.getMyFixture().getUserData())){
            
             JumpComponent jump = ComponentMappers.jump.get(player);
+            
             if(jump!= null){
                 jump.previousContacts = jump.groundContacts;
                 jump.groundContacts--;
+            }
+            if(otherPlatformComp != null && playerComp != null) {
+                playerComp.platformContactEntities.remove(otherEntity);
             }
             
         }

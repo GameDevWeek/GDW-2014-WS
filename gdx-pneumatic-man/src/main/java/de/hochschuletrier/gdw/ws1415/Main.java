@@ -33,6 +33,7 @@ import de.hochschuletrier.gdw.commons.gdx.utils.GdxResourceLocator;
 import de.hochschuletrier.gdw.commons.gdx.utils.KeyUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.utils.ClassUtils;
+import de.hochschuletrier.gdw.ws1415.game.systems.UpdateSoundEmitterSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxCommand;
 import de.hochschuletrier.gdw.ws1415.states.LoadGameState;
 import de.hochschuletrier.gdw.ws1415.states.MainMenuState;
@@ -131,6 +132,7 @@ public class Main extends StateBasedGame {
         SoundEmitter.setGlobalVolume(Settings.SOUND_VOLUME.get());
         MusicManager.setGlobalVolume(Settings.MUSIC_VOLUME.get());
         
+        UpdateSoundEmitterSystem.initCVars();
     }
 
     private void onLoadComplete() {
