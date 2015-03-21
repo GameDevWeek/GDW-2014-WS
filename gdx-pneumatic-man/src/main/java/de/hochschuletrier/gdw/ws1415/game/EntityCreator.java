@@ -910,6 +910,15 @@ public class EntityCreator {
         pe.offsetY=40f;
         entity.add(pe);
         
+        SoundEmitterComponent sec = engine.createComponent(SoundEmitterComponent.class);
+        
+        SoundInstance si = sec.emitter.play(assetManager.getSound("burst1"), false);
+        si.setReferenceDistance(100f);
+        sec.emitter.setPosition(positionX, positionY, 0);
+        
+        
+        entity.add(sec);
+        
         
         
         addLayerComponent(entity, 10, 1, 1);
@@ -1057,7 +1066,7 @@ public class EntityCreator {
      */
     private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
-    	int frames = tileset.getIntProperty("AnimationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
+    	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
         
     	assert(frames > 1);
 
@@ -1128,7 +1137,7 @@ public class EntityCreator {
         Bomb.add(deathTimer);
         
         //addRenderComponents(Bomb, map, info, tileX, tileY);
-        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
+        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, false);
         
         engine.addEntity(Bomb);
         return(Bomb);
@@ -1160,7 +1169,6 @@ public class EntityCreator {
         entity.add(PhysixBody);
         
         
-
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 0;
         entity.add(Health);
