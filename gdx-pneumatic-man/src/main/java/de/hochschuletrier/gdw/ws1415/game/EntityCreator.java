@@ -873,9 +873,23 @@ public class EntityCreator {
         position.y = positionY;
         entity.add(position);
         
+        /*
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation("lava_ball");
+        */
+        
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("lava"));
+        
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        pe.offsetY=40f;
+        entity.add(pe);
+        
+        
         
         addLayerComponent(entity, 10, 1, 1);
         
