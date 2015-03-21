@@ -74,7 +74,7 @@ public class MainMenuState extends BaseGameState implements InputProcessor {
             @Override
             public boolean keyUp(int keycode) {
                 if (mainProcessor != null && keycode == Input.Keys.ESCAPE) {
-                    SoundEmitter.playGlobal(assetManager.getSound("cracks2"),false);
+                    SoundEmitter.playGlobal(assetManager.getSound("pmCancel"),false);
                     menuManager.popPage();
                     return true;
                 }

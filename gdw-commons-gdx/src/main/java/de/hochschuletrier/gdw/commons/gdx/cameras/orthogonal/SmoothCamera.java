@@ -45,6 +45,13 @@ public class SmoothCamera extends AbstractCamera {
         destination.x = x;
         destination.y = y;
     }
+    
+    public void setPosition(float x, float y) {
+        destination.set(x, y, 0.f);
+        setCameraPosition(destination);
+        position.set(destination);
+        camera.update(true);
+    }
 
     public final void setDestination(Vector2 p) {
         setDestination(p.x, p.y);
