@@ -110,6 +110,8 @@ public class EntityCreator {
         
         entity.add(pos);
         
+        
+        
         // ***** temporary *****
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = true;
