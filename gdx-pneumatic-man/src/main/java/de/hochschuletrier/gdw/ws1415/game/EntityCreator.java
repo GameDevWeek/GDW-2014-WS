@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
+import java.util.Random;
+
 import box2dLight.ChainLight;
 import box2dLight.ConeLight;
 import box2dLight.DirectionalLight;
@@ -21,6 +23,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
@@ -52,8 +55,7 @@ public class EntityCreator {
         Entity entity = engine.createEntity();
         
         entity.add(engine.createComponent(PlayerComponent.class));
-        entity.add(engine.createComponent(SoundEmitterComponent.class));
-
+        
         //addTestParticleAndLightComponent(entity);
 
         float width = GameConstants.getTileSizeX() * 0.9f;
@@ -72,7 +74,7 @@ public class EntityCreator {
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1f).friction(0f).restitution(0f)
-        .shapeBox(width * 0.19f, height * 0.825f, new Vector2(0, 0), 0);
+        .shapeBox(width * 0.18f, height * 0.825f, new Vector2(0, 0), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
 
         fixtureDef = new PhysixFixtureDef(physixSystem)
@@ -191,8 +193,12 @@ public class EntityCreator {
 
         entityToDie.remove(AnimationComponent.class);
         entityToDie.add(deathAnimation);
-
-
+      
+        //***** Sounds *****
+        Random rm=new Random();
+        int i=rm.nextInt(3)+1;//1-3
+        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
+        
         return entityToDie;
     }
 
@@ -205,6 +211,10 @@ public class EntityCreator {
         float width = GameConstants.getTileSizeX();
         float height = GameConstants.getTileSizeY();
 
+        HealthComponent Health =engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        entity.add(Health);
+        
         DamageComponent Damage = engine.createComponent(DamageComponent.class);
         Damage.damage  = 1;
         Damage.damageToPlayer = true;
@@ -214,11 +224,9 @@ public class EntityCreator {
         entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
 
-        final SoundEmitterComponent soundEmitterComponent = engine.createComponent(SoundEmitterComponent.class);
-        entity.add(soundEmitterComponent);
-        final SoundInstance si = soundEmitterComponent.emitter.play(assetManager.getSound("alienBark1"), true);
-        si.setReferenceDistance(20);
+
         
+        // ***** ANimation*****ddddddddddddd
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
@@ -244,7 +252,7 @@ public class EntityCreator {
         entity.add(movementComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpSpeed = 800.0f;
+        jumpComponent.jumpSpeed = -1200.0f;
         jumpComponent.restingTime = 0.003f;
         entity.add(jumpComponent);
 
@@ -309,7 +317,7 @@ public class EntityCreator {
         bodyComponent.createFixture(pfx);
         Miner.add(bodyComponent);
         
-        addLayerComponent(Miner, 10, 1, 1);
+        addLayerComponent(Miner, 10, 1, 1);     
         
         engine.addEntity(Miner);
         return(Miner);
@@ -1049,8 +1057,8 @@ public class EntityCreator {
      */
     private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, float tileX, float tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
-    	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
-    			
+    	int frames = tileset.getIntProperty("AnimationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
+        
     	assert(frames > 1);
 
     	Texture image = (Texture) tileset.getAttachment();
@@ -1116,10 +1124,11 @@ public class EntityCreator {
         Bomb.add(DestructableComp);
         
         DeathTimerComponent deathTimer = engine.createComponent(DeathTimerComponent.class);
-        deathTimer.deathTimer = 3.0f;
+        deathTimer.deathTimer = 1.5f;
         Bomb.add(deathTimer);
         
-        addRenderComponents(Bomb, map, info, tileX, tileY);
+        //addRenderComponents(Bomb, map, info, tileX, tileY);
+        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
         
         engine.addEntity(Bomb);
         return(Bomb);
@@ -1162,9 +1171,9 @@ public class EntityCreator {
 
         DeathTimerComponent DeathTimer = engine.createComponent(DeathTimerComponent.class);
         DeathTimer.deathTimer = Anim.animation.animationDuration;
+        System.out.println(DeathTimer.deathTimer);
         
         entity.getComponent(LayerComponent.class).layer = 100;
-        
         
         
         entity.add(Anim);

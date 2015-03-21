@@ -227,9 +227,11 @@ public class MapLoader
         case "white" : 
             return "FFFFFF";
         case "yellow" :
-            return "E578DF";
+            return "FFFB00";
         case "blue" :
-            return "BFDAFF";
+            return "AAC3E3";
+        case "purple" :
+            return "B22C8E";
         default : //TODO Exeption hinzufügen
             return "FFFFFF";
         }
@@ -328,7 +330,7 @@ public class MapLoader
                         {
                             float width = GameConstants.getTileSizeX() * 0.9f;
                             float height = GameConstants.getTileSizeY() * 1.5f;
-                            cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX() + width, obj.getY()- height, 0) );
+                            cameraSystem.follow( EntityCreator.createAndAddPlayer(obj.getX() + width, obj.getY(), 0) );
                         }
 
                             break;
@@ -442,9 +444,9 @@ public class MapLoader
                                     break;
                                 case "deko":                                
                                 {
-                                    Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "white")));
-                                    float xOffset = tinfo.getFloatProperty("XOffset", 0.0f);
-                                    float yOffset = tinfo.getFloatProperty("YOffset", 0.0f);
+                                    Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "")));
+                                    float xOffset = 0.0f;//Float.parseFloat(tinfo.getProperty("XOffset", "0.0"));
+                                    float yOffset = 0.0f;//Float.parseFloat(tinfo.getProperty("YOffset", "0.0"));
                                     float x = i * map.getTileWidth();
                                     float y = j * map.getTileHeight();
                                     // different sizes needed to have some offsets
@@ -478,7 +480,7 @@ public class MapLoader
                                         isCone = false;
                                     }
                                     
-                                    EntityCreator.createAndAddDeko(x, y, xOffset, yOffset, dir, dis, conedir, color, true, isCone );
+                                    EntityCreator.createAndAddDeko(x, y, xOffset, yOffset, dir, dis, conedir, color, false, isCone );
                                 }
                                     break;
                                 default :

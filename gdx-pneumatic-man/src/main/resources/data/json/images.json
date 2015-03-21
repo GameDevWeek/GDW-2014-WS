@@ -31,10 +31,10 @@
     "resume_button_inactive": "data/images/Butt_Resume_Inactive01.png",
     "restart_button_active": "data/images/Butt_Restart_Active01.png",
     "restart_button_inactive": "data/images/Butt_Restart_Inactive01.png",
-    "mainmenu_button_active": "data/images/Butt_MainMenu_Active01.png",
-    "mainmenu_button_inactive": "data/images/Butt_MainMenu_Inactive01.png",
-    "quit_button_active": "data/images/Butt_Quit_Active01.png",
-    "quit_button_inactive": "data/images/Butt_Quit_Inactive01.png",
+    "mainmenu_button_active": "data/images/Butt_MainMenu_Active02.png",
+    "mainmenu_button_inactive": "data/images/Butt_MainMenu_Inactive02.png",
+    "quit_button_active": "data/images/Butt_Quit_Active02.png",
+    "quit_button_inactive": "data/images/Butt_Quit_Inactive02.png",
     "score_button_active": "data/images/Butt_Highscore_Active01.png",
     "injava_jones": "data/images/Injava_Jones.jpg",
     "bg1": "data/backgrounds/Hintergrund1.png",
@@ -43,5 +43,11 @@
     "bg_oben": "data/backgrounds/Hintergrund_oben.png",
     "bg_zwischenstueck": "data/backgrounds/Hintergrund_zwischenstueck.png",
     "hud_ico_stein" : "data/images/HUD_Ico_Stein01.png",
-    "hud_ico_time" : "data/images/HUD_Ico_Time01.png"
+    "hud_ico_time" : "data/images/HUD_Ico_Time01.png",
+    "level_free" : "data/images/Ico_Level01.png",
+    "level_locked" : "data/images/Ico_LockedLevel01.png",
+    "exit_button_active" : "data/images/Butt_Exit_Aktive01.png",
+    "exit_button" : "data/images/Butt_Exit_Inaktive01.png",
+    "Ico_Level_Active": "data/images/Ico_Level_Active01.png"
+    
 }

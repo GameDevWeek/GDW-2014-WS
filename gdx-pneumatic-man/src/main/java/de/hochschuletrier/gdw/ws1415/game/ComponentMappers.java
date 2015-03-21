@@ -18,7 +18,7 @@ public class ComponentMappers {
     public static final ComponentMapper<AnimationComponent> animation = ComponentMapper.getFor(AnimationComponent.class);
     public static final ComponentMapper<MovementComponent> movement = ComponentMapper.getFor(MovementComponent.class);
     public static final ComponentMapper<BouncingComponent> bouncing = ComponentMapper.getFor(BouncingComponent.class);
-    public static final ComponentMapper<KillsPlayerOnContactComponent> enemy = ComponentMapper.getFor(KillsPlayerOnContactComponent.class);
+    public static final ComponentMapper<KillsPlayerOnContactComponent> killsPlayerOnContact = ComponentMapper.getFor(KillsPlayerOnContactComponent.class);
     public static final ComponentMapper<AIComponent> AI = ComponentMapper.getFor(AIComponent.class);
     public static final ComponentMapper<HealthComponent> health = ComponentMapper.getFor(HealthComponent.class);
     public static final ComponentMapper<DestructableBlockComponent> block = ComponentMapper.getFor(DestructableBlockComponent.class);
@@ -42,6 +42,8 @@ public class ComponentMappers {
     public static final ComponentMapper<BombComponent> bomb = ComponentMapper.getFor(BombComponent.class);
     public static final ComponentMapper<SoundEmitterComponent> soundEmitter = ComponentMapper.getFor(SoundEmitterComponent.class);
     public static final ComponentMapper<DeathTimerComponent> deathTimer = ComponentMapper.getFor(DeathTimerComponent.class);
+    public static final ComponentMapper<DirectionComponent> direction = ComponentMapper.getFor(DirectionComponent.class);
+    
     public static final ComponentMapper<DamageComponent> damage = ComponentMapper.getFor(DamageComponent.class);
 
 }

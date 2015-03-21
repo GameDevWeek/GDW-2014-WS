@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.game.contactlisteners;
 
+import java.util.Random;
 import javax.print.attribute.standard.MediaSize.Other;
 
 import de.hochschuletrier.gdw.ws1415.Settings;
@@ -15,6 +16,8 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector2;
 
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -39,33 +42,45 @@ public class PlayerContactListener extends PhysixContactAdapter {
     }
 
     public void beginContact(PhysixContact contact) {
-
-        Entity player = contact.getMyComponent().getEntity();
-        Entity otherEntity = contact.getOtherComponent().getEntity();
-        AnimationComponent anim = player.getComponent(AnimationComponent.class);
-
-        if(player.getComponent(PlayerComponent.class) == null) // swap player
-        {
-            Entity tmp = otherEntity;
-            otherEntity = player;
-            player = tmp;
-        }
-
-        PositionComponent PlayerPosComp = player.getComponent(PositionComponent.class);
-        Vector2 PlayerPos = new Vector2(PlayerPosComp.x, PlayerPosComp.y);
-        
-        PositionComponent OtherPosComp = player.getComponent(PositionComponent.class);
-        Vector2 OtherPos = new Vector2(OtherPosComp.x, OtherPosComp.y);
-        
-        //boolean IsFromAbove 
         
         if (contact.getOtherComponent() == null)
             return;
 
-        // Entity myEntity = contact.getMyComponent().getEntity(); //
+        Entity player = contact.getMyComponent().getEntity();
+        Entity otherEntity = contact.getOtherComponent().getEntity();
+        
+        PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
+        if("jump".equals(contact.getMyFixture().getUserData())){
+            JumpComponent jump = ComponentMappers.jump.get(player);
+            if(jump.groundContacts==0)
+            {
+                jump.justLanded = true;
+            }
+            jump.groundContacts++;
+            if(otherEntity.getComponent(PlatformComponent.class) != null) {
+                player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
+            }
+            if(ComponentMappers.killsPlayerOnContact.has(otherEntity) && ComponentMappers.health.has(otherEntity))
+            {
+                HealthComponent Health = otherEntity.getComponent(HealthComponent.class);
+                otherEntity.getComponent(DamageComponent.class).damageToPlayer = false;
+                Health.DecrementByValueNextFrame += 1;
+                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = 0;
+            }
+            return;
+        }
+        
+        AnimationComponent anim = player.getComponent(AnimationComponent.class);
         
         if(otherEntity.getComponent(MinerComponent.class) != null){
             otherEntity.getComponent(HealthComponent.class).Value = 0;
+            //play Sound
+            Random rm=new Random();
+            int i=rm.nextInt(3)+1;//1-3
+            System.out.println("saveSaound "+i);
+            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free"+i), false);
+//            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free2"), false);
+//            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free3"), false);
         }
         
         if(otherEntity.getComponent(GoalComponent.class) != null){
@@ -77,6 +92,17 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 int saved_miners = scoreSys.player.getComponent(PlayerComponent.class).saved_miners;
                 int destroyed_blocks = scoreSys.player.getComponent(PlayerComponent.class).destroyed_blocks;
                 int miners_threshold = scoreSys.goal.getComponent(GoalComponent.class).miners_threshold;
+                Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
+                logger.info("Your score is: " + Score.score);
+                
+                // ***** Sound *****
+                Random rm=new Random();
+                int i=rm.nextInt(3)+1;//1-3
+                logger.info("GlorySound "+i);
+                SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("glory"+i), false);
+                
+                Settings.HIGHSCORE.set(""+Score.score);
+                Game.loadLevel();
                 if(scoreSys.scoreCanBeRegistered){
                     Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
                     logger.info("Your score is: " + Score.score);
@@ -107,30 +133,28 @@ public class PlayerContactListener extends PhysixContactAdapter {
         
 
         
-        if ((ComponentMappers.enemy.has(otherEntity) ||  // enemys + lava
+
+        if ((ComponentMappers.killsPlayerOnContact.has(otherEntity) ||  // enemys + lava
                 ComponentMappers.spikes.has(otherEntity) ||
                 ComponentMappers.lavaBall.has(otherEntity)
-                ) && 
-                contact.getWorldManifold().getNormal().y > 0) {
+                )) {
             // player touched an enemy
-            if (otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
+            boolean IsAlive = true;
+            if(ComponentMappers.health.has(otherEntity))
+            {
+                HealthComponent Health = ComponentMappers.health.get(otherEntity);
+                IsAlive = (Health.Value - Health.DecrementByValueNextFrame) > 0;
+            }
+            
+            if (IsAlive && otherEntity.getComponent(DamageComponent.class).damageToPlayer) {
                 logger.info(contact.getWorldManifold().getNormal().toString());
-                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
+                if(player.getComponent(HealthComponent.class) != null){
+                    player.getComponent(HealthComponent.class).DecrementByValueNextFrame = otherEntity.getComponent(DamageComponent.class).damage;
+                }
+                
             }
         }
         
-        PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
-        if("jump".equals(contact.getMyFixture().getUserData())){
-            JumpComponent jump = ComponentMappers.jump.get(player);
-            if(jump.groundContacts==0)
-            {
-                jump.justLanded = true;
-            }
-            jump.groundContacts++;
-            if(otherEntity.getComponent(PlatformComponent.class) != null) {
-                player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
-            }
-        }
 
         
         //WiP
