@@ -3,82 +3,183 @@
  <properties>
   <property name="Background" value="Hintergrund1.png"/>
  </properties>
- <tileset firstgid="1" name="destructable_block" tilewidth="64" tileheight="64" spacing="64" margin="64">
-  <properties>
-   <property name="animationDuration" value="1"/>
-   <property name="animationFrames" value="6"/>
-   <property name="animationOffset" value="1"/>
-  </properties>
-  <image source="tilesets/destructable_block.png" width="832" height="192"/>
+ <tileset firstgid="1" source="tilesets/destructable_block.tsx"/>
+ <tileset firstgid="7" source="tilesets/rest.tsx"/>
+ <tileset firstgid="15" source="tilesets/lava.tsx"/>
+ <tileset firstgid="23" source="tilesets/zacken.tsx"/>
+ <tileset firstgid="26" name="deco" tilewidth="64" tileheight="64" spacing="64" margin="64">
+  <image source="tilesets/deco.png" width="960" height="320"/>
   <tile id="0">
    <properties>
-    <property name="Hitpoints" value="1"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block1Background"/>
+    <property name="Colour" value="blue"/>
+    <property name="Direction" value="0.0"/>
+    <property name="Distance" value="3.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="cone"/>
+    <property name="Name" value="Lamp1"/>
+    <property name="Radius" value="60.0"/>
     <property name="Type" value="Deko"/>
+    <property name="XOffset" value="32.0"/>
+    <property name="YOffset" value="32.0"/>
    </properties>
   </tile>
   <tile id="1">
    <properties>
-    <property name="Name" value="Block2Background"/>
+    <property name="Colour" value="blue"/>
+    <property name="Direction" value="0.0"/>
+    <property name="Distance" value="3.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="cone"/>
+    <property name="Name" value="Lamp2"/>
+    <property name="Radius" value="60.0"/>
     <property name="Type" value="Deko"/>
+    <property name="XOffset" value="32.0"/>
+    <property name="YOffset" value="32.0"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
-    <property name="Hitpoints" value="3"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block3Background"/>
+    <property name="Colour" value="blue"/>
+    <property name="Direction" value="0.0"/>
+    <property name="Distance" value="3.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="cone"/>
+    <property name="Name" value="Lamp3"/>
+    <property name="Radius" value="60.0"/>
     <property name="Type" value="Deko"/>
+    <property name="XOffset" value="32.0"/>
+    <property name="YOffset" value="32.0"/>
    </properties>
   </tile>
   <tile id="3">
    <properties>
-    <property name="Hitpoints" value="4"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block4Background"/>
+    <property name="Colour" value="yellow"/>
+    <property name="Distance" value="3.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="point"/>
+    <property name="Name" value="Lamp4"/>
     <property name="Type" value="Deko"/>
+    <property name="XOffset" value="32.0"/>
+    <property name="YOffset" value="32.0"/>
    </properties>
   </tile>
   <tile id="4">
    <properties>
-    <property name="Hitpoints" value="5"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block5Background"/>
+    <property name="Colour" value="yellow"/>
+    <property name="Distance" value="3.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="point"/>
+    <property name="Name" value="Lamp5"/>
     <property name="Type" value="Deko"/>
+    <property name="XOffset" value="32.0"/>
+    <property name="YOffset" value="48.0"/>
    </properties>
   </tile>
   <tile id="5">
    <properties>
-    <property name="Hitpoints" value="6"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block6Background"/>
+    <property name="Colour" value="yellow"/>
+    <property name="Distance" value="3.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="point"/>
+    <property name="Name" value="Lamp6"/>
+    <property name="Type" value="Deko"/>
+    <property name="XOffset" value="32.0"/>
+    <property name="YOffset" value="48.0"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Type" value="Deko"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Type" value="Deko"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="Invulnerable" value="true"/>
+    <property name="Type" value="Deko"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="Colour" value="yellow"/>
+    <property name="Distance" value="5.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="cone"/>
+    <property name="Name" value="Lamp7"/>
+    <property name="Type" value="Deko"/>
+    <property name="XOffset" value="32.0"/>
+    <property name="YOffset" value="48.0"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="Colour" value="yellow"/>
+    <property name="Distance" value="3.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="point"/>
+    <property name="Name" value="Lamp8"/>
+    <property name="Type" value="Deko"/>
+    <property name="XOffset" value="32.0"/>
+    <property name="YOffset" value="48.0"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="Colour" value="yellow"/>
+    <property name="Distance" value="3.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="point"/>
+    <property name="Name" value="Lamp9"/>
+    <property name="Type" value="Deko"/>
+    <property name="XOffset" value="32.0"/>
+    <property name="YOffset" value="32.0"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="Colour" value="yellow"/>
+    <property name="Distance" value="3.0"/>
+    <property name="Invulnerable" value="true"/>
+    <property name="Light" value="true"/>
+    <property name="LightType" value="point"/>
+    <property name="Name" value="Lamp10"/>
+    <property name="Type" value="Deko"/>
+    <property name="XOffset" value="48.0"/>
+    <property name="YOffset" value="32.0"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="Invulnerable" value="true"/>
     <property name="Type" value="Deko"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="7" source="tilesets/rest.tsx"/>
- <tileset firstgid="15" source="tilesets/lava.tsx"/>
- <tileset firstgid="23" source="tilesets/zacken.tsx"/>
- <tileset firstgid="26" source="tilesets/deco.tsx"/>
  <tileset firstgid="40" source="tilesets/background_block.tsx"/>
  <tileset firstgid="46" source="tilesets/bomb.tsx"/>
  <tileset firstgid="48" source="tilesets/deco_gross.tsx"/>
  <tileset firstgid="51" source="tilesets/TutorialSchild.tsx"/>
- <layer name="Mittellayer" width="75" height="20">
-  <properties>
-   <property name="Parallax" value="0,5"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJztzskJACAMAMF49l+yKcGXQZiB/W8EAAAAcKNlPRvVIx+Y2cp29QgAPHQAsRQAFg==
-  </data>
- </layer>
  <layer name="Spielebene" width="75" height="20">
   <properties>
-   <property name="Parallax" value="1,0"/>
+   <property name="Parallax" value="1.0"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztVmkLwyAMdUfHthZ2b7D73rex4///t1moIKIx1tji6INHm80k9hk1GWMsa4hmAzsarfD4B616ACnhqhV1fgpQaCN0gHQPVVcfx/E+NeGrlaxBApBCK12MMnFXEl0ga/Vkbtqp8+wCpKornVZVwbZvTgY/3bd3AOrGv0rMV8RJDTFtvj7AnDHYum8D9O3FVPvi9JX6GAJvpL/rPQitZQug7x6kOuuq6p1t/qHuQap7oSqE1jkkYuuDXeYr74GEKHdMwGqVj9lwrjm3FeYtEzPU+RfbPqgTrlrtiufX8P8eEeMgvZ+L5xWZ39YX3Ax+d8PvR84HMrdch6lijzjHDF+/g8LuKzmGQE6Zph4yBs4454Fii3WYcE4jsetehwXnMhI7n/cPoFUaeA==
+   eJztlocKwjAQhuPEBW4F996K4/3fzSu0EEpyuTTXSqQ/fLTR5C79M1tCiFYOmVxm5V7R9Q9eVRE4ZesVd34OcXgT+YD5nta8elvWd5kTrl7JHlQQOLxSxUgSdyxhI9mrh7DzLt7PMgLXvFJ5lZVM62ataaf69hKCqv4zQX+jOE1NTFNbF1H2GOq8LyK43sXi5a3VV6pjRHoR29ueg9hYFhBc1yDXXpfV3dnUPq1zkOtcyEqcPp+AM3Bx7VSC3D5I7u8VuAF3Q92AClNun0Qd26DOFJgAswzzJomZ1v7n2zr4pWy9mofPj+b/BSHGUnrfhM8dMb/pXrDXtDtofl8BR2JueR42Y+U20BH0+VsPy7VYjgaSU0Z3h/SBPjBIKXY0Dl2g50n51+MwBEaelIN+fwFQyBt3
   </data>
  </layer>
  <objectgroup name="Objektebene 1">
