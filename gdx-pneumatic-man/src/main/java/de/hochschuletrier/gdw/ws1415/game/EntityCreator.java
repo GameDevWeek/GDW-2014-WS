@@ -242,6 +242,7 @@ public class EntityCreator {
         entity.add(bodyComponent);
         AIComponent ai = new AIComponent();
         ai.type = type;
+        ai.AItimer = 5;
         entity.add(ai);
 
         MovementComponent movementComponent = engine.createComponent(MovementComponent.class);

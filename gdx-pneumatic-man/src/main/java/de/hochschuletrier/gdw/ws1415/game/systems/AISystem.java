@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
@@ -14,6 +15,7 @@ import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
+import java.util.Random;
 
 public class AISystem extends IteratingSystem {
 
@@ -55,6 +57,7 @@ public class AISystem extends IteratingSystem {
         AIComponent aiComponent = ComponentMappers.AI.get(entity);
         DirectionComponent directionComponent = ComponentMappers.direction.get(entity);
         JumpComponent jumpComponent = ComponentMappers.jump.get(entity);
+        SoundEmitterComponent soundEmitterComponent = ComponentMappers.soundEmitter.get(entity);
 
         // search if left/right is blocked with RayCasts
         aiComponent.leftBlocked = false;
@@ -109,6 +112,16 @@ public class AISystem extends IteratingSystem {
 
         // dog
         if (aiComponent.type == AIType.DOG) {
+            aiComponent.AItimer -= deltaTime;
+            if (aiComponent.AItimer <= 0) {
+                // sound
+                if (soundEmitterComponent != null) {
+                    soundEmitterComponent.emitter.play(
+                            EntityCreator.assetManager.getSound("alienBark" + (((int) ((Math.random() * 10)) % 4) + 1)),
+                            false);
+                }
+                aiComponent.AItimer = 5.0f + (float) Math.random() / 20f;
+            }
             if (directionComponent.facingDirection.equals(Direction.RIGHT)
                     && (aiComponent.rightBlocked
                     || !aiComponent.rightGroundPresent)) {
@@ -127,6 +140,13 @@ public class AISystem extends IteratingSystem {
         if (aiComponent.type == AIType.CHAMELEON) {
             aiComponent.AItimer -= deltaTime;
             if (aiComponent.AItimer <= 0) {
+                // sound
+                if (soundEmitterComponent != null) {
+                    soundEmitterComponent.emitter.play(
+                            EntityCreator.assetManager.getSound("guardGrunt" + (((int) ((Math.random() * 10)) % 4) + 1)),
+                            false);
+                }
+                // jump
                 movementComponent.setVelocity(Vector2.Zero);
                 physicBodyComponent.applyImpulse(0, jumpComponent.jumpSpeed);
                 aiComponent.AItimer = 5.0f + (float) Math.random() / 20f;
