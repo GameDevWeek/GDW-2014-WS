@@ -96,13 +96,14 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
                     if(Health.health == HealthComponent.HealthState.DEAD) {
                         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
-                            PhysixBodyComponent bodyComponent = fixture.getUserData() instanceof PhysixBodyComponent ?
-                                    (PhysixBodyComponent) fixture.getUserData() : null;
+                            Object bodyUserData = fixture.getBody().getUserData();
+                            PhysixBodyComponent bodyComponent = bodyUserData instanceof PhysixBodyComponent ?
+                                    (PhysixBodyComponent) bodyUserData : null;
                             if (bodyComponent != null && ComponentMappers.spikes.has(bodyComponent.getEntity())) {
 
-                                bodyComponent.getBody().setGravityScale(1);
-                                bodyComponent.getBody().setAwake(true);
-                                bodyComponent.getBody().setActive(true);
+                                bodyComponent.setGravityScale(1);
+                                bodyComponent.setAwake(true);
+                                bodyComponent.setActive(true);
                                 bodyComponent.getBody().getFixtureList().forEach(f -> f.setSensor(false));
 
                                 AnimationComponent animationComponent = ComponentMappers.animation.get(bodyComponent.getEntity());

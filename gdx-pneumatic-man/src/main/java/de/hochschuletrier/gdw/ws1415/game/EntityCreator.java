@@ -49,28 +49,10 @@ public class EntityCreator {
     
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
-
-        entity.add(engine.createComponent(DamageComponent.class));
-        entity.add(engine.createComponent(InputComponent.class));
+        
         entity.add(engine.createComponent(PlayerComponent.class));
-        
-        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
-        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("laser"));
-        
-        pe.loop=true;
-        pe.particleEffect.flipY();
-        pe.particleEffect.start();
-        pe.offsetY = 60f;
-        pe.offsetX = -7f;
-        entity.add(pe);
 
         //addTestParticleAndLightComponent(entity);
-        
-//        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
-
-        HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 1;
-        entity.add(Health);
 
         float width = GameConstants.getTileSizeX() * 0.9f;
         float height = GameConstants.getTileSizeY() * 1.5f;
@@ -84,29 +66,26 @@ public class EntityCreator {
         // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0f)
-                .shapeCircle(width * 0.1f, new Vector2(0, -height * 0.4f));
+                .shapeCircle(width * 0.05f, new Vector2(0, -height * 0.4f));
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1f).friction(0f).restitution(0f)
-        .shapeBox(width * 0.2f, height * 0.5f, new Vector2(0, height * 0.2f), 0);
+        .shapeBox(width * 0.1f, height * 0.5f, new Vector2(0, height * 0.2f), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
 
         fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1).friction(0).restitution(0f)
         .shapeCircle(width*0.4f,new Vector2(0,-height * 0.1f)).sensor(true);
         fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
 
 
         //laser
         fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(10f).restitution(0f)
+                .density(1).friction(0f).restitution(0f)
                 .shapeCircle(width * 0.1f, new Vector2(0, GameConstants.getTileSizeY()*0.68f));
         fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
+        fixture.setUserData("laser");
         
         //jump contact
         fixtureDef = new PhysixFixtureDef(physixSystem)
@@ -118,7 +97,7 @@ public class EntityCreator {
         entity.add(bodyComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpImpulse = 725.0f;
+        jumpComponent.jumpSpeed = 900.0f;
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
@@ -135,19 +114,49 @@ public class EntityCreator {
         // ***** temporary *****
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = true;
-        anim.animation = assetManager.getAnimation("char_idle");
+        anim.isSpawningPlayer = true;
+        anim.animation = assetManager.getAnimation("char_spawn");
         entity.add(anim);
-        
-        JumpableAnimationComponent jumpable = engine.createComponent(JumpableAnimationComponent.class);
-        jumpable.idle = anim.animation;
-        jumpable.jump = assetManager.getAnimation("char_jump");
-        entity.add(jumpable);
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
         layer.layer = 10; // TODO: Change later
         entity.add(layer);
 
         engine.addEntity(entity);
+        return entity;
+    }
+    
+    public static Entity modifyPlayerToLiving(Entity entity) {
+        //Entity dyingEntity = engine.createEntity();
+        
+        entity.add(engine.createComponent(DamageComponent.class));
+        entity.add(engine.createComponent(InputComponent.class));
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("laser"));
+        
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        pe.offsetY = 60f;
+        pe.offsetX = -7f;
+        entity.add(pe);
+
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        entity.add(Health);
+        
+        final AnimationComponent animation = ComponentMappers.animation.get(entity);
+        animation.animation = assetManager.getAnimation("char_idle");
+        animation.isSpawningPlayer = false;
+        
+        JumpableAnimationComponent jumpable = engine.createComponent(JumpableAnimationComponent.class);
+        jumpable.idle = animation.animation;
+        jumpable.jump = assetManager.getAnimation("char_jump");
+        entity.add(jumpable);
+
+        animation.stateTime = 0;
+        animation.animationFinished = false;
+
         return entity;
     }
     
@@ -206,8 +215,7 @@ public class EntityCreator {
         PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0f).restitution(0f)
                 .shapeBox(width, height);
-        Fixture fixture = bodyComponent.createFixture(pfx);
-        fixture.setUserData(bodyComponent);
+        bodyComponent.createFixture(pfx);
         entity.add(bodyComponent);
         AIComponent ai = new AIComponent();
         ai.type = type;
@@ -221,7 +229,7 @@ public class EntityCreator {
         entity.add(movementComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        jumpComponent.jumpImpulse = 12000.0f;
+        jumpComponent.jumpSpeed = 12000.0f;
         jumpComponent.restingTime = 0.003f;
         entity.add(jumpComponent);
 
@@ -282,8 +290,7 @@ public class EntityCreator {
         PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).restitution(0.1f)
                 .shapeBox(width, height);
-        Fixture fixture = bodyComponent.createFixture(pfx);
-        fixture.setUserData(bodyComponent);
+        bodyComponent.createFixture(pfx);
         Miner.add(bodyComponent);
         
         LayerComponent layer = engine.createComponent(LayerComponent.class);
@@ -315,9 +322,8 @@ public class EntityCreator {
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0.1f)
                 .shapeBox(width, height).sensor(true);
-        Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
-        goal.add(bodyComponent);;
+        bodyComponent.createFixture(fixtureDef);
+        goal.add(bodyComponent);
 
         engine.addEntity(goal);
         return goal;
@@ -357,8 +363,7 @@ public class EntityCreator {
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
                 .restitution(0.1f);
-        Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
+        bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
 
         FallingRockComponent rockComponent = new FallingRockComponent();
@@ -399,8 +404,7 @@ public class EntityCreator {
                 .shapeBox(dx, dy)
                 .restitution(0.1f)
                 .sensor(true);
-        Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
+        bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
 
         FallingRockTriggerComponent rockComponent = new FallingRockTriggerComponent();
@@ -455,8 +459,7 @@ public class EntityCreator {
                 .density(1f).friction(1f).shapeBox(width, height)
                 .restitution(0.1f);
         fixtureDef.sensor(true);
-        Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(entity);
+        bodyComponent.createFixture(fixtureDef);
 
         KillsPlayerOnContactComponent killComponent = engine
                 .createComponent(KillsPlayerOnContactComponent.class);
@@ -482,8 +485,7 @@ public class EntityCreator {
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(density).friction(friction).shapeBox(width, height)
                 .restitution(restitution);
-        Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
+        bodyComponent.createFixture(fixtureDef);
         return bodyComponent;
     }
     
@@ -506,8 +508,7 @@ public class EntityCreator {
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(500).friction(1f).shapeBox(boxWidth, boxHeight)
                 .restitution(0.1f);
-        Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(bodyComponent);
+        bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
 
         PlatformComponent pl = new PlatformComponent();
@@ -563,8 +564,7 @@ public class EntityCreator {
                         direction.toVector2().scl(GameConstants.getTileSizeX() * 0.1f), 0)
                 .restitution(0f)
                 .sensor(true);
-        Fixture fixtureSpikeGround = bodyComponent.createFixture(fixtureDefSpikeGround);
-        fixtureSpikeGround.setUserData(bodyComponent);
+        bodyComponent.createFixture(fixtureDefSpikeGround);
 
         entity.add(bodyComponent);
 
@@ -797,8 +797,7 @@ public class EntityCreator {
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1f).friction(1f).shapeCircle(radius)
                 .restitution(0.1f);
-        Fixture fixture = bodyComponent.createFixture(fixtureDef);
-        fixture.setUserData(entity);
+        bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
         
         MovementComponent moveComponent = engine.createComponent(MovementComponent.class);

@@ -36,9 +36,9 @@ public class DestroyBlocksSystem extends IteratingSystem {
                 Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(1.4f)); // FIXME MAGIC NUMBER
 
                 EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
-                    PhysixBodyComponent bodyComponent = fixture.getUserData() instanceof PhysixBodyComponent ?
-                            (PhysixBodyComponent) fixture.getUserData() : null;
-                    if (bodyComponent != null) {
+                    Object bodyUserData = fixture.getBody().getUserData();
+                    if (bodyUserData instanceof PhysixBodyComponent) {
+                        PhysixBodyComponent bodyComponent = (PhysixBodyComponent) bodyUserData;
                         if (ComponentMappers.block.has(bodyComponent.getEntity())
                                 && ComponentMappers.health.has(bodyComponent.getEntity())) {
                             HealthComponent healthComponent = ComponentMappers.health.get(bodyComponent.getEntity());
