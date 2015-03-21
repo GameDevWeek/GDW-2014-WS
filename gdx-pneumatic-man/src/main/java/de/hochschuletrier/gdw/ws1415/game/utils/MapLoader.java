@@ -302,8 +302,14 @@ public class MapLoader
                             int distance = (int)obj.getDoubleProperty("Distance", 0.0);
                             int hitpoints = obj.getIntProperty("Hitpoints", 0);
                             float speed = obj.getFloatProperty("Speed", 0);
-                            if(hitpoints == 0)
+                            if(hitpoints == 0){
                                 EntityCreator.IndestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode);
+                                if(obj.getProperty("Name", "").equalsIgnoreCase("SpawnAndLevelEnd")){
+                                    float x = obj.getX() * map.getTileWidth() + 0.5f * map.getTileWidth();
+                                    float y = obj.getY() * map.getTileHeight() + 0.5f * map.getTileHeight();
+                                    EntityCreator.createPointLight(x, y, 0f, -10f, new Color(1f, 1f, 1f, 1f), 2f, true);
+                                }
+                            }
                             else
                                 EntityCreator.DestructablePlattformBlock(obj.getX(), obj.getY(), distance, dir, speed, mode, hitpoints);
                         }
