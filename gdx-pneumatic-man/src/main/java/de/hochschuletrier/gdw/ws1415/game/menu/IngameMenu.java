@@ -10,11 +10,11 @@ import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 public class IngameMenu extends MenuPage
 {
     
-    DecoImage backToGame = new DecoImage(assetManager.getTexture("start_button"));
-    DecoImage restart = new DecoImage(assetManager.getTexture("credits_button"));
+    DecoImage backToGame = new DecoImage(assetManager.getTexture("resume_button_inactive"));
+    DecoImage restart = new DecoImage(assetManager.getTexture("restart_button_inactive"));
     DecoImage optionen = new DecoImage(assetManager.getTexture("optionen_button"));
-    DecoImage mainMenu = new DecoImage(assetManager.getTexture("credits_button"));
-    DecoImage quit = new DecoImage(assetManager.getTexture("beenden_button"));
+    DecoImage mainMenu = new DecoImage(assetManager.getTexture("mainmenu_button_inactive"));
+    DecoImage quit = new DecoImage(assetManager.getTexture("quit_button_inactive"));
     
     public enum Type
     {
