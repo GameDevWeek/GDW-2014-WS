@@ -449,10 +449,6 @@ public class EntityCreator {
         Health.Value = health;
         entity.add(Health);
 
-        DeathTimerComponent DeathTimer = engine.createComponent(DeathTimerComponent.class);
-        DeathTimer.deathTimer = 0.05f;
-        entity.add(DeathTimer);
-
         engine.addEntity(entity);
         return entity;
 
