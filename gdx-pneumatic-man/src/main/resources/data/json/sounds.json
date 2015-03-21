@@ -58,6 +58,6 @@
 	"pneu3": "data/sounds/pneu3.wav",
 	"stoneDrops": "data/sounds/stoneDrop3.wav",
 	"stoneHit1": "data/sounds/stoneHit1.wav",
-	
+	"stoneHit2": "data/sounds/stoneHit2.wav",
 	"stoneHit3": "data/sounds/stoneHit3.wav"
 }

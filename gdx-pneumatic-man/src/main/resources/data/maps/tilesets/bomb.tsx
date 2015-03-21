@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset name="bomb" tilewidth="64" tileheight="64" spacing="64" margin="64">
  <properties>
-  <property name="AnimationDuration" value="0.4"/>
-  <property name="AnimationFrames" value="2"/>
-  <property name="AnimationTileOffset" value="1"/>
+  <property name="animationDuration" value="0.4"/>
+  <property name="animationFrames" value="2"/>
+  <property name="animationOffset" value="1"/>
  </properties>
  <image source="bomb.png" width="320" height="192"/>
  <tile id="0">
