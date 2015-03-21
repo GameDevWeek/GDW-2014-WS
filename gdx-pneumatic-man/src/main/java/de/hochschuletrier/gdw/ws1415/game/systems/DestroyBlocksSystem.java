@@ -44,7 +44,6 @@ public class DestroyBlocksSystem extends IteratingSystem {
                 {
                     HealthComponent healthComponent = ComponentMappers.health.get(bodyComponent.getEntity());
                     healthComponent.DecrementByValueNextFrame += DamageValue;
-                    
 
                     return 0;
                 }

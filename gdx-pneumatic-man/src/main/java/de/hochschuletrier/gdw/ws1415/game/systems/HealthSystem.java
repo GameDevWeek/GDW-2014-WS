@@ -108,8 +108,6 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 else if(ComponentMappers.bomb.has(entity) && Health.health == HealthState.DEAD)
                 {
                     EntityCreator.modifyBombToExplode(entity);
-
-                    
                 }else if(ComponentMappers.block.has(entity)){
                     PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
 
@@ -118,9 +116,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     
                  // ***** Sound *****
                     Random rm=new Random();
-                    int i=rm.nextInt(4)+1;//1-4
-                    logger.info("Debris "+i);
-                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("debris"+i), false);
+                    int i= 1 + rm.nextInt(4);//1-4
+                    //Sound handling here
+                    //logger.info("Debris "+i);
+                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("debris"+i), false);
 
                     if(Health.health == HealthComponent.HealthState.DEAD) {
                         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
@@ -146,7 +145,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else
                 {
-                    //if(Health.health != HealthState.DYING)
+                    if(Health.health != HealthState.DYING)
                     {
                         logger.info(entity.getId() + " removed");
                         PostUpdateRemovals.add(entity);
