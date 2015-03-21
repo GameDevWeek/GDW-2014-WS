@@ -681,7 +681,7 @@ public class EntityCreator {
         return new Entity();
     }
     
-    public static Entity createAndAddDeko(float x, float y, float dir,float distance,float radius, Color color, boolean light )
+    public static Entity createAndAddDeko(float x, float y,float xOffset, float yOffset, float dir,float distance,float radius, Color color, boolean light, boolean lightType )
     {
         Entity e = engine.createEntity();
         
@@ -689,14 +689,25 @@ public class EntityCreator {
         pc.x=x;
         pc.y=y;
         LayerComponent lc = engine.createComponent(LayerComponent.class);
-        ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
-        clc = engine.createComponent(ConeLightComponent.class);
-        clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
-        clc.coneLight.setStaticLight(light);
+        if(lightType == true)
+        {
+            ConeLightComponent clc = engine.createComponent(ConeLightComponent.class);
+            clc = engine.createComponent(ConeLightComponent.class);
+            clc.coneLight = new ConeLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color, distance, 0, 0, dir, radius);
+            clc.coneLight.setStaticLight(light);
+            e.add(clc);
+        }else
+        {
+            PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+            plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, color,distance,0,0);
+            plc.pointLight.setStaticLight(light);
+            plc.offsetX = xOffset;
+            plc.offsetY = yOffset;
+            e.add(plc);
+        }
         e.add(pc);
         e.add(lc);
-        e.add(clc);
-        
+
         engine.addEntity(e);
         return e;
     }

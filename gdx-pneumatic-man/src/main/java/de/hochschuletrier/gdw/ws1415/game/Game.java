@@ -46,6 +46,7 @@ public class Game {
     private static boolean loadSelectedLevel = false;
     private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
+    private final Hotkey toggleReload = new Hotkey(() -> loadSelectedLevel = true, Input.Keys.NUM_0);
 
     private  PooledEngine engine;
     private  PhysixSystem physixSystem;
@@ -83,6 +84,7 @@ public class Game {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
             togglePhysixDebug.register();
+            toggleReload.register();
         }
 
         EntityCreator.engine = this.engine;
@@ -298,7 +300,7 @@ public class Game {
 
 
         // Level reset Testing    
-        if(loadSelectedLevel || Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
+        if(loadSelectedLevel){
             loadSelectedLevel = false;
             System.out.println("Restart Level"); 
 
