@@ -39,7 +39,7 @@ public class LevelMenu extends MenuPage
 			x_step += 250;
 		}
 		
-		pointer = new DecoImage(assetManager.getTexture("level_locked"));
+		pointer = new DecoImage(assetManager.getTexture("Ico_Level_Active"));
 		addImage(x, y, (int)imageArray[0].getWidth(), (int)imageArray[0].getHeight(), pointer);
 
 		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
