@@ -6,7 +6,8 @@
         "mainMenu-Small-font": {"file": "data/fonts/verdana_32.fnt"},
         "orbitron_32": {"file": "data/fonts/OrbitronBlack_Size32.fnt"},
 	"orbitron_150" : {"file" : "data/fonts/OrbitronBlack_Size150.fnt"},
-	"orbitron_75" : {"file" : "data/fonts/OrbitronBlack_Size75.fnt"}
+	"orbitron_75" : {"file" : "data/fonts/OrbitronBlack_Size75.fnt"},
+	"orbitron_18" : {"file" : "data/fonts/OrbitronBlack_Size18.fnt"}
         
     },
     "com.badlogic.gdx.graphics.Color": {
