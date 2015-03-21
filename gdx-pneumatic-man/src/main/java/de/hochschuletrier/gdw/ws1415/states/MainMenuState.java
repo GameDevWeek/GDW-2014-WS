@@ -3,8 +3,10 @@
 import java.awt.Cursor;
 import java.awt.MouseInfo;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 import net.java.games.input.Mouse;
 
@@ -52,6 +54,7 @@ public class MainMenuState extends BaseGameState {
         music = assetManager.getMusic("menu");
         this.assetManager=assetManager;
         MusicManager.play(music, 2.0f);
+        
         
         Skin skin = Main.getInstance().getSkin();
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
@@ -121,4 +124,6 @@ public class MainMenuState extends BaseGameState {
     public void dispose() {
         menuManager.dispose();
     }
+    
+    
 }
