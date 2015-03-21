@@ -13,7 +13,7 @@ public class MainMenu extends MenuPage{
     DecoImage start = new DecoImage(assetManager.getTexture("start_button"));
     DecoImage optionen = new DecoImage(assetManager.getTexture("optionen_button"));
     DecoImage credits = new DecoImage(assetManager.getTexture("credits_button"));
-    DecoImage ende = new DecoImage(assetManager.getTexture("back_button"));
+    DecoImage ende = new DecoImage(assetManager.getTexture("exit_button"));
     DecoImage highscore = new DecoImage(assetManager.getTexture("score_button"));
     DecoImage levels = new DecoImage(assetManager.getTexture("levels_button"));
     
@@ -32,7 +32,7 @@ public class MainMenu extends MenuPage{
         super(skin,"background_menu" );
         int x = 960;
         int i = 0;
-        int y = 670;
+        int y = 700;
         int yStep = 113;
         
         //MainMenu:

@@ -22,9 +22,9 @@ public class LevelMenu extends MenuPage
 	{
 		super(skin, "background_menu");
 				
-		int x = 500;
+		int x = 490;
 		int x_step = 0;
-		int y = Main.WINDOW_HEIGHT/2 - 200;
+		int y = Main.WINDOW_HEIGHT/2 - 100;
 		int y_up = y + 200;
 		
 		addImage((int)(Main.WINDOW_WIDTH/2 - 350), 750, (int) head.getWidth(), (int) head.getHeight(), head);
@@ -39,7 +39,7 @@ public class LevelMenu extends MenuPage
 			x_step += 250;
 		}
 		
-		pointer = new DecoImage(assetManager.getTexture("level_locked"));
+		pointer = new DecoImage(assetManager.getTexture("Ico_Level_Active"));
 		addImage(x, y, (int)imageArray[0].getWidth(), (int)imageArray[0].getHeight(), pointer);
 
 		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
@@ -47,7 +47,7 @@ public class LevelMenu extends MenuPage
 	
 	private Label createLabel(int x, int y)
 	{
-	    Label label = new Label("", skin);
+	    Label label = new Label("", skin, "highscore");
 	    label.setBounds(x, y, 60, 30);
 	    addActor(label);
 	    return label;
