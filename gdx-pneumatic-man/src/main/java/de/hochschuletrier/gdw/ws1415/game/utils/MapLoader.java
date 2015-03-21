@@ -202,7 +202,12 @@ public class MapLoader {
                                             ent = EntityCreator.createAndAddInvulnerableFloor(new Rectangle(i, j, 1, 1));
                                         } else {
                                             // Verwundbare einheit erstellen
-                                            ent = EntityCreator.createAndAddVulnerableFloor(i * (float)ts.getTileWidth(), j * (float)ts.getTileHeight());
+                                            // (float x, float y, TiledMap map, TileInfo info, int tileX, int tileY)
+                                            ent = EntityCreator.createAndAddVulnerableFloor(
+                                                    i * (float)ts.getTileWidth(),
+                                                    j * (float)ts.getTileHeight(),
+                                                    tiledMap,
+                                                    tiles[i][j], i, j);
                                             // Lebenspunkte-Komponente anfügen
                                             HealthComponent hp = engine.createComponent(HealthComponent.class);
                                             hp.reset();

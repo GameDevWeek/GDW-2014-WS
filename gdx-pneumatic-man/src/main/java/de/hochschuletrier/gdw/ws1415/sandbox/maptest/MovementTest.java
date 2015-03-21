@@ -269,11 +269,9 @@ public class MovementTest extends SandboxGame {
                 Family.Builder FB = new Family.Builder();
                 Family HealthFamily = FB.one(HealthComponent.class).get();
                 ImmutableArray<Entity> HealthEntities = engine.getEntitiesFor(HealthFamily);
-                logger.info(""+HealthEntities.size());
                 for(Entity e : HealthEntities)
                 {
                     HealthComponent Health = e.getComponent(HealthComponent.class);
-                    logger.info("Health["+e.getId()+"]: "+Health.Value);
                     Health.Value -= 1;
                 }
             }
