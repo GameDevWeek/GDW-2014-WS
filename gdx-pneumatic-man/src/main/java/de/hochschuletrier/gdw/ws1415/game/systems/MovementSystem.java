@@ -90,6 +90,8 @@ public class MovementSystem extends IteratingSystem {
 
                 jump.justJumped = false;
                 if (jump.groundContacts > 0) {
+
+                    System.out.println(physix.getLinearVelocity().y+"");
                     if (input.jump) {
                         SoundEmitterComponent se = ComponentMappers.soundEmitter.get(entity);
                         if(se != null){
@@ -97,7 +99,24 @@ public class MovementSystem extends IteratingSystem {
                             se.emitter.play(EntityCreator.assetManager.getSound("jump" + ji), false);
                         }
                         jump.justJumped = true;
-                        physix.setLinearVelocityY(-jump.jumpSpeed);
+                        physix.setLinearVelocityY(-(jump.jumpSpeed));
+                        jump._AddSpeedCount = 0;
+                        //physix.setLinearVelocityY(-jump.jumpSpeed);
+                    }
+                }
+                else
+                {
+                    if(input.jump)
+                    {
+                        jump._AddSpeedCount++;
+                        if(jump._AddSpeedCount < jump.maxAddSpeedCount)
+                        {
+                            physix.setLinearVelocityY(-(jump.jumpSpeed + (jump.AddSpeed * jump._AddSpeedCount)));
+                        }
+                    }
+                    else
+                    {
+                        jump._AddSpeedCount = jump.maxAddSpeedCount; //block jump in jump
                     }
                 }
 

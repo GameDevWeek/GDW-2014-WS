@@ -145,6 +145,11 @@ public class EntityCreator {
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
         jumpComponent.jumpSpeed = 900.0f;
+        jumpComponent._AddSpeedCount = 0;
+        jumpComponent.AddSpeed = 10f;
+        jumpComponent.maxAddSpeedCount = 10;
+        // Damit bei taste gedrückt ungefähr wie vorher ( TODO: Adjust properly ) 
+        jumpComponent.jumpSpeed = ( jumpComponent.jumpSpeed - (jumpComponent.maxAddSpeedCount/3 * (jumpComponent.AddSpeed * jumpComponent.maxAddSpeedCount) ) );
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
@@ -1226,7 +1231,7 @@ public class EntityCreator {
     	
     	TileSetAnimation animation = new TileSetAnimation(
                 frames,
-                tileset.getFloatProperty("animationDuration", 1),  /// default set to 1 from 0 : editet by asset to load bomb
+                tileset.getFloatProperty("animationDuration", 0),  /// default set to 1 from 0 : editet by asset to load bomb
                 tileset.getIntProperty("animationOffset", 0));
     	
     	TextureRegion[] regions = new TextureRegion[frames];
