@@ -121,11 +121,16 @@ public class AISystem extends IteratingSystem {
             if (aiComponent.AItimer <= 0) {
                 // sound
                 if (soundEmitterComponent != null) {
-                    SoundInstance soundInst = soundEmitterComponent.emitter.play(
-                            EntityCreator.assetManager.getSound("alienBark" + (((int) ((Math.random() * 10)) % 4) + 1)),
-                            false);
-                    soundInst.setReferenceDistance(75f);
-                    soundInst.setVolume(2);
+                    try {
+                        SoundInstance soundInst = soundEmitterComponent.emitter.play(
+                                EntityCreator.assetManager.getSound("alienBark" + (((int) ((Math.random() * 10)) % 4) + 1)),
+                                false);
+                        soundInst.setReferenceDistance(75f);
+                        soundInst.setVolume(2);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                    
                 }
                 aiComponent.AItimer = 2.0f + ((float)Math.random() * 5f);
             }
@@ -152,11 +157,16 @@ public class AISystem extends IteratingSystem {
             if (aiComponent.AItimer <= 0) {
                 // sound
                 if (soundEmitterComponent != null) {
-                    SoundInstance soundInst = soundEmitterComponent.emitter.play(
-                            EntityCreator.assetManager.getSound("guardGrunt" + (((int) ((Math.random() * 10)) % 4) + 1)),
-                            false);
-                    soundInst.setReferenceDistance(75f);
-                    soundInst.setVolume(2);
+                    try {
+                        SoundInstance soundInst = soundEmitterComponent.emitter.play(
+                                EntityCreator.assetManager.getSound("guardGrunt" + (((int) ((Math.random() * 10)) % 4) + 1)),
+                                false);
+                        soundInst.setReferenceDistance(75f);
+                        soundInst.setVolume(2);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                   
                 }
                 // jump
                 physicBodyComponent.applyImpulse(0, jumpComponent.jumpSpeed);

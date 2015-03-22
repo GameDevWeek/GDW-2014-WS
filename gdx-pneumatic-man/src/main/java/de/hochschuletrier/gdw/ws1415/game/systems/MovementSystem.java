@@ -96,7 +96,12 @@ public class MovementSystem extends IteratingSystem {
                         SoundEmitterComponent se = ComponentMappers.soundEmitter.get(entity);
                         if(se != null){
                             int ji = (int) (Math.random() * 10 % 6) +1;
-                            se.emitter.play(EntityCreator.assetManager.getSound("jump" + ji), false);
+                            try {
+                                se.emitter.play(EntityCreator.assetManager.getSound("jump" + ji), false);
+
+                            } catch (Exception e) {
+                                // TODO: handle exception
+                            }
                         }
                         jump.justJumped = true;
                         physix.setLinearVelocityY(-(jump.jumpSpeed));
@@ -111,7 +116,7 @@ public class MovementSystem extends IteratingSystem {
                         jump._AddSpeedCount++;
                         if(jump._AddSpeedCount < jump.maxAddSpeedCount)
                         {
-                            physix.setLinearVelocityY(-(jump.jumpSpeed + (jump.AddSpeed * jump._AddSpeedCount)));
+                            //physix.setLinearVelocityY(-(jump.jumpSpeed + (jump.AddSpeed * jump._AddSpeedCount)));
                         }
                     }
                     else
