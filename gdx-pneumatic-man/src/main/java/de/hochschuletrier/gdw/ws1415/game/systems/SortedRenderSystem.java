@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415.game.systems;
 
 import java.util.Comparator;
 
+import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Engine;
@@ -20,6 +21,7 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
@@ -73,6 +75,8 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         this.rayHandler.setBlurNum(GameConstants.LIGHT_BLURNUM);
         this.rayHandler.setShadows(GameConstants.LIGHT_SHADOW);
         this.rayHandler.useDiffuseLight(GameConstants.LIGHT_DIFFUSE);
+        PointLight.setContactFilter(EntityCreator.WORLDSENSOR, (short) 0,
+                (short)(EntityCreator.EVERYTHING & ~EntityCreator.WORLDSENSOR));
         this.cameraSystem = cameraSystem;
         
         console = Main.getInstance().console;
