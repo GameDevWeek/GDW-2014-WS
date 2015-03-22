@@ -147,7 +147,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                         PostUpdateRemovals.add(entity);
                     }
                 }
-                else
+                else if ( ComponentMappers.AI.has(entity) && Health.health == HealthState.DEAD )
+                {
+                    entity.getComponent(AnimationComponent.class).IsActive = true;
+                }
                 {
                     if(Health.health != HealthState.DYING)
                     {

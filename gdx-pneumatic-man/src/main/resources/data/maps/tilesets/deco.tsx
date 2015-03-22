@@ -8,7 +8,7 @@
    <property name="Distance" value="3.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
-   <property name="LightType" value="cone"/>
+   <property name="LightType" value="chain"/>
    <property name="Name" value="Lamp1"/>
    <property name="Radius" value="60.0"/>
    <property name="Type" value="Deko"/>
@@ -21,7 +21,7 @@
    <property name="Distance" value="3.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
-   <property name="LightType" value="cone"/>
+   <property name="LightType" value="chain"/>
    <property name="Name" value="Lamp2"/>
    <property name="Radius" value="60.0"/>
    <property name="Type" value="Deko"/>
@@ -34,7 +34,7 @@
    <property name="Distance" value="3.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
-   <property name="LightType" value="cone"/>
+   <property name="LightType" value="chain"/>
    <property name="Name" value="Lamp3"/>
    <property name="Radius" value="60.0"/>
    <property name="Type" value="Deko"/>

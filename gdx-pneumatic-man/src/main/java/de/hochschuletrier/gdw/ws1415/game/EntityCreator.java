@@ -254,25 +254,32 @@ public class EntityCreator {
         d.facingDirection = Direction.LEFT;
         entity.add(d);
         
-        if(Health.Value == 1)
-        {
+        
+        
             AnimationComponent animation = engine.createComponent(AnimationComponent.class);
             entity.add(animation);
             animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
-                   
-            
-        }else
-        {
-            AnimationComponent animation = engine.createComponent(AnimationComponent.class);
-            entity.add(animation);
-            animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_death");
-                   
+            addLayerComponent(entity, 10, 1, 1);       
+      
+        
+                
              
-        }
-        addLayerComponent(entity, 10, 1, 1); 
+        
+        
         engine.addEntity(entity);
         return entity;
     }
+    public static Entity modifyEnemyToDying(Entity entityToDie, AIType type) 
+    {
+        AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+        animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_death");
+        animation.isDyingPlayer = true;
+        entityToDie.remove(AnimationComponent.class);
+        entityToDie.add(animation);
+        return entityToDie;
+    }
+    
+    
 
     public static Entity createAndAddEventBox(float x, float y) {
         Entity box = engine.createEntity();
