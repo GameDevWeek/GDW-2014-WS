@@ -103,19 +103,11 @@
         "playType": "NORMAL",
         "columns" : 5,
         "rows" : 1
-    },
-    "chameleon_death": {
-        "filename": "data/animations/enemy2_death.png",
-        "frames" : 15,
-        "frameDuration": [1.0],
-        "playType": "NORMAL",
-        "columns" : 4,
-        "rows" : 4
-    },
-    "dog_death": {
-        "filename": "data/animations/enemy1_death.png",
-        "frames" : 20,
-        "frameDuration": [1.0],
+    },  
+    "lava_ball" : {
+        "filename" : "data/animations/LavaBall_512.png",
+        "frames" : 16,
+        "frameDuration": [0.1],
         "playType": "NORMAL",
         "columns" : 8,
         "rows" : 3
