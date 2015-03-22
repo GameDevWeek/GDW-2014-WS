@@ -104,5 +104,14 @@
         "columns" : 5,
         "rows" : 1
     }  
+    "lavaBall" : {
+        "filename" : "data/animations/LavaBall_512.png",
+        "frames" : 16,
+        "frameDuration": [0.1],
+        "playType": "NORMAL",
+        "columns" : 8,
+        "rows" : 2
+    }  
+    
 
 }
