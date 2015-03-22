@@ -104,7 +104,7 @@
     <property name="Speed" value="2.75"/>
    </properties>
   </object>
-  <object id="20" name="LavaFountain" x="1408" y="2240" width="128" height="64">
+  <object id="20" name="LavaFountain" x="1408" y="2240" width="64" height="64">
    <properties>
     <property name="Height" value="3.0"/>
     <property name="Intervall" value="2.0"/>
@@ -113,7 +113,7 @@
     <property name="length" value="2.0"/>
    </properties>
   </object>
-  <object id="22" name="LavaFountain" x="2048" y="2240" width="128" height="64">
+  <object id="22" name="LavaFountain" x="2048" y="2240" width="64" height="64">
    <properties>
     <property name="Height" value="3.0"/>
     <property name="Intervall" value="2.0"/>

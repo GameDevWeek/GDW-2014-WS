@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -22,12 +23,12 @@ public class MenuPage extends Group {
     protected AssetManagerX assetManager = main.getAssetManager();
     protected final Skin skin;
     public static boolean abspielen = true;
-
+   
     public MenuPage(Skin skin, String background) {
         super();
         this.skin = skin;
         addActor(new DecoImage(assetManager.getTexture(background)));
-
+        
         setVisible(false);
     }
 
@@ -35,6 +36,7 @@ public class MenuPage extends Group {
     public void act(float delta) {
         if (isVisible()) {
             super.act(delta);
+            
         }
     }
 
@@ -73,8 +75,10 @@ public class MenuPage extends Group {
                     SoundEmitter.updateGlobal();
                     SoundEmitter.playGlobal(assetManager.getSound("pmCancel"),false); 
                 }
-               
+                
                 runnable.run();
+
+                
             }
             
         });
@@ -112,10 +116,17 @@ public class MenuPage extends Group {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 runnable.run();
+                
             }
         });
         addActor(button);
         return button;
+    }
+    
+    protected final Label addLabel(String text)
+    {
+    	Label label = new Label(text, skin, "highscore");
+    	return label;
     }
     
     protected final ImageButton addImageButton(int x, int y, int width, int height, Runnable runnable)
@@ -154,6 +165,8 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("butt_audio_add_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("soundDown"))
             image.setTexture(assetManager.getTexture("butt_audio_sub_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("down_button"))
+            image.setTexture(assetManager.getTexture("down_button_active"));
         
         //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_inactive"))
@@ -195,6 +208,8 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("soundDown"));
         if(image.getRegion().getTexture()==assetManager.getTexture("butt_audio_add_active"))
             image.setTexture(assetManager.getTexture("soundUp"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("down_button_active"))
+            image.setTexture(assetManager.getTexture("down_button"));
         
       //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_active"))

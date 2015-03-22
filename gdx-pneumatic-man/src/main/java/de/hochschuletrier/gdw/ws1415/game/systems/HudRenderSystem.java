@@ -25,14 +25,19 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
 
     private final CVarBool showFps = new CVarBool("hud_showFps", true, 0, "Show FPS");
     private final FpsCalculator fpsCalc = new FpsCalculator(200, 100, 16);
+    Family PlayerFamily = Family.all(PlayerComponent.class).get();
     Family goalFamily = Family.all(GoalComponent.class).get();
     private final Texture textureMinerLeft;
     private final Texture textureMinerFound;
     private final Texture textureHudStein;
     private final Texture textureHudTime;
+    
+    private Boolean requiredMinersFound;
 
     private final BitmapFont font;
     private Entity goal;
+    private Entity player;
+    
     
     private TextBounds blockbound;
     private TextBounds timebound;
@@ -68,6 +73,9 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
     
     @Override
     public void entityAdded(Entity entity) {
+        if(PlayerFamily.matches(entity)){
+            player = entity;
+        }
         if(goalFamily.matches(entity))
         {
             goal = entity;
@@ -126,7 +134,36 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
         {
             font.draw(DrawUtil.batch, "" + playerComponent.destroyed_blocks, 68, 47);
         }
+        
+//        System.out.println( goal.getComponent(GoalComponent.class).end_of_level);
+//        if(goal.getComponent(GoalComponent.class) != null)
+//        {
+//            if((goal.getComponent(GoalComponent.class).end_of_level))
+//            {
+//                System.out.println("Nicht genug Miners gefunden");
+//                font.draw(DrawUtil.batch, "Save more Miners!!!!", Gdx.graphics.getWidth()/2-250, Gdx.graphics.getHeight()/2);
+//            }
+//        }
+        
+        
+//        if(!requiredMinersFound)
+//        {
+//            if(goal != null && player != null)
+//            {
+//                if(goal.getComponent(GoalComponent.class) != null && player.getComponent(PlayerComponent.class) != null)
+//                {
+//                    if(goal.getComponent(GoalComponent.class).miners_threshold > playerComponent.saved_miners)
+//                    {
+//                        System.out.println("Nicht genug Miners gefunden");
+//                        requiredMinersFound = true;
+//                    }
+//                }
+//            }
+//        }
 
+            
+        
+        
             
         int x = 40;
         for (int i = 0; i < playerComponent.saved_miners; i++) {
@@ -136,6 +173,10 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
         
         int minimumMiners = goal.getComponent(GoalComponent.class).miners_threshold;
         int minersLeft = minimumMiners - playerComponent.saved_miners;
+        
+//        System.out.println("minimum Miners: " + minimumMiners);
+//        System.out.println("Miners left: " + minersLeft);
+        
         for (int i = 0; i < minersLeft; i++) {
             DrawUtil.draw(textureMinerLeft, x, Gdx.graphics.getHeight() - 75);
             x += 70;

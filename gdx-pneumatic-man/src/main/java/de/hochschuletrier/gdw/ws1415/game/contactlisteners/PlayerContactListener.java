@@ -81,11 +81,6 @@ public class PlayerContactListener extends PhysixContactAdapter {
         
         if(otherEntity.getComponent(MinerComponent.class) != null){
             otherEntity.getComponent(HealthComponent.class).Value = 0;
-            //play Sound
-            Random rm=new Random();
-            int i=rm.nextInt(3)+1;//1-3
-            System.out.println("saveSaouESCAPEnd "+i);
-            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free"+i), false);
         }
         
         if(otherEntity.getComponent(GoalComponent.class) != null){
@@ -97,7 +92,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 int saved_miners = scoreSys.player.getComponent(PlayerComponent.class).saved_miners;
                 int destroyed_blocks = scoreSys.player.getComponent(PlayerComponent.class).destroyed_blocks;
                 int miners_threshold = scoreSys.goal.getComponent(GoalComponent.class).miners_threshold;
-                Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
+                //Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
                 logger.info("Your score is: " + Score.score);
                 
                 // ***** Sound *****
@@ -107,10 +102,11 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("glory"+i), false);
                 
                 Settings.HIGHSCORE.set(""+Score.score);
-                Game.loadLevel();
+                //Game.loadLevel();
                 if(scoreSys.scoreCanBeRegistered){
                     Score.calculate_score(current_game_time, saved_miners, destroyed_blocks, miners_threshold);
                     logger.info("Your score is: " + Score.score);
+                    
                     scoreSys.timeSinceLastCalculation = 0;
                     scoreSys.scoreCanBeRegistered = false;
                     
@@ -216,7 +212,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
 
     private boolean isPlayerAboveContact(PhysixBodyComponent mybody, PhysixContact contact) {
         Vector2 playerPos = mybody.getBody().getPosition().cpy();
-        playerPos.y = playerPos.y + 1.8f; // magic number because player is bigger than one tile
+        playerPos.y = playerPos.y + 1.5f; // magic number because player is bigger than one tile
         Vector2 a = playerPos.sub(contact.getOtherFixture().getBody().getPosition());
         float dot = a.dot(Direction.DOWN.toVector2());
         if(dot > 0) return false;

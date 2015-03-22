@@ -102,7 +102,6 @@ public class EntityCreator {
         bodyComponent.setGravityScale(1.75f);
         // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-
                 .density(1).friction(0).restitution(0f)
                 .shapeCircle(width * 0.1f, new Vector2(0, -height * 0.4f))
                 .mask((short) (EVERYTHING))
@@ -124,7 +123,6 @@ public class EntityCreator {
 
         //laser
         fixtureDef = new PhysixFixtureDef(physixSystem)
-
                 .density(1).friction(0f).restitution(0f)
                 .shapeCircle(width * 0.1f, new Vector2(0, height * 0.425f))
                 .mask((short) (EVERYTHING))
@@ -148,6 +146,11 @@ public class EntityCreator {
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
         jumpComponent.jumpSpeed = 900.0f;
+        jumpComponent._AddSpeedCount = 0;
+        jumpComponent.AddSpeed = 10f;
+        jumpComponent.maxAddSpeedCount = 10;
+        // Damit bei taste gedrückt ungefähr wie vorher ( TODO: Adjust properly ) 
+        jumpComponent.jumpSpeed = ( jumpComponent.jumpSpeed - (jumpComponent.maxAddSpeedCount/3 * (jumpComponent.AddSpeed * jumpComponent.maxAddSpeedCount) ) );
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
@@ -330,27 +333,44 @@ public class EntityCreator {
         entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
         
-        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
-                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
-        bodyComponent.init(pbdy, physixSystem, entity);
-        PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(0f).restitution(0f)
-                .shapeBox(width, height)
-                .mask((short) (EVERYTHING))
-                .category(WORLDOBJECT);
-        bodyComponent.createFixture(pfx);
-        entity.add(bodyComponent);
+       
         AIComponent ai = new AIComponent();
         
         ai.type = type;
         entity.add(ai);
-
+        
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         MovementComponent movementComponent = engine.createComponent(MovementComponent.class);
-        if(type == AIType.CHAMELEON)
+        if(type == AIType.CHAMELEON){
+            movementComponent.speed = 100.0f;
+            
+            PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                    physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+            bodyComponent.init(pbdy, physixSystem, entity);
+            PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
+                    .density(1).friction(0f).restitution(0f)
+                    .shapeBox(width, height)
+                    .mask((short) (EVERYTHING))
+                    .category(WORLDOBJECT);
+            bodyComponent.createFixture(pfx);
+        }    
+        else{
             movementComponent.speed = 200.0f;
-        else
-            movementComponent.speed = 350.0f;
+            
+            PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                    physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+            bodyComponent.init(pbdy, physixSystem, entity);
+            PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
+                    .density(1).friction(0f).restitution(0f)
+                    .shapeBox(width, height)
+                    .mask((short) (EVERYTHING))
+                    .category(WORLDOBJECT);
+            bodyComponent.createFixture(pfx);
+            
+        }
+        entity.add(bodyComponent);
+
+            
         entity.add(movementComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
@@ -519,7 +539,8 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.setGravityScale(0);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
+                .density(1).friction(1f)
+                .shapeBox(GameConstants.getTileSizeX() * 0.95f, GameConstants.getTileSizeY() *0.95f)
                 .restitution(0).sensor(true)
                 .mask((short) (EVERYTHING))
                 .category(WORLDOBJECT);
@@ -1291,7 +1312,7 @@ public class EntityCreator {
     	
     	TileSetAnimation animation = new TileSetAnimation(
                 frames,
-                tileset.getFloatProperty("animationDuration", 1),  /// default set to 1 from 0 : editet by asset to load bomb
+                tileset.getFloatProperty("animationDuration", 0),  /// default set to 1 from 0 : editet by asset to load bomb
                 tileset.getIntProperty("animationOffset", 0));
     	
     	TextureRegion[] regions = new TextureRegion[frames];
@@ -1389,21 +1410,16 @@ public class EntityCreator {
                 .mask((short) (EVERYTHING))
                 .category(WORLDSENSOR);
         
-        // ***** Sound *****
-        try {
-            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"), false);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        
-        
         PhysixBody.createFixture(fDef);
         PhysixBody.setGravityScale(0.0f);
         
         entity.remove(PhysixBodyComponent.class);
         entity.add(PhysixBody);
         
-        
+        PositionComponent posiComp = engine.createComponent(PositionComponent.class);
+        posiComp.scaleX = 2.4f;
+        posiComp.scaleY = 2.4f;
+        entity.add(posiComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 0;
@@ -1412,6 +1428,7 @@ public class EntityCreator {
         AnimationComponent Anim = engine.createComponent(AnimationComponent.class);
         Anim.animation = assetManager.getAnimation("bomb_explosion");
         Anim.IsActive = true;
+        
 
         DeathTimerComponent DeathTimer = engine.createComponent(DeathTimerComponent.class);
         DeathTimer.deathTimer = Anim.animation.animationDuration;

@@ -1,7 +1,7 @@
 [
     {
         "name" : "level_1",
-        "levelFilePath" : "data/maps/Testkarte_19.03.tmx",
+        "levelFilePath" : "data/maps/Lavaground.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "NORMAL"
     },

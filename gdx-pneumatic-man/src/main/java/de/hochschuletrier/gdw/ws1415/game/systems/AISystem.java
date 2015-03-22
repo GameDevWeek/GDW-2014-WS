@@ -89,14 +89,14 @@ public class AISystem extends IteratingSystem {
             return 0;
         }, p1, p3);
 
-        // search ifleft/right is a block to walk on
+        // search if left/right is a block to walk on
         aiComponent.leftGroundPresent = false;
         aiComponent.rightGroundPresent = false;
         p1 = physicBodyComponent.getBody().getPosition();
-        p2 = new Vector2(p1).add(Direction.LEFT.toVector2().scl(2f))
-                .add(Direction.DOWN.toVector2().scl(3f)); // FIXME MAGIC NUMBER
-        p3 = new Vector2(p1).add(Direction.RIGHT.toVector2().scl(2f)
-                .add(Direction.DOWN.toVector2().scl(3.0f))); // FIXME MAGIC NUMBER
+        p2 = new Vector2(p1).add(Direction.LEFT.toVector2().scl(2f*0.8f))
+                .add(Direction.DOWN.toVector2().scl(3f*0.8f)); // FIXME MAGIC NUMBER
+        p3 = new Vector2(p1).add(Direction.RIGHT.toVector2().scl(2f*0.8f)
+                .add(Direction.DOWN.toVector2().scl(3.0f*0.8f))); // FIXME MAGIC NUMBER
 
         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
             PhysixBodyComponent otherPhysicsBody = (PhysixBodyComponent) fixture.getBody().getUserData();
@@ -148,6 +148,7 @@ public class AISystem extends IteratingSystem {
         //chameleon
         if (aiComponent.type == AIType.CHAMELEON) {
             aiComponent.AItimer -= deltaTime;
+            movementComponent.velocity.set(Vector2.Zero);
             if (aiComponent.AItimer <= 0) {
                 // sound
                 if (soundEmitterComponent != null) {
@@ -158,24 +159,28 @@ public class AISystem extends IteratingSystem {
                     soundInst.setVolume(2);
                 }
                 // jump
-                movementComponent.setVelocity(Vector2.Zero);
                 physicBodyComponent.applyImpulse(0, jumpComponent.jumpSpeed);
                 aiComponent.AItimer = 2.0f + ((float)Math.random() * 5f);
             } else {
-
+                
                 if (directionComponent.facingDirection.equals(Direction.RIGHT)
                         && (aiComponent.rightBlocked
-                        || !aiComponent.rightGroundPresent)) {
+                        || !aiComponent.rightGroundPresent)
+                        && aiComponent.leftGroundPresent
+                        && !aiComponent.leftBlocked) {
                     directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
                     animationComponent.flipX = false;
                 } else if (directionComponent.facingDirection.equals(Direction.LEFT)
                         && (aiComponent.leftBlocked
-                        || !aiComponent.leftGroundPresent)) {
+                        || !aiComponent.leftGroundPresent)
+                        && aiComponent.rightGroundPresent
+                        && !aiComponent.rightBlocked) {
                     directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
                     animationComponent.flipX = true;
                 }
-
-                movementComponent.velocity.set(movementComponent.speed * directionComponent.facingDirection.toVector2().x, movementComponent.velocity.y);
+                if (aiComponent.leftGroundPresent || aiComponent.rightGroundPresent) {
+                    movementComponent.velocity.set(movementComponent.speed * directionComponent.facingDirection.toVector2().x, movementComponent.velocity.y);
+                }
             }
         }
     }

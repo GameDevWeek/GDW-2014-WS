@@ -126,7 +126,7 @@
         "frameDuration": [0.1],
         "playType": "NORMAL",
         "columns" : 8,
-        "rows" : 3
+        "rows" : 2
     },
     "destructable_block": {
         "filename": "data/animations/destructable_block.png",
