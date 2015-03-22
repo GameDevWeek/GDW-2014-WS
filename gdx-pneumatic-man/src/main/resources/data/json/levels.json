@@ -1,26 +1,52 @@
 [
     {
-        "name" : "level_1",
-        "levelFilePath" : "data/maps/Testkarte_19.03.tmx",
+        "name" : "Introduction",
+        "levelFilePath" : "data/maps/Introduction.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
-        "difficulty" : "NORMAL"
+        "difficulty" : "TUTORIAL"
     },
     {
-        "name" : "level_2",
-        "levelFilePath" : "data/maps/Introduction.tmx",
+        "name" : "FirstSteps",
+        "levelFilePath" : "data/maps/FirstSteps.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "EASY"
     },
     {
-        "name" : "level_3",
-        "levelFilePath" : "data/maps/First_Steps.tmx",
+        "name" : "EasyMine",
+        "levelFilePath" : "data/maps/EasyMine.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
-        "difficulty" : "HARD"
+        "difficulty" : "EASY"
     },
     {
-        "name" : "level_4",
-        "levelFilePath" : "data/maps/Mole Spiral.tmx",
+        "name" : "MoleSpiral",
+        "levelFilePath" : "data/maps/MoleSpiral.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "MEDIUM"
+	 },
+    {
+		"name" : "HolyMoley",
+        "levelFilePath" : "data/maps/HolyMoley.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "MEDIUM"
+	 },
+    {
+		"name" : "BouncingMole",
+        "levelFilePath" : "data/maps/BouncingMole.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "HARD"
+	 },
+    {	
+		"name" : "Lavaground",
+        "levelFilePath" : "data/maps/Lavaground.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "VERY HARD"
+	 },
+    {
+		"name" : "Towers",
+        "levelFilePath" : "data/maps/Towers.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "VERY HARD"
     }
+	
+	
 ]
