@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ws1415.states;
 
-import java.awt.Toolkit;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,7 +28,7 @@ public class LoadGameState extends BaseGameState {
     	Color progressFillColor = new Color(Color.rgb888(255, 239, 1));
 
     	Main.getInstance().screenCamera.bind();
-        
+    	        
         final int width = Gdx.graphics.getWidth();
         final int height = Gdx.graphics.getHeight();
         Vector2 scaled = Scaling.fit.apply(overlay.getWidth(), overlay.getHeight(), width, height);

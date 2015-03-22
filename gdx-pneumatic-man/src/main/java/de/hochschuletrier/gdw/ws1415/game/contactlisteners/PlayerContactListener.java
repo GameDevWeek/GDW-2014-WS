@@ -216,7 +216,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
 
     private boolean isPlayerAboveContact(PhysixBodyComponent mybody, PhysixContact contact) {
         Vector2 playerPos = mybody.getBody().getPosition().cpy();
-        playerPos.y = playerPos.y + 1.8f; // magic number because player is bigger than one tile
+        playerPos.y = playerPos.y + 1.5f; // magic number because player is bigger than one tile
         Vector2 a = playerPos.sub(contact.getOtherFixture().getBody().getPosition());
         float dot = a.dot(Direction.DOWN.toVector2());
         if(dot > 0) return false;

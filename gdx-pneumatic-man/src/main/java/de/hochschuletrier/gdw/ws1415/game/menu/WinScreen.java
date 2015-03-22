@@ -1,13 +1,17 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
+import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu.Type;
+import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 
 public class WinScreen extends MenuPage
 {
@@ -21,6 +25,7 @@ public class WinScreen extends MenuPage
     private final BitmapFont font_32;
     private final BitmapFont font_75;
     private final BitmapFont font_18;
+    
     
     
     public enum Type
@@ -37,6 +42,12 @@ public class WinScreen extends MenuPage
         font_75 = assetManager.getFont("orbitron_75");
         font_18 = assetManager.getFont("orbitron_18");
         
+//        font_18.draw(batch, S, x, y)
+        
+        
+        
+        
+        
         
         for(int i = 0; i < 5; i++)
         {
@@ -48,7 +59,8 @@ public class WinScreen extends MenuPage
     
     private void nextLevel()
     {
-        Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % 2 ));
+        Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % 3 ));
+        main.changeState(new GameplayState(assetManager),new SplitHorizontalTransition(500), null);
     }
 
 }
