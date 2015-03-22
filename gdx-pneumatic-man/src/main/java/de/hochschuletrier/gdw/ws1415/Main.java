@@ -69,8 +69,6 @@ public class Main extends StateBasedGame {
     private final DevConsoleView consoleView = new DevConsoleView(console);
     private Skin skin;
     public static final InputMultiplexer inputMultiplexer = new InputMultiplexer();
-    private final CVarEnum<SoundDistanceModel> distanceModel = new CVarEnum("snd_distanceModel", SoundDistanceModel.INVERSE, SoundDistanceModel.class, 0, "sound distance model");
-    private final CVarEnum<SoundEmitter.Mode> emitterMode = new CVarEnum("snd_mode", SoundEmitter.Mode.STEREO, SoundEmitter.Mode.class, 0, "sound mode");
 
     public Main() {
         super(new BaseGameState());
@@ -125,12 +123,6 @@ public class Main extends StateBasedGame {
         inputMultiplexer.addProcessor(HotkeyManager.getInputProcessor());
 
         changeState(new LoadGameState(assetManager, this::onLoadComplete), null, null);
-
-        this.console.register(distanceModel);
-        distanceModel.addListener((CVar) -> distanceModel.get().activate());
-
-        this.console.register(emitterMode);
-        emitterMode.addListener(this::onEmitterModeChanged);
         
         SoundEmitter.setGlobalVolume(Settings.SOUND_VOLUME.get());
         MusicManager.setGlobalVolume(Settings.MUSIC_VOLUME.get());
@@ -203,18 +195,6 @@ public class Main extends StateBasedGame {
     protected void postUpdate(float delta) {
     	MusicManager.update(delta);
         postRender();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        SoundEmitter.setListenerPosition(width / 2, height / 2, 10, emitterMode.get());
-    }
-
-    public void onEmitterModeChanged(CVar cvar) {
-        int x = Gdx.graphics.getWidth() / 2;
-        int y = Gdx.graphics.getHeight() / 2;
-        SoundEmitter.setListenerPosition(x, y, 10, emitterMode.get());
     }
 
     @Override

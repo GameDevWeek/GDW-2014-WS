@@ -27,6 +27,7 @@ public class AnimationComponent extends Component implements Pool.Poolable {
     public float stateTime;
     public float permanent_stateTime;
     public boolean animationFinished;
+    public float offsetX = 0.0f;
 
     @Override
     public void reset() {
