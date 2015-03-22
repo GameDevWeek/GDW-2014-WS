@@ -9,7 +9,6 @@ import box2dLight.PointLight;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -18,13 +17,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
-import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -42,7 +39,6 @@ import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 import de.hochschuletrier.gdw.ws1415.game.utils.PlatformMode;
 
 public class EntityCreator {
@@ -50,7 +46,11 @@ public class EntityCreator {
     public static PooledEngine engine;
     public static PhysixSystem physixSystem;
     public static AssetManagerX assetManager;
-    
+
+    private static short EVERYTHING = 0xFFF;
+    private static short WORLDOBJECT = 0x002;
+    private static short WORLDSENSOR = 0x004;
+
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
         
@@ -69,12 +69,16 @@ public class EntityCreator {
         // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0f)
-                .shapeCircle(width * 0.1f, new Vector2(0, -height * 0.4f));
+                .shapeCircle(width * 0.1f, new Vector2(0, -height * 0.4f))
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1f).friction(0f).restitution(0f)
-        .shapeBox(width * 0.18f, height * 0.825f, new Vector2(0, 0), 0);
+        .shapeBox(width * 0.18f, height * 0.825f, new Vector2(0, 0), 0)
+               .mask((short)(EVERYTHING))
+               .category(WORLDOBJECT);
         fixture = bodyComponent.createFixture(fixtureDef);
 
         /*fixtureDef = new PhysixFixtureDef(physixSystem)
@@ -86,14 +90,18 @@ public class EntityCreator {
         //laser
         fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0f).restitution(0f)
-                .shapeCircle(width * 0.1f, new Vector2(0, height*0.425f));
+                .shapeCircle(width * 0.1f, new Vector2(0, height * 0.425f))
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData("laser");
         
         //jump contact
         fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1).friction(0f).restitution(0f)
-        .shapeCircle(width * 0.08f, new Vector2(0, height * 0.49f)).sensor(true);
+        .shapeCircle(width * 0.08f, new Vector2(0, height * 0.49f)).sensor(true)
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData("jump");
         
@@ -235,7 +243,9 @@ public class EntityCreator {
         bodyComponent.init(pbdy, physixSystem, entity);
         PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0f).restitution(0f)
-                .shapeBox(width, height);
+                .shapeBox(width, height)
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         bodyComponent.createFixture(pfx);
         entity.add(bodyComponent);
         AIComponent ai = new AIComponent();
@@ -284,7 +294,9 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, box);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0)
-                .shapeBox(width, height).sensor(true);
+                .shapeBox(width, height).sensor(true)
+                .mask((short) (EVERYTHING))
+                .category(WORLDSENSOR);
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData(bodyComponent);
         box.add(bodyComponent);;
@@ -316,7 +328,9 @@ public class EntityCreator {
         bodyComponent.init(pbdy, physixSystem, Miner);
         PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).restitution(0)
-                .shapeBox(width, height);
+                .shapeBox(width, height)
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         bodyComponent.createFixture(pfx);
         Miner.add(bodyComponent);
         
@@ -353,7 +367,9 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, goal);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(0).restitution(0)
-                .shapeBox(width, height).sensor(true);
+                .shapeBox(width, height).sensor(true)
+                .mask((short) (EVERYTHING))
+                .category(WORLDSENSOR);
         bodyComponent.createFixture(fixtureDef);
         goal.add(bodyComponent);
 
@@ -394,7 +410,9 @@ public class EntityCreator {
         bodyComponent.setGravityScale(0);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
-                .restitution(0).sensor(true);
+                .restitution(0).sensor(true)
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
 
@@ -436,7 +454,9 @@ public class EntityCreator {
                 .density(1).friction(1f)
                 .shapeBox(dx, dy)
                 .restitution(0)
-                .sensor(true);
+                .sensor(true)
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
 
@@ -490,7 +510,9 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(1f).friction(1f).shapeBox(width, height)
-                .restitution(0);
+                .restitution(0)
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         fixtureDef.sensor(true);
         bodyComponent.createFixture(fixtureDef);
 
@@ -522,7 +544,9 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(density).friction(friction).shapeBox(width, height)
-                .restitution(0);
+                .restitution(0)
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         bodyComponent.createFixture(fixtureDef);
         return bodyComponent;
     }
@@ -545,7 +569,9 @@ public class EntityCreator {
         bodyComponent.getBody().setGravityScale(0f);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(500).friction(1f).shapeBox(boxWidth, boxHeight)
-                .restitution(0);
+                .restitution(0)
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         bodyComponent.createFixture(fixtureDef);
         entity.add(bodyComponent);
 
@@ -606,7 +632,9 @@ public class EntityCreator {
                 .shapeBox(GameConstants.getTileSizeX() * 0.8f, GameConstants.getTileSizeY() * 0.8f,
                         direction.toVector2().scl(GameConstants.getTileSizeX() * 0.1f), 0)
                 .restitution(0f)
-                .sensor(true);
+                .sensor(true)
+                .mask((short) (EVERYTHING))
+                .category(WORLDOBJECT);
         bodyComponent.createFixture(fixtureDefSpikeGround);
 
         entity.add(bodyComponent);
@@ -883,7 +911,9 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
                 .density(0).friction(0).shapeCircle(radius)
-                .restitution(0).sensor(true);
+                .restitution(0).sensor(true)
+                .mask((short) (EVERYTHING))
+                .category(WORLDSENSOR);
         bodyComponent.createFixture(fixtureDef);
         bodyComponent.setGravityScale(0);
         entity.add(bodyComponent);
@@ -1168,7 +1198,9 @@ public class EntityCreator {
         PhysixBody.init(bDef, physixSystem, entity);
         PhysixFixtureDef fDef = new PhysixFixtureDef(physixSystem)
                                        .shapeCircle(RadiusInWorld)
-                                       .sensor(true);
+                                       .sensor(true)
+                .mask((short) (EVERYTHING))
+                .category(WORLDSENSOR);
         
         // ***** Sound *****
 
