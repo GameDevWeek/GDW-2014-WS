@@ -227,7 +227,7 @@ public class MovementTest extends SandboxGame {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map, info, 1, i, j);
+                                    map, layer, info, 1, i, j);
                         }
                     }
                 }

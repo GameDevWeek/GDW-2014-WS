@@ -13,7 +13,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -26,6 +28,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
@@ -578,10 +581,10 @@ public class EntityCreator {
     /**
      *  Destructable Block
      */
-    public static Entity createAndAddVulnerableFloor(float x, float y, TiledMap map, TileInfo info, int health,  int tileX, int tileY) {
+    public static Entity createAndAddVulnerableFloor(float x, float y, TiledMap map, Layer layer, TileInfo info, int health,  int tileX, int tileY) {
         Entity entity = engine.createEntity();
         
-        addRenderComponents(entity, map, info, tileX, tileY, PlayMode.LOOP, true); // TODO: Change as soon as design team added the animation properties.
+        addRenderComponents(entity, map, layer, info, tileX, tileY, PlayMode.LOOP, true); // TODO: Change as soon as design team added the animation properties.
         
         entity.add(defineBoxPhysixBodyComponent(entity, x, y,
                 GameConstants.getTileSizeX(), GameConstants.getTileSizeY(),
@@ -718,13 +721,13 @@ public class EntityCreator {
         return createPlatformBlock(x,y, travelDistance, dir, speed, mode);
     }
 
-    public static Entity createSpike(int x, int y, Direction direction, TileInfo info, TiledMap map){
+    public static Entity createSpike(int x, int y, Direction direction, TileInfo info, TiledMap map, Layer layer){
         Entity entity = engine.createEntity();
 
         if(direction == Direction.TOP)
-            addRenderComponents(entity, map, info, (int)x, (int)y, PlayMode.NORMAL, false);
+            addRenderComponents(entity, map, layer, info, (int)x, (int)y, PlayMode.NORMAL, false);
         else
-            addRenderComponents(entity, map, info, (int)x, (int)y);
+            addRenderComponents(entity, map, layer, info, (int)x, (int)y);
 
         PhysixBodyComponent bodyComponent = new PhysixBodyComponent();
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody, physixSystem)
@@ -1122,19 +1125,77 @@ public class EntityCreator {
     }
     
     // changed tileX and tileY form int to float   um die 2x2 DekoObjekte korrekt justieren zu koennen  @Assets(Tobi)
-    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, float tileX, float tileY) {
+    public static Entity createAndAddVisualEntity(TiledMap map, Layer layer, TileInfo info, float tileX, float tileY) {
     	Entity entity = engine.createEntity();
     	
-    	addRenderComponents(entity, map, info, tileX, tileY);
+    	addRenderComponents(entity, map, layer, info, tileX, tileY);
     	
     	engine.addEntity(entity);
     	return entity;
     }
     
-    public static Entity createAndAddVisualEntity(TiledMap map, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
+    public static Entity createAndAddVisualEntity(TiledMap map, Layer layer, TileInfo info, float tileX, float tileY, float offsetY) {
         Entity entity = engine.createEntity();
         
-        addRenderComponents(entity, map, info, tileX, tileY, playMode, start);
+        addRenderComponents(entity, map, layer, info, tileX, tileY, offsetY);
+        
+        engine.addEntity(entity);
+        return entity;
+    }
+    
+    private static Vector2 fitToCoords(TiledMap map, float x, float y, float parallax) {
+        float mapWidth = map.getWidth() * map.getTileWidth();
+        float mapHeight = map.getHeight() * map.getTileHeight();
+        
+        float tileWidth = map.getTileWidth();
+        float tileHeight = map.getTileHeight();
+        
+        Matrix4 view = new Matrix4();
+        Vector3 up = new Vector3(0, -1, 0);
+        Vector3 direction = new Vector3(0, 0, -1);
+        Vector3 viewPos = new Vector3(x*parallax - tileWidth, -y*parallax + mapHeight + tileHeight + tileHeight*0.5f, 0);
+        Vector3 tmp = new Vector3();
+        view.setToLookAt(viewPos, tmp.set(viewPos).add(direction), up);
+        view.scl(parallax);
+        
+        Vector3 pos = new Vector3(-x, y, 0);
+
+        pos.prj(view);
+        
+        return new Vector2(pos.x, pos.y);
+    }
+    
+    // TODO: remove code duplications later
+    private static void addRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY, float offsetY) {
+        TileSet tileset = map.findTileSet(info.globalId);
+        Texture image = (Texture) tileset.getAttachment();
+
+        int sheetX = tileset.getTileX(info.localId);
+        int sheetY = tileset.getTileY(info.localId);
+
+        int mapTileWidth = map.getTileWidth();
+        int mapTileHeight = map.getTileHeight();
+
+        float px = (tileX * mapTileWidth) + mapTileWidth*0.5f;
+        float py = (tileY * mapTileHeight) - offsetY + mapTileHeight*0.5f;
+        
+        int coordX = (int) (sheetX * tileset.getTileWidth()); 
+        coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
+        int coordY = ((int) sheetY * tileset.getTileHeight());
+        coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();                
+        
+        TextureRegion region = new TextureRegion(image);
+        region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
+        
+        float parallax = layer.getFloatProperty("Parallax", 1f);
+
+        addRenderComponents(entity, px, py, layer.getIndex(), parallax, image, region);
+    }
+    
+    public static Entity createAndAddVisualEntity(TiledMap map, Layer layer, TileInfo info, int tileX, int tileY, PlayMode playMode, boolean start) {
+        Entity entity = engine.createEntity();
+        
+        addRenderComponents(entity, map, layer, info, tileX, tileY, playMode, start);
         
         engine.addEntity(entity);
         return entity;
@@ -1144,8 +1205,8 @@ public class EntityCreator {
     		AnimationExtended animation, boolean start, float stateTime) {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
-        entityLayer.parallax = parallax;
-        
+        entityLayer.parallaxX = parallax;
+        entityLayer.parallaxY = 1.f; // TODO: change later
         
         AnimationComponent anim = engine.createComponent(AnimationComponent.class);
         anim.IsActive = start;
@@ -1166,7 +1227,8 @@ public class EntityCreator {
     private static void addRenderComponents(Entity entity, float x, float y, int layer, float parallax, Texture texture, TextureRegion region) {
         LayerComponent entityLayer = engine.createComponent(LayerComponent.class);
         entityLayer.layer = layer;
-        entityLayer.parallax = parallax;
+        entityLayer.parallaxX = parallax;
+        entityLayer.parallaxY = 1.f; // TODO: change later
         
         TextureComponent tex = engine.createComponent(TextureComponent.class);
         tex.texture = texture;
@@ -1186,7 +1248,7 @@ public class EntityCreator {
     /**
      * Extracts information from the map and tile info to add components to the the given entity.
      */
-    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, float tileX, float tileY) {
+    private static void addRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY) {
     	TileSet tileset = map.findTileSet(info.globalId);
     	Texture image = (Texture) tileset.getAttachment();
 
@@ -1208,15 +1270,19 @@ public class EntityCreator {
         
         TextureRegion region = new TextureRegion(image);
         region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
-        addRenderComponents(entity, px, py, 0, 0.2f, image, region);
+        
+        float parallax = layer.getFloatProperty("Parallax", 1f);
+        if(parallax < 1.f)
+            System.out.println("Layer: " + layer.getIndex() + " Parallax: " + parallax);
+        addRenderComponents(entity, px, py, layer.getIndex(), parallax, image, region);
     }
     
     /**
      * Extracts information from the map and tile info to add components to the the given entity.
      * Make sure the property "animationFrames" of the TileSet is set to greater than 1.
      */
-    private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, float tileX, float tileY, PlayMode playMode, boolean start) {
-    	TileSet tileset = map.findTileSet(info.globalId);
+    private static void addRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY, PlayMode playMode, boolean start) {
+        TileSet tileset = map.findTileSet(info.globalId);
     	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
         
     	assert(frames > 1);
@@ -1257,11 +1323,13 @@ public class EntityCreator {
     	tileset.updateAnimation(0f);
     	AnimationExtended anim = new AnimationExtended(playMode, frameDurations, regions);
 
-    	addRenderComponents(entity, px, py, 0, 0.2f, anim, start, stateTime);
+    	float parallax = layer.getFloatProperty("Parallax", 1f);
+    	
+    	addRenderComponents(entity, px, py, layer.getIndex(), parallax, anim, start, stateTime);
     }
     // ********** Rendering section END **********
 
-    public static Entity createAndAddBomb(float x, float y, TiledMap map, TileInfo info, int tileX, int tileY) {
+    public static Entity createAndAddBomb(float x, float y, TiledMap map, Layer layer, TileInfo info, int tileX, int tileY) {
         Entity Bomb = engine.createEntity();
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
@@ -1294,7 +1362,7 @@ public class EntityCreator {
         
         
         //addRenderComponents(Bomb, map, info, tileX, tileY);
-        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, false);
+        addRenderComponents(Bomb, map, layer, info, tileX, tileY, PlayMode.LOOP, false);
         
         engine.addEntity(Bomb);
         return(Bomb);

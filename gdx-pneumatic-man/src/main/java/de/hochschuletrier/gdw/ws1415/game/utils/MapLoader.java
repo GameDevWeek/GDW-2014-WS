@@ -11,12 +11,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
+import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
@@ -387,6 +389,13 @@ public class MapLoader
                             
                             switch( type )
                             {
+                                case "middeko":
+                                    TileSet tileset = map.findTileSet(tinfo.globalId);
+                                    Texture image = (Texture) tileset.getAttachment();
+                                    float offsetY = image.getHeight()*0.5f;
+                                    EntityCreator.createAndAddVisualEntity(map, layer, tiles[i][j], i, j, offsetY);
+                                    break;
+                                
                                 case "floor":
                                 {
                                     
@@ -396,12 +405,12 @@ public class MapLoader
                                         EntityCreator.createAndAddVulnerableFloor(
                                                 i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                                map, tinfo, tinfo.getIntProperty("Hitpoints", 0), i, j);
+                                                map, layer, tinfo, tinfo.getIntProperty("Hitpoints", 0), i, j);
                                                 
                                     } 
                                     if ( tinfo.getBooleanProperty("Invulnerable", false) )
                                     {
-                                        EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                        EntityCreator.createAndAddVisualEntity(map, layer, tinfo, i, j);
                                     }
                                     if ( tinfo.getProperty("Name","").equalsIgnoreCase("SpawnAndLevelEnd") )
                                     {
@@ -419,7 +428,7 @@ public class MapLoader
                                 case "spikeleft": case "spiketop": case "spikeright": case "spikedown":
                                 {
                                     Direction dir = Direction.valueOf(type.substring(5).toUpperCase());
-                                    EntityCreator.createSpike(i, j, dir, tinfo, map);
+                                    EntityCreator.createSpike(i, j, dir, tinfo, map, layer);
                                    
                                 }
                                     break;
@@ -429,7 +438,7 @@ public class MapLoader
                                             && tiles[i][j].getProperty("Type", "").equals("Lava")) 
                                     {
                                         TileInfo info = tiles[i][j];
-                                        EntityCreator.createAndAddVisualEntity(map, info, i, j, PlayMode.LOOP, true);
+                                        EntityCreator.createAndAddVisualEntity(map, layer, info, i, j, PlayMode.LOOP, true);
                                         Color color = Color.valueOf("FFF600");
                                         float x = i * map.getTileWidth()+0.5f * map.getTileWidth();
                                         float y = j * map.getTileHeight()+0.5f * map.getTileHeight();
@@ -441,7 +450,7 @@ public class MapLoader
                                 case "bomb":
                                 {
                                     EntityCreator.createAndAddBomb(i * map.getTileWidth() + 0.5f * map.getTileWidth(),
-                                                j * map.getTileHeight() + 0.5f * map.getTileHeight(), map, tinfo, i, j);
+                                                j * map.getTileHeight() + 0.5f * map.getTileHeight(), map, layer, tinfo, i, j);
                                 }
                                     break;
                                 case "deko":                                
@@ -456,18 +465,18 @@ public class MapLoader
                                     switch( map.getTileSets().get( tinfo.tileSetId ).getName().toLowerCase() )
                                     {
                                         case "deco_gross":
-                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+0.5f, j+0.5f);
+                                            EntityCreator.createAndAddVisualEntity(map, layer, tinfo, i+0.5f, j+0.5f);
                                             break;
                                         case "tutorialschild":
                                         {
                                             int add=0;
                                             if ( Settings.GAMEPAD_ENABLED.get() ) add = 1;
                                             TileInfo ti = new TileInfo( tinfo.tileSetId,tinfo.localId+add,tinfo.globalId+add,tinfo.getProperties() );
-                                            EntityCreator.createAndAddVisualEntity(map, ti, i+1, j+1);
+                                            EntityCreator.createAndAddVisualEntity(map, layer, ti, i+1, j+1);
                                         }
                                             break;
                                         default :
-                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                            EntityCreator.createAndAddVisualEntity(map, layer, tinfo, i, j);
                                             break;
                                     }
                                     
