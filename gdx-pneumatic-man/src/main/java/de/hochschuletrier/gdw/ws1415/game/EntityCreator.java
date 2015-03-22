@@ -78,9 +78,9 @@ public class EntityCreator {
     public static PhysixSystem physixSystem;
     public static AssetManagerX assetManager;
 
-    private static short EVERYTHING = 0xFFF;
-    private static short WORLDOBJECT = 0x002;
-    private static short WORLDSENSOR = 0x004;
+    public static short EVERYTHING = 0xFFF;
+    public static short WORLDOBJECT = 0x002;
+    public static short WORLDSENSOR = 0x004;
 
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
@@ -129,6 +129,7 @@ public class EntityCreator {
         
         //jump contact
         fixtureDef = new PhysixFixtureDef(physixSystem)
+
         .density(1).friction(0f).restitution(0f)
         .shapeCircle(width * 0.08f, new Vector2(0, height * 0.49f)).sensor(true)
                 .mask((short) (EVERYTHING))
@@ -252,7 +253,12 @@ public class EntityCreator {
         //***** Sounds *****
         Random rm=new Random();
         int i=rm.nextInt(3)+1;//1-3
-        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
+        try {
+            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        
         
         return entityToDie;
     }
@@ -971,7 +977,7 @@ public class EntityCreator {
         return e;
     }
     
-    public static void createLavaFountain(float x, float y, float height, float intervall, 
+    public static Entity createLavaFountain(float x, float y, float height, float intervall, 
             float intervallOffset, float length){
         Entity entity = engine.createEntity();
         
@@ -993,9 +999,10 @@ public class EntityCreator {
         entity.add(lavaFountain);
         
         engine.addEntity(entity);
+        return entity;
     }
     
-    public static void createLavaBall(float x, float y, float lavaBallSpeed, float travelLength){
+    public static Entity createLavaBall(float x, float y, float lavaBallSpeed, float travelLength){
         Entity entity = engine.createEntity();
         
         float radius = GameConstants.getTileSizeX()/2;
@@ -1057,11 +1064,14 @@ public class EntityCreator {
         pe.offsetY=40f;
         entity.add(pe);*/
         
+        SoundEmitterComponent soundEmitter = engine.createComponent(SoundEmitterComponent.class);
+        entity.add(soundEmitter);
         
         
         addLayerComponent(entity, 10, 1, 1);
         
         engine.addEntity(entity);
+        return entity;
     }
     
     
@@ -1272,10 +1282,14 @@ public class EntityCreator {
         Bomb.add(DestructableComp);
         
         DeathTimerComponent deathTimer = engine.createComponent(DeathTimerComponent.class);
-        deathTimer.deathTimer = 0.5f;
+        deathTimer.deathTimer = 0.8f;
         Bomb.add(deathTimer);
         
-
+        PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("FF7edc")),5f,0,0);
+        plc.pointLight.setActive(false);
+        Bomb.add(plc);
+        
         
         //addRenderComponents(Bomb, map, info, tileX, tileY);
         addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, false);
@@ -1304,7 +1318,6 @@ public class EntityCreator {
                                        .sensor(true)
                 .mask((short) (EVERYTHING))
                 .category(WORLDSENSOR);
-
         
         PhysixBody.createFixture(fDef);
         PhysixBody.setGravityScale(0.0f);

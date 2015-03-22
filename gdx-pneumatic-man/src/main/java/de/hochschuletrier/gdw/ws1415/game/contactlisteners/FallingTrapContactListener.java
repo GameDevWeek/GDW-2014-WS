@@ -49,6 +49,7 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
 
         DamageComponent dmg = myEntity.getComponent(DamageComponent.class);
         // ***** sound stoneDrops
+        System.out.println("stoneDrops");
         SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneDrops"), false);
 
         // ja stein kommt von oben:
@@ -68,6 +69,8 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
                 h.DecrementByValueNextFrame += dmg.damageToPlayer ? dmg.damage : 0;
             }
 
+            EntityCreator.engine.removeEntity(myEntity);
+        }else if(ComponentMappers.iblock.has(otherEntity)){
             EntityCreator.engine.removeEntity(myEntity);
         }
     }

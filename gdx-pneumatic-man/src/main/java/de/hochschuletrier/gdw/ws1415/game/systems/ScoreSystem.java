@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game.systems;
 
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +11,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.Score;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
@@ -116,6 +119,11 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
             if(player != null){
                 if(player.getComponent(PlayerComponent.class) != null){
                     player.getComponent(PlayerComponent.class).saved_miners += 1;
+                        //play Sound
+                        Random rm=new Random();
+                        int i=rm.nextInt(3)+1;//1-3
+                        System.out.println("saveSaouESCAPEnd "+i);
+                        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free"+i), false);
                     logger.info("Miners saved: " + player.getComponent(PlayerComponent.class).saved_miners);
                 }
             }
