@@ -1336,7 +1336,10 @@ public class EntityCreator {
         entity.remove(PhysixBodyComponent.class);
         entity.add(PhysixBody);
         
-        
+        PositionComponent posiComp = engine.createComponent(PositionComponent.class);
+        posiComp.scaleX = 2.4f;
+        posiComp.scaleY = 2.4f;
+        entity.add(posiComp);
 
         HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 0;
@@ -1345,6 +1348,7 @@ public class EntityCreator {
         AnimationComponent Anim = engine.createComponent(AnimationComponent.class);
         Anim.animation = assetManager.getAnimation("bomb_explosion");
         Anim.IsActive = true;
+        
 
         DeathTimerComponent DeathTimer = engine.createComponent(DeathTimerComponent.class);
         DeathTimer.deathTimer = Anim.animation.animationDuration;
