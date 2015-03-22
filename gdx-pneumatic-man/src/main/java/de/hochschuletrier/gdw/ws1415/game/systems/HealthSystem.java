@@ -165,7 +165,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 else if ( ComponentMappers.AI.has(entity) && Health.health == HealthState.DEAD )
                 {
                     entity.getComponent(AnimationComponent.class).IsActive = true;
-                }
+                }else
                 {
                     if(Health.health != HealthState.DYING)
                     {
