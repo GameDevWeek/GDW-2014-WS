@@ -49,6 +49,7 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
 
         DamageComponent dmg = myEntity.getComponent(DamageComponent.class);
         // ***** sound stoneDrops
+        System.out.println("stoneDrops");
         SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneDrops"), false);
 
         // ja stein kommt von oben:
