@@ -110,7 +110,7 @@
                 { "type": "text", "path" : "textright", "group" : "textright", "style" : "text_right", "text": "  Dominik Petersdorf", "delay": "0" },
                 
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Animation", "delay": "6000" },
-                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Hans Boehme  ", "delay": "1700" },
+                { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Hans Boehme  ", "delay": "1700" }
                 
                 
                
