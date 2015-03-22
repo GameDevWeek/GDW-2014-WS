@@ -635,6 +635,14 @@ public class EntityCreator {
         PositionComponent positionComponent = engine
                 .createComponent(PositionComponent.class);
         entity.add(positionComponent);
+        
+        float widthofLava = physixSystem.toWorld(rect.width*0.8f);
+        float widthofLavaright =physixSystem.toWorld(rect.width*0.83f);
+        float heightofLava = physixSystem.toWorld(rect.height-0.8f);
+        EntityCreator.createChainLight(x, y, 0f, 0f, new Color(Color.valueOf("FFF600")), 10f, false, new float[]{-widthofLava,heightofLava,widthofLavaright,heightofLava}, true);
+//        ChainLightComponent clc = engine.createComponent(ChainLightComponent.class);
+//        clc.chainLight = new ChainLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS,  new Color(Color.valueOf("FFF600")), 5f, -1, new float[]{-200f,-100f,200f,-100f});
+//        entity.add(clc);
 
         engine.addEntity(entity);
         return entity;

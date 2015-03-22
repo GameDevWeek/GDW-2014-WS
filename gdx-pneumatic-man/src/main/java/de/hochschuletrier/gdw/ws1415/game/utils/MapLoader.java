@@ -430,10 +430,11 @@ public class MapLoader
                                     {
                                         TileInfo info = tiles[i][j];
                                         EntityCreator.createAndAddVisualEntity(map, info, i, j, PlayMode.LOOP, true);
-                                        Color color = Color.valueOf("FFF600");
+                                     /* Color color = Color.valueOf("FFF600");
                                         float x = i * map.getTileWidth()+0.5f * map.getTileWidth();
                                         float y = j * map.getTileHeight()+0.5f * map.getTileHeight();
                                         EntityCreator.createChainLight(x, y,0,0, color, Float.parseFloat(info.getProperty("Distance", ""))+1f, false, new float[]{-32.5f,30f,32.5f,30f},true);
+                                    */
                                     }
                                 }
                                     break;
