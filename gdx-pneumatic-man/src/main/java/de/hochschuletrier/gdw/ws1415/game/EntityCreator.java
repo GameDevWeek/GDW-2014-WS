@@ -330,27 +330,44 @@ public class EntityCreator {
         entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
         
-        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
-                physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
-        bodyComponent.init(pbdy, physixSystem, entity);
-        PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(0f).restitution(0f)
-                .shapeBox(width, height)
-                .mask((short) (EVERYTHING))
-                .category(WORLDOBJECT);
-        bodyComponent.createFixture(pfx);
-        entity.add(bodyComponent);
+       
         AIComponent ai = new AIComponent();
         
         ai.type = type;
         entity.add(ai);
-
+        
+        PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
         MovementComponent movementComponent = engine.createComponent(MovementComponent.class);
-        if(type == AIType.CHAMELEON)
+        if(type == AIType.CHAMELEON){
+            movementComponent.speed = 100.0f;
+            
+            PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                    physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+            bodyComponent.init(pbdy, physixSystem, entity);
+            PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
+                    .density(1).friction(0f).restitution(0f)
+                    .shapeBox(width, height)
+                    .mask((short) (EVERYTHING))
+                    .category(WORLDOBJECT);
+            bodyComponent.createFixture(pfx);
+        }    
+        else{
             movementComponent.speed = 200.0f;
-        else
-            movementComponent.speed = 350.0f;
+            
+            PhysixBodyDef pbdy = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+                    physixSystem).position(x - width/2, y - height/2).fixedRotation(true);
+            bodyComponent.init(pbdy, physixSystem, entity);
+            PhysixFixtureDef pfx = new PhysixFixtureDef(physixSystem)
+                    .density(1).friction(0f).restitution(0f)
+                    .shapeBox(width, height)
+                    .mask((short) (EVERYTHING))
+                    .category(WORLDOBJECT);
+            bodyComponent.createFixture(pfx);
+            
+        }
+        entity.add(bodyComponent);
+
+            
         entity.add(movementComponent);
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
