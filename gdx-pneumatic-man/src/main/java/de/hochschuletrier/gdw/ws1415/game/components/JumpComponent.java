@@ -16,6 +16,11 @@ public class JumpComponent extends Component implements Pool.Poolable {
 	public float restingTime, timeToNextJump;
 	public float jumpTimer = 0.2f;
 	
+	//jump.AddSpeed * Math.min(jump.AddSpeedCount, jump.maxAddSpeedCount)));
+	public float AddSpeed = 0f;
+	public int _AddSpeedCount = 0;
+	public int maxAddSpeedCount = 0;
+	
 	public boolean justLanded;
     public int groundContacts;
 
