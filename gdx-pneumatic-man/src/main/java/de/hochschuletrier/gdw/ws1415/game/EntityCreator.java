@@ -78,9 +78,9 @@ public class EntityCreator {
     public static PhysixSystem physixSystem;
     public static AssetManagerX assetManager;
 
-    private static short EVERYTHING = 0xFFF;
-    private static short WORLDOBJECT = 0x002;
-    private static short WORLDSENSOR = 0x004;
+    public static short EVERYTHING = 0xFFF;
+    public static short WORLDOBJECT = 0x002;
+    public static short WORLDSENSOR = 0x004;
 
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
