@@ -114,7 +114,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     Health.health = HealthState.DEAD;
                 }
                 
-
+                
+                if (ComponentMappers.AI.has(entity)){
+                    EntityCreator.modifyEnemyToDying(entity);
+                } else
                 if (ComponentMappers.player.has(entity)) {
                     Health.health = HealthComponent.HealthState.DYING;
                     
