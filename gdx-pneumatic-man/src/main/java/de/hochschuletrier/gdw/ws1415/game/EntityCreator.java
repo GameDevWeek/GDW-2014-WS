@@ -207,6 +207,43 @@ public class EntityCreator {
         return entityToDie;
     }
 
+    public static Entity modifyEnemyToDying(Entity entityToDie) {
+        //Entity dyingEntity = engine.createEntity();
+        AIType type = ComponentMappers.AI.get(entityToDie).type;
+       // entityToDie.remove(HealthComponent.class);
+        entityToDie.remove(DamageComponent.class);
+        entityToDie.remove(PhysixBodyComponent.class);
+        entityToDie.remove(MovementComponent.class);
+        entityToDie.remove(JumpComponent.class);
+        entityToDie.remove(JumpableAnimationComponent.class);
+        entityToDie.remove(AIComponent.class);
+
+        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
+        entityToDie.add(deathComponent);
+        
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        
+        deathAnimation.animation = assetManager.getAnimation( type.name().toLowerCase() + "_death");
+      
+
+        deathAnimation.flipX = entityToDie.getComponent(AnimationComponent.class).flipX;
+
+        entityToDie.remove(AnimationComponent.class);
+        entityToDie.add(deathAnimation);
+        
+        DeathTimerComponent deathTimeComponent = engine.createComponent(DeathTimerComponent.class);
+        deathTimeComponent.deathTimer = deathAnimation.animation.animationDuration;
+        entityToDie.add( deathTimeComponent );
+      
+        //***** Sounds *****
+//        Random rm=new Random();
+//        int i=rm.nextInt(3)+1;//1-3
+//        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
+        
+        return entityToDie;
+    }
+
+    
     /**
      *  Enemy FIXME: there are more different types of enemies, implement them
      */
@@ -259,15 +296,32 @@ public class EntityCreator {
         d.facingDirection = Direction.LEFT;
         entity.add(d);
         
-        final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
-        entity.add(animation);
-        animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
-               
-        addLayerComponent(entity, 10, 1, 1);
-
+        
+        
+            AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+            entity.add(animation);
+            animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
+            addLayerComponent(entity, 10, 1, 1);       
+      
+        
+                
+             
+        
+        
         engine.addEntity(entity);
         return entity;
     }
+    public static Entity modifyEnemyToDying(Entity entityToDie, AIType type) 
+    {
+        AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+        animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_death");
+        animation.isDyingPlayer = true;
+        entityToDie.remove(AnimationComponent.class);
+        entityToDie.add(animation);
+        return entityToDie;
+    }
+    
+    
 
     public static Entity createAndAddEventBox(float x, float y) {
         Entity box = engine.createEntity();
@@ -565,7 +619,7 @@ public class EntityCreator {
 
         AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
-        animation.animation = assetManager.getAnimation("lava_ball"); //fixme: platform block
+        animation.animation = assetManager.getAnimation("destructable_block"); //fixme: platform block
 
         engine.addEntity(entity);
         return entity;
