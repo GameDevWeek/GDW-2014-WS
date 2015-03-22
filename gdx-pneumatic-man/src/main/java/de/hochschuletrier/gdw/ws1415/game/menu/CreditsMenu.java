@@ -79,19 +79,19 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
     public Texture getTexture(String name) {
         return assetManager.getTexture(name);
     }
-//
-//    @Override
-//    public void setVisible(boolean visible) {
-//        // TODO Auto-generated method stub
-//        super.setVisible(visible);
-//        if(visible=true){
-//            music = assetManager.getMusic("credits");
-//            MusicManager.play(music, 2.0f);
-//        }else{
-//            music = assetManager.getMusic("menu");
-//            MusicManager.play(music, 2.0f); 
-//        }
-//    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        // TODO Auto-generated method stub
+        super.setVisible(visible);
+        if(visible==true){
+            music = assetManager.getMusic("credits");
+            MusicManager.play(music, 2.0f);
+        }else{
+            music = assetManager.getMusic("menu");
+            MusicManager.play(music, 2.0f); 
+        }
+    }
 
     
     
