@@ -156,6 +156,8 @@ public class EntityCreator {
         Health.Value = 1;
         entity.add(Health);
         
+        entity.getComponent(PlayerComponent.class).isSpawned = true;
+        
         final AnimationComponent animation = ComponentMappers.animation.get(entity);
         animation.animation = assetManager.getAnimation("char_idle");
         animation.isSpawningPlayer = false;
@@ -961,11 +963,11 @@ public class EntityCreator {
         position.y = positionY;
         entity.add(position);
         
-        /*
+        
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation("lava_ball");
-        */
+        
         
         ParticleComponent pe = engine.createComponent(ParticleComponent.class);
         
