@@ -48,7 +48,8 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
         switch (keycode) {
             case Input.Keys.UP:
             case Input.Keys.SPACE:
-            case Input.Keys.W: jump = 0.2f;
+            case Input.Keys.W: 
+                jump = 0.2f;
                 break;
             case Input.Keys.LEFT:
             case Input.Keys.A:
@@ -79,7 +80,8 @@ public class InputKeyboardSystem extends IteratingSystem implements InputProcess
          // wenn die nächsten vier Zeilen auskommentiert sind kann man nicht mehr dauerhaft springen, noch dazu muss mein ein Zeile weiter oben wieder einkommentieren
         case Input.Keys.UP:
         case Input.Keys.SPACE:
-        case Input.Keys.W:jump = -0.5f; 
+        case Input.Keys.W:
+            jump = -0.5f; 
             break;
         case Input.Keys.LEFT:
         case Input.Keys.A:

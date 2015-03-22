@@ -49,6 +49,7 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
 
         DamageComponent dmg = myEntity.getComponent(DamageComponent.class);
         // ***** sound stoneDrops
+        System.out.println("stoneDrops");
         SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneDrops"), false);
 
         // ja stein kommt von oben:
@@ -85,6 +86,14 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
 
         if(ComponentMappers.player.has(otherEntity)) return; // player jumped from ground to the spike
         if(ComponentMappers.killsPlayerOnContact.has(otherEntity)) return; // enemy jumped from ground to the spike
+
+        if(ComponentMappers.bomb.has(otherEntity)){
+            // spikes hit bomb on fall:
+            HealthComponent h = ComponentMappers.health.get(otherEntity);
+            h.DecrementByValueNextFrame += 1;
+            EntityCreator.engine.removeEntity(myEntity);
+            return;
+        }
 
         mybody.setGravityScale(0.0f);
         mybody.setLinearVelocity(0, 0);
