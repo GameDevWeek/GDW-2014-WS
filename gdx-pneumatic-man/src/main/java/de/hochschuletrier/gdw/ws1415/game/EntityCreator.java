@@ -1327,7 +1327,6 @@ public class EntityCreator {
 
         DeathTimerComponent DeathTimer = engine.createComponent(DeathTimerComponent.class);
         DeathTimer.deathTimer = Anim.animation.animationDuration;
-        System.out.println(DeathTimer.deathTimer);
         
         entity.getComponent(LayerComponent.class).layer = 100;
         
