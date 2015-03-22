@@ -28,8 +28,7 @@ public class DestroyBlocksSystem extends IteratingSystem {
 
     void sendBlockRaycastBelowAndDamageBlock(Entity raycastSender, int DamageValue, float RayScale, float Facing)
     {
-        Vector2 RayDir = new Vector2( Facing * 0.1f, 1 );
-        RayDir.nor();
+        Vector2 RayDir = new Vector2( 0, 1 );
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(raycastSender);
         Vector2 p1 = physix.getBody().getPosition();
         Vector2 p2 = new Vector2(p1).add(RayDir.scl(RayScale)); 

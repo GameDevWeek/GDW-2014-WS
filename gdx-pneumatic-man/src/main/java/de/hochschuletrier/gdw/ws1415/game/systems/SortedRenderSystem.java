@@ -21,7 +21,6 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
-import de.hochschuletrier.gdw.ws1415.game.Shaders;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
@@ -146,12 +145,12 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     
     private void onLayerChanged(LayerComponent oldLayer, LayerComponent newLayer) {
     	cameraSystem.applyParallax(newLayer);
-    	DrawUtil.batch.setShader(newLayer.layer >= 0 && GameConstants.useShader ? Shaders.BLUR_SHADER : null);
+    	DrawUtil.batch.setShader(newLayer.layer >= 0 && GameConstants.useShader ? GameConstants.SHADER : null);
     }
     
     @Override
 	public void update (float deltaTime) {
-        DrawUtil.batch.setShader(GameConstants.useShader ? Shaders.BLUR_SHADER : null);
+        DrawUtil.batch.setShader(GameConstants.useShader ? GameConstants.SHADER : null);
     	super.update(deltaTime);
         cameraSystem.undoParallax();
     	
