@@ -98,6 +98,8 @@ public class EntityCreator {
         fixture.setUserData("jump");
         
         entity.add(bodyComponent);
+        
+        
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
         jumpComponent.jumpSpeed = 900.0f;
@@ -114,11 +116,8 @@ public class EntityCreator {
         
         entity.add(pos);
         
-        // ***** LIGHT *****
         PointLightComponent plc = engine.createComponent(PointLightComponent.class);
-        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("7a44e6")),0.5f,0,0);
-        plc.offsetX = -10f;
-        plc.offsetY = 40f;
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("7a44e6")),4f,0,0);
         entity.add(plc);
         
         // ***** temporary *****
@@ -140,6 +139,7 @@ public class EntityCreator {
     public static Entity modifyPlayerToLiving(Entity entity) {
         //Entity dyingEntity = engine.createEntity();
         
+        entity.remove(PointLightComponent.class);
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         ParticleComponent pe = engine.createComponent(ParticleComponent.class);
@@ -166,6 +166,13 @@ public class EntityCreator {
         jumpable.idle = animation.animation;
         jumpable.jump = assetManager.getAnimation("char_jump");
         entity.add(jumpable);
+        
+     // ***** LIGHT *****
+        PointLightComponent laser = engine.createComponent(PointLightComponent.class);
+        laser.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("7a44e6")),0.5f,0,0);
+        laser.offsetX = -10f;
+        laser.offsetY = 40f;
+        entity.add(laser);
 
         animation.stateTime = 0;
         animation.animationFinished = false;
@@ -198,7 +205,10 @@ public class EntityCreator {
 
         entityToDie.remove(AnimationComponent.class);
         entityToDie.add(deathAnimation);
-      
+        
+        PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("7a44e6")),4f,0,0);
+        entityToDie.add(plc);
         //***** Sounds *****
         Random rm=new Random();
         int i=rm.nextInt(3)+1;//1-3
