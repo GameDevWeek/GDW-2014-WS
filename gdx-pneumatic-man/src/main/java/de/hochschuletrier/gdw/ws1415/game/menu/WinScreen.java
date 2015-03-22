@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
