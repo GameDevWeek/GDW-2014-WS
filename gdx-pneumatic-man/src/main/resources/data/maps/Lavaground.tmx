@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="43" tilewidth="64" tileheight="64" nextobjectid="168">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="43" tilewidth="64" tileheight="64" nextobjectid="169">
  <properties>
   <property name="Background" value="Hintergrund1.png"/>
  </properties>
@@ -134,13 +134,16 @@
  <tileset firstgid="52" source="tilesets/Stalagtit02.tsx"/>
  <tileset firstgid="53" source="tilesets/Stalagtitten01.tsx"/>
  <layer name="Mittelebene" width="100" height="43">
+  <properties>
+   <property name="Parallex" value="0.8"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJzt1NEJwCAMBUBH6ofW/TdzAgVFG6R3v4HkBUJSAgAAAABu8UYHgAk1OkCAlZ3zptlf/odyqO8fbwYAAAAAAAAAAACAvmdQaz9bAas=
   </data>
  </layer>
  <layer name="Spielerebene" width="100" height="43">
   <data encoding="base64" compression="zlib">
-   eJztmolqxCAQhu2xG+hd2t1CaQu96N33f7xGNtJhGMfReAX9YHCTaHT91YzHjVLqptviLDZz8htGWztsAPFXKFw7yhCLJeggLa8LU99YB/jMtxyx+UTvr1UHyNy8n0Z7nOw5sAyf7ihJ4XQrRek6qYEadOj807WoixA93qfwh3j2jeKkgHr32xT+CuKGcq12dXXlkQbmD8t2Z4nvq8d6ig9D6p4JDQeTGW7VzvfkQiqtqRPoT+HvH37mU38ufPw2Wx3BMtv+g+ZVWB6X30/5/wPxX1aM4Tzxu0LKUAJpObEuW+XfTziToOuK0kJSh77zwZKE6OELVx8564EqRy06QFLrYcunYyeHHjCfjpscelDf6o6d1HpIeciUzxIoocchMpMXvNcyLj2+IuWzD35jTaD1Mc6uB5wvxobSovMPpUdq312qRauaUXpgLUr5sK2OY1APqg76vCI/nH8Fx7XNZCX5iPQeap/AF7OOTq3z31viSpDqUaqvYH8Zf18OPEPbfih3j6qfVGcRfPXgdHH5UKadmH6m2ztsSxsUTzMQ7+V8Zcm3J8Z8a1ByLXy+h6F6ULrAuqPKoPOB6+qwzPg+pla/K/YZndz75wMIqT0Prt3XOIfk+klIWUueZ9B7r1qLGPup+rv6onZ7nHgPPQexzkzBNaUSxGjvscaKOcB+Muc/4TU+KXqtNobfGANqzCgxrsXYd4B6rBSvCbXmVcuc0dU+S43JvmA9OE30eE/5WDHP07QOpYe2PUt8rMnStKi9n8A+jo0jdIzC56uo81Ytk8sX0XNv2AcNcIwsvT5WA7n0MP4bp0dtc+8S5NCD2x+kntU+xqcktR62vXPp89aAeugz8G9M3CUh1Rnfy32t13i+p1AjWS8+Hu1ktNPRjvq181qaBtfzlrgH7Wy089EuRrsMuL5sNL1PGukeylwtcNhSet80qbXAbay19CFpYP3/AeeQSQg=
+   eJztmolqxCAQhu2xG+hd2u5CaQu96N33f7xGNtJhGMfReAX9YHCTaHT91YzHVim17bY4i82c/IbR1g4bQPwVCteOMsRiCTpIy+vC1DfWAT7z4TMgjfSdtesAmZv302iPkz3HLVo2ON1KkaJ9Lo0adOj807WoixA93qfwh3j2jeKkgHr32xT+CuKGcq12dXXlkQbmD8t2Z4nvq8d6ig9D6p4JDQeTGW7VzvfkQiqtqRPoT+HvH37mU38ufPw2Wx3BMtv+g+ZVWB6X30/5/wPxX1aM4Tzxu0LKUAJpObEuG+XfTziToOuK0kJSh77zwZKE6OELVx8564EqRy06QFLrYcunYyeHHjCfjpscelDf6o6d1HpIeciUzxIoocchMpMXvNcyLj2+IuWzD35jTaD1Mc6uB5wvzgXXM6VF5x9Kj9S+u1SLVjWj9MBalPJhWx3HoB5UHfR5RX44/wqOazeTleQj0nuofQJfzDo6tc5/b4krQapHqb6C/WX8fTnwDG37odw9qn5SnUXw1YPTxeVDmXZi+plu77At3aB4moF4L+crS749MeZbg5Jr4fM9DNXDpgvnG+l84Lo6LDO+b3tvbX5X7DM6uffPBxBSex5cu69xDsn1k5CyljzPoPdetRYx9lP1d/VF7fY48R56DmKdmYJrSiWI0d5jjRVzgP1kzn/Ca3xS9FptDL8xBtSYUWJci7HvAPVYKV4Tas2rljmjq32WGpN9wXpwmujxnvKxYp6naR1KD217lvhYk6VpUXs/gX0cG0foGIXPV1HnrVomly+i596wDxrgGFl6fawGculh/DdOj9rm3iXIoQe3P0g9q32MT0lqPWx759LnrQH10Gfg35i4S0KqM76X+1qv8XxPoUayXnw82slop6Md9WvntTQNrucNcQ/a2Wjno12Mdhlwfdloep800j2UuVrgsKX0vmlSa4HbWGvpQ9LA+v8DXdtI0w==
   </data>
  </layer>
  <objectgroup name="Objektebene">
@@ -231,7 +234,7 @@
     <property name="Speed" value="3.0"/>
    </properties>
   </object>
-  <object id="107" name="Rock" x="2048" y="708" width="64" height="64">
+  <object id="107" name="Rock" x="2264" y="710.667" width="64" height="64">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="1"/>
@@ -546,7 +549,7 @@
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="30"/>
+    <property name="Speed" value="20"/>
    </properties>
   </object>
   <object id="161" name="Platform" x="1472" y="2048" width="64" height="64">
@@ -566,7 +569,7 @@
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="30"/>
+    <property name="Speed" value="20"/>
    </properties>
   </object>
   <object id="163" name="Platform" x="4352" y="1472" width="64" height="64">
@@ -598,6 +601,16 @@
    <properties>
     <property name="Direction" value="down"/>
     <property name="Distance" value="7"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="20"/>
+   </properties>
+  </object>
+  <object id="168" name="Platform" x="4800" y="1280" width="64" height="64">
+   <properties>
+    <property name="Direction" value="down"/>
+    <property name="Distance" value="5"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
