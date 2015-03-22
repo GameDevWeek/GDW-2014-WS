@@ -480,13 +480,13 @@ public class MapLoader
                                         float conedir = tinfo.getFloatProperty("Radius", 30.0f);
                                         
                                         
-                                        // TODO tests for the ChainLight
-                                        if ( tinfo.getProperty("Name","").toLowerCase().equals( "lamp1" ) ||
-                                                tinfo.getProperty("Name","").toLowerCase().equals( "lamp2" ) ||
-                                                tinfo.getProperty("Name","").toLowerCase().equals( "lamp3" ) ) 
-                                        {
-                                           dis = 5f; // TODO 5f for test
-                                       }
+//                                        // TODO tests for the ChainLight
+//                                        if ( tinfo.getProperty("Name","").toLowerCase().equals( "lamp1" ) ||
+//                                                tinfo.getProperty("Name","").toLowerCase().equals( "lamp2" ) ||
+//                                                tinfo.getProperty("Name","").toLowerCase().equals( "lamp3" ) ) 
+//                                        {
+//                                            dis = 5f; // TODO 5f for test
+//                                        }
                                         
                                         
                                         EntityCreator.createAndAddDeko(x, y, xOffset, yOffset, dir, dis, conedir, color, tinfo.getProperty("LightType","point") );
