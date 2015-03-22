@@ -106,16 +106,16 @@
     },
     "chameleon_death": {
         "filename": "data/animations/enemy2_death.png",
-        "frames" : 15,
-        "frameDuration": [1.0],
+        "frames" : 20,
+        "frameDuration": [0.05],
         "playType": "NORMAL",
         "columns" : 4,
-        "rows" : 4
+        "rows" : 5
     },
     "dog_death": {
         "filename": "data/animations/enemy1_death.png",
-        "frames" : 20,
-        "frameDuration": [1.0],
+        "frames" : 21,
+        "frameDuration": [0.05],
         "playType": "NORMAL",
         "columns" : 8,
         "rows" : 3

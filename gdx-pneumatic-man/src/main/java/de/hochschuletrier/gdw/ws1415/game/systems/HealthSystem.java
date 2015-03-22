@@ -89,8 +89,8 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);   //dont work
                 
                 }else if(ComponentMappers.killsPlayerOnContact.has(entity)){
-                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);
-                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("alienDie"),false);
+                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);
+                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("alienDie"),false);
 
                 }
                 //******states****
@@ -116,6 +116,8 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 
                 
                 if (ComponentMappers.AI.has(entity)){
+                    Health.health = HealthComponent.HealthState.DYING;
+                    
                     EntityCreator.modifyEnemyToDying(entity);
                 } else
                 if (ComponentMappers.player.has(entity)) {
