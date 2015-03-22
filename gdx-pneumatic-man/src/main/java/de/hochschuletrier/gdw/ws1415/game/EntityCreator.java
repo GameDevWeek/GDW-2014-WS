@@ -147,10 +147,10 @@ public class EntityCreator {
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
         jumpComponent.jumpSpeed = 900.0f;
         jumpComponent._AddSpeedCount = 0;
-        jumpComponent.AddSpeed = 10f;
+        jumpComponent.AddSpeed = 100f;
         jumpComponent.maxAddSpeedCount = 10;
-        // Damit bei taste gedrückt ungefähr wie vorher ( TODO: Adjust properly ) 
-        //jumpComponent.jumpSpeed = ( jumpComponent.jumpSpeed - (jumpComponent.maxAddSpeedCount/3 * (jumpComponent.AddSpeed * jumpComponent.maxAddSpeedCount) ) );
+        // Damit bei taste gedrückt ungefähr wie vorher ( TODO: Adjust properly ) - BUG: different frametimes kills mechanic
+        // jumpComponent.jumpSpeed = ( jumpComponent.jumpSpeed - (jumpComponent.maxAddSpeedCount/3 * (jumpComponent.AddSpeed * jumpComponent.maxAddSpeedCount) ) );
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 

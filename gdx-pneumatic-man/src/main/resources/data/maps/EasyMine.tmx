@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="72" height="28" tilewidth="64" tileheight="64" nextobjectid="52">
+ <properties>
+  <property name="Background" value="Hintergrund1.png"/>
+ </properties>
+ <tileset firstgid="1" source="tilesets/destructable_block.tsx"/>
+ <tileset firstgid="7" source="tilesets/zacken.tsx"/>
+ <tileset firstgid="10" source="tilesets/lava.tsx"/>
+ <tileset firstgid="18" source="tilesets/deco.tsx"/>
+ <tileset firstgid="32" source="tilesets/rest.tsx"/>
+ <tileset firstgid="40" source="tilesets/background_block.tsx"/>
+ <tileset firstgid="46" source="tilesets/bomb.tsx"/>
+ <tileset firstgid="48" source="tilesets/deco_gross.tsx"/>
+ <tileset firstgid="51" source="tilesets/TutorialSchild.tsx"/>
+ <tileset firstgid="53" source="tilesets/background_stones01.tsx"/>
+ <tileset firstgid="54" source="tilesets/background_stones02.tsx"/>
+ <tileset firstgid="55" source="tilesets/Midground_Stein01.tsx"/>
+ <tileset firstgid="56" source="tilesets/Ruine.tsx"/>
+ <tileset firstgid="57" source="tilesets/Ruine01.tsx"/>
+ <tileset firstgid="58" source="tilesets/Stalagtit02.tsx"/>
+ <tileset firstgid="59" source="tilesets/Stalagtitten01.tsx"/>
+ <layer name="Mittelebene" width="72" height="28">
+  <properties>
+   <property name="Parallax" value="0.75"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzsEJADAIBEGbimD/jVlCXmIIM9+F4yIAAADeUNsHAAAAAPjCGdrNS29zNACl
+  </data>
+ </layer>
+ <layer name="Spielebene" width="72" height="28">
+  <properties>
+   <property name="Parallax" value="1.0"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztmNsOgjAMhmtIvPDshRgj4Uru1fd/OEcIgcA62s0ddP2SP27NRssfNwYNADQio+4wR2KDP4Ie8ceM+KNnuv8IHcWoLf4MFEjc5M/FUy0u3CznlUoV8zo1zNfZA9L9X+nOJT1rpL10rlkhouw/bXyjtFXaKe0j903+YPj256B0VDopnSP3ffhDnYeNScGXvs+5x5cnf6b7z7/LZX2lhu79iEIu/rjgur5cZHvN0Nj645pT1+bMC4nN+vpmPs68WIT0x6XGmIRaX7Zw85aa2BUZWyFxTg2/5g/2POD8tlDfuXP1h5o3Z38ouXP3p5XpG1AK/rwWR/nJG/J8aMs4fx2pBhMp+UP16O21oo4ndM+41PxJWR/pFUmc
+  </data>
+ </layer>
+ <objectgroup name="Objektebene">
+  <object id="1" name="Player" x="192" y="448" width="64" height="64">
+   <properties>
+    <property name="Name" value="Player"/>
+   </properties>
+  </object>
+  <object id="3" name="LavaFountain" x="1472" y="576" width="64" height="64">
+   <properties>
+    <property name="Height" value="6.0"/>
+    <property name="Intervall" value="2.0"/>
+    <property name="IntervallOffset" value="7.0"/>
+    <property name="Length" value="2.0"/>
+    <property name="Name" value="LavaFountain"/>
+   </properties>
+  </object>
+  <object id="8" name="LevelEnd" x="192" y="704" width="65" height="64">
+   <properties>
+    <property name="MinMiner" value="2"/>
+    <property name="Name" value="LevelEnd"/>
+   </properties>
+  </object>
+  <object id="9" name="PlayerSpawn" x="192" y="448" width="63" height="61">
+   <properties>
+    <property name="Name" value="PlayerSpawn"/>
+   </properties>
+  </object>
+  <object id="12" name="Platform" x="1152" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="left"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="17" name="Platform" x="1216" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="left"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="18" name="Platform" x="1280" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="left"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="19" name="Platform" x="1344" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="left"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="20" name="Platform" x="1408" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="left"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="22" name="Platform" x="1600" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="23" name="Platform" x="1664" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="24" name="Platform" x="1728" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="25" name="Platform" x="1792" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="26" name="Platform" x="1856" y="512" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="29" name="LavaFountain" x="2560" y="576" width="64" height="64">
+   <properties>
+    <property name="Height" value="5.0"/>
+    <property name="Intervall" value="2.0"/>
+    <property name="IntervallOffset" value="2.0"/>
+    <property name="Length" value="2.0"/>
+    <property name="Name" value="LavaFountain"/>
+   </properties>
+  </object>
+  <object id="30" name="Miner" x="2816" y="448" width="63" height="61">
+   <properties>
+    <property name="Name" value="Miner"/>
+   </properties>
+  </object>
+  <object id="31" name="Miner" x="4480" y="192" width="63" height="61">
+   <properties>
+    <property name="Name" value="Miner"/>
+   </properties>
+  </object>
+  <object id="32" name="Platform" x="576" y="832" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="20.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="4.0"/>
+   </properties>
+  </object>
+  <object id="36" name="Platform" x="448" y="896" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="20.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="4.0"/>
+   </properties>
+  </object>
+  <object id="37" name="Platform" x="512" y="896" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="20.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="4.0"/>
+   </properties>
+  </object>
+  <object id="38" name="Platform" x="576" y="896" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="20.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="4.0"/>
+   </properties>
+  </object>
+  <object id="39" name="Platform" x="2048" y="960" width="64" height="64">
+   <properties>
+    <property name="Direction" value="down"/>
+    <property name="Distance" value="5.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="41" name="Platform" x="1984" y="960" width="64" height="64">
+   <properties>
+    <property name="Direction" value="down"/>
+    <property name="Distance" value="5.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="42" name="Platform" x="2240" y="1600" width="64" height="64">
+   <properties>
+    <property name="Direction" value="up"/>
+    <property name="Distance" value="5.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="44" name="Platform" x="2304" y="1600" width="64" height="64">
+   <properties>
+    <property name="Direction" value="up"/>
+    <property name="Distance" value="5.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="2.0"/>
+   </properties>
+  </object>
+  <object id="45" name="Platform" x="384" y="832" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="20.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="4.0"/>
+   </properties>
+  </object>
+  <object id="46" name="Platform" x="384" y="896" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="20.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="4.0"/>
+   </properties>
+  </object>
+  <object id="47" name="Platform" x="448" y="832" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="20.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="4.0"/>
+   </properties>
+  </object>
+  <object id="48" name="Platform" x="512" y="832" width="64" height="64">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Distance" value="20.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="4.0"/>
+   </properties>
+  </object>
+  <object id="49" name="Miner" x="1024" y="1024" width="63" height="61">
+   <properties>
+    <property name="Name" value="Miner"/>
+   </properties>
+  </object>
+  <object id="50" name="Miner" x="2688" y="1216" width="63" height="61">
+   <properties>
+    <property name="Name" value="Miner"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
