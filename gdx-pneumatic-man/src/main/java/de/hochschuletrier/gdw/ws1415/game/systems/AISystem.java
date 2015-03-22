@@ -11,6 +11,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.IndestructableBlockComponent;
@@ -34,7 +35,8 @@ public class AISystem extends IteratingSystem {
                 PhysixBodyComponent.class,
                 MovementComponent.class,
                 JumpComponent.class,
-                DirectionComponent.class).get(), priority);
+                DirectionComponent.class,
+                AnimationComponent.class).get(), priority);
         this.physixSystem = physixSystem;
     }
 
@@ -62,6 +64,7 @@ public class AISystem extends IteratingSystem {
         DirectionComponent directionComponent = ComponentMappers.direction.get(entity);
         JumpComponent jumpComponent = ComponentMappers.jump.get(entity);
         SoundEmitterComponent soundEmitterComponent = ComponentMappers.soundEmitter.get(entity);
+        AnimationComponent animationComponent = ComponentMappers.animation.get(entity);
 
         // search if left/right is blocked with RayCasts
         aiComponent.leftBlocked = false;
@@ -75,7 +78,6 @@ public class AISystem extends IteratingSystem {
             PhysixBodyComponent otherPhysicsBody = (PhysixBodyComponent) fixture.getBody().getUserData();
             if (otherPhysicsBody.getEntity().getComponent(PlayerComponent.class) == null) {
                 aiComponent.leftBlocked = true;
-
             }
             return 0;
         }, p1, p2);
@@ -101,7 +103,6 @@ public class AISystem extends IteratingSystem {
             if (otherPhysicsBody.getEntity().getComponent(DestructableBlockComponent.class) != null
                     || otherPhysicsBody.getEntity().getComponent(IndestructableBlockComponent.class) != null) {
                 aiComponent.leftGroundPresent = true;
-
             }
             return 0;
         }, p1, p2);
@@ -132,10 +133,12 @@ public class AISystem extends IteratingSystem {
                     && (aiComponent.rightBlocked
                     || !aiComponent.rightGroundPresent)) {
                 directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
+                animationComponent.flipX = false;
             } else if (directionComponent.facingDirection.equals(Direction.LEFT)
                     && (aiComponent.leftBlocked
                     || !aiComponent.leftGroundPresent)) {
                 directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
+                animationComponent.flipX = true;
             }
 
             movementComponent.velocity.set(movementComponent.speed * directionComponent.facingDirection.toVector2().x, movementComponent.velocity.y);
@@ -164,10 +167,12 @@ public class AISystem extends IteratingSystem {
                         && (aiComponent.rightBlocked
                         || !aiComponent.rightGroundPresent)) {
                     directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
+                    animationComponent.flipX = false;
                 } else if (directionComponent.facingDirection.equals(Direction.LEFT)
                         && (aiComponent.leftBlocked
                         || !aiComponent.leftGroundPresent)) {
                     directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
+                    animationComponent.flipX = true;
                 }
 
                 movementComponent.velocity.set(movementComponent.speed * directionComponent.facingDirection.toVector2().x, movementComponent.velocity.y);
