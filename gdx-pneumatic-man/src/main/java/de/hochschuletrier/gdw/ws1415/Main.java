@@ -28,6 +28,7 @@ import de.hochschuletrier.gdw.commons.gdx.audio.SoundDistanceModel;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyManager;
+import de.hochschuletrier.gdw.commons.gdx.settings.Setting;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
 import de.hochschuletrier.gdw.commons.gdx.state.StateBasedGame;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
@@ -116,7 +117,7 @@ public class Main extends StateBasedGame {
         setupDummyLoader();
         loadAssetLists();
         setupGdx();
-        SoundInstance.init();
+        initSound();
         
         skin = new Skin(Gdx.files.internal("data/skins/sotf.json"));
         consoleView.init(skin);
@@ -130,6 +131,18 @@ public class Main extends StateBasedGame {
         MusicManager.setGlobalVolume(Settings.MUSIC_VOLUME.get());
         
         UpdateSoundEmitterSystem.initCVars();
+    }
+
+    private void initSound() {
+        SoundInstance.init();
+        Settings.SOUND_VOLUME.addListener((Setting s, Float value)->{
+            SoundEmitter.setMuted(value <= 0);
+            SoundEmitter.setGlobalVolume(Math.max(Math.min(value, 1), 0));
+        });
+        Settings.MUSIC_VOLUME.addListener((Setting s, Float value)->{
+            MusicManager.setMuted(value <= 0);
+            MusicManager.setGlobalVolume(Math.max(Math.min(value, 1), 0));
+        });
     }
 
     private void onLoadComplete() {
