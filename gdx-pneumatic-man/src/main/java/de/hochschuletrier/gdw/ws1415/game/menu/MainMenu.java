@@ -1,10 +1,12 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ws1415.states.GameplayState;
+import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 
@@ -21,6 +23,8 @@ public class MainMenu extends MenuPage{
     DecoImage restart = new DecoImage(assetManager.getTexture("restart_button_inactive"));
     DecoImage mainMenu = new DecoImage(assetManager.getTexture("mainmenu_button_inactive"));
     DecoImage quit = new DecoImage(assetManager.getTexture("quit_button_inactive"));
+    //private final Music music;
+   
     
     public enum Type {
         MAINMENU,
@@ -34,7 +38,10 @@ public class MainMenu extends MenuPage{
         int i = 0;
         int y = 700;
         int yStep = 113;
+        //music = assetManager.getMusic("credits");
         
+        
+
         //MainMenu:
         if(type.name().equals("MAINMENU"))
         {
@@ -62,8 +69,15 @@ public class MainMenu extends MenuPage{
     
     protected final void addPageEntry(MenuManager menuManager, int x, int y, DecoImage image, MenuPage page) {
         menuManager.addLayer(page);
-        
+
         addCenteredImage((int)(x-(image.getWidth()/2)), y, (int)image.getWidth(), (int)image.getHeight(), image, () -> menuManager.pushPage(page));
+//                if(image.getRegion().getTexture()==assetManager.getTexture("credits_button")){
+//                    MusicManager.stop();
+//                    MusicManager.play(music, 2.0f);
+//                }
+                    
+                
+
         
     }
     

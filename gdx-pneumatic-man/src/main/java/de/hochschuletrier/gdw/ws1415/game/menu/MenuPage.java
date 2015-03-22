@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.ws1415.Main;
@@ -24,12 +26,12 @@ public class MenuPage extends Group {
     protected AssetManagerX assetManager = main.getAssetManager();
     protected final Skin skin;
     public static boolean abspielen = true;
-
+   
     public MenuPage(Skin skin, String background) {
         super();
         this.skin = skin;
         addActor(new DecoImage(assetManager.getTexture(background)));
-
+        
         setVisible(false);
     }
 
@@ -37,6 +39,7 @@ public class MenuPage extends Group {
     public void act(float delta) {
         if (isVisible()) {
             super.act(delta);
+            
         }
     }
 
@@ -75,8 +78,10 @@ public class MenuPage extends Group {
                     SoundEmitter.updateGlobal();
                     SoundEmitter.playGlobal(assetManager.getSound("pmCancel"),false); 
                 }
-               
+                
                 runnable.run();
+
+                
             }
             
         });
@@ -114,6 +119,7 @@ public class MenuPage extends Group {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 runnable.run();
+                
             }
         });
         addActor(button);
