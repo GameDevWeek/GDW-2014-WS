@@ -81,7 +81,7 @@ public class WinState extends BaseGameState {
         overlay.setPosition((stage.getWidth() - Main.WINDOW_WIDTH)/2 - 630, (stage.getHeight() - Main.WINDOW_HEIGHT)/2 - 730);
         
         Vector2 vector= stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(),Gdx.input.getY()));
-        hand.setPosition(vector.x-765,vector.y-1200);
+        hand.setPosition(vector.x-800,vector.y-1990);
         render();
     }
 
