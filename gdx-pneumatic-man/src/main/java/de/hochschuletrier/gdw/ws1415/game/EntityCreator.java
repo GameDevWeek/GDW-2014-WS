@@ -205,6 +205,44 @@ public class EntityCreator {
         return entityToDie;
     }
 
+    public static Entity modifyEnemyToDying(Entity entityToDie) {
+        //Entity dyingEntity = engine.createEntity();
+        AIType type = ComponentMappers.AI.get(entityToDie).type;
+        entityToDie.remove(DamageComponent.class);
+        entityToDie.remove(HealthComponent.class);
+        entityToDie.remove(PhysixBodyComponent.class);
+        entityToDie.remove(MovementComponent.class);
+        entityToDie.remove(JumpComponent.class);
+        entityToDie.remove(JumpableAnimationComponent.class);
+        entityToDie.remove(AIComponent.class);
+
+        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
+        entityToDie.add(deathComponent);
+        
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        if ( type == AIType.CHAMELEON )
+        {
+            deathAnimation.animation = assetManager.getAnimation("enemy2_death");
+        } else
+        {
+            deathAnimation.animation = assetManager.getAnimation("enemy1_death");
+        }
+        deathAnimation.isDyingPlayer = true;
+
+        deathAnimation.flipX = entityToDie.getComponent(AnimationComponent.class).flipX;
+
+        entityToDie.remove(AnimationComponent.class);
+        entityToDie.add(deathAnimation);
+      
+        //***** Sounds *****
+        Random rm=new Random();
+        int i=rm.nextInt(3)+1;//1-3
+        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
+        
+        return entityToDie;
+    }
+
+    
     /**
      *  Enemy FIXME: there are more different types of enemies, implement them
      */
