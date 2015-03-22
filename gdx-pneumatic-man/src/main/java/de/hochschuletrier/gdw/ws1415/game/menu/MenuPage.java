@@ -165,6 +165,8 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("butt_audio_add_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("soundDown"))
             image.setTexture(assetManager.getTexture("butt_audio_sub_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("down_button"))
+            image.setTexture(assetManager.getTexture("down_button_active"));
         
         //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_inactive"))
@@ -206,6 +208,8 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("soundDown"));
         if(image.getRegion().getTexture()==assetManager.getTexture("butt_audio_add_active"))
             image.setTexture(assetManager.getTexture("soundUp"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("down_button_active"))
+            image.setTexture(assetManager.getTexture("down_button"));
         
       //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_active"))
