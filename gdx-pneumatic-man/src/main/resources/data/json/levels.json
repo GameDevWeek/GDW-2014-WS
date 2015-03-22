@@ -22,43 +22,41 @@
         "levelFilePath" : "data/maps/MoleSpiral.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "MEDIUM"
-	 },
+    },
     {
-		"name" : "HolyMoley",
+        "name" : "HolyMoley",
         "levelFilePath" : "data/maps/HolyMoley.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "MEDIUM"
-	 },
+    },
     {
-		"name" : "BouncingMole",
+        "name" : "BouncingMole",
         "levelFilePath" : "data/maps/BouncingMole.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "HARD"
-	 },
-    {	
-		"name" : "Lavaground",
+    },
+    {
+        "name" : "Lavaground",
         "levelFilePath" : "data/maps/Lavaground.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "VERY HARD"
-	 },
+    },
     {
-		"name" : "Towers",
+        "name" : "Towers",
         "levelFilePath" : "data/maps/Towers.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "VERY HARD"
     },
-  {
-    "name" : "level_5",
-    "levelFilePath" : "data/maps/myTest.tmx",
-    "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
-    "difficulty" : "NORMAL"
-  },
-  {
-    "name" : "level_6",
-    "levelFilePath" : "data/maps/gottaCatchEmAll.tmx",
-    "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
-    "difficulty" : "NORMAL"
-  }
-	
-	
+    {
+        "name" : "level_5",
+        "levelFilePath" : "data/maps/myTest.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "NORMAL"
+    },
+    {
+        "name" : "level_6",
+        "levelFilePath" : "data/maps/gottaCatchEmAll.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "NORMAL"
+    }
 ]
