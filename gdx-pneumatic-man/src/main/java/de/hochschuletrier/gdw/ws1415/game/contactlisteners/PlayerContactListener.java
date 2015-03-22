@@ -59,7 +59,9 @@ public class PlayerContactListener extends PhysixContactAdapter {
             {
                 jump.justLanded = true;
             }
-            jump.groundContacts++;
+            if(!contact.getOtherFixture().isSensor()) {
+                jump.groundContacts++;
+            }
             if(otherEntity.getComponent(PlatformComponent.class) != null) {
                 player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
             }
@@ -196,7 +198,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
            
             JumpComponent jump = ComponentMappers.jump.get(player);
             
-            if(jump!= null){
+            if(jump!= null && !contact.getOtherFixture().isSensor()){
                 jump.groundContacts--;
             }
             if(otherPlatformComp != null && playerComp != null) {
