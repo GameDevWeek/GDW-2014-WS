@@ -95,7 +95,7 @@ public class WinScreen extends MenuPage
     
     private void nextLevel()
     {
-        Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % 3 ));
+        Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % 8 ));
         main.changeState(new GameplayState(assetManager),new SplitHorizontalTransition(500), null);
     }
 
