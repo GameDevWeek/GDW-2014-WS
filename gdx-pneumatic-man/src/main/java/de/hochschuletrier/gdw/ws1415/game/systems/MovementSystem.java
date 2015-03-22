@@ -91,7 +91,7 @@ public class MovementSystem extends IteratingSystem {
                 jump.justJumped = false;
                 if (jump.groundContacts > 0) {
 
-                    System.out.println(physix.getLinearVelocity().y+"");
+//                    System.out.println(physix.getLinearVelocity().y+"");
                     if (input.jump) {
                         SoundEmitterComponent se = ComponentMappers.soundEmitter.get(entity);
                         if(se != null){

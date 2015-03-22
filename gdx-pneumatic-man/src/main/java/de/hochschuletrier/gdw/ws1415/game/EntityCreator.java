@@ -1301,8 +1301,8 @@ public class EntityCreator {
         region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
         
         float parallax = layer.getFloatProperty("Parallax", 1f);
-        if(parallax < 1.f)
-            System.out.println("Layer: " + layer.getIndex() + " Parallax: " + parallax);
+//        if(parallax < 1.f)
+//            System.out.println("Layer: " + layer.getIndex() + " Parallax: " + parallax);
         addRenderComponents(entity, px, py, layer.getIndex(), parallax, image, region);
     }
     

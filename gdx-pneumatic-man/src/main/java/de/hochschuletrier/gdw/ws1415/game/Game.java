@@ -341,7 +341,7 @@ public class Game {
         // Level reset Testing    
         if(loadSelectedLevel || Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
             loadSelectedLevel = false;
-            System.out.println("Restart Level"); 
+//            System.out.println("Restart Level");
 
             // Level Reset
             loadCurrentlySelectedLevel();
@@ -354,7 +354,7 @@ public class Game {
         if(Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP))
         {
             Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % levelList.size()));
-            System.out.println("Level changed to: " + Settings.CURRENTLY_SELECTED_LEVEL.get());
+//            System.out.println("Level changed to: " + Settings.CURRENTLY_SELECTED_LEVEL.get());
         }
     }
 

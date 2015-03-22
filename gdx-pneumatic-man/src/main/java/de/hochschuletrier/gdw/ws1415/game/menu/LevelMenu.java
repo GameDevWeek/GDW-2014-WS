@@ -44,7 +44,7 @@ public class LevelMenu extends MenuPage
         catch(Exception e)
         {
             e.printStackTrace();
-            System.out.println("failed to load levels.json");
+//            System.out.println("failed to load levels.json");
         }
 		
 		test = new int[levelList.size()];
@@ -155,7 +155,7 @@ public class LevelMenu extends MenuPage
 
 		level = newLevel;
 
-		System.out.println("Level ausgewählt: " + (level + 1));
+//		System.out.println("Level ausgewählt: " + (level + 1));
 		Settings.CURRENTLY_SELECTED_LEVEL.set(level);
 	}
 

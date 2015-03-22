@@ -123,7 +123,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
                         //play Sound
                         Random rm=new Random();
                         int i=rm.nextInt(3)+1;//1-3
-                        System.out.println("saveSaouESCAPEnd "+i);
+//                        System.out.println("saveSaouESCAPEnd "+i);
                         SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free"+i), false);
                     logger.info("Miners saved: " + player.getComponent(PlayerComponent.class).saved_miners);
                 }
