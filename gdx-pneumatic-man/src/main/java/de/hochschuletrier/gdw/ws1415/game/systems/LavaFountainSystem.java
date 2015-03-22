@@ -48,8 +48,8 @@ public class LavaFountainSystem extends IteratingSystem {
                             SoundEmitterComponent soundEmitter = ComponentMappers.soundEmitter.get(ball);
                             try {
                                 SoundInstance soundInstance = soundEmitter.emitter.play(EntityCreator.assetManager.getSound("burst1"), false);
-                                soundInstance.setReferenceDistance(25f);
-                                soundInstance.setVolume(1.5f);
+                                soundInstance.setReferenceDistance(30f);
+                                soundInstance.setVolume(2.5f);
                                
                             } catch (Exception e) {
                                 e.printStackTrace();
