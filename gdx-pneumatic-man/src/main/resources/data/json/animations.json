@@ -1,108 +1,159 @@
 {
-    "walking": {
-        "filename": "data/animations/walking.png",
-        "frames" : 1,
-        "frameDuration": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
-        "playType" : "LOOP",
-        "columns": 7,
-        "rows" : 1
-    },
-    "ball": {
-        "filename": "data/animations/ball.png",
-        "frames" : 2,
-        "frameDuration": [0.5, 0.5],
-        "playType" : "LOOP",
-        "columns": 2,
-        "rows" : 1
-    },
-    "dog_idle": {
-       "filename" : "data/animations/enemy1_walk_2048.png",
-        "frames" : 40,
-        "frameDuration": [0.025],
-        "playType": "LOOP",
-        "columns" : 8,
-        "rows" : 5
-    },
-    
-    "chameleon_idle": {
-        "filename" : "data/animations/enemy2_walk_1024.png",
-        "frames" : 32,
-        "frameDuration": [0.015],
-        "playType": "LOOP",
-        "columns" : 4,
-        "rows" : 8
-    },
-    "chameleon_jump": {
-        "filename": "data/animations/enemy2_jump_2048.png",
-        "frames" : 25,
-        "frameDuration": [0.1],
-        "playType": "LOOP",
-        "columns" : 8,
-        "rows" : 4
-    },
-    "lava_ball": {
-        "filename": "data/animations/ball.png",
-        "frames" : 2,
-        "frameDuration": [0.1],
-        "playType" : "LOOP",
-        "columns": 2,
-        "rows" : 1
-    },
-    "char_death": {
-        "filename": "data/animations/char_death_2048.png",
-        "frames" : 40,
-        "frameDuration": [0.05],
-        "playType" : "NORMAL",
-        "columns": 8,
-        "rows" : 5
-    },
-    "char_spawn": {
-        "filename": "data/animations/char_death_2048.png",
-        "frames" : 40,
-        "frameDuration": [0.04],
-        "playType" : "REVERSED",
-        "columns": 8,
-        "rows" : 5
-    },
-    "char_idle": {
-        "filename": "data/animations/char_idle_1024.png",
-        "frames" : 20,
-        "frameDuration": [0.015],
-        "playType" : "LOOP",
-        "columns": 8,
-        "rows" : 3
-    },
-    "char_jump": {
-        "filename": "data/animations/char_jump_2048.png",
-        "frames" : 31,
-        "frameDuration": [0.035],
-        "playType" : "LOOP",
-        "columns": 8,
-        "rows" : 4
-    },
-    "coworker_idle": {
-	"filename": "data/animations/coworker_idle_1024.png",
-	"frames": 40,
-	"frameDuration": [0.06],
-	"playType": "LOOP",
-	"columns": 4,
-	"rows": 10
-    },
-    "stone_breaking": {
-	"filename": "data/animations/stone_breaking.png",
-	"frames": 4,
-	"frameDuration": [0.5],
-	"playType": "NORMAL",
-	"columns": 4,
-	"rows": 1
-    },
-    "bomb_explosion" : {
-        "filename" : "data/animations/explosion_sheet.png",
-        "frames" : 5,
-        "frameDuration": [0.1],
-        "playType": "NORMAL",
-        "columns" : 5,
-        "rows" : 1
-    }  
-
+  "walking": {
+    "filename": "data/animations/walking.png",
+    "frames": 1,
+    "frameDuration": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ],
+    "playType": "LOOP",
+    "columns": 7,
+    "rows": 1
+  },
+  "ball": {
+    "filename": "data/animations/ball.png",
+    "frames": 2,
+    "frameDuration": [
+      0.5,
+      0.5
+    ],
+    "playType": "LOOP",
+    "columns": 2,
+    "rows": 1
+  },
+  "dog_idle": {
+    "filename": "data/animations/enemy1_walk_2048.png",
+    "frames": 40,
+    "frameDuration": [
+      0.025
+    ],
+    "playType": "LOOP",
+    "columns": 8,
+    "rows": 5
+  },
+  "chameleon_idle": {
+    "filename": "data/animations/enemy2_walk_1024.png",
+    "frames": 32,
+    "frameDuration": [
+      0.015
+    ],
+    "playType": "LOOP",
+    "columns": 4,
+    "rows": 8
+  },
+  "chameleon_jump": {
+    "filename": "data/animations/enemy2_jump_2048.png",
+    "frames": 25,
+    "frameDuration": [
+      0.1
+    ],
+    "playType": "LOOP",
+    "columns": 8,
+    "rows": 4
+  },
+  "lava_ball": {
+    "filename": "data/animations/ball.png",
+    "frames": 2,
+    "frameDuration": [
+      0.1
+    ],
+    "playType": "LOOP",
+    "columns": 2,
+    "rows": 1
+  },
+  "char_death": {
+    "filename": "data/animations/char_death_2048.png",
+    "frames": 40,
+    "frameDuration": [
+      0.05
+    ],
+    "playType": "NORMAL",
+    "columns": 8,
+    "rows": 5
+  },
+  "char_spawn": {
+    "filename": "data/animations/char_death_2048.png",
+    "frames": 40,
+    "frameDuration": [
+      0.04
+    ],
+    "playType": "REVERSED",
+    "columns": 8,
+    "rows": 5
+  },
+  "char_idle": {
+    "filename": "data/animations/char_idle_1024.png",
+    "frames": 20,
+    "frameDuration": [
+      0.015
+    ],
+    "playType": "LOOP",
+    "columns": 8,
+    "rows": 3
+  },
+  "char_jump": {
+    "filename": "data/animations/char_jump_2048.png",
+    "frames": 31,
+    "frameDuration": [
+      0.035
+    ],
+    "playType": "LOOP",
+    "columns": 8,
+    "rows": 4
+  },
+  "coworker_idle": {
+    "filename": "data/animations/coworker_idle_1024.png",
+    "frames": 40,
+    "frameDuration": [
+      0.06
+    ],
+    "playType": "LOOP",
+    "columns": 4,
+    "rows": 10
+  },
+  "stone_breaking": {
+    "filename": "data/animations/stone_breaking.png",
+    "frames": 4,
+    "frameDuration": [
+      0.5
+    ],
+    "playType": "NORMAL",
+    "columns": 4,
+    "rows": 1
+  },
+  "bomb_explosion": {
+    "filename": "data/animations/explosion_sheet.png",
+    "frames": 5,
+    "frameDuration": [
+      0.3
+    ],
+    "playType": "NORMAL",
+    "columns": 5,
+    "rows": 1
+  },
+  "chameleon_death": {
+    "filename": "data/animations/enemy2_death_1024.png",
+    "frames": 15,
+    "frameDuration": [
+      0.05
+    ],
+    "playType": "NORMAL",
+    "columns": 4,
+    "rows": 4
+  },
+  "dog_death": {
+    "filename": "data/animations/enemy1_death_2048.png",
+    "frames": 20,
+    "frameDuration": [
+      0.05
+    ],
+    "playType": "NORMAL",
+    "columns": 8,
+    "rows": 3
+  }
 }

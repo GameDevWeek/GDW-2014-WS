@@ -254,12 +254,22 @@ public class EntityCreator {
         d.facingDirection = Direction.LEFT;
         entity.add(d);
         
-        final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
-        entity.add(animation);
-        animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
-               
-        addLayerComponent(entity, 10, 1, 1);
-
+        if(Health.Value == 1)
+        {
+            AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+            entity.add(animation);
+            animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
+                   
+            
+        }else
+        {
+            AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+            entity.add(animation);
+            animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_death");
+                   
+             
+        }
+        addLayerComponent(entity, 10, 1, 1); 
         engine.addEntity(entity);
         return entity;
     }
