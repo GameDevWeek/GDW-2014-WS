@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -123,6 +124,12 @@ public class MenuPage extends Group {
         });
         addActor(button);
         return button;
+    }
+    
+    protected final Label addLabel(String text)
+    {
+    	Label label = new Label(text, skin, "highscore");
+    	return label;
     }
     
     protected final ImageButton addImageButton(int x, int y, int width, int height, Runnable runnable)

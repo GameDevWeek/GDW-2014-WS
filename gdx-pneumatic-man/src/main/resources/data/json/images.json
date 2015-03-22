@@ -55,5 +55,7 @@
     "score_overlay": "data/images/Score_Border03.png",
     "score_head" : "data/images/preview.png",
     "butt_next_level" : "data/images/Butt.png",
-    "winscreen" : "data/images/Winscreen.png"
+    "down_button" : "data/images/Butt_Down_Inaktive03.png",
+    "down_button_active" : "data/images/Butt_Down_Active03.png"
+    "winscreen" : "data/images/Winscreen2.png"
 }

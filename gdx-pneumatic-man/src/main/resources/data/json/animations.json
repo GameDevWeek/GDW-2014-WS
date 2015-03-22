@@ -40,6 +40,22 @@
         "columns" : 8,
         "rows" : 4
     },
+    "chameleon_death": {
+        "filename": "data/animations/enemy2_death.png",
+        "frames" : 20,
+        "frameDuration": [0.05],
+        "playType": "NORMAL",
+        "columns" : 4,
+        "rows" : 5
+    },
+    "dog_death": {
+        "filename": "data/animations/enemy1_death.png",
+        "frames" : 21,
+        "frameDuration": [0.05],
+        "playType": "NORMAL",
+        "columns" : 8,
+        "rows" : 3
+    },
     "lava_ball": {
         "filename": "data/animations/ball.png",
         "frames" : 2,
@@ -81,28 +97,45 @@
         "rows" : 4
     },
     "coworker_idle": {
-	"filename": "data/animations/coworker_idle_1024.png",
-	"frames": 40,
-	"frameDuration": [0.06],
-	"playType": "LOOP",
-	"columns": 4,
-	"rows": 10
+    	"filename": "data/animations/coworker_idle_1024.png",
+    	"frames": 40,
+    	"frameDuration": [0.06],
+    	"playType": "LOOP",
+    	"columns": 4,
+    	"rows": 10
     },
     "stone_breaking": {
-	"filename": "data/animations/stone_breaking.png",
-	"frames": 4,
-	"frameDuration": [0.5],
-	"playType": "NORMAL",
-	"columns": 4,
-	"rows": 1
+    	"filename": "data/animations/stone_breaking.png",
+    	"frames": 4,
+    	"frameDuration": [0.5],
+    	"playType": "NORMAL",
+    	"columns": 4,
+    	"rows": 1
     },
     "bomb_explosion" : {
         "filename" : "data/animations/explosion_sheet.png",
         "frames" : 5,
-        "frameDuration": [0.1],
+        "frameDuration": [0.3],
         "playType": "NORMAL",
         "columns" : 5,
         "rows" : 1
-    }  
-
+    },  
+    "lava_ball" : {
+        "filename" : "data/animations/LavaBall_512.png",
+        "frames" : 16,
+        "frameDuration": [0.1],
+        "playType": "NORMAL",
+        "columns" : 8,
+        "rows" : 3
+    },
+    "destructable_block": {
+        "filename": "data/animations/destructable_block.png",
+        "frames" : 1,
+        "frameDuration": [1.0],
+        "playType": "NORMAL",
+        "columns" : 1,
+        "rows" : 1
+    }
+    
+    
 }

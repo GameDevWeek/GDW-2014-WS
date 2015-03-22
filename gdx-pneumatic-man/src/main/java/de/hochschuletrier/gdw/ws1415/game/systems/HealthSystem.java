@@ -89,8 +89,8 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);   //dont work
                 
                 }else if(ComponentMappers.killsPlayerOnContact.has(entity)){
-                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);
-                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("alienDie"),false);
+                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);
+                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("alienDie"),false);
 
                 }
                 //******states****
@@ -114,7 +114,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     Health.health = HealthState.DEAD;
                 }
                 
-
+                
+                if (ComponentMappers.AI.has(entity)){
+                    Health.health = HealthComponent.HealthState.DYING;
+                    
+                    EntityCreator.modifyEnemyToDying(entity);
+                } else
                 if (ComponentMappers.player.has(entity)) {
                     Health.health = HealthComponent.HealthState.DYING;
                     
@@ -157,9 +162,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                         PostUpdateRemovals.add(entity);
                     }
                 }
-                else
+                else if ( ComponentMappers.AI.has(entity) && Health.health == HealthState.DEAD )
                 {
-                    if(Health.health != HealthState.DYING)
+                    entity.getComponent(AnimationComponent.class).IsActive = true;
+                }else
+                {
+                   if(Health.health != HealthState.DYING)
                     {
                         logger.info(entity.getId() + " removed");
                         PostUpdateRemovals.add(entity);
