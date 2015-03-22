@@ -579,7 +579,7 @@
     <property name="Speed" value="15"/>
    </properties>
   </object>
-  <object id="165" name="PlayerSpawn" x="1697.83" y="946.833" width="63" height="61">
+  <object id="165" name="PlayerSpawn" x="63.8333" y="572.833" width="63" height="61">
    <properties>
     <property name="Name" value="PlayerSpawn"/>
    </properties>
