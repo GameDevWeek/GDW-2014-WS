@@ -111,6 +111,8 @@ public class MovementSystem extends IteratingSystem {
                 }
                 else
                 {
+                    //DISABLED
+                    // TODO: find why on low fps player can jump frames higher
                     if(input.jump)
                     {
                         jump._AddSpeedCount++;
