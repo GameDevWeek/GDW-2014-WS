@@ -69,6 +69,8 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
             }
 
             EntityCreator.engine.removeEntity(myEntity);
+        }else if(ComponentMappers.iblock.has(otherEntity)){
+            EntityCreator.engine.removeEntity(myEntity);
         }
     }
 

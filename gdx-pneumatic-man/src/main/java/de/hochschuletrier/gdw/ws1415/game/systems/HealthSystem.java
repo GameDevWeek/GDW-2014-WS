@@ -11,6 +11,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierCompon
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent.HealthState;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 
 import org.slf4j.Logger;
@@ -73,7 +74,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     Random rm=new Random();
                     int i=rm.nextInt(5)+1;//1-5dd
                     logger.info("Debris "+i);
-                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("cracks"+i), false);
+                    try{
+                        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("cracks"+i), false);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    
                 }
                 logger.info("Damaging "+entity.getId()+" with " + Health.DecrementByValueNextFrame + " damage. New Health: "+ (Health.Value - Health.DecrementByValueNextFrame));
             }
@@ -106,6 +112,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                         if(ComponentMappers.bomb.has(entity))
                         {
                             entity.getComponent(AnimationComponent.class).IsActive = true;
+                            entity.getComponent(PointLightComponent.class).pointLight.setActive(true);
                         }
                     }
                 }
