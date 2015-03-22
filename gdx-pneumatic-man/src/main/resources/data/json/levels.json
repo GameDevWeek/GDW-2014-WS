@@ -46,7 +46,19 @@
         "levelFilePath" : "data/maps/Towers.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "VERY HARD"
-    }
+    },
+  {
+    "name" : "level_5",
+    "levelFilePath" : "data/maps/myTest.tmx",
+    "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+    "difficulty" : "NORMAL"
+  },
+  {
+    "name" : "level_6",
+    "levelFilePath" : "data/maps/gottaCatchEmAll.tmx",
+    "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+    "difficulty" : "NORMAL"
+  }
 	
 	
 ]

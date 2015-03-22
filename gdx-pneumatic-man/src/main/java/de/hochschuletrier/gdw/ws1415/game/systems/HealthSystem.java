@@ -160,10 +160,13 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                                 bodyComponent.getBody().getFixtureList().forEach(f -> f.setSensor(false));
 
 
-                                
-                                AnimationComponent animationComponent = ComponentMappers.animation.get(bodyComponent.getEntity());
-                                animationComponent.stateTime = animationComponent.animation.animationDuration/3;
-                                animationComponent.permanent_stateTime = animationComponent.animation.animationDuration/3;
+                                try {
+                                    AnimationComponent animationComponent = ComponentMappers.animation.get(bodyComponent.getEntity());
+                                    animationComponent.stateTime = animationComponent.animation.animationDuration / 3;
+                                    animationComponent.permanent_stateTime = animationComponent.animation.animationDuration / 3;
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
 
                             }
                             return 0;

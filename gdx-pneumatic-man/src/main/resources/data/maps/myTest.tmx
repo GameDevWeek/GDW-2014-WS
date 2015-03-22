@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="53" height="49" tilewidth="64" tileheight="64">
+ <properties>
+  <property name="Background" value="Hintergrund1.png"/>
+ </properties>
+ <tileset firstgid="1" source="tilesets/destructable_block.tsx"/>
+ <tileset firstgid="7" source="tilesets/lava.tsx"/>
+ <tileset firstgid="15" source="tilesets/deco.tsx"/>
+ <tileset firstgid="29" source="tilesets/rest.tsx"/>
+ <tileset firstgid="37" source="tilesets/zacken.tsx"/>
+ <tileset firstgid="40" source="tilesets/background_block.tsx"/>
+ <tileset firstgid="46" source="tilesets/bomb.tsx"/>
+ <tileset firstgid="48" source="tilesets/deco_gross.tsx"/>
+ <tileset firstgid="51" source="tilesets/TutorialSchild.tsx"/>
+ <tileset firstgid="53" source="tilesets/background_stones01.tsx"/>
+ <tileset firstgid="54" source="tilesets/background_stones02.tsx"/>
+ <tileset firstgid="55" source="tilesets/Midground_Stein01.tsx"/>
+ <tileset firstgid="56" source="tilesets/Ruine.tsx"/>
+ <tileset firstgid="57" source="tilesets/Ruine01.tsx"/>
+ <tileset firstgid="58" source="tilesets/Stalagtit02.tsx"/>
+ <tileset firstgid="59" source="tilesets/Stalagtitten01.tsx"/>
+ <layer name="Backgroundlayer" width="53" height="49">
+  <data encoding="base64" compression="zlib">
+   eJzt1LENADAIAzCe6tT//+KASgxdkMC+IEOSCACo3e4AUNBPeNkFMNW2fzvdAQAAAAAA4EMCQWQBIg==
+  </data>
+ </layer>
+ <layer name="Spielebene" width="53" height="49">
+  <data encoding="base64" compression="zlib">
+   eJztlk0LwjAMhisM8ebHQYeeFDxW9P//OVfooGRt1zpcc3geCC1psuXtllJj/sfjB9NKqkbrLVe/Rl0l+20zMdo01fw/Lm7jTfpbE+uJj19z9Z4yeTX+NYj1jBX+ZzC/FjyzM+00hVr6mdjeTLWfg/nbj51pr2lpvrbzvObdl4X5axLu691Me+Ym4mSuRkrvBClNGnW5mqywlKbYOaJVk7PDYPvBjpH1cIzlayRX17gm7wklua0o6YnXgtwWxM49yfiN5B1CqyaHrM3Nd4FvK+I0a0mh7W4AAAAAAAAAAAAAAAAA6/MFtgUTsA==
+  </data>
+ </layer>
+ <layer name="Mittelebene" width="53" height="49">
+  <data encoding="base64" compression="zlib">
+   eJzt1+0KwyAMhWEvZx96/7e3CguEEe3Gwnrs3gfyp2jxUGvaUvLctrpv1Z41GhNV25n3a5ZlL48fb+Wp5Hrn2YzmjRyZ6XXfrC7aO/+u79fr0YtIdsZMXX8Hz5TLzpVVM0VnYr+26v6bnfPWpxV80otmY+1ZKcjqr5ZJoV9nfjfUxHspqEUr0+XL+T6PUiYrW99MDUopj+ezedG/UAtKWc+00noBAAAAAAAAAAAUPABUahEx
+  </data>
+ </layer>
+ <objectgroup name="Objektebene 1" width="53" height="49">
+  <object name="Platform" x="1792" y="896" width="64" height="64">
+   <properties>
+    <property name="Direction" value="up"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="3.0"/>
+   </properties>
+  </object>
+  <object name="Platform" x="1728" y="896" width="64" height="64">
+   <properties>
+    <property name="Direction" value="up"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="3.0"/>
+   </properties>
+  </object>
+  <object name="LavaFountain" x="1280" y="1024" width="64" height="64">
+   <properties>
+    <property name="Height" value="4"/>
+    <property name="Intervall" value="1.0"/>
+    <property name="IntervallOffset" value="1.5"/>
+    <property name="Length" value="1.0"/>
+    <property name="Name" value="LavaFountain"/>
+   </properties>
+  </object>
+  <object name="PlayerSpawn" x="1088" y="512" width="63" height="61">
+   <properties>
+    <property name="Name" value="PlayerSpawn"/>
+   </properties>
+  </object>
+  <object name="LevelEnd" x="1088" y="896" width="65" height="64">
+   <properties>
+    <property name="MinMiner" value="0"/>
+    <property name="Name" value="LevelEnd"/>
+   </properties>
+  </object>
+  <object name="Miner" x="1984" y="128" width="63" height="61">
+   <properties>
+    <property name="Name" value="Miner"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
