@@ -26,11 +26,6 @@ public class WinScreen extends MenuPage
     private final BitmapFont font_75;
     private final BitmapFont font_18;
     
-    private Label savedMiners;
-    private Label leftMiners;
-    private Label highscore;
-    private Label time;
-    private TextField enterName;
     
     
     public enum Type
@@ -46,6 +41,7 @@ public class WinScreen extends MenuPage
         font_32 = assetManager.getFont("orbitron_32");
         font_75 = assetManager.getFont("orbitron_75");
         font_18 = assetManager.getFont("orbitron_18");
+        
         
         
         
