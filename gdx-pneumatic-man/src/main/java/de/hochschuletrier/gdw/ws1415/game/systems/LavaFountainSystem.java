@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
@@ -12,6 +13,7 @@ import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SoundEmitterComponent;
 
 public class LavaFountainSystem extends IteratingSystem {
 
@@ -29,7 +31,6 @@ public class LavaFountainSystem extends IteratingSystem {
         LavaBallComponent lavaBall = ComponentMappers.lavaBall.get(entity);
         PhysixBodyComponent physixBody = ComponentMappers.physixBody
                 .get(entity);
-
         // lavaBall spawning
         if (lavaFountain != null) {
             if (lavaFountain.intervallOffset <= 0) {
@@ -41,10 +42,21 @@ public class LavaFountainSystem extends IteratingSystem {
                         lavaFountain.timeTillFountainStops -= deltaTime;
                         if (lavaFountain.timeToNextBall <= 0) {
 
-                            EntityCreator.createLavaBall(position.x,
+                            Entity ball = EntityCreator.createLavaBall(position.x,
                                     position.y, lavaFountain.lavaBallSpeed,
                                     lavaFountain.height);
-
+                            SoundEmitterComponent soundEmitter = ComponentMappers.soundEmitter.get(ball);
+                            try {
+                                SoundInstance soundInstance = soundEmitter.emitter.play(EntityCreator.assetManager.getSound("burst1"), false);
+                                soundInstance.setReferenceDistance(30f);
+                                soundInstance.setVolume(2.5f);
+                               
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            
+                            
+                            
                             lavaFountain.timeToNextBall = lavaFountain.lavaBallSpawnIntervall; // TODO
                                                                                                // dynamisch
                             // berechnen
@@ -70,6 +82,8 @@ public class LavaFountainSystem extends IteratingSystem {
             if (lavaBall.travelLength <= (float) (Math.abs(position.y
                     - lavaBall.startPositionY))
                     / (float) GameConstants.getTileSizeY()) {
+                
+                
                 EntityCreator.engine.removeEntity(entity);
             } 
         }
