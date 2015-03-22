@@ -84,21 +84,16 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
             if((Health.Value <= 0))
             {
-                //*****Sound*****
-                if(ComponentMappers.bomb.has(entity)){
-                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);   //dont work
-                
-                }else if(ComponentMappers.killsPlayerOnContact.has(entity)){
-                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);
-                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("alienDie"),false);
 
-                }
                 //******states****
                 if(ComponentMappers.deathTimer.has(entity))
                 {
                     DeathTimerComponent deathTimer = ComponentMappers.deathTimer.get(entity);
                     if(deathTimer.deathTimer <= 0) {
-
+                        if(ComponentMappers.bomb.has(entity)){
+                            System.out.println("bombTicks");
+                            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bombTicks"), false); 
+                        }
                         Health.health = HealthComponent.HealthState.DEAD;
                     }else {
                         Health.health = HealthComponent.HealthState.DYING;
@@ -117,7 +112,9 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 
                 if (ComponentMappers.AI.has(entity)){
                     Health.health = HealthComponent.HealthState.DYING;
-                    
+                    System.out.println("guardDie");
+                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);
+//                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("alienDie"),false);
                     EntityCreator.modifyEnemyToDying(entity);
                 } else
                 if (ComponentMappers.player.has(entity)) {
@@ -127,7 +124,8 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else if(ComponentMappers.bomb.has(entity) && Health.health == HealthState.DEAD)
                 {
-                    
+                    System.out.println("Explosion");
+                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"),false);
                     EntityCreator.modifyBombToExplode(entity);
                 }else if(ComponentMappers.block.has(entity)){
                     PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
@@ -164,6 +162,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else if ( ComponentMappers.AI.has(entity) && Health.health == HealthState.DEAD )
                 {
+
                     entity.getComponent(AnimationComponent.class).IsActive = true;
                 }else
                 {

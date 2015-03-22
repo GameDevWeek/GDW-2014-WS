@@ -1304,10 +1304,7 @@ public class EntityCreator {
                                        .sensor(true)
                 .mask((short) (EVERYTHING))
                 .category(WORLDSENSOR);
-        
-        // ***** Sound *****
 
-        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"), false);
         
         PhysixBody.createFixture(fDef);
         PhysixBody.setGravityScale(0.0f);
