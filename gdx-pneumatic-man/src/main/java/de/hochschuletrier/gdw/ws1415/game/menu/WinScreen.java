@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
+import de.hochschuletrier.gdw.ws1415.Settings;
+import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu.Type;
 
 public class WinScreen extends MenuPage
@@ -39,6 +42,13 @@ public class WinScreen extends MenuPage
         {
             System.out.println(names[(int)(Math.random()*100)%names.length]);
         }
+        
+        addCenteredImage(1400, 180, 108, 108, new DecoImage(assetManager.getTexture("butt_next_level")), () -> nextLevel());
+    }
+    
+    private void nextLevel()
+    {
+        Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % 2 ));
     }
 
 }
