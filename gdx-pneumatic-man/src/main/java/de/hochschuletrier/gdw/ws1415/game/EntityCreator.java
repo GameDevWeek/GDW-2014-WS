@@ -1284,7 +1284,7 @@ public class EntityCreator {
         Bomb.add(DestructableComp);
         
         DeathTimerComponent deathTimer = engine.createComponent(DeathTimerComponent.class);
-        deathTimer.deathTimer = 0.7f;
+        deathTimer.deathTimer = 0.8f;
         Bomb.add(deathTimer);
         
 
