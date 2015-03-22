@@ -126,7 +126,12 @@ public class HudRenderSystem extends IteratingSystem implements EntityListener {
         {
             font.draw(DrawUtil.batch, "" + playerComponent.destroyed_blocks, 68, 47);
         }
-
+        
+        if(goal.getComponent(GoalComponent.class).miners_threshold > playerComponent.saved_miners)
+        {
+            System.out.println("Nicht genug Miners gefunden");
+        }
+        
             
         int x = 40;
         for (int i = 0; i < playerComponent.saved_miners; i++) {
