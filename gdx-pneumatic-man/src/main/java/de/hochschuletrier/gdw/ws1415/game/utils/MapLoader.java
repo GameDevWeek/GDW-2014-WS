@@ -444,6 +444,28 @@ public class MapLoader
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(), map, tinfo, i, j);
                                 }
                                     break;
+                                case "middeko":
+                                {
+                                    
+                                    switch( tinfo.getProperty("Name", "").toLowerCase() )
+                                    {
+                                        case "background_stones01":
+                                        {
+                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+7.0f, j+4.5f);
+                                        }
+                                        case "ruine01":
+                                        {
+                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+8.0f, j+6.0f);
+                                        }
+                                            break;
+                                        default :
+                                        {
+                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+                                        }
+                                            break;
+                                    }
+                                }
+                                    break;
                                 case "deko":                                
                                 {
                                     Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "")));
@@ -477,17 +499,7 @@ public class MapLoader
                                     {
                                         float dis = tinfo.getFloatProperty("Distance", 0.0f); 
                                         float dir = (float) (tinfo.getFloatProperty("Direction", 90.0f) );
-                                        float conedir = tinfo.getFloatProperty("Radius", 30.0f);
-                                        
-                                        
-//                                        // TODO tests for the ChainLight
-//                                        if ( tinfo.getProperty("Name","").toLowerCase().equals( "lamp1" ) ||
-//                                                tinfo.getProperty("Name","").toLowerCase().equals( "lamp2" ) ||
-//                                                tinfo.getProperty("Name","").toLowerCase().equals( "lamp3" ) ) 
-//                                        {
-//                                            dis = 5f; // TODO 5f for test
-//                                        }
-                                        
+                                        float conedir = tinfo.getFloatProperty("Radius", 30.0f);                                        
                                         
                                         EntityCreator.createAndAddDeko(x, y, xOffset, yOffset, dir, dis, conedir, color, tinfo.getProperty("LightType","point") );
                                     }

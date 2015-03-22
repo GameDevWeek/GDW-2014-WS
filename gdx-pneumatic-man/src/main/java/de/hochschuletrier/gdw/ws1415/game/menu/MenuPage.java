@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
@@ -24,12 +23,12 @@ public class MenuPage extends Group {
     protected AssetManagerX assetManager = main.getAssetManager();
     protected final Skin skin;
     public static boolean abspielen = true;
-
+   
     public MenuPage(Skin skin, String background) {
         super();
         this.skin = skin;
         addActor(new DecoImage(assetManager.getTexture(background)));
-
+        
         setVisible(false);
     }
 
@@ -37,6 +36,7 @@ public class MenuPage extends Group {
     public void act(float delta) {
         if (isVisible()) {
             super.act(delta);
+            
         }
     }
 
@@ -75,8 +75,10 @@ public class MenuPage extends Group {
                     SoundEmitter.updateGlobal();
                     SoundEmitter.playGlobal(assetManager.getSound("pmCancel"),false); 
                 }
-               
+                
                 runnable.run();
+
+                
             }
             
         });
@@ -114,6 +116,7 @@ public class MenuPage extends Group {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 runnable.run();
+                
             }
         });
         addActor(button);
@@ -162,6 +165,8 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("butt_audio_add_active"));
         if(image.getRegion().getTexture()==assetManager.getTexture("soundDown"))
             image.setTexture(assetManager.getTexture("butt_audio_sub_active"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("down_button"))
+            image.setTexture(assetManager.getTexture("down_button_active"));
         
         //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_inactive"))
@@ -203,6 +208,8 @@ public class MenuPage extends Group {
             image.setTexture(assetManager.getTexture("soundDown"));
         if(image.getRegion().getTexture()==assetManager.getTexture("butt_audio_add_active"))
             image.setTexture(assetManager.getTexture("soundUp"));
+        if(image.getRegion().getTexture()==assetManager.getTexture("down_button_active"))
+            image.setTexture(assetManager.getTexture("down_button"));
         
       //IngameMenu Bilder
         if(image.getRegion().getTexture()==assetManager.getTexture("resume_button_active"))

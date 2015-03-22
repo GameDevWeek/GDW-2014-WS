@@ -41,7 +41,7 @@
     <property name="Name" value="Player"/>
    </properties>
   </object>
-  <object id="3" name="LavaFountain" x="1472" y="576" width="128" height="64">
+  <object id="3" name="LavaFountain" x="1472" y="576" width="64" height="64">
    <properties>
     <property name="Height" value="6.0"/>
     <property name="Intervall" value="2.0"/>
@@ -161,7 +161,7 @@
     <property name="Speed" value="2.0"/>
    </properties>
   </object>
-  <object id="29" name="LavaFountain" x="2560" y="576" width="128" height="64">
+  <object id="29" name="LavaFountain" x="2560" y="576" width="64" height="64">
    <properties>
     <property name="Height" value="5.0"/>
     <property name="Intervall" value="2.0"/>
