@@ -1,12 +1,9 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
 
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
 import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ws1415.states.GameplayState;
-import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 
@@ -36,8 +33,8 @@ public class MainMenu extends MenuPage{
         super(skin,"background_menu" );
         int x = 960;
         int i = 0;
-        int y = 700;
-        int yStep = 113;
+        int y = 750;
+        int yStep = 140;
         //music = assetManager.getMusic("credits");
         
         
