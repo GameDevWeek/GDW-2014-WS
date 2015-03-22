@@ -14,6 +14,7 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.Score;
+import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
 import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu.Type;
 import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 
@@ -55,7 +56,7 @@ public class WinScreen extends MenuPage
         
         
         
-        int nameRandomStart = (int)((Math.random()*100)%names.length-7);
+        int nameRandomStart = (int)((Math.random()*100)%(names.length-Score.total_miners+1));
         int minersSaved = Score.player_saved_miners;
         
         int minerLabelHoehe = (Main.WINDOW_HEIGHT/2 + 80);
