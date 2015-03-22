@@ -7,13 +7,13 @@
     },
     {
         "name" : "level_2",
-        "levelFilePath" : "data/maps/M1.tmx",
+        "levelFilePath" : "data/maps/Introduction.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "EASY"
     },
     {
         "name" : "level_3",
-        "levelFilePath" : "data/maps/M2.tmx",
+        "levelFilePath" : "data/maps/First_Steps.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "HARD"
     },
