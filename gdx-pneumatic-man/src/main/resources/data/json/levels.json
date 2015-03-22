@@ -1,0 +1,20 @@
+[
+    {
+        "name" : "level_1",
+        "levelFilePath" : "data/maps/Testkarte_19.03.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "NORMAL"
+    },
+    {
+        "name" : "level_2",
+        "levelFilePath" : "data/maps/M1.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "EASY"
+    },
+    {
+        "name" : "level_3",
+        "levelFilePath" : "data/maps/M2.tmx",
+        "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "HARD"
+    }
+]

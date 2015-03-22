@@ -1,47 +1,26 @@
-    package de.hochschuletrier.gdw.ws1415.states;
-
-import java.awt.Cursor;
-import java.awt.MouseInfo;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-
-import net.java.games.input.Mouse;
+package de.hochschuletrier.gdw.ws1415.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
-import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
-import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
+import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
-import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
-import de.hochschuletrier.gdw.commons.utils.Point;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
-import de.hochschuletrier.gdw.ws1415.game.menu.IngameMenu;
-import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu;
+import de.hochschuletrier.gdw.ws1415.game.menu.WinScreen;
 
-/**
- * Menu state
- *
- * @author Santo Pfingsten
- */
-public class MainMenuState extends BaseGameState {
+public class WinState extends BaseGameState {
 
     private final Music music;
 
@@ -50,23 +29,21 @@ public class MainMenuState extends BaseGameState {
     private final InputForwarder inputForwarder;
     private final DecoImage overlay;
             
-    public MainMenuState(AssetManagerX assetManager) {
+    public WinState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
         MusicManager.play(music, 2.0f);
         
-        
         Skin skin = Main.getInstance().getSkin();
-        final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.MAINMENU);
-       
+        final WinScreen winScreen =new WinScreen(skin, menuManager, WinScreen.Type.MAINMENU);
         //test IngameMenu:
 //        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
         hand = new DecoImage(assetManager.getTexture("zeigefinger2"));
         //hand.setSize(hand.getWidth()/2,hand.getWidth()/2);
-        menuManager.addLayer(mainMenu);
+        menuManager.addLayer(winScreen);
         
         overlay = new DecoImage(assetManager.getTexture("background_overlay"));
         
-        menuManager.pushPage(mainMenu);
+        menuManager.pushPage(winScreen);
         menuManager.getStage().addActor(overlay);
         menuManager.getStage().addActor(hand);
 //        menuManager.getStage().setDebugAll(true);
@@ -78,15 +55,17 @@ public class MainMenuState extends BaseGameState {
             @Override
             public boolean keyUp(int keycode) {
                 if (mainProcessor != null && keycode == Input.Keys.ESCAPE) {
-                    SoundEmitter.playGlobal(assetManager.getSound("pmCancel"),false);
-                    menuManager.popPage();
+                    //SoundEmitter.playGlobal(assetManager.getSound("pmCancel"),false);
+                    //menuManager.popPage();
                     return true;
                 }
                 return super.keyUp(keycode);
             }
         };
-
+        
+        
         Main.inputMultiplexer.addProcessor(inputForwarder);
+        
     }
 
     public void render() {
@@ -121,6 +100,5 @@ public class MainMenuState extends BaseGameState {
     public void dispose() {
         menuManager.dispose();
     }
-    
-    
+
 }

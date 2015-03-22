@@ -20,6 +20,7 @@ import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu;
+import de.hochschuletrier.gdw.ws1415.game.menu.WinScreen;
 
 /**
  * Gameplay state
@@ -38,6 +39,7 @@ public class GameplayState extends BaseGameState {
     private final InputProcessor menuInputProcessor;
     private final InputProcessor gameInputProcessor;
     private final DecoImage hand;
+    private final DecoImage overlay;
 
     public GameplayState(AssetManagerX assetManager) {
         game = new Game();
@@ -48,24 +50,22 @@ public class GameplayState extends BaseGameState {
         final MainMenu mainMenu =new MainMenu(skin, menuManager, MainMenu.Type.INGAME);
        
         //test IngameMenu:
-//        final IngameMenu mainMenu =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
+//        final IngameMenu winScreen =new IngameMenu(skin, menuManager, IngameMenu.Type.INGAME);
         hand = new DecoImage(assetManager.getTexture("zeigefinger2"));
         //hand.setSize(hand.getWidth()/2,hand.getWidth()/2);
         menuManager.addLayer(mainMenu);
         menuInputProcessor = menuManager.getInputProcessor();
         gameInputProcessor = game.getInputProcessor();
         
-        menuManager.addLayer(new DecoImage(assetManager.getTexture("background_overlay")));
-       // menuManager.addLayer(hand);
-        
+        overlay = new DecoImage(assetManager.getTexture("background_overlay"));
         menuManager.pushPage(mainMenu);
+        menuManager.getStage().addActor(overlay);
         menuManager.getStage().addActor(hand);
 //        menuManager.getStage().setDebugAll(true);
 
         Main.getInstance().addScreenListener(menuManager);
 
         inputForwarder = new InputForwarder() {
-
             @Override
             public boolean keyUp(int keycode) {
                 if (keycode == Input.Keys.ESCAPE) {
@@ -90,6 +90,7 @@ public class GameplayState extends BaseGameState {
     @Override
     public void update(float delta) {
         game.update(delta);
+        
         if (inputForwarder.get() == menuInputProcessor) {
             
             menuManager.update(delta);
@@ -97,10 +98,9 @@ public class GameplayState extends BaseGameState {
         
             DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), OVERLAY_COLOR);
             final Stage stage = menuManager.getStage();
-//            Vector2 vector = new Vector2( Gdx.input.getX(), Gdx.input.getY() );
-//            stage.screenToStageCoordinates(vector);
-//            hand.setPosition((stage.getWidth() - Main.WINDOW_WIDTH)/2 + Main.WINDOW_WIDTH * 0.5f,vector.y-1150);
-            Vector2 vector= menuManager.getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(),Gdx.input.getY()));
+            overlay.setPosition((stage.getWidth() - Main.WINDOW_WIDTH)/2 - 630, (stage.getHeight() - Main.WINDOW_HEIGHT)/2 - 730);
+
+            Vector2 vector= stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(),Gdx.input.getY()));
             hand.setPosition(vector.x-765,vector.y-1200);
             menuManager.render();
         }

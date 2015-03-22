@@ -1,339 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="53" height="49" tilewidth="64" tileheight="64" nextobjectid="48">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="53" height="49" tilewidth="64" tileheight="64" nextobjectid="50">
  <properties>
   <property name="Background" value="Hintergrund1.png"/>
  </properties>
- <tileset firstgid="1" name="destructable_block" tilewidth="64" tileheight="64" spacing="64" margin="64">
-  <properties>
-   <property name="animationDuration" value="1"/>
-   <property name="animationFrames" value="6"/>
-   <property name="animationOffset" value="1"/>
-  </properties>
-  <image source="tilesets/destructable_block.png" width="832" height="192"/>
-  <tile id="0">
-   <properties>
-    <property name="Hitpoints" value="1"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block1Background"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
-  <tile id="1">
-   <properties>
-    <property name="Name" value="Block2Background"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
-  <tile id="2">
-   <properties>
-    <property name="Hitpoints" value="3"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block3Background"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
-  <tile id="3">
-   <properties>
-    <property name="Hitpoints" value="4"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block4Background"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
-  <tile id="4">
-   <properties>
-    <property name="Hitpoints" value="5"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block5Background"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
-  <tile id="5">
-   <properties>
-    <property name="Hitpoints" value="6"/>
-    <property name="Invulnerable" value="false"/>
-    <property name="Name" value="Block6Background"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="7" source="tilesets/zacken.tsx"/>
- <tileset firstgid="10" name="lava" tilewidth="64" tileheight="64" spacing="64" margin="64">
-  <properties>
-   <property name="animationDuration" value="0.5"/>
-   <property name="animationFrames" value="4"/>
-   <property name="animationOffset" value="1"/>
-  </properties>
-  <image source="tilesets/lava.png" width="576" height="320"/>
-  <tile id="0">
-   <properties>
-    <property name="Colour" value="yellowLava"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lava1"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="1">
-   <properties>
-    <property name="Colour" value="yellowLava"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lava2"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="2">
-   <properties>
-    <property name="Colour" value="yellowLava"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lava3"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="3">
-   <properties>
-    <property name="Colour" value="yellowLava"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lava4"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="4">
-   <properties>
-    <property name="Colour" value="yellowLava"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lava5"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="5">
-   <properties>
-    <property name="Colour" value="yellowLava"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lava6"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="6">
-   <properties>
-    <property name="Colour" value="yellowLava"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lava7"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
-  <tile id="7">
-   <properties>
-    <property name="Colour" value="yellowLava"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lava8"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Lava"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="18" source="tilesets/rest.tsx"/>
- <tileset firstgid="26" name="deco" tilewidth="64" tileheight="64" spacing="64" margin="64">
-  <image source="tilesets/deco.png" width="960" height="320"/>
-  <tile id="0">
-   <properties>
-    <property name="Colour" value="blue"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lamp1"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="32.0"/>
-    <property name="YOffset" value="32.0"/>
-   </properties>
-  </tile>
-  <tile id="1">
-   <properties>
-    <property name="Colour" value="blue"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lamp2"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="32.0"/>
-    <property name="YOffset" value="32.0"/>
-   </properties>
-  </tile>
-  <tile id="2">
-   <properties>
-    <property name="Colour" value="blue"/>
-    <property name="Direction" value="0.0"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lamp3"/>
-    <property name="Radius" value="60.0"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="32.0"/>
-    <property name="YOffset" value="32.0"/>
-   </properties>
-  </tile>
-  <tile id="3">
-   <properties>
-    <property name="Colour" value="yellow"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="point"/>
-    <property name="Name" value="Lamp4"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="32.0"/>
-    <property name="YOffset" value="32.0"/>
-   </properties>
-  </tile>
-  <tile id="4">
-   <properties>
-    <property name="Colour" value="yellow"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="point"/>
-    <property name="Name" value="Lamp5"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="32.0"/>
-    <property name="YOffset" value="48.0"/>
-   </properties>
-  </tile>
-  <tile id="5">
-   <properties>
-    <property name="Colour" value="yellow"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="point"/>
-    <property name="Name" value="Lamp6"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="32.0"/>
-    <property name="YOffset" value="48.0"/>
-   </properties>
-  </tile>
-  <tile id="6">
-   <properties>
-    <property name="Invulnerable" value="true"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
-  <tile id="7">
-   <properties>
-    <property name="Invulnerable" value="true"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
-  <tile id="8">
-   <properties>
-    <property name="Invulnerable" value="true"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
-  <tile id="9">
-   <properties>
-    <property name="Colour" value="yellow"/>
-    <property name="Distance" value="5.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="cone"/>
-    <property name="Name" value="Lamp7"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="32.0"/>
-    <property name="YOffset" value="48.0"/>
-   </properties>
-  </tile>
-  <tile id="10">
-   <properties>
-    <property name="Colour" value="yellow"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="point"/>
-    <property name="Name" value="Lamp8"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="32.0"/>
-    <property name="YOffset" value="48.0"/>
-   </properties>
-  </tile>
-  <tile id="11">
-   <properties>
-    <property name="Colour" value="yellow"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="point"/>
-    <property name="Name" value="Lamp9"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="32.0"/>
-    <property name="YOffset" value="32.0"/>
-   </properties>
-  </tile>
-  <tile id="12">
-   <properties>
-    <property name="Colour" value="yellow"/>
-    <property name="Distance" value="3.0"/>
-    <property name="Invulnerable" value="true"/>
-    <property name="Light" value="true"/>
-    <property name="LightType" value="point"/>
-    <property name="Name" value="Lamp10"/>
-    <property name="Type" value="Deko"/>
-    <property name="XOffset" value="48.0"/>
-    <property name="YOffset" value="32.0"/>
-   </properties>
-  </tile>
-  <tile id="13">
-   <properties>
-    <property name="Invulnerable" value="true"/>
-    <property name="Type" value="Deko"/>
-   </properties>
-  </tile>
- </tileset>
+ <tileset firstgid="1" source="tilesets/destructable_block.tsx"/>
+ <tileset firstgid="7" source="tilesets/lava.tsx"/>
+ <tileset firstgid="15" source="tilesets/deco.tsx"/>
+ <tileset firstgid="29" source="tilesets/zacken.tsx"/>
+ <tileset firstgid="32" source="tilesets/rest.tsx"/>
  <tileset firstgid="40" source="tilesets/background_block.tsx"/>
  <tileset firstgid="46" source="tilesets/bomb.tsx"/>
  <tileset firstgid="48" source="tilesets/deco_gross.tsx"/>
@@ -343,7 +17,7 @@
    <property name="Parallax" value="1.0"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzdmNtqAzEMRPWUH0hzee///2MJxKBORzfLJqYCQaPaso4v4919iMjjHzozK366nc70VI6/mb9slgnH0LGuRXVH3mFic7jCKrVnmMbfd5ljqvhMH6yd2cw6fVrPtF9hbr7g/xWm7JzvNM00TDNZfax4hWkXKzJF6xSxdpmic4ZmafYV4sj0UG1nmLAP1ufVbbUdOVlfrK+j5SNuMVnaPrPvGBNqOdbSZXrZ5e079S3Scs22ep0y58kbc6YOFp/VPZEeU1YfcA6tuHWus0xjv80wiRGPmLAf6t7L8H5iem6NgTVHTLg2LG6ZV0fEVMl1EpO2VUxa9/R+fEpdD09hstaJtZ9dDyt+CpOnBbe3Z+tA69xPY7+NPCOu95yQuMfF7tioDive0b3MHvOY2H3zbYzH6hiWvdO7TJ4eekzsjo6YMN5lyureXXrjifydA+/9qcNkxTPPDLge1fF2vefOMLF4VAfbkyuZ9PPeLBOrUbcfuo5xPV6WydJBq/YdTCNfNOfedyOrT5Xp1nBLHz3d23WeVr7nVutA69xPqNmY19tj2C6yznNEpc9YH3Z/RkxVj/Ykjtfde1r7PsHkfd9jLJXzdDoTsrF45byvaLeTaUbDVrSz6utquTeHmXYsfyafyNp1irgsfc7MM8uHHBZPl8niwvw7Yhkm3SbzfY9xsdzRed7VzuvPzDoT3vhWHavbrWQ6zV8MF/n97hOdYWZsbnZatcYVTBiv9M3MT0YvvL2X4cvkjbgrjmcqqzFsTk41r0aP6WSuqL5P69Yu/wFlRINV
+   eJzdmVtPwzAMhfPC/d6JaQheuGzPwP//cbRilqyj49hxVihYsug8J/GXpCft2JZStv/QmVnxpdvSmXbK8TPzybJMOIaO9ZpXt+cZpi3pp5SfZ2J1MCa5fit1plXhTC2eaTP5A9TK6tPfbQgf5i7Jn2FuXuB7xmvNQ3TO5zTNJKaZrDZWvIVpLlZk8tbJY2U1rlTfvfeZtkcjR5h0HJm2KjfDhG2wvlrdVq70ydpifUz3NvDX25MWk6XtmX3HmFDLsZbs/aRrPt77nPpmMYlptl4mXKeIRtTGzNTB4lndK6WPKaqHOIdW3Lqvo0yy36JMa3Vd1HULE7ZD3ZsMzyem59YYWLPHhGvD4pbV6vCYNqTNTzHJ2ZZh0naI54jJtO5JrUfKW/RtKUzWOun829FvKn6XrOM3maJa8Lr3aB1oPeeT7DeMs5qjus3OWK8OK96je7X1sOJsjSPjsbiYdaZndC+yx1qZ2BntMWE8+2wk4zPdY+f6W8mPZ81B7f0pM0aLFtTWSa9H63hzvedmmFjcq4PtyUMyyX7rYWI16nzRdYzr8aJMlg5atc/BJP15c1773Uhb5D3XYnrtcEsfa7o31/2kda/XW+tAw/OppS+5l3CtCol7+9GznueIljZaI/Ds8Jha3duTOF4vk9a+32Cq/b7HWKJMk8v/BHqZ1ur644BMEd2L+Mnop4G8s9HPnZxeJl17lmfyi9EvA3lXo187OVZ9vVpem8NIHus/0l8ph12nyR8rdVj6bPEMe7f6Y1bTjiyTtV7Sz6BiUu/OydsF84YAk+aO/L7HuHS/A8ljdbD+evI8PZR62Xsu45IxrBxcL7YX9doMqk8r77586/zT6J/AhPMc3XtLddQTj2kp1lpjhondA4V8jrRlXqtRch4q7ZEpwtfyrGNxtzjqIn6OMP3lvaiZPiB/SVzv8Nmqbw3f/zf/Ak3rzsI=
   </data>
  </layer>
  <objectgroup name="Objektebene">
@@ -359,7 +33,7 @@
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="2.0"/>
+    <property name="Speed" value="3.0"/>
    </properties>
   </object>
   <object id="8" name="LevelEnd" x="320" y="256" width="65" height="64">
@@ -392,7 +66,7 @@
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="2.0"/>
+    <property name="Speed" value="3.0"/>
    </properties>
   </object>
   <object id="15" name="Platform" x="1408" y="1728" width="64" height="64">
@@ -402,7 +76,7 @@
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="2.0"/>
+    <property name="Speed" value="3.0"/>
    </properties>
   </object>
   <object id="19" name="Platform" x="64" y="2880" width="64" height="64">
@@ -418,8 +92,8 @@
   <object id="20" name="LavaFountain" x="1408" y="2240" width="128" height="64">
    <properties>
     <property name="Height" value="3.0"/>
-    <property name="Intervall" value="4.0"/>
-    <property name="IntervallOffset" value="4.0"/>
+    <property name="Intervall" value="2.0"/>
+    <property name="IntervallOffset" value="2.0"/>
     <property name="Name" value="LavaFountain"/>
     <property name="length" value="2.0"/>
    </properties>
@@ -427,8 +101,8 @@
   <object id="22" name="LavaFountain" x="2048" y="2240" width="128" height="64">
    <properties>
     <property name="Height" value="3.0"/>
-    <property name="Intervall" value="4.0"/>
-    <property name="IntervallOffset" value="4.0"/>
+    <property name="Intervall" value="2.0"/>
+    <property name="IntervallOffset" value="2.0"/>
     <property name="Name" value="LavaFountain"/>
     <property name="length" value="2.0"/>
    </properties>
@@ -438,7 +112,7 @@
     <property name="Name" value="Miner"/>
    </properties>
   </object>
-  <object id="24" name="Miner" x="3136" y="2880" width="63" height="61">
+  <object id="24" name="Miner" x="3136" y="3008" width="63" height="61">
    <properties>
     <property name="Name" value="Miner"/>
    </properties>
@@ -448,14 +122,14 @@
     <property name="Name" value="Miner"/>
    </properties>
   </object>
-  <object id="26" name="Platform" x="896" y="256" width="64" height="64">
+  <object id="26" name="Platform" x="1024" y="256" width="64" height="64">
    <properties>
     <property name="Direction" value="right"/>
     <property name="Distance" value="10.0"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="5.0"/>
+    <property name="Speed" value="15.0"/>
    </properties>
   </object>
   <object id="27" name="Platform" x="448" y="2368" width="64" height="64">
@@ -468,44 +142,44 @@
     <property name="Speed" value="2.75"/>
    </properties>
   </object>
-  <object id="28" name="Platform" x="2816" y="320" width="64" height="64">
+  <object id="28" name="Platform" x="2688" y="320" width="64" height="64">
    <properties>
     <property name="Direction" value="left"/>
     <property name="Distance" value="10.0"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="5.0"/>
+    <property name="Speed" value="15.0"/>
    </properties>
   </object>
-  <object id="29" name="Platform" x="2816" y="256" width="64" height="64">
+  <object id="29" name="Platform" x="2688" y="256" width="64" height="64">
    <properties>
     <property name="Direction" value="left"/>
     <property name="Distance" value="10.0"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="5.0"/>
+    <property name="Speed" value="15.0"/>
    </properties>
   </object>
-  <object id="30" name="Platform" x="896" y="128" width="64" height="64">
+  <object id="30" name="Platform" x="1024" y="128" width="64" height="64">
    <properties>
     <property name="Direction" value="right"/>
     <property name="Distance" value="30.0"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="10.0"/>
+    <property name="Speed" value="25.0"/>
    </properties>
   </object>
-  <object id="31" name="Platform" x="896" y="64" width="64" height="64">
+  <object id="31" name="Platform" x="1024" y="64" width="64" height="64">
    <properties>
     <property name="Direction" value="right"/>
     <property name="Distance" value="30.0"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="10.0"/>
+    <property name="Speed" value="25.0"/>
    </properties>
   </object>
   <object id="32" name="Platform" x="576" y="384" width="64" height="64">
@@ -518,14 +192,14 @@
     <property name="Speed" value="2.75"/>
    </properties>
   </object>
-  <object id="33" name="Platform" x="896" y="320" width="64" height="64">
+  <object id="33" name="Platform" x="1024" y="320" width="64" height="64">
    <properties>
     <property name="Direction" value="right"/>
     <property name="Distance" value="10.0"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
-    <property name="Speed" value="5.0"/>
+    <property name="Speed" value="15.0"/>
    </properties>
   </object>
   <object id="36" name="Platform" x="192" y="2560" width="64" height="64">
@@ -578,7 +252,7 @@
     <property name="Speed" value="2.75"/>
    </properties>
   </object>
-  <object id="44" name="Platform" x="2496" y="3008" width="64" height="64">
+  <object id="44" name="Platform" x="2368" y="3008" width="64" height="64">
    <properties>
     <property name="Direction" value="left"/>
     <property name="Distance" value="30.0"/>
@@ -588,7 +262,7 @@
     <property name="Speed" value="15.0"/>
    </properties>
   </object>
-  <object id="45" name="Platform" x="2496" y="2880" width="64" height="64">
+  <object id="45" name="Platform" x="2368" y="2880" width="64" height="64">
    <properties>
     <property name="Direction" value="left"/>
     <property name="Distance" value="30.0"/>
@@ -598,7 +272,7 @@
     <property name="Speed" value="25.0"/>
    </properties>
   </object>
-  <object id="46" name="Platform" x="2496" y="2944" width="64" height="64">
+  <object id="46" name="Platform" x="2368" y="2944" width="64" height="64">
    <properties>
     <property name="Direction" value="left"/>
     <property name="Distance" value="30.0"/>
@@ -608,7 +282,7 @@
     <property name="Speed" value="20.0"/>
    </properties>
   </object>
-  <object id="47" name="Platform" x="2496" y="2816" width="64" height="64">
+  <object id="47" name="Platform" x="2368" y="2816" width="64" height="64">
    <properties>
     <property name="Direction" value="left"/>
     <property name="Distance" value="30.0"/>
@@ -616,6 +290,23 @@
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
     <property name="Speed" value="30.0"/>
+   </properties>
+  </object>
+  <object id="48" name="Platform" x="1216" y="1728" width="64" height="64">
+   <properties>
+    <property name="Direction" value="up"/>
+    <property name="Distance" value="10.0"/>
+    <property name="Hitpoints" value=""/>
+    <property name="Mode" value="always"/>
+    <property name="Name" value="Platform"/>
+    <property name="Speed" value="3.0"/>
+   </properties>
+  </object>
+  <object id="49" name="Enemy" x="2112" y="704" width="64" height="62">
+   <properties>
+    <property name="Direction" value="right"/>
+    <property name="Name" value="Enemy"/>
+    <property name="Type" value="chameleon"/>
    </properties>
   </object>
  </objectgroup>

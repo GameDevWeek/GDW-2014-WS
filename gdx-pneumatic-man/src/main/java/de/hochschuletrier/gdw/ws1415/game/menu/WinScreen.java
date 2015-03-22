@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -35,25 +34,11 @@ public class WinScreen extends MenuPage
         font_75 = assetManager.getFont("orbitron_75");
         font_18 = assetManager.getFont("orbitron_18");
         
-        font_32.setColor(Color.valueOf("ffe601"));
-        font_75.setColor(Color.valueOf("ffe601"));
-        font_18.setColor(Color.valueOf("ffe601"));
-        
         
         for(int i = 0; i < 5; i++)
         {
             System.out.println(names[(int)(Math.random()*100)%names.length]);
         }
-         
-        
-        
-//        for()
-        
-        
-        //fuck off!
-        
-        
-        
     }
 
 }
