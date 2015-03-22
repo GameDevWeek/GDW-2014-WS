@@ -5,72 +5,84 @@
   <properties>
    <property name="Colour" value="blue"/>
    <property name="Direction" value="0.0"/>
-   <property name="Distance" value="3.0"/>
+   <property name="Distance" value="10.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="chain"/>
    <property name="Name" value="Lamp1"/>
    <property name="Radius" value="60.0"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="0.0"/>
+   <property name="YOffset" value="40.0"/>
   </properties>
  </tile>
  <tile id="1">
   <properties>
    <property name="Colour" value="blue"/>
    <property name="Direction" value="0.0"/>
-   <property name="Distance" value="3.0"/>
+   <property name="Distance" value="10.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="chain"/>
    <property name="Name" value="Lamp2"/>
    <property name="Radius" value="60.0"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="0.0"/>
+   <property name="YOffset" value="40.0"/>
   </properties>
  </tile>
  <tile id="2">
   <properties>
    <property name="Colour" value="blue"/>
    <property name="Direction" value="0.0"/>
-   <property name="Distance" value="3.0"/>
+   <property name="Distance" value="10.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="chain"/>
    <property name="Name" value="Lamp3"/>
    <property name="Radius" value="60.0"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="0.0"/>
+   <property name="YOffset" value="40.0"/>
   </properties>
  </tile>
  <tile id="3">
   <properties>
    <property name="Colour" value="yellow"/>
-   <property name="Distance" value="3.0"/>
+   <property name="Distance" value="9.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="point"/>
    <property name="Name" value="Lamp4"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="32.0"/>
+   <property name="YOffset" value="32.0"/>
   </properties>
  </tile>
  <tile id="4">
   <properties>
    <property name="Colour" value="yellow"/>
-   <property name="Distance" value="3.0"/>
+   <property name="Distance" value="7.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="point"/>
    <property name="Name" value="Lamp5"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="32.0"/>
+   <property name="YOffset" value="45.0"/>
   </properties>
  </tile>
  <tile id="5">
   <properties>
    <property name="Colour" value="yellow"/>
-   <property name="Distance" value="3.0"/>
+   <property name="Distance" value="8.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="point"/>
    <property name="Name" value="Lamp6"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="32.0"/>
+   <property name="YOffset" value="45.0"/>
   </properties>
  </tile>
  <tile id="6">
@@ -94,34 +106,42 @@
  <tile id="9">
   <properties>
    <property name="Colour" value="yellow"/>
-   <property name="Distance" value="5.0"/>
+   <property name="Direction" value="90.0"/>
+   <property name="Distance" value="10.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="cone"/>
    <property name="Name" value="Lamp7"/>
+   <property name="Radius" value="30.0"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="32.0"/>
+   <property name="YOffset" value="40.0"/>
   </properties>
  </tile>
  <tile id="10">
   <properties>
    <property name="Colour" value="yellow"/>
-   <property name="Distance" value="3.0"/>
+   <property name="Distance" value="4.0"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="point"/>
    <property name="Name" value="Lamp8"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="32.0"/>
+   <property name="YOffset" value="32.0"/>
   </properties>
  </tile>
  <tile id="11">
   <properties>
    <property name="Colour" value="yellow"/>
-   <property name="Distance" value="3.0"/>
+   <property name="Distance" value="5.5"/>
    <property name="Invulnerable" value="true"/>
    <property name="Light" value="true"/>
    <property name="LightType" value="point"/>
    <property name="Name" value="Lamp9"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="32.0"/>
+   <property name="YOffset" value="32.0"/>
   </properties>
  </tile>
  <tile id="12">
@@ -133,6 +153,8 @@
    <property name="LightType" value="point"/>
    <property name="Name" value="Lamp10"/>
    <property name="Type" value="Deko"/>
+   <property name="XOffset" value="38.0"/>
+   <property name="YOffset" value="20.0"/>
   </properties>
  </tile>
  <tile id="13">

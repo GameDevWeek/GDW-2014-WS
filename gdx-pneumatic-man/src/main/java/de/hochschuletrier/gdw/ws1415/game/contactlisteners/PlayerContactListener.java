@@ -82,8 +82,6 @@ public class PlayerContactListener extends PhysixContactAdapter {
             int i=rm.nextInt(3)+1;//1-3
             System.out.println("saveSaouESCAPEnd "+i);
             SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free"+i), false);
-//            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free2"), false);
-//            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free3"), false);
         }
         
         if(otherEntity.getComponent(GoalComponent.class) != null){
@@ -135,6 +133,8 @@ public class PlayerContactListener extends PhysixContactAdapter {
                     bodyComponent.setGravityScale(1);
                     bodyComponent.setAwake(true);
                 });
+                
+                ComponentMappers.damage.get(rockTriggerComponent.rockEntity).damageToTile = true;
                 ComponentMappers.animation.get(rockTriggerComponent.rockEntity).IsActive = true;
                 rockTriggerComponent.rockEntity.add(modifierComponent);
                 EntityCreator.engine.removeEntity(otherEntity);

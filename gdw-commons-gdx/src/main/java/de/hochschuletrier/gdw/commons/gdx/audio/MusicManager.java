@@ -97,6 +97,7 @@ public class MusicManager {
             addFade(music, fadeTime, false);
             music.setLooping(true);
             music.play();
+            music.setVolume(0);
         }
         currentMusic = music;
     }

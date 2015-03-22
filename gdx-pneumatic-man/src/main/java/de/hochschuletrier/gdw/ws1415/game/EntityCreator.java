@@ -77,10 +77,10 @@ public class EntityCreator {
         .shapeBox(width * 0.18f, height * 0.825f, new Vector2(0, 0), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
 
-        fixtureDef = new PhysixFixtureDef(physixSystem)
+        /*fixtureDef = new PhysixFixtureDef(physixSystem)
         .density(1).friction(0).restitution(0f)
         .shapeCircle(width*0.4f,new Vector2(0,-height * 0.1f)).sensor(true);
-        fixture = bodyComponent.createFixture(fixtureDef);
+        fixture = bodyComponent.createFixture(fixtureDef);*/
 
 
         //laser
@@ -130,6 +130,9 @@ public class EntityCreator {
         
         addLayerComponent(entity, 10, 1, 1);
 
+        SoundEmitterComponent se = engine.createComponent(SoundEmitterComponent.class);
+        entity.add(se);
+        
         engine.addEntity(entity);
         return entity;
     }
@@ -420,7 +423,7 @@ public class EntityCreator {
         DamageComponent damageComp = engine.createComponent(DamageComponent.class);
         damageComp.damage = 4;
         damageComp.damageToPlayer = true;
-        damageComp.damageToTile = true;
+        damageComp.damageToTile = false;
         entity.add(damageComp);
 
         AnimationComponent trapBlock = engine.createComponent(AnimationComponent.class);
@@ -860,7 +863,7 @@ public class EntityCreator {
             float intervallOffset, float length){
         Entity entity = engine.createEntity();
         
-        float lavaBallSpeed = -10.0f;
+        float lavaBallSpeed = -200.0f;
         float lavaBallSpawnIntervall = 0.25f;
         
         PositionComponent position = engine.createComponent(PositionComponent.class);
@@ -890,11 +893,11 @@ public class EntityCreator {
         
         PhysixBodyComponent bodyComponent = engine
                 .createComponent(PhysixBodyComponent.class);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.DynamicBody,
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.KinematicBody,
                 physixSystem).position(positionX, positionY).fixedRotation(true);
         bodyComponent.init(bodyDef, physixSystem, entity);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1f).friction(1f).shapeCircle(radius)
+                .density(0).friction(0).shapeCircle(radius)
                 .restitution(0).sensor(true);
         bodyComponent.createFixture(fixtureDef);
         bodyComponent.setGravityScale(0);
@@ -1084,7 +1087,7 @@ public class EntityCreator {
      */
     private static void addRenderComponents(Entity entity, TiledMap map, TileInfo info, float tileX, float tileY, PlayMode playMode, boolean start) {
     	TileSet tileset = map.findTileSet(info.globalId);
-    	int frames = tileset.getIntProperty("AnimationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
+    	int frames = tileset.getIntProperty("animationFrames", 1); /// default set to 1 from 0 : editet by asset to load bomb
         
     	assert(frames > 1);
 
@@ -1154,6 +1157,8 @@ public class EntityCreator {
         deathTimer.deathTimer = 1.5f;
         Bomb.add(deathTimer);
         
+
+        
         //addRenderComponents(Bomb, map, info, tileX, tileY);
         addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
         
@@ -1179,6 +1184,10 @@ public class EntityCreator {
         PhysixFixtureDef fDef = new PhysixFixtureDef(physixSystem)
                                        .shapeCircle(RadiusInWorld)
                                        .sensor(true);
+        
+        // ***** Sound *****
+
+        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"), false);
         
         PhysixBody.createFixture(fDef);
         PhysixBody.setGravityScale(0.0f);
