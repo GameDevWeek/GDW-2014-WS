@@ -161,6 +161,7 @@ public class EntityCreator {
         final AnimationComponent animation = ComponentMappers.animation.get(entity);
         animation.animation = assetManager.getAnimation("char_idle");
         animation.isSpawningPlayer = false;
+        animation.offsetX = 10.0f;
         
         JumpableAnimationComponent jumpable = engine.createComponent(JumpableAnimationComponent.class);
         jumpable.idle = animation.animation;
