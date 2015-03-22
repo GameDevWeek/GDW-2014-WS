@@ -580,7 +580,7 @@ public class EntityCreator {
 
         AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
-        animation.animation = assetManager.getAnimation("lava_ball"); //fixme: platform block
+        animation.animation = assetManager.getAnimation("destructable_block"); //fixme: platform block
 
         engine.addEntity(entity);
         return entity;
