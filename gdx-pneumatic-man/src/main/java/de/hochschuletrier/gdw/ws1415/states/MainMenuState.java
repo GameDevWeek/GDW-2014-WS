@@ -1,39 +1,23 @@
     package de.hochschuletrier.gdw.ws1415.states;
 
-import java.awt.Cursor;
-import java.awt.MouseInfo;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-
-import net.java.games.input.Mouse;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
-import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
-import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
+import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
-import de.hochschuletrier.gdw.commons.gdx.state.transition.Transition;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
-import de.hochschuletrier.gdw.commons.utils.Point;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
-import de.hochschuletrier.gdw.ws1415.game.menu.IngameMenu;
 import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu;
 
 /**
@@ -44,15 +28,16 @@ import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu;
 public class MainMenuState extends BaseGameState {
 
     private final Music music;
-
     private final MenuManager menuManager = new MenuManager(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, null);
     private final  DecoImage hand;
     private final InputForwarder inputForwarder;
     private final DecoImage overlay;
             
     public MainMenuState(AssetManagerX assetManager) {
-        music = assetManager.getMusic("menu");
-        MusicManager.play(music, 2.0f);
+       
+            music = assetManager.getMusic("menu");
+        //MusicManager.play(assetManager.getMusic("menu"),2.0f);
+            MusicManager.play(music, 2.0f);
         
         
         Skin skin = Main.getInstance().getSkin();
@@ -67,6 +52,7 @@ public class MainMenuState extends BaseGameState {
         overlay = new DecoImage(assetManager.getTexture("background_overlay"));
         
         menuManager.pushPage(mainMenu);
+        //System.out.println(menuManager.getStage());
         menuManager.getStage().addActor(overlay);
         menuManager.getStage().addActor(hand);
 //        menuManager.getStage().setDebugAll(true);
@@ -103,11 +89,14 @@ public class MainMenuState extends BaseGameState {
         
         Vector2 vector= stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(),Gdx.input.getY()));
         hand.setPosition(vector.x-765,vector.y-1200);
+      
+//        MusicManager.update(delta);
         render();
     }
 
     @Override
     public void onEnterComplete() {
+        
         MusicManager.play(music, GameConstants.MUSIC_FADE_TIME);
         inputForwarder.set(menuManager.getInputProcessor());
     }
@@ -115,6 +104,7 @@ public class MainMenuState extends BaseGameState {
     @Override
     public void onLeave(BaseGameState nextState) {
         inputForwarder.set(null);
+        
     }
 
     @Override

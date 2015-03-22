@@ -19,13 +19,13 @@ import org.slf4j.LoggerFactory;
 
 public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
 	
-	private Music music;
+//	private Music music;
 
     private static final Logger logger = LoggerFactory.getLogger(CreditsMenu.class);
     private final Hotkey increaseSpeed = new Hotkey(this::increaseSpeed, Input.Keys.PAGE_UP, HotkeyModifier.CTRL);
     private final Hotkey decreaseSpeed = new Hotkey(this::decreaseSpeed, Input.Keys.PAGE_DOWN, HotkeyModifier.CTRL);
     private final Hotkey resetSpeed = new Hotkey(this::resetSpeed, Input.Keys.HOME, HotkeyModifier.CTRL);
-
+    
     private SceneAnimator sceneAnimator;
 
     private void increaseSpeed() {
@@ -42,7 +42,8 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
 
     public CreditsMenu(Skin skin, MenuManager menuManager) {
         super(skin, "background_menu");
-        
+       
+       // MusicManager.update();
         try {
             sceneAnimator = new SceneAnimator(this, "data/json/credits.json");
             addActor(new SceneAnimatorActor(sceneAnimator));
@@ -56,7 +57,8 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
         } catch (Exception ex) {
             logger.error("Error loading credits", ex);
         }
-
+        
+        
         addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
     }
 
