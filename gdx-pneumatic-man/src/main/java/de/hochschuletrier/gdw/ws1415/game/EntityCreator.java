@@ -150,7 +150,7 @@ public class EntityCreator {
         jumpComponent.AddSpeed = 10f;
         jumpComponent.maxAddSpeedCount = 10;
         // Damit bei taste gedrückt ungefähr wie vorher ( TODO: Adjust properly ) 
-        jumpComponent.jumpSpeed = ( jumpComponent.jumpSpeed - (jumpComponent.maxAddSpeedCount/3 * (jumpComponent.AddSpeed * jumpComponent.maxAddSpeedCount) ) );
+        //jumpComponent.jumpSpeed = ( jumpComponent.jumpSpeed - (jumpComponent.maxAddSpeedCount/3 * (jumpComponent.AddSpeed * jumpComponent.maxAddSpeedCount) ) );
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
