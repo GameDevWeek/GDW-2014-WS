@@ -26,6 +26,7 @@ public class ScoreMenu extends MenuPage
         createHighscoreList();
     }
 
+    	//Game.java -> Zeile 143 -> levelList.size() -> anzahl level
     private Label createLabel(int x, int y)
     {
         Label label = new Label("", skin, "highscore");
