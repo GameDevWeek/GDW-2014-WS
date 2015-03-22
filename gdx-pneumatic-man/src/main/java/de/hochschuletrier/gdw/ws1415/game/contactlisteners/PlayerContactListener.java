@@ -81,11 +81,6 @@ public class PlayerContactListener extends PhysixContactAdapter {
         
         if(otherEntity.getComponent(MinerComponent.class) != null){
             otherEntity.getComponent(HealthComponent.class).Value = 0;
-            //play Sound
-            Random rm=new Random();
-            int i=rm.nextInt(3)+1;//1-3
-            System.out.println("saveSaouESCAPEnd "+i);
-            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("free"+i), false);
         }
         
         if(otherEntity.getComponent(GoalComponent.class) != null){
