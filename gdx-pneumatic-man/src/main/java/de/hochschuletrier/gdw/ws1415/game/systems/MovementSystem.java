@@ -116,7 +116,7 @@ public class MovementSystem extends IteratingSystem {
                         jump._AddSpeedCount++;
                         if(jump._AddSpeedCount < jump.maxAddSpeedCount)
                         {
-                            physix.setLinearVelocityY(-(jump.jumpSpeed + (jump.AddSpeed * jump._AddSpeedCount)));
+                            //physix.setLinearVelocityY(-(jump.jumpSpeed + (jump.AddSpeed * jump._AddSpeedCount)));
                         }
                     }
                     else
