@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="43" tilewidth="64" tileheight="64" nextobjectid="169">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="43" tilewidth="64" tileheight="64" nextobjectid="172">
  <properties>
   <property name="Background" value="Hintergrund1.png"/>
  </properties>
@@ -135,7 +135,7 @@
  <tileset firstgid="53" source="tilesets/Stalagtitten01.tsx"/>
  <layer name="Mittelebene" width="100" height="43">
   <properties>
-   <property name="Parallex" value="0.8"/>
+   <property name="Parallax" value="0.5"/>
   </properties>
   <data encoding="base64" compression="zlib">
    eJzt1NEJwCAMBUBH6ofW/TdzAgVFG6R3v4HkBUJSAgAAAABu8UYHgAk1OkCAlZ3zptlf/odyqO8fbwYAAAAAAAAAAACAvmdQaz9bAas=
@@ -143,7 +143,7 @@
  </layer>
  <layer name="Spielerebene" width="100" height="43">
   <data encoding="base64" compression="zlib">
-   eJztmolqxCAQhu2xG+hd2u5CaQu96N33f7xGNtJhGMfReAX9YHCTaHT91YzHVim17bY4i82c/IbR1g4bQPwVCteOMsRiCTpIy+vC1DfWAT7z4TMgjfSdtesAmZv302iPkz3HLVo2ON1KkaJ9Lo0adOj807WoixA93qfwh3j2jeKkgHr32xT+CuKGcq12dXXlkQbmD8t2Z4nvq8d6ig9D6p4JDQeTGW7VzvfkQiqtqRPoT+HvH37mU38ufPw2Wx3BMtv+g+ZVWB6X30/5/wPxX1aM4Tzxu0LKUAJpObEuG+XfTziToOuK0kJSh77zwZKE6OELVx8564EqRy06QFLrYcunYyeHHjCfjpscelDf6o6d1HpIeciUzxIoocchMpMXvNcyLj2+IuWzD35jTaD1Mc6uB5wvzgXXM6VF5x9Kj9S+u1SLVjWj9MBalPJhWx3HoB5UHfR5RX44/wqOazeTleQj0nuofQJfzDo6tc5/b4krQapHqb6C/WX8fTnwDG37odw9qn5SnUXw1YPTxeVDmXZi+plu77At3aB4moF4L+crS749MeZbg5Jr4fM9DNXDpgvnG+l84Lo6LDO+b3tvbX5X7DM6uffPBxBSex5cu69xDsn1k5CyljzPoPdetRYx9lP1d/VF7fY48R56DmKdmYJrSiWI0d5jjRVzgP1kzn/Ca3xS9FptDL8xBtSYUWJci7HvAPVYKV4Tas2rljmjq32WGpN9wXpwmujxnvKxYp6naR1KD217lvhYk6VpUXs/gX0cG0foGIXPV1HnrVomly+i596wDxrgGFl6fawGculh/DdOj9rm3iXIoQe3P0g9q32MT0lqPWx759LnrQH10Gfg35i4S0KqM76X+1qv8XxPoUayXnw82slop6Md9WvntTQNrucNcQ/a2Wjno12Mdhlwfdloep800j2UuVrgsKX0vmlSa4HbWGvpQ9LA+v8DXdtI0w==
+   eJztmolqxCAQhu2xG+hd2m6htIVe9O77P14jG9lhGMfReAX9YHCTaHT91YzHrVLqttviLDZz8htGWztsAPFXKFw7yhCLJeggLa8LU99YB/jMh6+ANNJ31q4DZG7ez6M9TfYSt2jZ4HQrRYr2uTRq0KGzo2tRFyF6fEzhL/HsB8VJAfXu9yn8E8QN5Vpt6+rKIw3MH5bt3hLfV4/1FB+G1D0TGg4mM9ypre/JhVRaUyfQn8LfP/zMp/5c+PhttjqCZbb9B82bsDwuv5/y/wfiv6wYw3nid4WUoQTScmJdNsq/n3AmQdcVpYWkDn3ngyUJ0cMXrj5y1gNVjlp0gKTWw5ZPx04OPWA+HTc59KC+1R07qfWQ8pgpnyVQQo9DZCYveK9lXHp8R8pnH/zGmkDrY5xdDzhfnAuuZ0qLzg5Kj9S+u1SLVjWj9MBalPJhWx3HoB5UHfR5RX44/wqOazeTleQz0nuofQJfzDo6tc7/YIkrQapHqb6C/WX8fTnwDG37odw9qn5SnUXw1YPTxeVDmXZi+plu77At3aB4moF4L+crS749MeZbg5Jr4fM9DNXDpgvnG+l84Lo6LDO+b3tvbX5X7DM6uffPBxBSex5cu69xDsn1k5CyljzPoPdetRZz91Nf1e67qvc48R56DmKdmYJrSiWI0d5jjRVzgP1kzn/Ca3xS9FptDL8xBtSYUWJci7HvAPVYKV4Tas2rljmjq32WGpN9wXpwmujxnvKxYp6naR1KD217lvhYk6VpUXs/gX0cG0foGIXPV1HnrVomly+i596wDxrgGFl6fawGculh/DdOj9rm3iXIoQe3P0g9q32MT0lqPWx759LnrQH10Gfg35m4S0KqM76X+1qv9fxMoUayXnw82slop6Md9WvntTQNrucNcQ/a2Wjno12Mdhlwfdloep800j2UuVrgsKX0vmlSa4HbWGvpQ9LA+v8HXvtI0w==
   </data>
  </layer>
  <objectgroup name="Objektebene">
@@ -351,7 +351,7 @@
   <object id="127" name="Platform" x="2624" y="2240" width="64" height="64">
    <properties>
     <property name="Direction" value="up"/>
-    <property name="Distance" value="7"/>
+    <property name="Distance" value="6"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
@@ -361,7 +361,7 @@
   <object id="128" name="Platform" x="2560" y="2240" width="64" height="64">
    <properties>
     <property name="Direction" value="up"/>
-    <property name="Distance" value="7"/>
+    <property name="Distance" value="6"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
@@ -371,7 +371,7 @@
   <object id="129" name="Platform" x="2752" y="2240" width="64" height="64">
    <properties>
     <property name="Direction" value="up"/>
-    <property name="Distance" value="7"/>
+    <property name="Distance" value="6"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
@@ -381,7 +381,7 @@
   <object id="130" name="Platform" x="2688" y="2240" width="64" height="64">
    <properties>
     <property name="Direction" value="up"/>
-    <property name="Distance" value="7"/>
+    <property name="Distance" value="6"/>
     <property name="Hitpoints" value=""/>
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
@@ -488,7 +488,7 @@
     <property name="Speed" value="4.0"/>
    </properties>
   </object>
-  <object id="144" name="RockTrigger" x="3465.34" y="229.666" width="214.667" height="233.333">
+  <object id="144" name="RockTrigger" x="3448.01" y="265.666" width="214.667" height="233.333">
    <properties>
     <property name="Id" value="6"/>
     <property name="Name" value="RockTrigger"/>
@@ -500,7 +500,7 @@
     <property name="Name" value="RockTrigger"/>
    </properties>
   </object>
-  <object id="146" name="Rock" x="3721" y="68" width="37" height="37.6667">
+  <object id="146" name="Rock" x="3722" y="76" width="37" height="37.6667">
    <properties>
     <property name="Name" value="Rock"/>
     <property name="TriggerId" value="6"/>
@@ -582,11 +582,6 @@
     <property name="Speed" value="15"/>
    </properties>
   </object>
-  <object id="165" name="PlayerSpawn" x="63.8333" y="572.833" width="63" height="61">
-   <properties>
-    <property name="Name" value="PlayerSpawn"/>
-   </properties>
-  </object>
   <object id="166" name="Platform" x="4352" y="1408" width="64" height="64">
    <properties>
     <property name="Direction" value="up"/>
@@ -615,6 +610,11 @@
     <property name="Mode" value="always"/>
     <property name="Name" value="Platform"/>
     <property name="Speed" value="20"/>
+   </properties>
+  </object>
+  <object id="171" name="PlayerSpawn" x="64" y="576" width="63" height="61">
+   <properties>
+    <property name="Name" value="PlayerSpawn"/>
    </properties>
   </object>
  </objectgroup>

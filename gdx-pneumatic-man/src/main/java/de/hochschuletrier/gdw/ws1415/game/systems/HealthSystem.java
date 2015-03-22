@@ -130,8 +130,13 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else if(ComponentMappers.bomb.has(entity) && Health.health == HealthState.DEAD)
                 {
+                    try {
+                        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"),false);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
                     System.out.println("Explosion");
-                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"),false);
+                    
                     EntityCreator.modifyBombToExplode(entity);
                 }else if(ComponentMappers.block.has(entity)){
                     PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
