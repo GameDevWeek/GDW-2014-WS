@@ -89,14 +89,14 @@ public class AISystem extends IteratingSystem {
             return 0;
         }, p1, p3);
 
-        // search ifleft/right is a block to walk on
+        // search if left/right is a block to walk on
         aiComponent.leftGroundPresent = false;
         aiComponent.rightGroundPresent = false;
         p1 = physicBodyComponent.getBody().getPosition();
-        p2 = new Vector2(p1).add(Direction.LEFT.toVector2().scl(2f))
-                .add(Direction.DOWN.toVector2().scl(3f)); // FIXME MAGIC NUMBER
-        p3 = new Vector2(p1).add(Direction.RIGHT.toVector2().scl(2f)
-                .add(Direction.DOWN.toVector2().scl(3.0f))); // FIXME MAGIC NUMBER
+        p2 = new Vector2(p1).add(Direction.LEFT.toVector2().scl(2f*0.8f))
+                .add(Direction.DOWN.toVector2().scl(3f*0.8f)); // FIXME MAGIC NUMBER
+        p3 = new Vector2(p1).add(Direction.RIGHT.toVector2().scl(2f*0.8f)
+                .add(Direction.DOWN.toVector2().scl(3.0f*0.8f))); // FIXME MAGIC NUMBER
 
         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
             PhysixBodyComponent otherPhysicsBody = (PhysixBodyComponent) fixture.getBody().getUserData();
