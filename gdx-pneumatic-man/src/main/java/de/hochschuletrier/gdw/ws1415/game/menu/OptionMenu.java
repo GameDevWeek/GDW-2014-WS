@@ -32,10 +32,6 @@ public class OptionMenu extends MenuPage
 	private final int width, height; 
 	private int countVol[] = new int[10];
 	private int countSou[] = new int[10];
-	private float sound = Settings.SOUND_VOLUME.get();
-	private float music = Settings.MUSIC_VOLUME.get();
-	
-	private boolean gamepadSet = Settings.GAMEPAD_ENABLED.get();
 	
 	public OptionMenu(Skin skin, MenuManager menuManager)
 	{ 		
@@ -68,22 +64,10 @@ public class OptionMenu extends MenuPage
 		
 		addCenteredImage(menuManager.getWidth()/2 - 350, y_music - 17, (int)soundDownMusic.getWidth(), (int)soundDownMusic.getHeight(), soundDownMusic, this::onMusicVolumeDown);
 		addCenteredImage(menuManager.getWidth()/2 + 260, y_music - 17, (int)soundUpMusic.getWidth(), (int)soundUpMusic.getHeight(), soundUpMusic, this::onMusicVolumeUp);
-		
-		int musicVolume = (int)(Settings.MUSIC_VOLUME.get() * 10);
-		int soundVolume = (int)(Settings.SOUND_VOLUME.get() * 10);
-		
-		if(soundVolume > 10)
-		{
-			soundVolume = 10;
-		}
-		if(musicVolume > 10)
-		{
-			musicVolume = 10;
-		}
 
 		int x_step_active_s = -260;
 		
-		for (int i = 0; i < soundVolume; i++)
+		for (int i = 0; i < soundBoxActive.length; i++)
 		{
 			soundBoxActive[i] = new DecoImage(assetManager.getTexture("slider_active"));
 			addImage(menuManager.getWidth()/2 + x_step_active_s, y_sound, (int)soundBox[0].getWidth(), (int)soundBox[0].getHeight(), soundBoxActive[i]);
@@ -92,7 +76,7 @@ public class OptionMenu extends MenuPage
 		
 		int x_step_active_m = -260;
 		
-		for (int i = 0; i < musicVolume; i++)
+		for (int i = 0; i < musicBoxActive.length; i++)
 		{
 			musicBoxActive[i] = new DecoImage(assetManager.getTexture("slider_active"));
 			addImage(menuManager.getWidth()/2 + x_step_active_m, y_music, (int)musicBox[0].getWidth(), (int)musicBox[0].getHeight(), musicBoxActive[i]);
@@ -102,32 +86,20 @@ public class OptionMenu extends MenuPage
 		addCenteredImage(menuManager.getWidth()/2 - 400, menuManager.getHeight()/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepad, this::onGamepadChanged);
 		addCenteredImage(menuManager.getWidth()/2 + 50, menuManager.getHeight()/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboard, this::onKeyboardChanged);
 				
-		if (gamepadSet)
-		{
-			addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
-		}
-		else
-		{
-			addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
-		}
+		addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
+                addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
         
    		addCenteredImage(450, 750, 108, 108, new DecoImage(assetManager.getTexture("back_button")), () -> menuManager.popPage());
 	}
 	
     private void onSoundVolumeUp()
-    {    	
+    {
     	if(Settings.SOUND_VOLUME.get() < 1.0)
     	{
     		int act = (int)(Settings.SOUND_VOLUME.get()*10);
-    		sound = (float)(((act+1)/10.0));
-    		soundBoxActive[act] = new DecoImage(assetManager.getTexture("slider_active"));
-    		addImage((int)(width/2 + countSou[act]), y_sound, (int)soundBox[0].getWidth(), (int)soundBox[0].getHeight(), soundBoxActive[act]);
-    		storeSettings();
+    		Settings.SOUND_VOLUME.set((float)(((act+1)/10.0)));
     	}
-      if(Settings.SOUND_VOLUME.get()>0.0)
-        {
-            SoundEmitter.setMuted(false);
-       }
+        restoreSettings();
     }
     
     private void onSoundVolumeDown()
@@ -135,14 +107,9 @@ public class OptionMenu extends MenuPage
     	if(Settings.SOUND_VOLUME.get() > 0)
     	{
     		int act = (int)(Settings.SOUND_VOLUME.get() * 10);
-    	    sound = (float)((act-1)/10.0);
-    		removeActor(soundBoxActive[act-1]);
-            storeSettings();
+    	    Settings.SOUND_VOLUME.set((float)((act-1)/10.0));
     	}
-    	if(Settings.SOUND_VOLUME.get()<=0.0)
-        {
-            SoundEmitter.setMuted(true);
-       }
+        restoreSettings();
     	
     }
     
@@ -151,11 +118,9 @@ public class OptionMenu extends MenuPage
     	if(Settings.MUSIC_VOLUME.get() < 1.0)
     	{
     		int act = (int)(Settings.MUSIC_VOLUME.get()*10);
-    		music = (float)(((act+1)/10.0));
-    		musicBoxActive[act] = new DecoImage(assetManager.getTexture("slider_active"));
-    		addImage((int)(width/2 + countVol[act]), y_music, (int)musicBox[0].getWidth(), (int)musicBox[0].getHeight(), musicBoxActive[act]);
-    		storeSettings();
+    		Settings.MUSIC_VOLUME.set((float)(((act+1)/10.0)));
     	}
+        restoreSettings();
     }
     
     private void onMusicVolumeDown()
@@ -163,40 +128,41 @@ public class OptionMenu extends MenuPage
     	if(Settings.MUSIC_VOLUME.get() > 0)
     	{
     		int act = (int)(Settings.MUSIC_VOLUME.get() * 10);
-    	    music = (float)((act-1)/10.0);
-    		removeActor(musicBoxActive[act-1]);
-            storeSettings();
+    	    Settings.MUSIC_VOLUME.set((float)((act-1)/10.0));
     	}
+        restoreSettings();
     }
     
     private void onGamepadChanged()
     {
-		addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
-		removeActor(keyboardActive);
-    	gamepadSet = true;
+    	Settings.GAMEPAD_ENABLED.set(true);
+        restoreSettings();
     }
     
     private void onKeyboardChanged()
     {
-		addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
-		removeActor(gamepadActive);
-    	gamepadSet = false;
+    	Settings.GAMEPAD_ENABLED.set(false);
+        restoreSettings();
     }
 
     private void storeSettings() 
     {
-    	Settings.GAMEPAD_ENABLED.set(gamepadSet);
-        Settings.SOUND_VOLUME.set(sound);
-        Settings.MUSIC_VOLUME.set(music);
-		SoundEmitter.setGlobalVolume(sound);
-		MusicManager.setGlobalVolume(music);
         Settings.flush();
     }
     
     private void restoreSettings() {
-    	gamepadSet = Settings.GAMEPAD_ENABLED.get();
-        sound = Settings.SOUND_VOLUME.get();
-        music = Settings.MUSIC_VOLUME.get();
+        gamepadActive.setVisible(Settings.GAMEPAD_ENABLED.get());
+        keyboardActive.setVisible(!Settings.GAMEPAD_ENABLED.get());
+
+        int act = (int)(Settings.SOUND_VOLUME.get() * 10);
+        for (int i = 0; i < soundBoxActive.length; i++) {
+            soundBoxActive[i].setVisible(i<act);
+        }
+
+        act = (int)(Settings.MUSIC_VOLUME.get() * 10);
+        for (int i = 0; i < musicBoxActive.length; i++) {
+            musicBoxActive[i].setVisible(i<act);
+        }
     }
     
     @Override
