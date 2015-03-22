@@ -1225,7 +1225,7 @@ public class EntityCreator {
     	
     	TileSetAnimation animation = new TileSetAnimation(
                 frames,
-                tileset.getFloatProperty("animationDuration", 1),  /// default set to 1 from 0 : editet by asset to load bomb
+                tileset.getFloatProperty("animationDuration", 0),  /// default set to 1 from 0 : editet by asset to load bomb
                 tileset.getIntProperty("animationOffset", 0));
     	
     	TextureRegion[] regions = new TextureRegion[frames];
