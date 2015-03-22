@@ -112,7 +112,6 @@
                  { "type": "text", "path" : "heading", "group" : "title", "style" : "title_center", "text": "Animation", "delay": "6000" },
                 { "type": "text", "path" : "textleft", "group" : "textleft", "style" : "text_left", "text": "Hans Boehme  ", "delay": "1700" },
                 
-                { "type": "texture", "path" : "heading", "group" : "bild", "resource" : "injava_jones", "delay" : "25000"}
                 
                
                 
