@@ -221,7 +221,6 @@ public class EntityCreator {
         DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
         entityToDie.add(deathComponent);
         
-        System.out.println("enemy dead");
         AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
         
         deathAnimation.animation = assetManager.getAnimation( type.name().toLowerCase() + "_death");
