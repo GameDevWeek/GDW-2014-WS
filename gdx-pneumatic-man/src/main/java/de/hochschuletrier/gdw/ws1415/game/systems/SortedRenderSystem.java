@@ -2,6 +2,8 @@ package de.hochschuletrier.gdw.ws1415.game.systems;
 
 import java.util.Comparator;
 
+import box2dLight.ChainLight;
+import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
@@ -11,6 +13,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 
+import com.badlogic.gdx.physics.box2d.Filter;
 import de.hochschuletrier.gdw.commons.devcon.DevConsole;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
@@ -25,6 +28,7 @@ import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.ChainLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.DestructableBlockRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.LightRenderer;
@@ -75,8 +79,12 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
         this.rayHandler.setBlurNum(GameConstants.LIGHT_BLURNUM);
         this.rayHandler.setShadows(GameConstants.LIGHT_SHADOW);
         this.rayHandler.useDiffuseLight(GameConstants.LIGHT_DIFFUSE);
-        PointLight.setContactFilter(EntityCreator.WORLDSENSOR, (short) 0,
-                (short)(EntityCreator.EVERYTHING & ~EntityCreator.WORLDSENSOR));
+        Filter lightfilter = new Filter();
+        lightfilter.categoryBits = EntityCreator.WORLDSENSOR;
+        lightfilter.maskBits = (short) (EntityCreator.EVERYTHING & ~EntityCreator.WORLDSENSOR);
+        PointLight.setContactFilter(lightfilter);
+        ChainLight.setContactFilter(lightfilter);
+        ConeLight.setContactFilter(lightfilter);
         this.cameraSystem = cameraSystem;
         
         console = Main.getInstance().console;
