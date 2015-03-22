@@ -74,7 +74,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     Random rm=new Random();
                     int i=rm.nextInt(5)+1;//1-5dd
                     logger.info("Debris "+i);
+                    try {
                         SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("cracks"+i), false);
+
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
                 }
                 logger.info("Damaging "+entity.getId()+" with " + Health.DecrementByValueNextFrame + " damage. New Health: "+ (Health.Value - Health.DecrementByValueNextFrame));
             }
