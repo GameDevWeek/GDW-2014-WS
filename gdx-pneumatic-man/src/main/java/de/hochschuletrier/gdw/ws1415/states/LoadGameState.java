@@ -16,7 +16,7 @@ public class LoadGameState extends BaseGameState {
     private boolean isDone;
     private final AssetManagerX assetManager;
     private final Runnable completeFunc;
-    private final Texture overlay = new Texture(Gdx.files.internal("data/images/Injava_Jones.jpg"));
+    private final Texture overlay = new Texture(Gdx.files.internal("data/images/titel.png"));
 
     public LoadGameState(AssetManagerX assetManager, Runnable completeFunc) {
         this.assetManager = assetManager;
