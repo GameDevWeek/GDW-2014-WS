@@ -99,7 +99,6 @@ public class EntityCreator {
         bodyComponent.setGravityScale(1.75f);
         // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-
                 .density(1).friction(0).restitution(0f)
                 .shapeCircle(width * 0.1f, new Vector2(0, -height * 0.4f))
                 .mask((short) (EVERYTHING))
@@ -121,7 +120,6 @@ public class EntityCreator {
 
         //laser
         fixtureDef = new PhysixFixtureDef(physixSystem)
-
                 .density(1).friction(0f).restitution(0f)
                 .shapeCircle(width * 0.1f, new Vector2(0, height * 0.425f))
                 .mask((short) (EVERYTHING))
@@ -1343,14 +1341,6 @@ public class EntityCreator {
                                        .sensor(true)
                 .mask((short) (EVERYTHING))
                 .category(WORLDSENSOR);
-        
-        // ***** Sound *****
-        try {
-            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"), false);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        
         
         PhysixBody.createFixture(fDef);
         PhysixBody.setGravityScale(0.0f);
