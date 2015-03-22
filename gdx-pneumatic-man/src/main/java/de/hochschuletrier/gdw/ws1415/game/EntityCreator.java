@@ -68,12 +68,12 @@ public class EntityCreator {
         bodyComponent.setGravityScale(1.75f);
         // Upper body
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(0).restitution(0f)
+                .density(5).friction(0).restitution(0f)
                 .shapeCircle(width * 0.1f, new Vector2(0, -height * 0.4f));
         Fixture fixture = bodyComponent.createFixture(fixtureDef);
 
        fixtureDef = new PhysixFixtureDef(physixSystem)
-        .density(1f).friction(0f).restitution(0f)
+        .density(5f).friction(0f).restitution(0f)
         .shapeBox(width * 0.18f, height * 0.825f, new Vector2(0, 0), 0);
         fixture = bodyComponent.createFixture(fixtureDef);
 
@@ -85,15 +85,15 @@ public class EntityCreator {
 
         //laser
         fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(0f).restitution(0f)
+                .density(5).friction(0f).restitution(0f)
                 .shapeCircle(width * 0.1f, new Vector2(0, height*0.425f));
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData("laser");
         
         //jump contact
         fixtureDef = new PhysixFixtureDef(physixSystem)
-        .density(1).friction(0f).restitution(0f)
-        .shapeCircle(width * 0.08f, new Vector2(0, height * 0.49f)).sensor(true);
+        .density(0).friction(0f).restitution(0f)
+        .shapeCircle(width * 0.07f, new Vector2(0, height * 0.48f)).sensor(true);
         fixture = bodyComponent.createFixture(fixtureDef);
         fixture.setUserData("jump");
         
@@ -202,7 +202,12 @@ public class EntityCreator {
         //***** Sounds *****
         Random rm=new Random();
         int i=rm.nextInt(3)+1;//1-3
-        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
+        try {
+            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        
         
         return entityToDie;
     }
@@ -844,7 +849,7 @@ public class EntityCreator {
         return e;
     }
     
-    public static void createLavaFountain(float x, float y, float height, float intervall, 
+    public static Entity createLavaFountain(float x, float y, float height, float intervall, 
             float intervallOffset, float length){
         Entity entity = engine.createEntity();
         
@@ -866,9 +871,10 @@ public class EntityCreator {
         entity.add(lavaFountain);
         
         engine.addEntity(entity);
+        return entity;
     }
     
-    public static void createLavaBall(float x, float y, float lavaBallSpeed, float travelLength){
+    public static Entity createLavaBall(float x, float y, float lavaBallSpeed, float travelLength){
         Entity entity = engine.createEntity();
         
         float radius = GameConstants.getTileSizeX()/2;
@@ -928,11 +934,14 @@ public class EntityCreator {
         pe.offsetY=40f;
         entity.add(pe);*/
         
+        SoundEmitterComponent soundEmitter = engine.createComponent(SoundEmitterComponent.class);
+        entity.add(soundEmitter);
         
         
         addLayerComponent(entity, 10, 1, 1);
         
         engine.addEntity(entity);
+        return entity;
     }
     
     
@@ -1175,8 +1184,12 @@ public class EntityCreator {
                                        .sensor(true);
         
         // ***** Sound *****
-
-        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"), false);
+        try {
+            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"), false);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        
         
         PhysixBody.createFixture(fDef);
         PhysixBody.setGravityScale(0.0f);
