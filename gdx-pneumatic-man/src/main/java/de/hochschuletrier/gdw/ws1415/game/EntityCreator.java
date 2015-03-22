@@ -31,7 +31,38 @@ import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.BombComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DeathComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DeathTimerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.ExplosionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.FallingRockTriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.IndestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.JumpableAnimationComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.KillsPlayerOnContactComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaBallComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LavaFountainComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MinerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.ParticleComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SoundEmitterComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SpikeComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.TextureComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.ChainLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.ConeLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.lights.DirectionalLightComponent;
@@ -106,6 +137,8 @@ public class EntityCreator {
         fixture.setUserData("jump");
         
         entity.add(bodyComponent);
+        
+        
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
         jumpComponent.jumpSpeed = 900.0f;
@@ -122,11 +155,8 @@ public class EntityCreator {
         
         entity.add(pos);
         
-        // ***** LIGHT *****
         PointLightComponent plc = engine.createComponent(PointLightComponent.class);
-        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("7a44e6")),0.5f,0,0);
-        plc.offsetX = -10f;
-        plc.offsetY = 40f;
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("7a44e6")),4f,0,0);
         entity.add(plc);
         
         // ***** temporary *****
@@ -148,6 +178,7 @@ public class EntityCreator {
     public static Entity modifyPlayerToLiving(Entity entity) {
         //Entity dyingEntity = engine.createEntity();
         
+        entity.remove(PointLightComponent.class);
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         ParticleComponent pe = engine.createComponent(ParticleComponent.class);
@@ -169,11 +200,19 @@ public class EntityCreator {
         final AnimationComponent animation = ComponentMappers.animation.get(entity);
         animation.animation = assetManager.getAnimation("char_idle");
         animation.isSpawningPlayer = false;
+        animation.offsetX = 10.0f;
         
         JumpableAnimationComponent jumpable = engine.createComponent(JumpableAnimationComponent.class);
         jumpable.idle = animation.animation;
         jumpable.jump = assetManager.getAnimation("char_jump");
         entity.add(jumpable);
+        
+     // ***** LIGHT *****
+        PointLightComponent laser = engine.createComponent(PointLightComponent.class);
+        laser.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("7a44e6")),0.5f,0,0);
+        laser.offsetX = -10f;
+        laser.offsetY = 40f;
+        entity.add(laser);
 
         animation.stateTime = 0;
         animation.animationFinished = false;
@@ -206,7 +245,10 @@ public class EntityCreator {
 
         entityToDie.remove(AnimationComponent.class);
         entityToDie.add(deathAnimation);
-      
+        
+        PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("7a44e6")),4f,0,0);
+        entityToDie.add(plc);
         //***** Sounds *****
         Random rm=new Random();
         int i=rm.nextInt(3)+1;//1-3
@@ -215,6 +257,43 @@ public class EntityCreator {
         return entityToDie;
     }
 
+    public static Entity modifyEnemyToDying(Entity entityToDie) {
+        //Entity dyingEntity = engine.createEntity();
+        AIType type = ComponentMappers.AI.get(entityToDie).type;
+       // entityToDie.remove(HealthComponent.class);
+        entityToDie.remove(DamageComponent.class);
+        entityToDie.remove(PhysixBodyComponent.class);
+        entityToDie.remove(MovementComponent.class);
+        entityToDie.remove(JumpComponent.class);
+        entityToDie.remove(JumpableAnimationComponent.class);
+        entityToDie.remove(AIComponent.class);
+
+        DeathComponent deathComponent = engine.createComponent(DeathComponent.class);
+        entityToDie.add(deathComponent);
+        
+        AnimationComponent deathAnimation = engine.createComponent(AnimationComponent.class);
+        
+        deathAnimation.animation = assetManager.getAnimation( type.name().toLowerCase() + "_death");
+      
+
+        deathAnimation.flipX = entityToDie.getComponent(AnimationComponent.class).flipX;
+
+        entityToDie.remove(AnimationComponent.class);
+        entityToDie.add(deathAnimation);
+        
+        DeathTimerComponent deathTimeComponent = engine.createComponent(DeathTimerComponent.class);
+        deathTimeComponent.deathTimer = deathAnimation.animation.animationDuration;
+        entityToDie.add( deathTimeComponent );
+      
+        //***** Sounds *****
+//        Random rm=new Random();
+//        int i=rm.nextInt(3)+1;//1-3
+//        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
+        
+        return entityToDie;
+    }
+
+    
     /**
      *  Enemy FIXME: there are more different types of enemies, implement them
      */
@@ -233,7 +312,10 @@ public class EntityCreator {
         Damage.damageToPlayer = true;
         entity.add(Damage);
         entity.add(engine.createComponent(AIComponent.class));
-        entity.add(engine.createComponent(PositionComponent.class));
+        PositionComponent pc = engine.createComponent(PositionComponent.class);
+        pc.scaleX = 0.5f;
+        pc.scaleY = 0.5f;
+        entity.add(pc);
         entity.add(engine.createComponent(SpawnComponent.class));
         entity.add(engine.createComponent(KillsPlayerOnContactComponent.class));
         
@@ -269,15 +351,32 @@ public class EntityCreator {
         d.facingDirection = Direction.LEFT;
         entity.add(d);
         
-        final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
-        entity.add(animation);
-        animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
-               
-        addLayerComponent(entity, 10, 1, 1);
-
+        
+        
+            AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+            entity.add(animation);
+            animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_idle");
+            addLayerComponent(entity, 10, 1, 1);       
+      
+        
+                
+             
+        
+        
         engine.addEntity(entity);
         return entity;
     }
+    public static Entity modifyEnemyToDying(Entity entityToDie, AIType type) 
+    {
+        AnimationComponent animation = engine.createComponent(AnimationComponent.class);
+        animation.animation = assetManager.getAnimation(type.name().toLowerCase() + "_death");
+        animation.isDyingPlayer = true;
+        entityToDie.remove(AnimationComponent.class);
+        entityToDie.add(animation);
+        return entityToDie;
+    }
+    
+    
 
     public static Entity createAndAddEventBox(float x, float y) {
         Entity box = engine.createEntity();
@@ -591,7 +690,7 @@ public class EntityCreator {
 
         AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
-        animation.animation = assetManager.getAnimation("lava_ball"); //fixme: platform block
+        animation.animation = assetManager.getAnimation("destructable_block"); //fixme: platform block
 
         engine.addEntity(entity);
         return entity;
@@ -923,7 +1022,7 @@ public class EntityCreator {
         entity.add(moveComponent);
         
         DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
-        damageComponent.damage = 1;
+        damageComponent.damage = 10;
         damageComponent.damageToPlayer = true;
         entity.add(damageComponent);
         
@@ -938,13 +1037,17 @@ public class EntityCreator {
         position.y = positionY;
         entity.add(position);
         
+        PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(1f,1f,0f,0.5f),3f,0,0);
+        entity.add(plc);
+        
         
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation("lava_ball");
         
         
-        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        /*ParticleComponent pe = engine.createComponent(ParticleComponent.class);
         
         pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("lava"));
         
@@ -952,7 +1055,7 @@ public class EntityCreator {
         pe.particleEffect.flipY();
         pe.particleEffect.start();
         pe.offsetY=40f;
-        entity.add(pe);
+        entity.add(pe);*/
         
         
         
@@ -1169,13 +1272,13 @@ public class EntityCreator {
         Bomb.add(DestructableComp);
         
         DeathTimerComponent deathTimer = engine.createComponent(DeathTimerComponent.class);
-        deathTimer.deathTimer = 1.5f;
+        deathTimer.deathTimer = 0.5f;
         Bomb.add(deathTimer);
         
 
         
         //addRenderComponents(Bomb, map, info, tileX, tileY);
-        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
+        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, false);
         
         engine.addEntity(Bomb);
         return(Bomb);
