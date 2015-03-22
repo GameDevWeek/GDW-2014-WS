@@ -27,6 +27,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierCompon
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.Game;
+import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.Score;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
@@ -59,16 +60,19 @@ public class PlayerContactListener extends PhysixContactAdapter {
             {
                 jump.justLanded = true;
             }
-            jump.groundContacts++;
+            if(!contact.getOtherFixture().isSensor()) {
+                jump.groundContacts++;
+            }
             if(otherEntity.getComponent(PlatformComponent.class) != null) {
                 player.getComponent(PlayerComponent.class).platformContactEntities.add(otherEntity);
             }
-            if(ComponentMappers.killsPlayerOnContact.has(otherEntity) && ComponentMappers.health.has(otherEntity))
-            {
-                HealthComponent Health = otherEntity.getComponent(HealthComponent.class);
-                otherEntity.getComponent(DamageComponent.class).damageToPlayer = false;
-                Health.DecrementByValueNextFrame += 1;
-                player.getComponent(HealthComponent.class).DecrementByValueNextFrame = 0;
+            if(ComponentMappers.killsPlayerOnContact.has(otherEntity) && ComponentMappers.health.has(otherEntity)) {
+                if (isPlayerAboveContact(body, contact)) {
+                    HealthComponent Health = otherEntity.getComponent(HealthComponent.class);
+                    otherEntity.getComponent(DamageComponent.class).damageToPlayer = false;
+                    Health.DecrementByValueNextFrame += 1;
+                    player.getComponent(HealthComponent.class).DecrementByValueNextFrame = 0;
+                }
             }
             return;
         }
@@ -196,7 +200,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
            
             JumpComponent jump = ComponentMappers.jump.get(player);
             
-            if(jump!= null){
+            if(jump!= null && !contact.getOtherFixture().isSensor()){
                 jump.groundContacts--;
             }
             if(otherPlatformComp != null && playerComp != null) {
@@ -210,4 +214,14 @@ public class PlayerContactListener extends PhysixContactAdapter {
         // the tile's health
         // is reduced by 1.
 
+    private boolean isPlayerAboveContact(PhysixBodyComponent mybody, PhysixContact contact) {
+        Vector2 playerPos = mybody.getBody().getPosition().cpy();
+        playerPos.y = playerPos.y + 1.8f; // magic number because player is bigger than one tile
+        Vector2 a = playerPos.sub(contact.getOtherFixture().getBody().getPosition());
+        float dot = a.dot(Direction.DOWN.toVector2());
+        if(dot > 0) return false;
+        return true;
+
+    }
+    
 }
