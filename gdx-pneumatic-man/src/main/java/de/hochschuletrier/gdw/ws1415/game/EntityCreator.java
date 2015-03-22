@@ -906,11 +906,11 @@ public class EntityCreator {
         position.y = positionY;
         entity.add(position);
         
-        /*
+        
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation("lava_ball");
-        */
+        
         
         ParticleComponent pe = engine.createComponent(ParticleComponent.class);
         
