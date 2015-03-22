@@ -453,28 +453,28 @@ public class MapLoader
                                                 j * map.getTileHeight() + 0.5f * map.getTileHeight(), map, layer, tinfo, i, j);
                                 }
                                     break;
-                                case "middeko":
-                                {
-                                    
-                                    switch( tinfo.getProperty("Name", "").toLowerCase() )
-                                    {
-                                        case "background_stones01":
-                                        {
-                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+7.0f, j+4.5f);
-                                        }
-                                        case "ruine01":
-                                        {
-                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+8.0f, j+6.0f);
-                                        }
-                                            break;
-                                        default :
-                                        {
-                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
-                                        }
-                                            break;
-                                    }
-                                }
-                                    break;
+//                                case "middeko":
+//                                {
+//                                    
+//                                    switch( tinfo.getProperty("Name", "").toLowerCase() )
+//                                    {
+//                                        case "background_stones01":
+//                                        {
+//                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+7.0f, j+4.5f);
+//                                        }
+//                                        case "ruine01":
+//                                        {
+//                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i+8.0f, j+6.0f);
+//                                        }
+//                                            break;
+//                                        default :
+//                                        {
+//                                            EntityCreator.createAndAddVisualEntity(map, tinfo, i, j);
+//                                        }
+//                                            break;
+//                                    }
+//                                }
+//                                    break;
                                 case "deko":                                
                                 {
                                     Color color = Color.valueOf(convertLight(tinfo.getProperty("Colour", "")));
