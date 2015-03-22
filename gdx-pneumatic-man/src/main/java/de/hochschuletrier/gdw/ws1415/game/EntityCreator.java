@@ -156,6 +156,8 @@ public class EntityCreator {
         Health.Value = 1;
         entity.add(Health);
         
+        entity.getComponent(PlayerComponent.class).isSpawned = true;
+        
         final AnimationComponent animation = ComponentMappers.animation.get(entity);
         animation.animation = assetManager.getAnimation("char_idle");
         animation.isSpawningPlayer = false;
