@@ -45,6 +45,7 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
 
     public CreditsMenu(Skin skin, MenuManager menuManager) {
         super(skin, "background_menu");
+        //addActor(new DecoImage(assetManager.getTexture("credits_overlay")));
        
        // MusicManager.update();
         try {
@@ -80,18 +81,18 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
         return assetManager.getTexture(name);
     }
 
-//    @Override
-//    public void setVisible(boolean visible) {
-//        // TODO Auto-generated method stub
-//        super.setVisible(visible);
-//        if(visible=true){
-//            music = assetManager.getMusic("credits");
-//            MusicManager.play(music, 2.0f);
-//        }else{
-//            music = assetManager.getMusic("menu");
-//            MusicManager.play(music, 2.0f); 
-//        }
-//    }
+    @Override
+    public void setVisible(boolean visible) {
+        // TODO Auto-generated method stub
+        super.setVisible(visible);
+        if(visible){
+            music = assetManager.getMusic("credits");
+            MusicManager.play(music, 2.0f);
+        }else{
+            music = assetManager.getMusic("menu");
+            MusicManager.play(music, 2.0f); 
+        }
+    }
 
     
     
