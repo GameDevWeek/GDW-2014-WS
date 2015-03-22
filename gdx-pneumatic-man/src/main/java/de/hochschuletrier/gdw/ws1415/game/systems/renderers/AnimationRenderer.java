@@ -59,6 +59,6 @@ public class AnimationRenderer extends SortedFamilyRenderSystem.Renderer {
         keyFrame.flip(keyFrame.isFlipX() != animation.flipX, keyFrame.isFlipY() != !animation.flipY); 
         
         //float CalculatedPositionScaleX = (animation.flipX?-1:1) * position.scaleX;
-        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h,  position.scaleX, position.scaleY, position.rotation);
+        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f + (keyFrame.isFlipX()?-animation.offsetX:animation.offsetX), position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h,  position.scaleX, position.scaleY, position.rotation);
     }
 }

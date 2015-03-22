@@ -1,12 +1,17 @@
 package de.hochschuletrier.gdw.ws1415.game;
 
 import de.hochschuletrier.gdw.ws1415.Settings;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
 
 public class Score {
     public static int score = 0;
     public static ScoreSystem scoreSys;
     public static String[] highscores = {"0", "0", "0", "0", "0", "0", "0","0","0", "0"};
+    public static int game_time;
+    public static int player_destroyed_blocks;
+    public static int player_saved_miners;
+    public static int total_miners;
 
     public static void calculate_score(int time, int saved_miners, int destroyed_blocks, int miners_threshold){
         int highscore = 1000;
@@ -19,6 +24,10 @@ public class Score {
             highscore += (bonus_miners * 20);
         }
 
+        game_time = scoreSys.player.getComponent(PlayerComponent.class).game_time;
+        player_destroyed_blocks = scoreSys.player.getComponent(PlayerComponent.class).destroyed_blocks;
+        player_saved_miners = scoreSys.player.getComponent(PlayerComponent.class).saved_miners;
+        total_miners = scoreSys.total_miners;
         score = highscore;
         compareScores(score);
     }
