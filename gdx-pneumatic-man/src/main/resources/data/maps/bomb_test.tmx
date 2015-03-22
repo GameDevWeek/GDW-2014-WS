@@ -15,7 +15,7 @@
   <object id="2" name="LevelEnd" type="LevelEnd" x="1009.5" y="311.5" width="59" height="59">
    <properties>
     <property name="Name" value="LevelEnd"/>
-    <property name="RequiredMiners" value="1"/>
+    <property name="RequiredMiners" value="0"/>
    </properties>
   </object>
  </objectgroup>

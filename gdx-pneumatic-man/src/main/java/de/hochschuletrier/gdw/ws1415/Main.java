@@ -21,6 +21,7 @@ import de.hochschuletrier.gdw.commons.devcon.cvar.CVarEnum;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
+import de.hochschuletrier.gdw.commons.gdx.assets.loaders.TiledMapLoader;
 import de.hochschuletrier.gdw.commons.gdx.devcon.DevConsoleView;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundDistanceModel;
@@ -32,11 +33,13 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.gdx.utils.GdxResourceLocator;
 import de.hochschuletrier.gdw.commons.gdx.utils.KeyUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
+import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.ClassUtils;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdateSoundEmitterSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxCommand;
 import de.hochschuletrier.gdw.ws1415.states.LoadGameState;
 import de.hochschuletrier.gdw.ws1415.states.MainMenuState;
+import de.hochschuletrier.gdw.ws1415.states.WinState;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -138,6 +141,10 @@ public class Main extends StateBasedGame {
     private void onLoadComplete() {
         final MainMenuState mainMenuState = new MainMenuState(assetManager);
         addPersistentState(mainMenuState);
+        
+        final WinState winState = new WinState(assetManager);
+        addPersistentState(winState);
+        
         changeState(mainMenuState, null, null);
         SandboxCommand.init(assetManager);
         

@@ -196,7 +196,7 @@ public class OptionMenu extends MenuPage
     private void restoreSettings() {
     	gamepadSet = Settings.GAMEPAD_ENABLED.get();
         sound = Settings.SOUND_VOLUME.get();
-        music = Settings.SOUND_VOLUME.get();
+        music = Settings.MUSIC_VOLUME.get();
     }
     
     @Override
