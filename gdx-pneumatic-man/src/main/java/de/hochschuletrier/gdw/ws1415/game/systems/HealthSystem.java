@@ -60,7 +60,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
     ArrayList<Entity> PostUpdateRemovals = new ArrayList<Entity>();
     @Override
     public void update(float deltaTime) {
-        for (Entity entity : entities) {
+        for(Entity entity : entities) {
             HealthComponent Health = ComponentMappers.health.get(entity);
             //Info log for damages
             if(Health.DecrementByValueNextFrame>0)
@@ -71,7 +71,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 if(ComponentMappers.block.has(entity)){
                  // ***** Sound *****
                     Random rm=new Random();
-                    int i=rm.nextInt(5)+1;//1-5
+                    int i=rm.nextInt(5)+1;//1-5dd
                     logger.info("Debris "+i);
                     SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("cracks"+i), false);
                 }
@@ -84,10 +84,21 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
             if((Health.Value <= 0))
             {
+                //*****Sound*****
+                if(ComponentMappers.bomb.has(entity)){
+                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);   //dont work
+                
+                }else if(ComponentMappers.killsPlayerOnContact.has(entity)){
+                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("guardDie"),false);
+                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("alienDie"),false);
+
+                }
+                //******states****
                 if(ComponentMappers.deathTimer.has(entity))
                 {
                     DeathTimerComponent deathTimer = ComponentMappers.deathTimer.get(entity);
                     if(deathTimer.deathTimer <= 0) {
+
                         Health.health = HealthComponent.HealthState.DEAD;
                     }else {
                         Health.health = HealthComponent.HealthState.DYING;
@@ -103,7 +114,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     Health.health = HealthState.DEAD;
                 }
                 
-
+                
+                if (ComponentMappers.AI.has(entity)){
+                    Health.health = HealthComponent.HealthState.DYING;
+                    
+                    EntityCreator.modifyEnemyToDying(entity);
+                } else
                 if (ComponentMappers.player.has(entity)) {
                     Health.health = HealthComponent.HealthState.DYING;
                     
@@ -111,6 +127,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else if(ComponentMappers.bomb.has(entity) && Health.health == HealthState.DEAD)
                 {
+                    
                     EntityCreator.modifyBombToExplode(entity);
                 }else if(ComponentMappers.block.has(entity)){
                     PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
@@ -118,14 +135,10 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     Vector2 p1 = physix.getBody().getPosition();
                     Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(1.5f)); // FIXME MAGIC NUMBER
                     
-                 // ***** Sound *****
-                    Random rm=new Random();
-                    int i= 1 + rm.nextInt(4);//1-4
-                    //Sound handling here
-                    //logger.info("Debris "+i);
-                    //SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("debris"+i), false);
+
 
                     if(Health.health == HealthComponent.HealthState.DEAD) {
+                        System.out.println("Healthcomponent dead");
                         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
                             Object bodyUserData = fixture.getBody().getUserData();
                             PhysixBodyComponent bodyComponent = bodyUserData instanceof PhysixBodyComponent ?
@@ -137,6 +150,8 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                                 bodyComponent.setActive(true);
                                 bodyComponent.getBody().getFixtureList().forEach(f -> f.setSensor(false));
 
+
+                                
                                 AnimationComponent animationComponent = ComponentMappers.animation.get(bodyComponent.getEntity());
                                 animationComponent.stateTime = animationComponent.animation.animationDuration/3;
                                 animationComponent.permanent_stateTime = animationComponent.animation.animationDuration/3;
@@ -147,9 +162,12 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                         PostUpdateRemovals.add(entity);
                     }
                 }
-                else
+                else if ( ComponentMappers.AI.has(entity) && Health.health == HealthState.DEAD )
                 {
-                    if(Health.health != HealthState.DYING)
+                    entity.getComponent(AnimationComponent.class).IsActive = true;
+                }else
+                {
+                   if(Health.health != HealthState.DYING)
                     {
                         logger.info(entity.getId() + " removed");
                         PostUpdateRemovals.add(entity);

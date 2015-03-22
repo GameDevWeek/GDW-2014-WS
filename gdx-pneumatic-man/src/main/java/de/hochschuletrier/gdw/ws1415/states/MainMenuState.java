@@ -48,11 +48,10 @@ public class MainMenuState extends BaseGameState {
     private final MenuManager menuManager = new MenuManager(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, null);
     private final  DecoImage hand;
     private final InputForwarder inputForwarder;
-    private final AssetManagerX assetManager;    
+    private final DecoImage overlay;
             
     public MainMenuState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
-        this.assetManager=assetManager;
         MusicManager.play(music, 2.0f);
         
         
@@ -65,10 +64,10 @@ public class MainMenuState extends BaseGameState {
         //hand.setSize(hand.getWidth()/2,hand.getWidth()/2);
         menuManager.addLayer(mainMenu);
         
-        menuManager.addLayer(new DecoImage(assetManager.getTexture("background_overlay")));
-       // menuManager.addLayer(hand);
+        overlay = new DecoImage(assetManager.getTexture("background_overlay"));
         
         menuManager.pushPage(mainMenu);
+        menuManager.getStage().addActor(overlay);
         menuManager.getStage().addActor(hand);
 //        menuManager.getStage().setDebugAll(true);
 
@@ -100,11 +99,9 @@ public class MainMenuState extends BaseGameState {
     public void update(float delta) {
         menuManager.update(delta);
         final Stage stage = menuManager.getStage();
-//        Vector2 vector = new Vector2( Gdx.input.getX(), Gdx.input.getY() );
-//        stage.screenToStageCoordinates(vector);
-//        hand.setPosition((stage.getWidth() - Main.WINDOW_WIDTH)/2 + Main.WINDOW_WIDTH * 0.5f,vector.y-1150);
+        overlay.setPosition((stage.getWidth() - Main.WINDOW_WIDTH)/2 - 630, (stage.getHeight() - Main.WINDOW_HEIGHT)/2 - 730);
         
-        Vector2 vector= menuManager.getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(),Gdx.input.getY()));
+        Vector2 vector= stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(),Gdx.input.getY()));
         hand.setPosition(vector.x-765,vector.y-1200);
         render();
     }

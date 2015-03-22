@@ -2,6 +2,8 @@ package de.hochschuletrier.gdw.ws1415.game;
 
 import java.nio.file.AccessDeniedException;
 
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+
 public class GameConstants {
 
     // Priorities for entity systems
@@ -34,7 +36,9 @@ public class GameConstants {
     public static final boolean LIGHT_SHADOW = true;
     public static final boolean LIGHT_DIFFUSE = false;
     
+    // Shader
     public static final boolean useShader = false;
+    public static final ShaderProgram SHADER = Shaders.PIXEL_SHADER;
     
     public static final float MUSIC_FADE_TIME = 2.0f;
     

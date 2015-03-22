@@ -23,6 +23,12 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
 
 	private float jump = -1;
 	private float direction;
+	private int activeAxis = -1;
+	
+	public void reset()
+	{
+	    activeAxis = -1;
+	}
 	
 	protected void processEntity(Entity entity, float deltaTime) {
 		InputComponent inputComponent = entity.getComponent(InputComponent.class);
@@ -75,13 +81,17 @@ public class InputGamepadSystem extends IteratingSystem implements ControllerLis
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value)
     {
-        if(axisCode == 1){
-        	if(value > 0.4){
+        if(activeAxis < 0 && axisCode < 4 &&(value > 0.4f || value < -0.4f)) {
+            activeAxis = axisCode;
+        }
+        
+        if(axisCode == activeAxis){
+        	if(value > 0.4f){
         		direction = value;
         	}
-        
-        	else if(value < -0.4){
+        	else if(value < -0.4f){
         		direction = value;
+               
         	}
         	else {
         		direction = 0;

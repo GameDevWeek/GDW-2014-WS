@@ -4,18 +4,23 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
+
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ws1415.game.ComponentMappers;
 import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
-import de.hochschuletrier.gdw.ws1415.game.components.*;
+import de.hochschuletrier.gdw.ws1415.game.components.AIComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.AnimationComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.DirectionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.IndestructableBlockComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.SoundEmitterComponent;
 import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
-import java.util.Random;
 
 public class AISystem extends IteratingSystem {
 
@@ -30,7 +35,8 @@ public class AISystem extends IteratingSystem {
                 PhysixBodyComponent.class,
                 MovementComponent.class,
                 JumpComponent.class,
-                DirectionComponent.class).get(), priority);
+                DirectionComponent.class,
+                AnimationComponent.class).get(), priority);
         this.physixSystem = physixSystem;
     }
 
@@ -58,6 +64,7 @@ public class AISystem extends IteratingSystem {
         DirectionComponent directionComponent = ComponentMappers.direction.get(entity);
         JumpComponent jumpComponent = ComponentMappers.jump.get(entity);
         SoundEmitterComponent soundEmitterComponent = ComponentMappers.soundEmitter.get(entity);
+        AnimationComponent animationComponent = ComponentMappers.animation.get(entity);
 
         // search if left/right is blocked with RayCasts
         aiComponent.leftBlocked = false;
@@ -71,7 +78,6 @@ public class AISystem extends IteratingSystem {
             PhysixBodyComponent otherPhysicsBody = (PhysixBodyComponent) fixture.getBody().getUserData();
             if (otherPhysicsBody.getEntity().getComponent(PlayerComponent.class) == null) {
                 aiComponent.leftBlocked = true;
-
             }
             return 0;
         }, p1, p2);
@@ -97,7 +103,6 @@ public class AISystem extends IteratingSystem {
             if (otherPhysicsBody.getEntity().getComponent(DestructableBlockComponent.class) != null
                     || otherPhysicsBody.getEntity().getComponent(IndestructableBlockComponent.class) != null) {
                 aiComponent.leftGroundPresent = true;
-
             }
             return 0;
         }, p1, p2);
@@ -116,20 +121,24 @@ public class AISystem extends IteratingSystem {
             if (aiComponent.AItimer <= 0) {
                 // sound
                 if (soundEmitterComponent != null) {
-                    soundEmitterComponent.emitter.play(
+                    SoundInstance soundInst = soundEmitterComponent.emitter.play(
                             EntityCreator.assetManager.getSound("alienBark" + (((int) ((Math.random() * 10)) % 4) + 1)),
                             false);
+                    soundInst.setReferenceDistance(75f);
+                    soundInst.setVolume(2);
                 }
-                aiComponent.AItimer = 5.0f + (float) Math.random() / 20f;
+                aiComponent.AItimer = 2.0f + ((float)Math.random() * 5f);
             }
             if (directionComponent.facingDirection.equals(Direction.RIGHT)
                     && (aiComponent.rightBlocked
                     || !aiComponent.rightGroundPresent)) {
                 directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
+                animationComponent.flipX = false;
             } else if (directionComponent.facingDirection.equals(Direction.LEFT)
                     && (aiComponent.leftBlocked
                     || !aiComponent.leftGroundPresent)) {
                 directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
+                animationComponent.flipX = true;
             }
 
             movementComponent.velocity.set(movementComponent.speed * directionComponent.facingDirection.toVector2().x, movementComponent.velocity.y);
@@ -142,24 +151,28 @@ public class AISystem extends IteratingSystem {
             if (aiComponent.AItimer <= 0) {
                 // sound
                 if (soundEmitterComponent != null) {
-                    soundEmitterComponent.emitter.play(
+                    SoundInstance soundInst = soundEmitterComponent.emitter.play(
                             EntityCreator.assetManager.getSound("guardGrunt" + (((int) ((Math.random() * 10)) % 4) + 1)),
                             false);
+                    soundInst.setReferenceDistance(75f);
+                    soundInst.setVolume(2);
                 }
                 // jump
                 movementComponent.setVelocity(Vector2.Zero);
                 physicBodyComponent.applyImpulse(0, jumpComponent.jumpSpeed);
-                aiComponent.AItimer = 5.0f + (float) Math.random() / 20f;
+                aiComponent.AItimer = 2.0f + ((float)Math.random() * 5f);
             } else {
 
                 if (directionComponent.facingDirection.equals(Direction.RIGHT)
                         && (aiComponent.rightBlocked
                         || !aiComponent.rightGroundPresent)) {
                     directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
+                    animationComponent.flipX = false;
                 } else if (directionComponent.facingDirection.equals(Direction.LEFT)
                         && (aiComponent.leftBlocked
                         || !aiComponent.leftGroundPresent)) {
                     directionComponent.facingDirection = directionComponent.facingDirection.rotate180();
+                    animationComponent.flipX = true;
                 }
 
                 movementComponent.velocity.set(movementComponent.speed * directionComponent.facingDirection.toVector2().x, movementComponent.velocity.y);

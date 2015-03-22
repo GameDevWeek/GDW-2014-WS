@@ -21,6 +21,7 @@ import de.hochschuletrier.gdw.commons.devcon.cvar.CVarEnum;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
+import de.hochschuletrier.gdw.commons.gdx.assets.loaders.TiledMapLoader;
 import de.hochschuletrier.gdw.commons.gdx.devcon.DevConsoleView;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundDistanceModel;
@@ -32,11 +33,13 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.gdx.utils.GdxResourceLocator;
 import de.hochschuletrier.gdw.commons.gdx.utils.KeyUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
+import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.ClassUtils;
 import de.hochschuletrier.gdw.ws1415.game.systems.UpdateSoundEmitterSystem;
 import de.hochschuletrier.gdw.ws1415.sandbox.SandboxCommand;
 import de.hochschuletrier.gdw.ws1415.states.LoadGameState;
 import de.hochschuletrier.gdw.ws1415.states.MainMenuState;
+import de.hochschuletrier.gdw.ws1415.states.WinState;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -66,8 +69,6 @@ public class Main extends StateBasedGame {
     private final DevConsoleView consoleView = new DevConsoleView(console);
     private Skin skin;
     public static final InputMultiplexer inputMultiplexer = new InputMultiplexer();
-    private final CVarEnum<SoundDistanceModel> distanceModel = new CVarEnum("snd_distanceModel", SoundDistanceModel.INVERSE, SoundDistanceModel.class, 0, "sound distance model");
-    private final CVarEnum<SoundEmitter.Mode> emitterMode = new CVarEnum("snd_mode", SoundEmitter.Mode.STEREO, SoundEmitter.Mode.class, 0, "sound mode");
 
     public Main() {
         super(new BaseGameState());
@@ -122,12 +123,6 @@ public class Main extends StateBasedGame {
         inputMultiplexer.addProcessor(HotkeyManager.getInputProcessor());
 
         changeState(new LoadGameState(assetManager, this::onLoadComplete), null, null);
-
-        this.console.register(distanceModel);
-        distanceModel.addListener((CVar) -> distanceModel.get().activate());
-
-        this.console.register(emitterMode);
-        emitterMode.addListener(this::onEmitterModeChanged);
         
         SoundEmitter.setGlobalVolume(Settings.SOUND_VOLUME.get());
         MusicManager.setGlobalVolume(Settings.MUSIC_VOLUME.get());
@@ -138,6 +133,10 @@ public class Main extends StateBasedGame {
     private void onLoadComplete() {
         final MainMenuState mainMenuState = new MainMenuState(assetManager);
         addPersistentState(mainMenuState);
+        
+        final WinState winState = new WinState(assetManager);
+        addPersistentState(winState);
+        
         changeState(mainMenuState, null, null);
         SandboxCommand.init(assetManager);
         
@@ -196,18 +195,6 @@ public class Main extends StateBasedGame {
     protected void postUpdate(float delta) {
     	MusicManager.update(delta);
         postRender();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        SoundEmitter.setListenerPosition(width / 2, height / 2, 10, emitterMode.get());
-    }
-
-    public void onEmitterModeChanged(CVar cvar) {
-        int x = Gdx.graphics.getWidth() / 2;
-        int y = Gdx.graphics.getHeight() / 2;
-        SoundEmitter.setListenerPosition(x, y, 10, emitterMode.get());
     }
 
     @Override

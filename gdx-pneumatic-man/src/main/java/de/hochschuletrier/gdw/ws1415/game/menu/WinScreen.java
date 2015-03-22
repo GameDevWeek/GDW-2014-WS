@@ -1,11 +1,17 @@
 package de.hochschuletrier.gdw.ws1415.game.menu;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
+import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
+import de.hochschuletrier.gdw.ws1415.Settings;
+import de.hochschuletrier.gdw.ws1415.game.Game;
 import de.hochschuletrier.gdw.ws1415.game.menu.MainMenu.Type;
+import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 
 public class WinScreen extends MenuPage
 {
@@ -19,6 +25,7 @@ public class WinScreen extends MenuPage
     private final BitmapFont font_32;
     private final BitmapFont font_75;
     private final BitmapFont font_18;
+    
     
     
     public enum Type
@@ -35,25 +42,24 @@ public class WinScreen extends MenuPage
         font_75 = assetManager.getFont("orbitron_75");
         font_18 = assetManager.getFont("orbitron_18");
         
-        font_32.setColor(Color.valueOf("ffe601"));
-        font_75.setColor(Color.valueOf("ffe601"));
-        font_18.setColor(Color.valueOf("ffe601"));
+        
+        
+        
+        
         
         
         for(int i = 0; i < 5; i++)
         {
             System.out.println(names[(int)(Math.random()*100)%names.length]);
         }
-         
         
-        
-//        for()
-        
-        
-        //fuck off!
-        
-        
-        
+        addCenteredImage(1400, 180, 108, 108, new DecoImage(assetManager.getTexture("butt_next_level")), () -> nextLevel());
+    }
+    
+    private void nextLevel()
+    {
+        Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % 3 ));
+        main.changeState(new GameplayState(assetManager),new SplitHorizontalTransition(500), null);
     }
 
 }

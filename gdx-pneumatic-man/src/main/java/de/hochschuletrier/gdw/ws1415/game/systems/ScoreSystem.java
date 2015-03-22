@@ -9,6 +9,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 
+import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.Score;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.GoalComponent;
@@ -51,7 +52,9 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
             {
                 if(player.getComponent(PlayerComponent.class) != null)
                 {
-                    player.getComponent(PlayerComponent.class).game_time += 1;
+                    if(player.getComponent(PlayerComponent.class).isSpawned){
+                        player.getComponent(PlayerComponent.class).game_time += 1;
+                    }
                 }
             }
             timeSinceLastCalculation += 1;
@@ -65,6 +68,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
                 {
                     if(goal.getComponent(GoalComponent.class).miners_threshold <= player.getComponent(PlayerComponent.class).saved_miners){
                         goal.getComponent(GoalComponent.class).end_of_level = true;
+//                        System.out.println("level geschafft");
                         //int saved_miners = player.getComponent(PlayerComponent.class).saved_miners;
                         //int destroyed_blocks = player.getComponent(PlayerComponent.class).destroyed_blocks;
                         //int miners_threshold = goal.getComponent(GoalComponent.class).miners_threshold;
