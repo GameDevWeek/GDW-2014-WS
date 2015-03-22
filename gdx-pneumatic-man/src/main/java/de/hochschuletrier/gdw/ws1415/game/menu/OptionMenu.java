@@ -35,8 +35,7 @@ public class OptionMenu extends MenuPage
 	private float sound = Settings.SOUND_VOLUME.get();
 	private float music = Settings.MUSIC_VOLUME.get();
 	
-	private boolean gamepadSet;
-	
+	private boolean gamepadSet = Settings.GAMEPAD_ENABLED.get();
 	
 	public OptionMenu(Skin skin, MenuManager menuManager)
 	{ 		
@@ -174,22 +173,19 @@ public class OptionMenu extends MenuPage
     {
 		addImage(width/2 - 400, height/2 - 290, (int)gamepad.getWidth(), (int)gamepad.getHeight(), gamepadActive);
 		removeActor(keyboardActive);
-    	Settings.GAMEPAD_ENABLED.set(true);
     	gamepadSet = true;
-    	Settings.flush();
     }
     
     private void onKeyboardChanged()
     {
 		addImage(width/2 + 50, height/2 - 290, (int)keyboard.getWidth(), (int)keyboard.getHeight(), keyboardActive);
 		removeActor(gamepadActive);
-    	Settings.GAMEPAD_ENABLED.set(false);
     	gamepadSet = false;
-    	Settings.flush();
     }
 
     private void storeSettings() 
     {
+    	Settings.GAMEPAD_ENABLED.set(gamepadSet);
         Settings.SOUND_VOLUME.set(sound);
         Settings.MUSIC_VOLUME.set(music);
 		SoundEmitter.setGlobalVolume(sound);
