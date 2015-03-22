@@ -295,7 +295,7 @@ public class Gamelogic_Game extends SandboxGame {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
-                                    Map, info, info.getIntProperty("Hitpoint", 0), i, j);
+                                    Map, layer, info, info.getIntProperty("Hitpoint", 0), i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) 
                         {
@@ -356,13 +356,13 @@ public class Gamelogic_Game extends SandboxGame {
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
                             TileInfo info = tiles[i][j];
-                            EntityCreator.createAndAddVisualEntity(Map, info, i, j);
+                            EntityCreator.createAndAddVisualEntity(Map, layer, info, i, j);
                         }
                         
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
                                 && tiles[i][j].getProperty("Type", "").equals("Lava")) {
                             TileInfo info = tiles[i][j];
-                            EntityCreator.createAndAddVisualEntity(Map, info, i, j);
+                            EntityCreator.createAndAddVisualEntity(Map, layer, info, i, j);
                         }
                     }
                 }
