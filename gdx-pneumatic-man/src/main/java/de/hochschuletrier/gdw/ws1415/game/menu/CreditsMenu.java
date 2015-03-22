@@ -79,7 +79,7 @@ public class CreditsMenu extends MenuPage implements SceneAnimator.Getter {
     public Texture getTexture(String name) {
         return assetManager.getTexture(name);
     }
-
+//
 //    @Override
 //    public void setVisible(boolean visible) {
 //        // TODO Auto-generated method stub
