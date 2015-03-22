@@ -145,6 +145,11 @@ public class EntityCreator {
 
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
         jumpComponent.jumpSpeed = 900.0f;
+        jumpComponent._AddSpeedCount = 0;
+        jumpComponent.AddSpeed = 10f;
+        jumpComponent.maxAddSpeedCount = 10;
+        // Damit bei taste gedrückt ungefähr wie vorher ( TODO: Adjust properly ) 
+        jumpComponent.jumpSpeed = ( jumpComponent.jumpSpeed - (jumpComponent.maxAddSpeedCount/3 * (jumpComponent.AddSpeed * jumpComponent.maxAddSpeedCount) ) );
         jumpComponent.restingTime = 0.001f;
         entity.add(jumpComponent);
 
@@ -516,7 +521,8 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.setGravityScale(0);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
+                .density(1).friction(1f)
+                .shapeBox(GameConstants.getTileSizeX() * 0.95f, GameConstants.getTileSizeY() *0.95f)
                 .restitution(0).sensor(true)
                 .mask((short) (EVERYTHING))
                 .category(WORLDOBJECT);
