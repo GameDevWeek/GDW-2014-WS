@@ -11,6 +11,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierCompon
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent.HealthState;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 
 import org.slf4j.Logger;
@@ -111,6 +112,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                         if(ComponentMappers.bomb.has(entity))
                         {
                             entity.getComponent(AnimationComponent.class).IsActive = true;
+                            entity.getComponent(PointLightComponent.class).pointLight.setActive(true);
                         }
                     }
                 }

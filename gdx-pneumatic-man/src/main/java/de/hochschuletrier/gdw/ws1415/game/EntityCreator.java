@@ -1287,7 +1287,11 @@ public class EntityCreator {
         deathTimer.deathTimer = 0.8f;
         Bomb.add(deathTimer);
         
-
+        PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(Color.valueOf("FF7edc")),5f,0,0);
+        plc.pointLight.setActive(false);
+        Bomb.add(plc);
+        
         
         //addRenderComponents(Bomb, map, info, tileX, tileY);
         addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, false);
