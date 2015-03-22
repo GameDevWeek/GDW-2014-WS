@@ -327,7 +327,7 @@ public class ResetTest extends SandboxGame {
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * Map.getTileWidth() + 0.5f * Map.getTileWidth(),
                                     j * Map.getTileHeight() + 0.5f * Map.getTileHeight(),
-                                    Map, info, 1, i, j);
+                                    Map, layer, info, 1, i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) 
                         {
@@ -388,13 +388,13 @@ public class ResetTest extends SandboxGame {
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
                                 && tiles[i][j].getProperty("Type", "").equals("Floor")) {
                             TileInfo info = tiles[i][j];
-                            EntityCreator.createAndAddVisualEntity(Map, info, i, j);
+                            EntityCreator.createAndAddVisualEntity(Map, layer, info, i, j);
                         }
                         
                         if (tiles[i][j].getBooleanProperty("Invulnerable", false)
                                 && tiles[i][j].getProperty("Type", "").equals("Lava")) {
                             TileInfo info = tiles[i][j];
-                            EntityCreator.createAndAddVisualEntity(Map, info, i, j);
+                            EntityCreator.createAndAddVisualEntity(Map, layer, info, i, j);
                         }
                     }
                 }

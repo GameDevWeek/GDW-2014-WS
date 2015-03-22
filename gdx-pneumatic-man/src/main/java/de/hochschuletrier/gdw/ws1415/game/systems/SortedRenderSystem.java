@@ -12,8 +12,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
-
 import com.badlogic.gdx.physics.box2d.Filter;
+
 import de.hochschuletrier.gdw.commons.devcon.DevConsole;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
@@ -28,7 +28,6 @@ import de.hochschuletrier.gdw.ws1415.game.EntityCreator;
 import de.hochschuletrier.gdw.ws1415.game.GameConstants;
 import de.hochschuletrier.gdw.ws1415.game.components.LayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.lights.ChainLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.AnimationRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.DestructableBlockRenderer;
 import de.hochschuletrier.gdw.ws1415.game.systems.renderers.LightRenderer;
@@ -157,12 +156,14 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
     
     private void onLayerChanged(LayerComponent oldLayer, LayerComponent newLayer) {
     	cameraSystem.applyParallax(newLayer);
-    	DrawUtil.batch.setShader(newLayer.layer >= 0 && GameConstants.useShader ? GameConstants.SHADER : null);
+    	if(GameConstants.useShader && newLayer.layer >= 0)
+    	    DrawUtil.batch.setShader(GameConstants.SHADER);
     }
     
     @Override
 	public void update (float deltaTime) {
-        DrawUtil.batch.setShader(GameConstants.useShader ? GameConstants.SHADER : null);
+        if(GameConstants.useShader)
+            DrawUtil.batch.setShader(GameConstants.SHADER);
     	super.update(deltaTime);
         cameraSystem.undoParallax();
     	

@@ -1,7 +1,7 @@
 [
     {
         "name" : "level_1",
-        "levelFilePath" : "data/maps/Testkarte_19.03.tmx",
+        "levelFilePath" : "data/maps/Lavaground.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
         "difficulty" : "NORMAL"
     },
@@ -21,6 +21,12 @@
         "name" : "level_4",
         "levelFilePath" : "data/maps/Mole Spiral.tmx",
         "thumbnailFilePath" : "data/images/Injava_Jones.jpg",
+        "difficulty" : "HARD"
+    },
+        {
+        "name" : "level_4",
+        "levelFilePath" : "data/maps/Easy Mine.tmx",
+        "thumbnailFilePath" : "data/images/Easy Mine.png",
         "difficulty" : "HARD"
     }
 ]

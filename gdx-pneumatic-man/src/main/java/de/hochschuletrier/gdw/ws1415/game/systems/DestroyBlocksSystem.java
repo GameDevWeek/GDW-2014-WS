@@ -48,7 +48,7 @@ public class DestroyBlocksSystem extends IteratingSystem {
                     healthComponent.DecrementByValueNextFrame += DamageValue;
 
                     return 0;
-                } else if (ComponentMappers.iblock.has(bodyComponent.getEntity())) {
+                } else if (ComponentMappers.iblock.has(bodyComponent.getEntity()) || ComponentMappers.platform.has(bodyComponent.getEntity())) {
                     try {
                         SoundEmitterComponent soundEmitter = ComponentMappers.soundEmitter.get(raycastSender);
                         if(soundEmitter != null){
