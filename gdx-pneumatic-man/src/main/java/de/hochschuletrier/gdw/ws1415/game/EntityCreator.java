@@ -935,6 +935,23 @@ public class EntityCreator {
     }
     // ********** Rendering section END **********
 
+    public static Entity createAndAddBomb(float x, float y) {
+        Entity Bomb = engine.createEntity();
+        
+        Bomb.add(engine.createComponent(PositionComponent.class));
+
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
+        Health.Value = 1;
+        Bomb.add(Health);
+        
+        DamageComponent Damage = engine.createComponent(DamageComponent.class);
+        Damage.damage = 3;
+        Damage.damageToTile = true;
+        
+        Bomb.add(Damage);
+        return(Bomb);
+    }
+
     
 
    
