@@ -93,6 +93,7 @@ public class ScoreSystem extends EntitySystem implements EntityListener {
         }
         if (MinerFamily.matches(entity)) {
             total_miners += 1;
+            logger.info("Miners in map: "+total_miners);
         }
     }
 
