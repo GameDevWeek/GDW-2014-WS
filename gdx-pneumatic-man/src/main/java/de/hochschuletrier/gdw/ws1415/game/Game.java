@@ -26,26 +26,14 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.ws1415.Main;
 import de.hochschuletrier.gdw.ws1415.Settings;
-import de.hochschuletrier.gdw.ws1415.game.components.FallingRockComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.ImpactSoundComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ws1415.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.*;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.PlayerContactListener;
-import de.hochschuletrier.gdw.ws1415.game.contactlisteners.RockContactListener;
+import de.hochschuletrier.gdw.ws1415.game.contactlisteners.FallingTrapContactListener;
 import de.hochschuletrier.gdw.ws1415.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ws1415.game.systems.AISystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.CameraSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.DestroyBlocksSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.HealthSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputGamepadSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.InputKeyboardSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.LavaFountainSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.MovementSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.PlatformSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.ScoreSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.SortedRenderSystem;
-import de.hochschuletrier.gdw.ws1415.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ws1415.game.systems.*;
+import de.hochschuletrier.gdw.ws1415.game.utils.AIType;
+import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 import de.hochschuletrier.gdw.ws1415.game.utils.InputManager;
 import de.hochschuletrier.gdw.ws1415.game.utils.MapLoader;
 
@@ -69,6 +57,7 @@ public class Game {
     private  CameraSystem cameraSystem;
     private  RayHandler rayHandler;
     private  SortedRenderSystem renderSystem;
+    private  HudRenderSystem hudRenderSystem;
     private  UpdatePositionSystem updatePositionSystem;
     private  MovementSystem movementSystem;
     private  InputKeyboardSystem inputKeyboardSystem;
@@ -206,6 +195,7 @@ public class Game {
         cameraSystem = new CameraSystem();
         rayHandler = new RayHandler(physixSystem.getWorld());
         renderSystem = new SortedRenderSystem(cameraSystem, rayHandler);
+        hudRenderSystem = new HudRenderSystem();
         updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
         movementSystem = new MovementSystem(GameConstants.PRIORITY_PHYSIX + 2);
         inputKeyboardSystem = new InputKeyboardSystem();
@@ -222,6 +212,7 @@ public class Game {
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
+        engine.addSystem(hudRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(movementSystem);
         engine.addSystem(inputKeyboardSystem);
@@ -257,8 +248,9 @@ public class Game {
         PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
         contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
-        contactListener.addListener(PlayerComponent.class, new PlayerContactListener());
-        contactListener.addListener(FallingRockComponent.class, new RockContactListener());
+        contactListener.addListener(PlayerComponent.class, new PlayerContactListener(engine));
+        contactListener.addListener(FallingRockComponent.class, new FallingTrapContactListener());
+        contactListener.addListener(SpikeComponent.class, new FallingTrapContactListener());
         physixSystem.getWorld().setContactListener(contactListener);
     }
 
