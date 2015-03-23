@@ -53,7 +53,7 @@ import de.hochschuletrier.gdw.ws1415.states.GameplayState;
 
 public class Game {
 
-    private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
+    private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
 
     private  PooledEngine engine = new PooledEngine(GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
@@ -140,6 +140,7 @@ public class Game {
         
         Main.getInstance().console.register(physixDebug);
         physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
+        physixDebugRenderSystem.setProcessing(physixDebug.get());
         
         // Load Map
         map = loadMap(levelFilePath);
