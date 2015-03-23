@@ -127,6 +127,7 @@ public class Game {
 
     private void loadCurrentlySelectedLevel()
     {
+        GameConstants.pause = false;
         engine.removeAllEntities();
         removeSystems();
         Main.getInstance().removeScreenListener(cameraSystem.getCamera());
