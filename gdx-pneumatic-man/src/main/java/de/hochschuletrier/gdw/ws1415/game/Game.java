@@ -158,7 +158,6 @@ public class Game {
         
         
         MapLoader.generateWorldFromTileMapX(engine, physixSystem, map, cameraSystem);
-
        
         inputManager.init();
     }
