@@ -306,8 +306,8 @@ public class EntityCreator {
         FallingRockComponent rockComponent = new FallingRockComponent();
         rockComponent.id = trapId;
         entity.add(rockComponent);
-        
-//        HealthComponent Health = engine.createComponent(HealthComponent.class);
+
+        HealthComponent Health = engine.createComponent(HealthComponent.class);
         Health.Value = 1;
         
         DamageComponent damageComp = engine.createComponent(DamageComponent.class);
