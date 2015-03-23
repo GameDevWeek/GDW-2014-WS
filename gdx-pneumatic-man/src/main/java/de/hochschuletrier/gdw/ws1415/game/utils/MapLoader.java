@@ -168,7 +168,7 @@ public class MapLoader
                             EntityCreator.createAndAddVulnerableFloor(
                                     i * map.getTileWidth() + 0.5f * map.getTileWidth(),
                                     j * map.getTileHeight() + 0.5f * map.getTileHeight(),
-                                    map, info, 1, i, j);
+                                    map, info, Integer.parseInt(info.getProperty("Hitpoint", "")), i, j);
                         }
                         if (tiles[i][j].getProperty("Type", "").equals("SpikeLeft")) {
                             TileInfo info = tiles[i][j];
