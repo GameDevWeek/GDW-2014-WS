@@ -69,12 +69,21 @@ public class EntityCreator {
     public static Entity createAndAddPlayer(float x, float y, float rotation) {
         Entity entity = engine.createEntity();
 
-        entity.add(engine.createComponent(AnimationComponent.class));
         entity.add(engine.createComponent(DamageComponent.class));
         entity.add(engine.createComponent(InputComponent.class));
         entity.add(engine.createComponent(PlayerComponent.class));
+        
+        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("laser"));
+        
+        pe.loop=true;
+        pe.particleEffect.flipY();
+        pe.particleEffect.start();
+        pe.offsetY = 60f;
+        pe.offsetX = -7f;
+        entity.add(pe);
 
-        addTestParticleAndLightComponent(entity);
+        //addTestParticleAndLightComponent(entity);
         
 //        entity.getComponent(AnimationComponent.class).animation = new AnimationExtended(AnimationExtended.PlayMode.NORMAL, 400, );
 
@@ -238,9 +247,6 @@ public class EntityCreator {
         entity.add(defineBoxPhysixBodyComponent(entity, x, y, width, height,
                 true, 1f, 1f, 0.1f));
 
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
-
         engine.addEntity(entity);
         return entity;
     }
@@ -398,9 +404,6 @@ public class EntityCreator {
         fixture.setUserData(bodyComponent);
         entity.add(bodyComponent);
 
-        DestructableBlockComponent blockComp = engine.createComponent(DestructableBlockComponent.class);
-        entity.add(blockComp);
-
         PlatformComponent pl = new PlatformComponent();
         pl.travelDistance = travelDistance * GameConstants.getTileSizeX();
         pl.mode = mode;
@@ -479,8 +482,7 @@ public class EntityCreator {
         Damage.damage = 2;
         entity.add(Damage);
 
-        DestructableBlockComponent blockComp = new DestructableBlockComponent();
-        entity.add(blockComp);
+
 
         engine.addEntity(entity);
         return entity;
@@ -674,9 +676,6 @@ public class EntityCreator {
         
         pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("explosion"));
         
-        pe.particleEffect.load(Gdx.files.internal("src/main/resources/data/particle/xpl_prtkl.p"),Gdx.files.internal("src/main/resources/data/particle/"));
-        loadParticleEffects( pe,"xpl_prtkl.p" );
-        
         pe.loop=true;
         pe.particleEffect.flipY();
         pe.particleEffect.start();
@@ -827,19 +826,6 @@ public class EntityCreator {
     }
     // ********** Rendering section END **********
     
-    
-    //   Edited by Assets(Tobi) *******
-    /**
-     * 
-     * @param particlefile
-     *          Nur der Dateiname von der .p Datei
-     * @author Tobias Gepp (Assets)
-     */
-    public static void loadParticleEffects( ParticleComponent p , String particlefile )
-    {
-        String path = "src/main/resources/data/particle/";
-        String filePath = path + particlefile;                  // file  in path
-        p.particleEffect.load(Gdx.files.internal(filePath),Gdx.files.internal(path));   // immer die Datei in <path> suchen
-    }
+
    
 }
