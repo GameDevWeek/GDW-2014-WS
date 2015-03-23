@@ -905,6 +905,7 @@ public class EntityCreator {
     	addRenderComponents(entity, px, py, 0, 0.2f, anim, start, stateTime);
     }
     // ********** Rendering section END **********
+
     
 
    

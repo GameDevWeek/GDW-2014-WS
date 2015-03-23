@@ -477,6 +477,8 @@ public class MapLoader
                                     break;
                                     
                                 case "bomb":
+                                    EntityCreator.createAndAddBomb(i * map.getTileWidth() + 0.5f * map.getTileWidth(),
+                                                j * map.getTileHeight() + 0.5f * map.getTileHeight());
                                     break;
                                 default :
                                     Gdx.app.log("WARNING", "layer-type " + type + " does not match any name. No Entity created");
