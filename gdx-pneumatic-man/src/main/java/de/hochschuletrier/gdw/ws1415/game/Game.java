@@ -150,10 +150,10 @@ public class Game {
 
     private void selectPathFromSettings()
     {
-        int selectedLevel = Settings.CURRENTLY_SELECTED_LEVEL;
+        int selectedLevel = Settings.CURRENTLY_SELECTED_LEVEL.get();
         switch (selectedLevel)
         {
-            case 1: 
+            case 0: 
                 levelFilePath = "data/maps/Testkarte_19.03.tmx";
                 break;
             default:
@@ -238,7 +238,7 @@ public class Game {
         engine.removeSystem(_ScoreSystem);
         engine.removeSystem(lavaFountainSystem);
         engine.removeSystem(destroyBlocksSystem);
-        
+        engine.removeSystem(aisystems);
         if(renderSystem != null && renderSystem.rayHandler != null)
             renderSystem.rayHandler.removeAll();
 
