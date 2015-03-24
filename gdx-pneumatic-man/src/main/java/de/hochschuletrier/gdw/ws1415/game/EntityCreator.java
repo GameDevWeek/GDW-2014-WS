@@ -1043,8 +1043,12 @@ public class EntityCreator {
                 true, 1f, 1f, 0.1f));
         
         DestructableBlockComponent DestructableComp = engine.createComponent(DestructableBlockComponent.class);
-        DestructableComp.deathTimer = 3.0f;
+        
         Bomb.add(DestructableComp);
+        
+        DeathTimerComponent deathTimer = engine.createComponent(DeathTimerComponent.class);
+        deathTimer.deathTimer = 3.0f;
+        Bomb.add(deathTimer);
         
         addRenderComponents(Bomb, map, info, tileX, tileY);
         
@@ -1056,7 +1060,7 @@ public class EntityCreator {
         entity.remove(HealthComponent.class);
         entity.remove(DestructableBlockComponent.class);
         entity.remove(TextureComponent.class);
-        entity.remove(LayerComponent.class);
+        entity.remove(BombComponent.class);
         
         entity.getComponent(DamageComponent.class).damageToPlayer = true;
         /* Create explosion Physics */
@@ -1075,20 +1079,27 @@ public class EntityCreator {
         entity.add(PhysixBody);
         
         
+
         HealthComponent Health = engine.createComponent(HealthComponent.class);
-        Health.Value = 1;
-        Health.DecrementByValueNextFrame = 1;
+        Health.Value = 0;
         entity.add(Health);
+        
+        AnimationComponent Anim = engine.createComponent(AnimationComponent.class);
+        Anim.animation = assetManager.getAnimation("bomb_explosion");
+        Anim.IsActive = true;
+
+        DeathTimerComponent DeathTimer = engine.createComponent(DeathTimerComponent.class);
+        DeathTimer.deathTimer = Anim.animation.animationDuration;
+        
+        entity.getComponent(LayerComponent.class).layer = 100;
+        
+        
+        entity.add(Anim);
+        entity.add(DeathTimer);
+        
         
     }
 
     
-
-
-
-
-
-
-
    
 }

@@ -71,14 +71,14 @@ public class HealthSystem extends EntitySystem implements EntityListener {
 
             if((Health.Value <= 0))
             {
-                if(ComponentMappers.block.has(entity))
+                if(ComponentMappers.deathTimer.has(entity))
                 {
-                    DestructableBlockComponent block = ComponentMappers.block.get(entity);
-                    if(block.deathTimer <= 0) {
+                    DeathTimerComponent deathTimer = ComponentMappers.deathTimer.get(entity);
+                    if(deathTimer.deathTimer <= 0) {
                         Health.health = HealthComponent.HealthState.DEAD;
                     }else {
                         Health.health = HealthComponent.HealthState.DYING;
-                        block.deathTimer -= deltaTime;
+                        deathTimer.deathTimer -= deltaTime;
                     }
                 }
                 
@@ -87,7 +87,6 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     Health.health = HealthComponent.HealthState.DYING;
                     
                     EntityCreator.modifyPlayerToDying(entity);
-                    
                 }
                 else if(ComponentMappers.bomb.has(entity) && Health.health == HealthState.DEAD)
                 {
@@ -124,9 +123,11 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else
                 {
-                    logger.info(entity.getId() + " removed");
-                    PostUpdateRemovals.add(entity);
-
+                    if(Health.health != HealthState.DYING)
+                    {
+                        logger.info(entity.getId() + " removed");
+                        PostUpdateRemovals.add(entity);
+                    }
                 }
             }
 
