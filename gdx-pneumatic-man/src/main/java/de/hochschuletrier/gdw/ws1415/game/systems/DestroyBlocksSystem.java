@@ -19,36 +19,66 @@ import java.util.ArrayList;
 
 public class DestroyBlocksSystem extends IteratingSystem {
 
+    public final static float RAY_LENGTH_JUMP = 2.8f;
+    public final static float RAY_LENGTH_GROUNDED = 1.4f;
 
     public DestroyBlocksSystem() {
         super(Family.all(PlayerComponent.class).get());
     }
 
+    void sendBlockRaycastBelowAndDamageBlock(Entity raycastSender, int DamageValue, float RayScale)
+    {
+        PhysixBodyComponent physix = ComponentMappers.physixBody.get(raycastSender);
+        Vector2 p1 = physix.getBody().getPosition();
+        Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(RayScale)); 
+
+        EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
+            Object bodyUserData = fixture.getBody().getUserData();
+            if (bodyUserData instanceof PhysixBodyComponent) {
+                PhysixBodyComponent bodyComponent = (PhysixBodyComponent) bodyUserData;
+                if (ComponentMappers.block.has(bodyComponent.getEntity())
+                        && ComponentMappers.health.has(bodyComponent.getEntity())) {
+                    HealthComponent healthComponent = ComponentMappers.health.get(bodyComponent.getEntity());
+                    healthComponent.DecrementByValueNextFrame += DamageValue;
+                    return 0;
+                }
+            }
+            return 1;
+        }, p1, p2);
+    }
+
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         AnimationComponent ani = entity.getComponent(AnimationComponent.class);
-        PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
 
-
-        if(ani != null) {
-            if (ani.animationFinished) {
-                Vector2 p1 = physix.getBody().getPosition();
-                Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(1.4f)); // FIXME MAGIC NUMBER
-
-                EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
-                    Object bodyUserData = fixture.getBody().getUserData();
-                    if (bodyUserData instanceof PhysixBodyComponent) {
-                        PhysixBodyComponent bodyComponent = (PhysixBodyComponent) bodyUserData;
-                        if (ComponentMappers.block.has(bodyComponent.getEntity())
-                                && ComponentMappers.health.has(bodyComponent.getEntity())) {
-                            HealthComponent healthComponent = ComponentMappers.health.get(bodyComponent.getEntity());
-                            healthComponent.DecrementByValueNextFrame += 1;
-                            return 0;
+        JumpComponent Jump = entity.getComponent(JumpComponent.class);
+        if(Jump != null)
+        {
+            if(Jump.groundContacts != 0) // Wenn Grounded, dann 
+            {
+                if(Jump.previousContacts < Jump.groundContacts)
+                {
+                    //System.out.println("Damage on Land");
+                    Jump.previousContacts = Jump.groundContacts;
+                    sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP);
+                }
+                else
+                {
+                    if(ani != null) {
+                        if (ani.animationFinished) {
+                            sendBlockRaycastBelowAndDamageBlock(entity, 1, RAY_LENGTH_GROUNDED);
+                            ani.animationFinished = false;
                         }
                     }
-                    return 1;
-                }, p1, p2);
-                ani.animationFinished = false;
+                }
+            }
+            else // In Air
+            {
+                if(Jump.justJumped) // Gerade erst losgesprungen
+                {
+                    //System.out.println("Damage on Jump");
+                    sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP);
+                }
             }
         }
     }

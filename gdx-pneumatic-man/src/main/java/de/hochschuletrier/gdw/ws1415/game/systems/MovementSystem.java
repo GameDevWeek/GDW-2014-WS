@@ -68,8 +68,10 @@ public class MovementSystem extends IteratingSystem {
             // if jump was called
             if (input != null) {
 
+                jump.justJumped = false;
                 if (jump.groundContacts > 0) {
                     if (input.jump) {
+                        jump.justJumped = true;
                         physix.setLinearVelocityY(-jump.jumpSpeed);
                     }
                 }

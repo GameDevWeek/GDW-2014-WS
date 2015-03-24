@@ -11,11 +11,13 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class JumpComponent extends Component implements Pool.Poolable {
 
+    public boolean justJumped = false;
 	public float jumpSpeed;
 	public float restingTime, timeToNextJump;
 	public float jumpTimer = 0.2f;
 	
 //	public boolean inAir;
+	public int previousContacts;
     public int groundContacts;
 
 	@Override
