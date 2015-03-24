@@ -909,6 +909,15 @@ public class EntityCreator {
         pe.offsetY=40f;
         entity.add(pe);
         
+        SoundEmitterComponent sec = engine.createComponent(SoundEmitterComponent.class);
+        
+        SoundInstance si = sec.emitter.play(assetManager.getSound("burst1"), false);
+        si.setReferenceDistance(100f);
+        sec.emitter.setPosition(positionX, positionY, 0);
+        
+        
+        entity.add(sec);
+        
         
         
         addLayerComponent(entity, 10, 1, 1);
