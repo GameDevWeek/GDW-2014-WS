@@ -123,11 +123,15 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else
                 {
+                    /*
                     if(Health.health != HealthState.DYING)
                     {
+                    */
                         logger.info(entity.getId() + " removed");
                         PostUpdateRemovals.add(entity);
+                    /*
                     }
+                    */
                 }
             }
 
