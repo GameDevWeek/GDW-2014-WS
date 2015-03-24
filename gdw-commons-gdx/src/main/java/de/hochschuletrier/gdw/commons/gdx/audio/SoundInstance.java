@@ -17,16 +17,20 @@ import static org.lwjgl.openal.AL10.*;
 public class SoundInstance implements Pool.Poolable {
     private static LongMap<Integer> soundIdToSource;
 
-    Sound sound;
-    long id;
-    int sourceId;
-    float volume = 1;
+    private Sound sound;
+    private long id;
+    private int sourceId;
+    private float volume = 1;
 
-    void init(Sound sound, boolean loop) {
+    boolean init(Sound sound, boolean loop) {
         this.sound = sound;
-        this.id = loop ? sound.loop() : sound.play(SoundEmitter.muted ? 0 : SoundEmitter.globalVolume);
+        id = loop ? sound.loop() : sound.play(SoundEmitter.muted ? 0 : SoundEmitter.globalVolume);
+        if(id == -1) {
+            return false;
+        }
         sourceId = soundIdToSource.get(id);
         setReferenceDistance(50);
+        return true;
     }
 
     @Override
@@ -67,6 +71,10 @@ public class SoundInstance implements Pool.Poolable {
     public void setVolume(float volume) {
         this.volume = volume;
         sound.setVolume(id, SoundEmitter.muted ? 0 : (SoundEmitter.globalVolume * volume));
+    }
+    
+    public float getVolume() {
+        return volume;
     }
 
     public void setPan(float pan, float volume) {
