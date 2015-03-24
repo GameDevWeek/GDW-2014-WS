@@ -26,11 +26,13 @@ public class DestroyBlocksSystem extends IteratingSystem {
         super(Family.all(PlayerComponent.class).get());
     }
 
-    void sendBlockRaycastBelowAndDamageBlock(Entity raycastSender, int DamageValue, float RayScale)
+    void sendBlockRaycastBelowAndDamageBlock(Entity raycastSender, int DamageValue, float RayScale, float Facing)
     {
+        Vector2 RayDir = new Vector2( Facing * 0.1f, 1 );
+        RayDir.nor();
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(raycastSender);
         Vector2 p1 = physix.getBody().getPosition();
-        Vector2 p2 = new Vector2(p1).add(Direction.DOWN.toVector2().scl(RayScale)); 
+        Vector2 p2 = new Vector2(p1).add(RayDir.scl(RayScale)); 
 
         EntityCreator.physixSystem.getWorld().rayCast((fixture, point, normal, fraction) -> {
             Object bodyUserData = fixture.getBody().getUserData();
@@ -50,6 +52,7 @@ public class DestroyBlocksSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         AnimationComponent ani = entity.getComponent(AnimationComponent.class);
+        float Facing = ani.flipX ? 1 : -1;
 
         JumpComponent Jump = entity.getComponent(JumpComponent.class);
         if(Jump != null)
@@ -60,13 +63,16 @@ public class DestroyBlocksSystem extends IteratingSystem {
                 {
                     //System.out.println("Damage on Land");
                     Jump.previousContacts = Jump.groundContacts;
-                    sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP);
+                    sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP, Facing);
+                    ani.stateTime = 0.0f;
+                    ani.animationFinished = false;
+                    ani.permanent_stateTime = 0.0f;
                 }
                 else
                 {
                     if(ani != null) {
                         if (ani.animationFinished) {
-                            sendBlockRaycastBelowAndDamageBlock(entity, 1, RAY_LENGTH_GROUNDED);
+                            sendBlockRaycastBelowAndDamageBlock(entity, 1, RAY_LENGTH_GROUNDED, Facing);
                             ani.animationFinished = false;
                         }
                     }
@@ -77,7 +83,7 @@ public class DestroyBlocksSystem extends IteratingSystem {
                 if(Jump.justJumped) // Gerade erst losgesprungen
                 {
                     //System.out.println("Damage on Jump");
-                    sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP);
+                    sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP, Facing);
                 }
             }
         }
