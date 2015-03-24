@@ -40,7 +40,17 @@ public class SortedRenderSystem extends SortedFamilyRenderSystem {
             public int compare(Entity e1, Entity e2) {
                 LayerComponent ac = ComponentMappers.layer.get(e1);
                 LayerComponent bc = ComponentMappers.layer.get(e2);
-                return ac.layer > bc.layer ? 1 : (ac.layer == bc.layer) ? 0 : -1;
+                int SortValue = 0;
+                if(ac.layer > bc.layer)
+                {
+                    SortValue = 1;
+                }
+                else if(ac.layer < bc.layer)
+                {
+                    SortValue = -1;
+                }
+                return SortValue;
+                //return ac.layer > bc.layer ? 1 : (ac.layer == bc.layer) ? 0 : -1;
             }
         }, priority);
 
