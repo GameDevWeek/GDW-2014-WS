@@ -16,6 +16,8 @@ import de.hochschuletrier.gdw.ws1415.game.components.InputComponent;
 //import de.hochschuletrier.gdw.ws1415.game.components.BouncingComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.JumpComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.MovementComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlatformComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ws1415.game.utils.Direction;
 
 public class MovementSystem extends IteratingSystem {
@@ -40,9 +42,10 @@ public class MovementSystem extends IteratingSystem {
         MovementComponent movement = ComponentMappers.movement.get(entity);
         // BouncingComponent bouncing = ComponentMappers.bouncing.get(entity);
         JumpComponent jump = ComponentMappers.jump.get(entity);
-
+        PlayerComponent playerComp = ComponentMappers.player.get(entity);
+        
         if (movement != null) {
-
+            
             if (input != null) {
                 movement.velocity.set(movement.speed * input.direction,
                         movement.velocity.y);
@@ -51,6 +54,16 @@ public class MovementSystem extends IteratingSystem {
             physix.setLinearVelocity(movement.velocity.x * deltaTime,
                     physix.getLinearVelocity().y
                             + (movement.velocity.y * deltaTime));
+            
+            if(playerComp != null) {
+                Vector2 lowestPlatformVelocity = new Vector2(0,0);
+                for (Entity platform : playerComp.platformContactEntities) {
+                    Vector2 vel = platform.getComponent(PlatformComponent.class).velocity;
+                    if(vel.len2() > lowestPlatformVelocity.len2())
+                        lowestPlatformVelocity = vel;
+                }
+                physix.setLinearVelocity(physix.getLinearVelocity().add(lowestPlatformVelocity));
+            }
         }
         /*
          * deprecated if (bouncing != null) { // if entity is on the ground and
