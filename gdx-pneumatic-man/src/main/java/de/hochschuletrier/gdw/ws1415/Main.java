@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ws1415;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.loaders.BitmapFontLoader.BitmapFontParameter;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
@@ -27,13 +28,16 @@ import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundDistanceModel;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyManager;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.settings.Setting;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
 import de.hochschuletrier.gdw.commons.gdx.state.StateBasedGame;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.gdx.utils.GdxResourceLocator;
 import de.hochschuletrier.gdw.commons.gdx.utils.KeyUtil;
+import de.hochschuletrier.gdw.commons.gdx.utils.ScreenUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.ClassUtils;
@@ -71,6 +75,7 @@ public class Main extends StateBasedGame {
     private final DevConsoleView consoleView = new DevConsoleView(console);
     private Skin skin;
     public static final InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    private final Hotkey toggleFullscreen = new Hotkey(()->ScreenUtil.toggleFullscreen(), Input.Keys.ENTER, HotkeyModifier.ALT);
 
     public Main() {
         super(new BaseGameState());
@@ -131,6 +136,7 @@ public class Main extends StateBasedGame {
         MusicManager.setGlobalVolume(Settings.MUSIC_VOLUME.get());
         
         UpdateSoundEmitterSystem.initCVars();
+        toggleFullscreen.register();
     }
 
     private void initSound() {
