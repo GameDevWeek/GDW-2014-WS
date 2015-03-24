@@ -121,16 +121,13 @@ public class AISystem extends IteratingSystem {
             if (aiComponent.AItimer <= 0) {
                 // sound
                 if (soundEmitterComponent != null) {
-                    try {
-                        SoundInstance soundInst = soundEmitterComponent.emitter.play(
-                                EntityCreator.assetManager.getSound("alienBark" + (((int) ((Math.random() * 10)) % 4) + 1)),
-                                false);
-                        soundInst.setReferenceDistance(75f);
-                        soundInst.setVolume(2);
-                    } catch (Exception e) {
-                        // TODO: handle exception
+                    SoundInstance si = soundEmitterComponent.emitter.play(
+                            EntityCreator.assetManager.getSound("alienBark" + (((int) ((Math.random() * 10)) % 4) + 1)),
+                            false);
+                    if(si != null) {
+                        si.setReferenceDistance(75f);
+                        si.setVolume(2);
                     }
-                    
                 }
                 aiComponent.AItimer = 2.0f + ((float)Math.random() * 5f);
             }

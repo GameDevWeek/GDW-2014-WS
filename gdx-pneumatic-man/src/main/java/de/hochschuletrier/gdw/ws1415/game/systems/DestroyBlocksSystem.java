@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -49,15 +50,13 @@ public class DestroyBlocksSystem extends IteratingSystem {
 
                     return 0;
                 } else if (ComponentMappers.iblock.has(bodyComponent.getEntity()) || ComponentMappers.platform.has(bodyComponent.getEntity())) {
-                    try {
-                        SoundEmitterComponent soundEmitter = ComponentMappers.soundEmitter.get(raycastSender);
-                        if(soundEmitter != null){
-                            int rand = (int)(Math.random() * 10 %3) + 1;
-                            SoundInstance soundInstance = soundEmitter.emitter.playGlobal(EntityCreator.assetManager.getSound("iron" + rand), false);
-                            soundInstance.setVolume(0.1f);
+                    SoundEmitterComponent soundEmitter = ComponentMappers.soundEmitter.get(raycastSender);
+                    if(soundEmitter != null){
+                        int rand = (int)(Math.random() * 10 %3) + 1;
+                        SoundInstance si = soundEmitter.emitter.play(EntityCreator.assetManager.getSound("iron" + rand), false);
+                        if(si != null) {
+                            si.setVolume(0.1f);
                         }
-                    } catch (Exception e) {
-                        // TODO: handle exception
                     }
                 }
             }

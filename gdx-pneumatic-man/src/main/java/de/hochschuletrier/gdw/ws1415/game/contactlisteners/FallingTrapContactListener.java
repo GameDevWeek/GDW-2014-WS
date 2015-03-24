@@ -50,7 +50,8 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
         DamageComponent dmg = myEntity.getComponent(DamageComponent.class);
         // ***** sound stoneDrops
 //        System.out.println("stoneDrops");
-        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneDrops"), false);
+        PositionComponent pos = ComponentMappers.position.get(myEntity);
+        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneDrops"), false, pos.x, pos.y, 0);
 
         // ja stein kommt von oben:
         if(ComponentMappers.health.has(otherEntity)) {
@@ -60,7 +61,8 @@ public class FallingTrapContactListener extends PhysixContactAdapter {
             Random rm=new Random();
             int i=rm.nextInt(3)+1;//1-3
 //            System.out.println("stoneHit "+i);
-            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneHit"+i), false);
+            pos = ComponentMappers.position.get(otherEntity);
+            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("stoneHit"+i), false, pos.x, pos.y, 0);
                     
             // *****reactions****
             if(ComponentMappers.block.has(otherEntity)){

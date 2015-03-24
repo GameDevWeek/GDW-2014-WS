@@ -74,12 +74,7 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     Random rm=new Random();
                     int i=rm.nextInt(5)+1;//1-5dd
                     //logger.info("Debris "+i);
-                    try {
-                        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("cracks"+i), false);
-
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                    }
+                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("cracks"+i), false);
                 }
                 //logger.info("Damaging "+entity.getId()+" with " + Health.DecrementByValueNextFrame + " damage. New Health: "+ (Health.Value - Health.DecrementByValueNextFrame));
             }
@@ -98,7 +93,8 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                     if(deathTimer.deathTimer <= 0) {
                         if(ComponentMappers.bomb.has(entity)){
 //                            System.out.println("bombTicks");
-                            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bombTicks"), false); 
+                            PositionComponent pos = ComponentMappers.position.get(entity);
+                            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bombTicks"), false, pos.x, pos.y, 0); 
                         }
                         Health.health = HealthComponent.HealthState.DEAD;
                     }else {
@@ -130,11 +126,8 @@ public class HealthSystem extends EntitySystem implements EntityListener {
                 }
                 else if(ComponentMappers.bomb.has(entity) && Health.health == HealthState.DEAD)
                 {
-                    try {
-                        SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"),false);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                    }
+                    PositionComponent pos = ComponentMappers.position.get(entity);
+                    SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("bomb"),false, pos.x, pos.y, 0);
 //                    System.out.println("Explosion");
                     
                     EntityCreator.modifyBombToExplode(entity);

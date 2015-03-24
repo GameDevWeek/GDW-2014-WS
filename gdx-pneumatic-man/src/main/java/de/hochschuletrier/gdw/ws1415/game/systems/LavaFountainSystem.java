@@ -46,16 +46,11 @@ public class LavaFountainSystem extends IteratingSystem {
                                     position.y, lavaFountain.lavaBallSpeed,
                                     lavaFountain.height);
                             SoundEmitterComponent soundEmitter = ComponentMappers.soundEmitter.get(ball);
-                            try {
-                                SoundInstance soundInstance = soundEmitter.emitter.play(EntityCreator.assetManager.getSound("burst1"), false);
-                                soundInstance.setReferenceDistance(30f);
-                                soundInstance.setVolume(2.5f);
-                               
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            SoundInstance si = soundEmitter.emitter.play(EntityCreator.assetManager.getSound("burst1"), false);
+                            if(si != null) {
+                                si.setReferenceDistance(30f);
+                                si.setVolume(2.5f);
                             }
-                            
-                            
                             
                             lavaFountain.timeToNextBall = lavaFountain.lavaBallSpawnIntervall; // TODO
                                                                                                // dynamisch

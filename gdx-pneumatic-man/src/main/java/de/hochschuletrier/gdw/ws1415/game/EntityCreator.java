@@ -261,12 +261,7 @@ public class EntityCreator {
         //***** Sounds *****
         Random rm=new Random();
         int i=rm.nextInt(3)+1;//1-3
-        try {
-            SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("ouch"+i), false);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        
+        ComponentMappers.soundEmitter.get(entityToDie).emitter.play(EntityCreator.assetManager.getSound("ouch"+i), false);
         
         return entityToDie;
     }

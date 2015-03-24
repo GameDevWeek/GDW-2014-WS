@@ -99,7 +99,7 @@ public class PlayerContactListener extends PhysixContactAdapter {
                 Random rm=new Random();
                 int i=rm.nextInt(3)+1;//1-3
                 logger.info("GlorySound "+i);
-                SoundEmitter.playGlobal(EntityCreator.assetManager.getSound("glory"+i), false);
+                ComponentMappers.soundEmitter.get(player).emitter.play(EntityCreator.assetManager.getSound("glory"+i), false);
                 
                 Settings.HIGHSCORE.set(""+Score.score);
                 //Game.loadLevel();
