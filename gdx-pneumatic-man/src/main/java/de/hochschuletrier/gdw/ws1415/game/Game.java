@@ -144,6 +144,7 @@ public class Game {
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
             tilesetImages.put(tileset, new Texture(filename));
         }
+        cameraSystem.adjustToMap(map);
         
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
         setupPhysixWorld();
