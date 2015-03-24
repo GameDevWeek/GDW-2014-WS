@@ -1083,6 +1083,9 @@ public class EntityCreator {
         entity.remove(HealthComponent.class);
         entity.remove(DestructableBlockComponent.class);
         entity.remove(TextureComponent.class);
+        
+        int RadiusInTiles = entity.getComponent(BombComponent.class).RadiusInTiles;
+        float RadiusInWorld = RadiusInTiles * GameConstants.getTileSizeX();
         entity.remove(BombComponent.class);
         
         entity.getComponent(DamageComponent.class).damageToPlayer = true;
@@ -1092,7 +1095,7 @@ public class EntityCreator {
         PhysixBodyDef bDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(PhysixOld.getPosition());
         PhysixBody.init(bDef, physixSystem, entity);
         PhysixFixtureDef fDef = new PhysixFixtureDef(physixSystem)
-                                       .shapeCircle(128)
+                                       .shapeCircle(RadiusInWorld)
                                        .sensor(true);
         
         PhysixBody.createFixture(fDef);
