@@ -66,6 +66,8 @@ public class Game {
     private final CVarBool physixDebug = new CVarBool("physix_debug", !Main.IS_RELEASE, 0, "Draw physix debug");
     private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
     private final Hotkey toggleLight = new Hotkey(() -> Settings.LIGHTS.set(!Settings.LIGHTS.get()), Input.Keys.L);
+    private final Hotkey toggleReload = new Hotkey(()->loadLevel(), Input.Keys.NUM_0);
+    private final Hotkey toggleIncreaseLevel = new Hotkey(this::increaseLevel, Input.Keys.PAGE_UP);
 
     private  PooledEngine engine;
     private  PhysixSystem physixSystem;
@@ -104,6 +106,8 @@ public class Game {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
             togglePhysixDebug.register();
+            toggleReload.register();
+            toggleIncreaseLevel.register();
         }
         
         toggleLight.register();
@@ -115,6 +119,8 @@ public class Game {
 
     public void dispose() {
         togglePhysixDebug.unregister();
+        toggleReload.unregister();
+        toggleIncreaseLevel.unregister();
         inputManager.close();
     }
 
@@ -320,6 +326,12 @@ public class Game {
     {
         loadSelectedLevel = true;
     }
+        
+    public void increaseLevel()
+    {
+        Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % levelList.size()));
+//        System.out.println("Level changed to: " + Settings.CURRENTLY_SELECTED_LEVEL.get());
+    }
 
     public void update(float delta) {
         // Main.getInstance().screenCamera.bind();
@@ -339,7 +351,7 @@ public class Game {
         }
 
         // Level reset Testing    
-        if(loadSelectedLevel || Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)){
+        if(loadSelectedLevel){
             loadSelectedLevel = false;
 //            System.out.println("Restart Level");
 
@@ -349,12 +361,6 @@ public class Game {
             //
             // Light cannot be reseted
             // Render-Team is on it
-        }
-        
-        if(Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP))
-        {
-            Settings.CURRENTLY_SELECTED_LEVEL.set(Math.abs((Settings.CURRENTLY_SELECTED_LEVEL.get() + 1 ) % levelList.size()));
-//            System.out.println("Level changed to: " + Settings.CURRENTLY_SELECTED_LEVEL.get());
         }
     }
 
