@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class DestroyBlocksSystem extends IteratingSystem {
 
-    public final static float RAY_LENGTH_JUMP = 2.8f;
+    public final static float RAY_LENGTH_JUMP = 3.4f;
     public final static float RAY_LENGTH_GROUNDED = 1.4f;
 
     public DestroyBlocksSystem() {
@@ -61,7 +61,7 @@ public class DestroyBlocksSystem extends IteratingSystem {
             {
                 if(Jump.previousContacts < Jump.groundContacts)
                 {
-                    //System.out.println("Damage on Land");
+                    System.out.println("Damage on Land");
                     Jump.previousContacts = Jump.groundContacts;
                     sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP, Facing);
                     ani.stateTime = 0.0f;
@@ -82,7 +82,7 @@ public class DestroyBlocksSystem extends IteratingSystem {
             {
                 if(Jump.justJumped) // Gerade erst losgesprungen
                 {
-                    //System.out.println("Damage on Jump");
+                    System.out.println("Damage on Jump");
                     sendBlockRaycastBelowAndDamageBlock(entity, 2, RAY_LENGTH_JUMP, Facing);
                 }
             }
