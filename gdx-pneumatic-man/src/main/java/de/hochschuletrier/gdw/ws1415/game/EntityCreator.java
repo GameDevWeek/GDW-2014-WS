@@ -893,7 +893,7 @@ public class EntityCreator {
         entity.add(moveComponent);
         
         DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
-        damageComponent.damage = 1;
+        damageComponent.damage = 10;
         damageComponent.damageToPlayer = true;
         entity.add(damageComponent);
         
@@ -908,13 +908,17 @@ public class EntityCreator {
         position.y = positionY;
         entity.add(position);
         
+        PointLightComponent plc = engine.createComponent(PointLightComponent.class);
+        plc.pointLight = new PointLight(engine.getSystem(SortedRenderSystem.class).getRayHandler(), GameConstants.LIGHT_RAYS, new Color(1f,1f,0f,0.5f),3f,0,0);
+        entity.add(plc);
+        
         
         final AnimationComponent animation = engine.createComponent(AnimationComponent.class);
         entity.add(animation);
         animation.animation = assetManager.getAnimation("lava_ball");
         
         
-        ParticleComponent pe = engine.createComponent(ParticleComponent.class);
+        /*ParticleComponent pe = engine.createComponent(ParticleComponent.class);
         
         pe.particleEffect = new ParticleEffect(assetManager.getParticleEffect("lava"));
         
@@ -922,7 +926,7 @@ public class EntityCreator {
         pe.particleEffect.flipY();
         pe.particleEffect.start();
         pe.offsetY=40f;
-        entity.add(pe);
+        entity.add(pe);*/
         
         
         
