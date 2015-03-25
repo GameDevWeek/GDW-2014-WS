@@ -1143,7 +1143,7 @@ public class EntityCreator {
 
         
         //addRenderComponents(Bomb, map, info, tileX, tileY);
-        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, true);
+        addRenderComponents(Bomb, map, info, tileX, tileY, PlayMode.LOOP, false);
         
         engine.addEntity(Bomb);
         return(Bomb);
