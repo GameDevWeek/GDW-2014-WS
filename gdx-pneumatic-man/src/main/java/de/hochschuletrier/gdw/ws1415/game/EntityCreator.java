@@ -521,7 +521,8 @@ public class EntityCreator {
         bodyComponent.init(bodyDef, physixSystem, entity);
         bodyComponent.setGravityScale(0);
         PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem)
-                .density(1).friction(1f).shapeBox(GameConstants.getTileSizeX(), GameConstants.getTileSizeY())
+                .density(1).friction(1f)
+                .shapeBox(GameConstants.getTileSizeX() * 0.95f, GameConstants.getTileSizeY() *0.95f)
                 .restitution(0).sensor(true)
                 .mask((short) (EVERYTHING))
                 .category(WORLDOBJECT);

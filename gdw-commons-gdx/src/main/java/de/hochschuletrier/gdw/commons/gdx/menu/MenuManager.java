@@ -2,14 +2,19 @@ package de.hochschuletrier.gdw.commons.gdx.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+
+import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.state.ScreenListener;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.gdx.viewport.ExtendScreenViewport;
+
 import java.util.LinkedList;
 import java.awt.Cursor;
 /**
@@ -26,7 +31,7 @@ public class MenuManager implements ScreenListener, Disposable {
     private Actor currentPage;
     private final LinkedList<Actor> pageStack = new LinkedList();
     private final Runnable onEmptyPop;
-
+    
     public MenuManager(int width, int height, Runnable onEmptyPop) {
         this.stage = new Stage(new ExtendScreenViewport(width, height), DrawUtil.batch);
         this.onEmptyPop = onEmptyPop;
@@ -90,10 +95,13 @@ public class MenuManager implements ScreenListener, Disposable {
 
     public void pushPage(Actor page) {
         if (currentPage != null) {
+            System.out.println("1: "+currentPage);
             currentPage.setVisible(false);
             pageStack.push(currentPage);
         }
         currentPage = page;
+        
+
         currentPage.setVisible(true);
     }
 
@@ -111,4 +119,10 @@ public class MenuManager implements ScreenListener, Disposable {
             currentPage.setVisible(true);
         }
     }
+    
+    public Actor getCurrentPage(){
+        return currentPage;
+    }
+    
+    
 }
