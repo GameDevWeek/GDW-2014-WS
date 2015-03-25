@@ -11,6 +11,7 @@ import de.hochschuletrier.gdw.ws1415.game.components.BombComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.DestructableBlockComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ws1415.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ws1415.game.components.lights.PointLightComponent;
 import de.hochschuletrier.gdw.ws1415.game.systems.SortedFamilyRenderSystem;
 
 public class DestructableBlockRenderer extends SortedFamilyRenderSystem.Renderer {
@@ -36,6 +37,9 @@ public class DestructableBlockRenderer extends SortedFamilyRenderSystem.Renderer
         if(entity.getComponent(BombComponent.class) != null) 
         {
             keyFrame = animation.animation.getKeyFrame(animation.permanent_stateTime);
+            if(entity.getComponent(BombComponent.class) != null) {
+                entity.getComponent(PointLightComponent.class).pointLight.setActive(animation.animation.getKeyFrameIndex(animation.permanent_stateTime)%2==0 ? false:true);
+            }
         }
         
         int w = keyFrame.getRegionWidth();
